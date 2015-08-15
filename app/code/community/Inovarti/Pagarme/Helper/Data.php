@@ -14,7 +14,8 @@ class Inovarti_Pagarme_Helper_Data extends Mage_Core_Helper_Abstract
 		$select = $conn->select()
 			->from($resource->getTableName('sales/order_payment'))
 			->where('pagarme_transaction_id = ?', $tid);
-		return $conn->fetchOne($select);
+		$result = $conn->fetchAll($select);
+		return $result[0]['parent_id'];
 	}
 
 	public function formatAmount($amount)
