@@ -1,7 +1,6 @@
 {
     "name": "pagarme/pagarme-magento",
     "type": "magento-module",
-    "license":"OSL-3.0",
     "description":"Magento Extension for Pagar.me Payment Gateway",
     "authors":[
         {
