@@ -31,8 +31,6 @@ public function collect (Mage_Sales_Model_Quote_Address $address)
         $freeInstallments = (int) Mage::getStoreConfig('payment/pagarme_cc/free_installments');
 
         $total = Mage::helper('pagarme')->getBaseSubtotalWithDiscount () + Mage::helper ('pagarme')->getShippingAmount ();
-        
-        //var_dump (Mage::helper('pagarme')->getBaseSubtotalWithDiscount (), Mage::helper ('pagarme')->getShippingAmount ()); die;
 
         $n = floor ($total / $minInstallmentValue);
         if ($n > $maxInstallments) $n = $maxInstallments;
@@ -59,10 +57,11 @@ public function collect (Mage_Sales_Model_Quote_Address $address)
         {
             if ($item->getInstallment() == $payment_installment)
             {
-                $iamount = intval ($item->getInstallmentAmount ()) / 100;
-                $famount = (float) number_format ($iamount, 2);
-                $iqty = (int) $item->getInstallment();
+                $famount = intval ($item->getInstallmentAmount ()) / 100;
+                $iqty = intval ($item->getInstallment());
                 $balance = ($famount * $iqty) - $total;
+
+                if ($balance < 0) break; // The 1 cent problem
 
                 $address->setFeeAmount ($balance);
                 $address->setBaseFeeAmount ($balance);
@@ -71,8 +70,6 @@ public function collect (Mage_Sales_Model_Quote_Address $address)
 
                 $address->setGrandTotal ($address->getGrandTotal () + $address->getFeeAmount ());
                 $address->setBaseGrandTotal ($address->getBaseGrandTotal () + $address->getBaseFeeAmount ());
-
-                //var_dump ($total, $iamount, $famount, $iqty, $balance); die;
 
                 break;
             }

@@ -82,6 +82,21 @@ class Inovarti_Pagarme_Helper_Data extends Mage_Core_Helper_Abstract
 		return $customer;
 	}
 
+    public function _validateCustomerAddress($address)
+    {
+        if (!Zend_Validate::is($address->getStreet(1), 'NotEmpty')) {
+            $address->addError(Mage::helper('customer')->__('Please enter the street name.'));
+        }
+
+        if (!Zend_Validate::is($address->getStreet(2), 'NotEmpty')) {
+            $address->addError(Mage::helper('customer')->__('Please enter the home number.'));
+        }
+
+        if (!Zend_Validate::is($address->getStreet(4), 'NotEmpty')) {
+            $address->addError(Mage::helper('customer')->__('Please enter the district.'));
+        }
+    }
+
 	public function getMode()
 	{
 		$mode = Mage::getStoreConfig('payment/pagarme_settings/mode');

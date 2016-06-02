@@ -8,17 +8,17 @@
 class Inovarti_Pagarme_Model_Boleto extends Mage_Payment_Model_Method_Abstract
 {
     protected $_code = 'pagarme_boleto';
-
     protected $_formBlockType = 'pagarme/form_boleto';
     protected $_infoBlockType = 'pagarme/info_boleto';
 
-	protected $_isGateway                   = true;
-	protected $_canUseForMultishipping 		= false;
-	protected $_isInitializeNeeded      	= true;
+  	protected $_isGateway                   = true;
+  	protected $_canUseForMultishipping 		= false;
+  	protected $_isInitializeNeeded      	= true;
+  	protected $_canManageRecurringProfiles  = false;
 
-	public function initialize($paymentAction, $stateObject)
+  	public function initialize($paymentAction, $stateObject)
     {
-    	$payment = $this->getInfoInstance();
+      	$payment = $this->getInfoInstance();
         $order = $payment->getOrder();
         $this->_place($payment, $order->getBaseTotalDue());
         return $this;
@@ -29,30 +29,33 @@ class Inovarti_Pagarme_Model_Boleto extends Mage_Payment_Model_Method_Abstract
         $order = $payment->getOrder();
         $customer = Mage::helper('pagarme')->getCustomerInfoFromOrder($payment->getOrder());
         $data = new Varien_Object();
-		$data->setPaymentMethod(Inovarti_Pagarme_Model_Api::PAYMENT_METHOD_BOLETO)
-			->setAmount(Mage::helper('pagarme')->formatAmount($amount))
-            ->setBoletoExpirationDate($this->_generateExpirationDate())
-			->setCustomer($customer)
-			->setPostbackUrl(Mage::getUrl('pagarme/transaction_boleto/postback'));
 
-		$pagarme = Mage::getModel('pagarme/api');
+	      $data->setPaymentMethod(Inovarti_Pagarme_Model_Api::PAYMENT_METHOD_BOLETO)
+		         ->setAmount(Mage::helper('pagarme')->formatAmount($amount))
+             ->setBoletoExpirationDate($this->_generateExpirationDate())
+             ->setCustomer($customer)
+             ->setPostbackUrl(Mage::getUrl('pagarme/transaction_boleto/postback'));
 
-		$transaction = $pagarme->charge($data);
-		if ($transaction->getErrors()) {
-			$messages = array();
-			foreach ($transaction->getErrors() as $error) {
-				$messages[] = $error->getMessage() . '.';
-			}
-			Mage::throwException(implode("\n", $messages));
-		}
+        $pagarme = Mage::getModel('pagarme/api');
 
-		// pagar.me info
-		$payment->setPagarmeTransactionId($transaction->getId())
-			->setPagarmeBoletoUrl($transaction->getBoletoUrl()) // PS: Pagar.me in test mode always returns NULL
-			->setPagarmeBoletoBarcode($transaction->getBoletoBarcode())
-			->setPagarmeBoletoExpirationDate($transaction->getBoletoExpirationDate());
+    		$transaction = $pagarme->charge($data);
+    		if ($transaction->getErrors()) {
 
-		return $this;
+    			$messages = array();
+    			foreach ($transaction->getErrors() as $error) {
+    				$messages[] = $error->getMessage() . '.';
+    			}
+
+    			Mage::log(implode("\n", $messages), null, 'pagarme.log');
+    			Mage::throwException(implode("\n", $messages));
+    		}
+
+	      $payment->setPagarmeTransactionId($transaction->getId())
+      			->setPagarmeBoletoUrl($transaction->getBoletoUrl()) // PS: Pagar.me in test mode always returns NULL
+      			->setPagarmeBoletoBarcode($transaction->getBoletoBarcode())
+      			->setPagarmeBoletoExpirationDate($transaction->getBoletoExpirationDate());
+
+        return $this;
     }
 
     protected function _generateExpirationDate()

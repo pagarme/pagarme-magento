@@ -11,7 +11,7 @@
  * @author     Eneias Ramos de Melo <eneias@gamuza.com.br>
  */
 
-$installer = new Mage_Sales_Model_Resource_Setup();
+$installer = new Mage_Sales_Model_Resource_Setup('pagarme_setup');
 $installer->startSetup();
 
 // Quote Payment

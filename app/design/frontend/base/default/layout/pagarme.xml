@@ -16,18 +16,18 @@
 <layout>
 	<pagarme_checkout_handle>
 		<reference name="head">
-			<action method="addCss" ifconfig="payment/pagarme_settings/active"><stylesheet>pagarme/css/styles.css</stylesheet></action>
+			<action method="addCss"><stylesheet>pagarme/css/styles.css</stylesheet></action>
 		</reference>
         <reference name="after_body_start">
             <block type="core/template" name="pagarme_checkout_loader">
-                <action method="setTemplate" ifconfig="payment/pagarme_settings/active">
+                <action method="setTemplate" ifconfig="payment/pagarme_cc/active">
                     <template>pagarme/checkout/payment/loader.phtml</template>
                 </action>
             </block>
         </reference>
         <reference name="before_body_end">
             <block type="core/template" name="pagarme_checkout_js">
-                <action method="setTemplate" ifconfig="payment/pagarme_settings/active">
+                <action method="setTemplate" ifconfig="payment/pagarme_cc/active">
                     <template>pagarme/checkout/payment/js.phtml</template>
                 </action>
             </block>
@@ -67,31 +67,25 @@
 		<update handle="pagarme_checkout_handle"/>
 	</checkoutsimplificado_index_index>
 
-	<!-- Pagarme Checkout Success Handle -->
-	<pagarme_checkout_success_handle>
-		<reference name="checkout.success">
-			<block type="pagarme/checkout_success_payment" name="pagarme_checkout_success_payment">
-				<action method="addPaymentRender"><type>pagarme_boleto</type><block>pagarme/checkout_success_payment_boleto</block><template>pagarme/checkout/success/payment/boleto.phtml</template></action>
-				<!--<action method="addPaymentRender"><type>pagarme_cc</type><block>pagarme/checkout_success_payment_cc</block><template>pagarme/checkout/success/payment/cc.phtml</template></action>-->
-			</block>
-		</reference>
-	</pagarme_checkout_success_handle>
+	<firecheckout_index_index>
+		<update handle="pagarme_checkout_handle"/>
+	</firecheckout_index_index>
 
-	<checkout_onepage_success>
-		<update handle="pagarme_checkout_success_handle"/>
+    <checkout_onepage_success>
+        <reference name="content">
+            <block type="pagarme/checkout_success_payment" name="pagarme_checkout_success_payment">
+                <action method="addPaymentRender"><type>pagarme_boleto</type><block>pagarme/checkout_success_payment_boleto</block><template>pagarme/checkout/success/payment/boleto.phtml</template></action>
+            </block>
+        </reference>
     </checkout_onepage_success>
 
-    <onepagecheckout_index_success>
-		<update handle="pagarme_checkout_success_handle"/>
-    </onepagecheckout_index_success>
-
-    <onestepcheckout_index_success>
-                <update handle="pagarme_checkout_success_handle"/>
-    </onestepcheckout_index_success>
-
-    <checkoutsimplificado_index_success>
-        <update handle="pagarme_checkout_success_handle"/>
-    </checkoutsimplificado_index_success>
+    <checkout_multishipping_success translate="label">
+        <reference name="content">
+            <block type="pagarme/checkout_success_payment" name="pagarme_checkout_success_payment">
+                <action method="addPaymentRender"><type>pagarme_boleto</type><block>pagarme/checkout_success_payment_boleto</block><template>pagarme/checkout/success/payment/boleto.phtml</template></action>
+            </block>
+        </reference>
+    </checkout_multishipping_success>
 
 	<pagarme_order_fee_handle>
         <reference name="order_totals">

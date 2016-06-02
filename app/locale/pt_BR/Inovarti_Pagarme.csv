@@ -11,9 +11,11 @@
 "Pagarm.me - Boleto","Pagarm.me - Boleto"
 "Pagar.me - Credit Card","Pagar.me - Cartão de Crédito"
 "Mode","Modo"
+"Module","Módulo"
 "Test","Teste"
 "Live","Produção"
 "Api Key","Chave de API"
+Approved by Pagarme via Creditcard postback.,Aprovado pela Pagarme através do postback de Cartão de Crédito.
 "Encryption Key","Chave de criptografia"
 "Enabled","Ativado"
 "Title","Título"
@@ -38,7 +40,9 @@
 "Transaction Details","Detalhes da Transação"
 "Barcode","Código de Barras"
 "Boleto URL","URL do Boleto"
+Canceled by Pagarme via Creditcard postback.,Cancelado pela Pagarme através do postback de Cartão de Crédito.
 "Transaction #%s | %s","Transação #%s | %s"
+"Version","Versão"
 "Ordering amount of %s is pending payment.","Valor ordenado de %s está pendente de pagamento."
 "Pay in full - %s","Á vista - %s"
 "%sx - %s","%sx de %s"
@@ -64,6 +68,9 @@
 "Run Checkout","Rodar Checkout"
 "Pay","Pagar"
 "Please click the button below<br />and complete the information.","Por favor, clique no botão abaixo<br />e preencha as informações!"
+Please enter the district.,"Por favor, digite o bairro."
+Please enter the home number.,"Por favor, digite o número da casa."
+Please enter the street name.,"Por favor, digite o nome da rua."
 "Fill in the card data","Preencher os dados do cartão"
 "Just a moment ...","Um momento ..."
 "All right!","Tudo certo!"
@@ -75,4 +82,5 @@
 "Don't Send Invoice Email","Não Enviar Email de Fatura"
 "Send Invoice Email","Enviar E-mail da Fatura"
 "Send Invoice Update Email","Enviar E-mail de Atualização da Fatura"
-
+"Paid Order Status","Status do pedido após confirmação de pagamento no Pagar.me"
+"status automatically changed to (%s) by setting the module Pagar.me", "Status automaticamente alterado (%s) pelo módulo do Pagar.me"

@@ -38,6 +38,16 @@
     		<pagarme>
                 <class>Inovarti_Pagarme_Model</class>
             </pagarme>
+            <customer>
+                <rewrite>
+                    <address>Inovarti_Pagarme_Model_Customer_Address</address>
+                </rewrite>
+            </customer>
+            <sales>
+                <rewrite>
+                    <quote_address>Inovarti_Pagarme_Model_Sales_Quote_Address</quote_address>
+                </rewrite>
+            </sales>
     	</models>
     	<resources>
             <pagarme_setup>
@@ -111,7 +121,9 @@
                         <class>pagarme/quote_address_total_fee</class>
                         <after>grand_total</after>
                         <renderer>pagarme/checkout_totals_fee</renderer>
+                        <!--
                         <admin_renderer>pagarme/adminhtml_sales_order_create_totals_fee</admin_renderer>
+                        -->
                     </fee>
                 </totals>
             </quote>
@@ -159,6 +171,15 @@
                     </pagarme_sales_order_creditmemo_refund>
                 </observers>
             </sales_order_creditmemo_refund>
+              <sales_order_place_after>
+                <observers>
+                    <update_order_status_invoiced>
+                        <type>singleton</type>
+                        <class>pagarme/observer</class>
+                        <method>updateOrderStatusInvoiced</method>
+                    </update_order_status_invoiced>
+                </observers>
+            </sales_order_place_after>
         </events>
     </global>
     <frontend>
@@ -284,4 +305,3 @@
         </payment>
     </default>
 </config>
-

@@ -19,6 +19,7 @@ class Inovarti_Pagarme_Transaction_BoletoController extends Mage_Core_Controller
 			$orderId = Mage::helper('pagarme')->getOrderIdByTransactionId($request->getPost('id'));
 			$order = Mage::getModel('sales/order')->load($orderId);
 			if (!$order->canInvoice()) {
+				Mage::log($this->__('The order does not allow creating an invoice.'), null, 'pagarme.log');
 				Mage::throwException($this->__('The order does not allow creating an invoice.'));
 			}
 

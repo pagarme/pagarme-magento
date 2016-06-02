@@ -25,10 +25,11 @@ class Inovarti_Pagarme_Adminhtml_Pagarme_TransactionController extends Mage_Admi
 				foreach ($transaction->getErrors() as $error) {
 					$messages[] = $error->getMessage() . '.';
 				}
+				Mage::log(implode("\n", $messages), null, 'pagarme.log');
 				Mage::throwException(implode("\n", $messages));
 			}
 		} catch (Exception $e) {
-			Mage::logException($e);
+			Mage::log($e, null, 'pagarme.log');
             $result['error_message'] = $e->getMessage();
 		}
 		$this->getResponse()->setBody(Mage::helper('core')->jsonEncode($result));

@@ -18,11 +18,48 @@ Validation.creditCartTypes = $H({
 });
 
 Validation.add('validate-pagarme-cc-number', 'Please enter a valid credit card number.', function(v, elm) {
-    if (Validation.get('validate-cc-number').test(v, elm) && Validation.get('validate-cc-type').test(v, elm)) {
+
+    if (pagarmeIsValidCardNumber(v) && Validation.get('validate-cc-type').test(v, elm)) {
         return true;
     }
+
     return false;
 });
+
+function pagarmeIsValidCardNumber(cardNumber) {
+    
+    if (!cardNumber) {
+        return false;
+    }
+
+    cardNumber = cardNumber.replace(/[^0-9]/g, '');
+
+    var luhnDigit = parseInt(cardNumber.substring(cardNumber.length-1, cardNumber.length));
+    var luhnLess = cardNumber.substring(0, cardNumber.length-1);
+
+    var sum = 0;
+
+    for (i = 0; i < luhnLess.length; i++) {
+        sum += parseInt(luhnLess.substring(i, i+1));
+    }
+
+    var delta = new Array (0,1,2,3,4,-4,-3,-2,-1,0);
+
+    for (i = luhnLess.length - 1; i >= 0; i -= 2) {
+        var deltaIndex = parseInt(luhnLess.substring(i, i+1));
+        var deltaValue = delta[deltaIndex];
+        sum += deltaValue;
+    }
+
+    var mod10 = sum % 10;
+    mod10 = 10 - mod10;
+
+    if (mod10 == 10) {
+        mod10 = 0;
+    }
+
+    return (mod10 == parseInt(luhnDigit));
+}
 
 Validation.add('validate-pagarme-cc-exp', 'Incorrect credit card expiration date.', function(v, elm){
     var ccExpMonth   = v;

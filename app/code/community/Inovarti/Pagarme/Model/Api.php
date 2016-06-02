@@ -56,6 +56,7 @@ class Inovarti_Pagarme_Model_Api
 	public function getApiKey()
 	{
 		if (!$this->_apiKey) {
+			Mage::log(Mage::helper('pagarme')->__('You need to configure API key before performing requests.'), null, 'pagarme.log');
 			Mage::throwException(Mage::helper('pagarme')->__('You need to configure API key before performing requests.'));
 		}
 		return $this->_apiKey;
@@ -100,6 +101,7 @@ class Inovarti_Pagarme_Model_Api
         $result = $response->getData ();
         if (empty ($result))
         {
+			Mage::log($this->__('The order does not allow creating an invoice.'), null, 'pagarme.log');
             Mage::throwException($this->_wrapGatewayError());
         }
 
