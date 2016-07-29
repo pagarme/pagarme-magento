@@ -15,28 +15,30 @@ class Inovarti_Pagarme_Transaction_CreditcardController
         $request = $this->getRequest();
 
         if ($request->isPost() && $pagarme->validateFingerprint($request->getPost('id'), $request->getPost('fingerprint'))) {
+
             $orderId = Mage::helper('pagarme')->getOrderIdByTransactionId($request->getPost('id'));
             $order = Mage::getModel('sales/order')->load($orderId);
 
             $currentStatus = $request->getPost('current_status');
 
             if ($currentStatus === Inovarti_Pagarme_Model_Api::TRANSACTION_STATUS_PAID) {
-                if (!$order->canInvoice()) {
-                    Mage::throwException($this->__('The order does not allow creating an invoice.'));
+
+                if (!$order->getId()) {
+                    throw new Exception('Invalid order number.');
                 }
 
-                $invoice = Mage::getModel('sales/service_order', $order)
-                    ->prepareInvoice()
-                    ->register()
-                    ->pay();
+                if (!$order->hasInvoices()) {
+                    throw new Exception('Order does not have any invoices.');
+                }
 
-                $invoice->setEmailSent(true);
-                $invoice->getOrder()->setIsInProcess(true);
-
-                $transactionSave = Mage::getModel('core/resource_transaction')
-                    ->addObject($invoice)
-                    ->addObject($invoice->getOrder())
-                    ->save();
+                foreach ($order->getInvoiceCollection() as $invoice) {
+                    $invoice->setRequestedCaptureCase(Mage_Sales_Model_Order_Invoice::CAPTURE_ONLINE);
+                    $invoice->capture();
+                    Mage::getModel('core/resource_transaction')
+                        ->addObject($invoice)
+                        ->addObject($invoice->getOrder())
+                        ->save();
+                }
 
                 $invoice->sendEmail();
                 $order->addStatusHistoryComment($this->__('Approved by Pagarme via Creditcard postback.'))->save();

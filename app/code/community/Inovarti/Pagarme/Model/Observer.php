@@ -15,6 +15,9 @@ class Inovarti_Pagarme_Model_Observer
     const PAGARME_CC_PAYMENT_METHOD = 'pagarme_cc';
     const PAGARME_CHECKOUT_PAYMENT_METHOD = 'pagarme_checkout';
 
+    /**
+     * @param Varien_Event_Observer $observer
+     */
     public function addPagarmeJs(Varien_Event_Observer $observer)
     {
         $block = $observer->getEvent()->getBlock();
@@ -35,14 +38,18 @@ class Inovarti_Pagarme_Model_Observer
         }
     }
 
+    /**
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
     public function invoicePay(Varien_Event_Observer $observer)
     {
         $invoice = $observer->getEvent()->getInvoice();
         $order = $invoice->getOrder();
         if ($invoice->getBaseFeeAmount())
         {
-            $order->setFeeAmountInvoiced($order->getFeeAmountInvoiced() + $invoice->getFeeAmount());
-            $order->setBaseFeeAmountInvoiced($order->getBaseFeeAmountInvoiced() + $invoice->getBaseFeeAmount());
+            $order->setFeeAmountInvoiced($order->getGrandTotal());
+            $order->setBaseFeeAmountInvoiced($order->getGrandTotal());
         }
         $payment_method = $order->getPayment()->getMethod();
         $invoice_email = Mage::getStoreConfig("payment/{$payment_method}/invoice_email");
@@ -60,6 +67,10 @@ class Inovarti_Pagarme_Model_Observer
         return $this;
     }
 
+    /**
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
     public function creditmemoRefund(Varien_Event_Observer $observer)
     {
         $creditmemo = $observer->getEvent()->getCreditmemo();
@@ -72,6 +83,10 @@ class Inovarti_Pagarme_Model_Observer
         return $this;
     }
 
+    /**
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
     public function updateOrderStatusInvoiced(Varien_Event_Observer $observer)
     {
         $order = $observer->getEvent()->getOrder();
@@ -105,5 +120,51 @@ class Inovarti_Pagarme_Model_Observer
               Mage::log('status automatically changed to ('.$configOrderStatusPaid.') by setting the module Pagar.me', null, 'pagarme.log');
               return $this;
         }
+    }
+
+    /**
+     * @param Varien_Event_Observer $observer
+     * @return $this
+     */
+    public function setRecipientId(Varien_Event_Observer $observer)
+    {
+        $quoteItem = $observer->getEvent()->getQuoteItem();
+
+        if (!$quoteItem->getSku()) {
+            return $this;
+        }
+
+        try {
+            $recipientsMenu = Mage::getModel('pagarme/marketplacemenu')
+                ->getCollection()
+                ->addFieldToFilter('sku', $quoteItem->getSku())
+                ->getFirstItem();
+
+            if ($recipientsMenu->getData()) {
+                $quoteItem->setRecipientId($recipientsMenu->getRecipientId());
+            }
+        } catch (Exception $e) {
+            Mage::log($e->getMessage(), null, 'pagarme.log');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Include our composer auto loader for the ElasticSearch modules
+     *
+     * @param Varien_Event_Observer $event
+     */
+    public function addPagarmeLibrary(Varien_Event_Observer $event)
+    {
+        self::init();
+    }
+
+    /**
+     * Add in auto loader for Elasticsearch components
+     */
+    static function init()
+    {
+        require_once(Mage::getBaseDir('lib') . DS . 'pagarme' . DS . 'Pagarme.php');
     }
 }

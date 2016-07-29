@@ -20,7 +20,7 @@ class Inovarti_Pagarme_Model_Checkout extends Inovarti_Pagarme_Model_Abstract
     protected $_canAuthorize                = true;
     protected $_canCapture                  = true;
     protected $_canRefund                   = true;
-    protected $_canUseForMultishipping 		= false;
+    protected $_canUseForMultishipping 		= true;
     protected $_canManageRecurringProfiles  = false;
 
     public function assignData($data)

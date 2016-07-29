@@ -141,6 +141,17 @@ Event.observe($('<?php echo $_code ?>_cc_cid'), 'keyup', function(){
         });
     }
 
+    $(document).on('click','#onestepcheckout-place-order-button',function(){
+        pagarmeValidateFields();
+    });
+
+    $(document).on('click','#lbonepage-place-order-btn',function(){
+        pagarmeValidateFields();
+    });
+
+    $(document).on('click','#payment-continue',function(){
+        pagarmeValidateFields();
+    });
 
     var changeElement = false;
     document.on('click', function(evt, elm){

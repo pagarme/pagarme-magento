@@ -6,7 +6,7 @@
 *  @author     Lucas Santos <lucas.santos@pagar.me>
 */
 abstract class Inovarti_Pagarme_Model_Abstract
-    extends Mage_Payment_Model_Method_Abstract
+    extends Inovarti_Pagarme_Model_Split
 {
     const REQUEST_TYPE_AUTH_CAPTURE = 'AUTH_CAPTURE';
     const REQUEST_TYPE_AUTH_ONLY    = 'AUTH_ONLY';
@@ -14,16 +14,27 @@ abstract class Inovarti_Pagarme_Model_Abstract
 
     private $pagarmeApi;
 
+    /**
+     * Inovarti_Pagarme_Model_Abstract constructor.
+     */
     public function __construct()
     {
         $this->pagarmeApi = Mage::getModel('pagarme/api');
     }
 
+    /**
+     * @param $payment
+     * @param $amount
+     * @param $requestType
+     * @param bool $checkout
+     * @return $this
+     */
     protected function _place($payment, $amount, $requestType, $checkout = false)
     {
         if ($requestType === self::REQUEST_TYPE_AUTH_ONLY || $requestType === self::REQUEST_TYPE_AUTH_CAPTURE) {
             $customer = Mage::helper('pagarme')->getCustomerInfoFromOrder($payment->getOrder());
             $requestParams = $this->prepareRequestParams($payment, $amount, $requestType, $customer, $checkout);
+
             $transaction = $this->charge($requestParams);
 
             $this->prepareTransaction($transaction, $payment, $checkout);
@@ -31,26 +42,50 @@ abstract class Inovarti_Pagarme_Model_Abstract
         }
     }
 
+    /**
+     * @param Varien_Object $payment
+     * @param $amount
+     * @return $this
+     */
     public function refund(Varien_Object $payment, $amount)
     {
-    	$transaction = $pagarme->refund($payment->getPagarmeTransactionId());
-    	$this->checkApiErros($transaction);
-      $this->prepareTransaction($transaction, $payment);
+        $transaction = $this->pagarmeApi->refund($payment->getPagarmeTransactionId());
+        $this->checkApiErros($transaction);
+        $this->prepareTransaction($transaction, $payment);
 
     	return $this;
     }
 
+    /**
+     * @param $requestParams
+     * @return mixed
+     */
     private function charge($requestParams)
     {
         return $this->pagarmeApi->charge($requestParams);
     }
 
+    /**
+     * @param $payment
+     * @param $amount
+     * @param $requestType
+     * @param $customer
+     * @param $checkout
+     * @return Varien_Object
+     */
     private function prepareRequestParams($payment, $amount, $requestType, $customer, $checkout)
     {
+        $splitRules = $this->prepareSplit($payment->getOrder()->getQuote());
         $requestParams = new Varien_Object();
+
         $requestParams->setAmount(Mage::helper('pagarme')->formatAmount($amount))
-             ->setCapture($requestType == self::REQUEST_TYPE_AUTH_CAPTURE)
-             ->setCustomer($customer);
+                ->setCapture($requestType == self::REQUEST_TYPE_AUTH_CAPTURE)
+                ->setCustomer($customer);
+
+
+        if ($splitRules) {
+            $requestParams->setSplitRules($splitRules);
+        }
 
         if ($checkout) {
           $requestParams->setPaymentMethod($payment->getPagarmeCheckoutPaymentMethod());
@@ -70,6 +105,12 @@ abstract class Inovarti_Pagarme_Model_Abstract
         return $requestParams;
     }
 
+    /**
+     * @param $transaction
+     * @param $payment
+     * @param $checkout
+     * @return $this
+     */
     private function prepareTransaction($transaction,$payment, $checkout)
     {
         $this->checkApiErros($transaction);
@@ -104,13 +145,17 @@ abstract class Inovarti_Pagarme_Model_Abstract
       return $this;
     }
 
+    /**
+     * @param $payment
+     * @param $transaction
+     * @return mixed
+     */
     private function preparePaymentMethod($payment,$transaction)
     {
       if ($payment->getPagarmeTransactionId()) {
 
           $transactionIdSprintf = '%s-%s';
           $transactionId = sprintf(
-            $transactionId,
             $payment->getPagarmeTransactionId(),
             Mage_Sales_Model_Order_Payment_Transaction::TYPE_CAPTURE
           );
@@ -132,6 +177,9 @@ abstract class Inovarti_Pagarme_Model_Abstract
       return $payment;
     }
 
+    /**
+     * @param $transaction
+     */
     private function refusedStatus($transaction)
     {
         $reason = $transaction->getStatusReason();
@@ -139,6 +187,10 @@ abstract class Inovarti_Pagarme_Model_Abstract
         Mage::throwException($this->_wrapGatewayError($reason));
     }
 
+    /**
+     * @param $transaction
+     * @return $this
+     */
     private function checkApiErros($transaction)
     {
         if (!$transaction->getErrors()) {
@@ -154,6 +206,10 @@ abstract class Inovarti_Pagarme_Model_Abstract
         Mage::throwException(implode("\n", $messages));
     }
 
+    /**
+     * @param $code
+     * @return string
+     */
     protected function _wrapGatewayError($code)
     {
         switch ($code)

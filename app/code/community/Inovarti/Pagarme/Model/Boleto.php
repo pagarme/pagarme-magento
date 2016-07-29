@@ -5,17 +5,22 @@
  * @package    Inovarti_Pagarme
  * @author     Suporte <suporte@inovarti.com.br>
  */
-class Inovarti_Pagarme_Model_Boleto extends Mage_Payment_Model_Method_Abstract
+class Inovarti_Pagarme_Model_Boleto extends Inovarti_Pagarme_Model_Split
 {
     protected $_code = 'pagarme_boleto';
     protected $_formBlockType = 'pagarme/form_boleto';
     protected $_infoBlockType = 'pagarme/info_boleto';
 
   	protected $_isGateway                   = true;
-  	protected $_canUseForMultishipping 		= false;
+  	protected $_canUseForMultishipping 		= true;
   	protected $_isInitializeNeeded      	= true;
   	protected $_canManageRecurringProfiles  = false;
 
+    /**
+     * @param string $paymentAction
+     * @param object $stateObject
+     * @return $this
+     */
   	public function initialize($paymentAction, $stateObject)
     {
       	$payment = $this->getInfoInstance();
@@ -24,21 +29,33 @@ class Inovarti_Pagarme_Model_Boleto extends Mage_Payment_Model_Method_Abstract
         return $this;
     }
 
+    /**
+     * @param Mage_Sales_Model_Order_Payment $payment
+     * @param $amount
+     * @return $this
+     * @throws Mage_Core_Exception
+     */
     public function _place(Mage_Sales_Model_Order_Payment $payment, $amount)
     {
         $order = $payment->getOrder();
         $customer = Mage::helper('pagarme')->getCustomerInfoFromOrder($payment->getOrder());
-        $data = new Varien_Object();
 
-	      $data->setPaymentMethod(Inovarti_Pagarme_Model_Api::PAYMENT_METHOD_BOLETO)
-		         ->setAmount(Mage::helper('pagarme')->formatAmount($amount))
-             ->setBoletoExpirationDate($this->_generateExpirationDate())
-             ->setCustomer($customer)
-             ->setPostbackUrl(Mage::getUrl('pagarme/transaction_boleto/postback'));
+        $splitRules = $this->prepareSplit($order->getQuote());
+        $requestParams = new Varien_Object();
+
+        $requestParams->setPaymentMethod(Inovarti_Pagarme_Model_Api::PAYMENT_METHOD_BOLETO)
+            ->setAmount(Mage::helper('pagarme')->formatAmount($amount))
+            ->setBoletoExpirationDate($this->_generateExpirationDate())
+            ->setCustomer($customer)
+            ->setPostbackUrl(Mage::getUrl('pagarme/transaction_boleto/postback'));
+
+        if ($splitRules) {
+            $requestParams->setSplitRules($splitRules);
+        }
 
         $pagarme = Mage::getModel('pagarme/api');
 
-    		$transaction = $pagarme->charge($data);
+    		$transaction = $pagarme->charge($requestParams);
     		if ($transaction->getErrors()) {
 
     			$messages = array();

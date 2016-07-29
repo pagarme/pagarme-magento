@@ -1,0 +1,32 @@
+{
+	"name": "pagarme/pagarme-php",
+	"description": "Pagar.me PHP Library",
+	"keywords": [
+		"pagar.me",
+		"pagarme",
+		"pagamentos",
+		"payments brazil",
+		"pagamento brasil",
+		"api"
+	],
+	"homepage": "http://pagar.me",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Pagar.me and contributors",
+			"homepage": "https://github.com/pagarme/pagarme-php/graphs/contributors"
+		}
+	],
+	"require": {
+		"php": ">5.3",
+		"ext-curl":"*",
+		"ext-json":"*",
+		"ext-mbstring":"*"
+	},
+	"require-dev": {
+		 "simpletest/simpletest": "*"
+	},
+	"autoload": { 
+		"classmap":["lib/Pagarme"]
+	}
+}

@@ -8,3 +8,4 @@ app/locale/pt_BR/Inovarti_Pagarme.csv                           app/locale/pt_BR
 js/pagarme/                                                     js/pagarme/
 skin/adminhtml/default/default/pagarme/                         skin/adminhtml/default/default/pagarme/
 skin/frontend/base/default/pagarme/                             skin/frontend/base/default/pagarme/
+lib/pagarme														lib/pagarme

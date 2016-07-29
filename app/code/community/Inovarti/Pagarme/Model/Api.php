@@ -167,6 +167,7 @@ class Inovarti_Pagarme_Model_Api
 	{
 		$data->setEncryptionKey($this->getEncryptionKey());
 		$response = $this->request($this->getTransactionCalculateInstallmentsAmountUrl(), $data);
+
 		return $response;
 	}
 
@@ -183,13 +184,17 @@ class Inovarti_Pagarme_Model_Api
 		$client = new Varien_Http_Client($url, array('timeout'	=> 30));
 		$client->setMethod($method);
 		$client->setHeaders('Accept-Encoding: identity');
+
 		if ($method == Zend_Http_Client::POST) {
 			$client->setParameterPost($this->_parseArray($data));
 		} else {
-			$client->setParameterGet($this->_parseArray($data));
+			if ($data) {
+				$client->setParameterGet($this->_parseArray($data));
+			}
 		}
 
 		$response = $client->request();
+
 		$body = json_decode($response->getBody(), true);
 		$result = $this->_parseObject($body);
 		return $result;

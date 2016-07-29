@@ -58,6 +58,10 @@ class Inovarti_Pagarme_Block_Checkout_Success_Payment extends Mage_Core_Block_Te
 
     public function getPaymentHtml(Varien_Object $payment)
     {
+        if (!$payment) {
+            return '';
+        }
+        
         if ($block = $this->getPaymentRenderer($payment->getMethod())) {
         	$block->setPayment($payment);
         	return $block->toHtml();

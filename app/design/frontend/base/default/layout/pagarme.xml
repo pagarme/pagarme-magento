@@ -12,7 +12,6 @@
  * @author     Eneias Ramos de Melo <eneias@gamuza.com.br>
  */
 -->
-
 <layout>
 	<pagarme_checkout_handle>
 		<reference name="head">
@@ -47,9 +46,13 @@
 		<update handle="pagarme_checkout_handle"/>
 	</onepagecheckout_index_index>
 
-        <onestepcheckout_index_index>
-                <update handle="pagarme_checkout_handle"/>
-        </onestepcheckout_index_index>
+    <onestepcheckout_index_index>
+            <update handle="pagarme_checkout_handle"/>
+    </onestepcheckout_index_index>
+
+    <typostores_onestepcheckout_index_index>
+        <update handle="pagarme_checkout_handle"/>
+    </typostores_onestepcheckout_index_index>
 
 	<opc_index_index>
 		<update handle="pagarme_checkout_handle"/>
@@ -70,6 +73,10 @@
 	<firecheckout_index_index>
 		<update handle="pagarme_checkout_handle"/>
 	</firecheckout_index_index>
+
+    <checkout_multishipping_billing>
+        <update handle="pagarme_checkout_handle"/>
+    </checkout_multishipping_billing>
 
     <checkout_onepage_success>
         <reference name="content">

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<config>
+    <menu>
+        <pagarme module="pagarme">
+            <title>Pagarme - Marketplace</title>
+            <sort_order>100</sort_order>
+            <children>
+                <banks module="pagarme">
+                    <title>Manage Banks</title>
+                    <sort_order>0</sort_order>
+                    <action>adminhtml/banks</action>
+                </banks>
+                <recipients module="pagarme">
+                    <title>Manage Recipients</title>
+                    <sort_order>10</sort_order>
+                    <action>adminhtml/recipients</action>
+                </recipients>
+                <split_rules module="pagarme">
+                    <title>Manage Split Rules</title>
+                    <sort_order>20</sort_order>
+                    <action>adminhtml/splitrules</action>
+                </split_rules>
+                <marketplace_Menu module="pagarme">
+                    <title>Marketplace Menu</title>
+                    <sort_order>30</sort_order>
+                    <action>adminhtml/marketplacemenu</action>
+                </marketplace_Menu>
+            </children>
+        </pagarme>
+    </menu>
+    <acl>
+        <resources>
+            <all>
+                <title>Allow Everything</title>
+            </all>
+            <admin>
+                <children>
+                    <pagarme translate="title" module="pagarme">
+                        <title>Pagarme</title>
+                        <sort_order>1000</sort_order>
+                        <children>
+                            <banks translate="title">
+                                <title>Bank`s Account</title>
+                                <sort_order>0</sort_order>
+                            </banks>
+                            <recipients translate="title">
+                                <title>Recipient`s</title>
+                                <sort_order>10</sort_order>
+                            </recipients>
+                            <split_rules translate="title">
+                                <title>Split Rule`s</title>
+                                <sort_order>20</sort_order>
+                            </split_rules>
+                            <marketplace_Menu translate="title">
+                                <title>Marketplace Menu</title>
+                                <sort_order>30</sort_order>
+                            </marketplace_Menu>
+                        </children>
+                    </pagarme>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

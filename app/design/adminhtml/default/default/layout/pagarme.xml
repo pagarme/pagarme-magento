@@ -48,6 +48,14 @@
                 <action method="setAfterCondition"><condition>last</condition></action>
             </block>
         </reference>
+
+        <reference name="sales_order_tabs">
+            <action method="addTab">
+                <name>order_view_tab_splitorder</name>
+                <block>pagarme/adminhtml_order_view_tab_SplitOrder</block>
+            </action>
+        </reference>
+
     </adminhtml_sales_order_view>
 
     <adminhtml_sales_order_invoice_new>

@@ -15,7 +15,7 @@
 <config>
     <modules>
         <Inovarti_Pagarme>
-            <version>0.1.1</version>
+            <version>0.1.5</version>
         </Inovarti_Pagarme>
     </modules>
     <global>
@@ -37,7 +37,19 @@
     	<models>
     		<pagarme>
                 <class>Inovarti_Pagarme_Model</class>
+                <resourceModel>pagarme_resource</resourceModel>
             </pagarme>
+            <pagarme_resource>
+                <class>Inovarti_Pagarme_Model_Resource</class>
+                <entities>
+                    <splitrules>
+                        <table>pagarme_split_rules</table>
+                    </splitrules>
+                    <marketplacemenu>
+                        <table>pagarme_marketplace_menu</table>
+                    </marketplacemenu>
+                </entities>
+            </pagarme_resource>
             <customer>
                 <rewrite>
                     <address>Inovarti_Pagarme_Model_Customer_Address</address>
@@ -47,6 +59,11 @@
                 <rewrite>
                     <quote_address>Inovarti_Pagarme_Model_Sales_Quote_Address</quote_address>
                 </rewrite>
+                <quote>
+                    <item>
+                        <recipient_id/>
+                    </item>
+                </quote>
             </sales>
     	</models>
     	<resources>
@@ -180,6 +197,23 @@
                     </update_order_status_invoiced>
                 </observers>
             </sales_order_place_after>
+            <controller_front_init_before>
+                <observers>
+                    <add_pagarme_library>
+                        <type>singleton</type>
+                        <class>pagarme/observer</class>
+                        <method>addPagarmeLibrary</method>
+                    </add_pagarme_library>
+                </observers>
+            </controller_front_init_before>
+            <sales_quote_add_item>
+                <observers>
+                    <inchoo_test_log_cart_add>
+                        <class>pagarme/observer</class>
+                        <method>setRecipientId</method>
+                    </inchoo_test_log_cart_add>
+                </observers>
+            </sales_quote_add_item>
         </events>
     </global>
     <frontend>
@@ -208,18 +242,6 @@
                 </pagarme>
             </updates>
         </layout>
-        <!--
-        <events>
-            <core_block_abstract_to_html_after>
-                <observers>
-                    <pagarme_observer>
-                        <class>pagarme/observer</class>
-                        <method>addPagarmeJs</method>
-                    </pagarme_observer>
-                </observers>
-            </core_block_abstract_to_html_after>
-        </events>
-        -->
     </frontend>
     <adminhtml>
         <translate>
