@@ -35,8 +35,13 @@ abstract class Inovarti_Pagarme_Model_Abstract
             $customer = Mage::helper('pagarme')->getCustomerInfoFromOrder($payment->getOrder());
             $requestParams = $this->prepareRequestParams($payment, $amount, $requestType, $customer, $checkout);
 
-	          $incrementId = $payment->getOrder()->getQuote()->getIncrementId();
-            $requestParams->setMetadata(array('order_id' => $incrementId));
+			$incrementId = $payment->getOrder()->getQuote()->getIncrementId();
+			$requestParams->setMetadata(
+				array(
+					'order_id' => $incrementId,
+					'customerTest' => $customer
+				)
+			);
             $transaction = $this->charge($requestParams);
 
             $this->prepareTransaction($transaction, $payment, $checkout);
