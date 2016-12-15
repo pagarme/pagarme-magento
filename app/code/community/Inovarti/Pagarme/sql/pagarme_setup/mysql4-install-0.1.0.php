@@ -13,17 +13,21 @@
 
 $installer = new Mage_Sales_Model_Resource_Setup('pagarme_setup');
 $installer->startSetup();
+$resource = Mage::getSingleton('core/resource')->getConnection('core_write');
 
 // Quote Payment
 $entity = 'quote_payment';
 $attributes = array(
 	'pagarme_card_hash' => array('type' => Varien_Db_Ddl_Table::TYPE_TEXT),
-    'installments' => array('type' => Varien_Db_Ddl_Table::TYPE_SMALLINT),
-    'installment_description' => array('type' => Varien_Db_Ddl_Table::TYPE_VARCHAR),
+	'installments' => array('type' => Varien_Db_Ddl_Table::TYPE_SMALLINT),
+	'installment_description' => array('type' => Varien_Db_Ddl_Table::TYPE_VARCHAR),
 );
 
 foreach ($attributes as $attribute => $options) {
-	$installer->addAttribute($entity, $attribute, $options);
+	$hasColumn = $resource->query("SHOW COLUMNS FROM sales_flat_{$entity} WHERE field = '{$attribute}';");
+	if ($hasColumn->rowCount() == 0) {
+		$installer->addAttribute($entity, $attribute, $options);
+	}
 }
 
 // Order Payment
@@ -39,7 +43,10 @@ $attributes = array(
 );
 
 foreach ($attributes as $attribute => $options) {
-	$installer->addAttribute($entity, $attribute, $options);
+	$hasColumn = $resource->query("SHOW COLUMNS FROM sales_flat_{$entity} WHERE field = '{$attribute}';");
+	if ($hasColumn->rowCount() == 0) {
+		$installer->addAttribute($entity, $attribute, $options);
+	}
 }
 
 $installer->endSetup();
