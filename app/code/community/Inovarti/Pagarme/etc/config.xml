@@ -15,7 +15,7 @@
 <config>
     <modules>
         <Inovarti_Pagarme>
-            <version>0.1.5</version>
+            <version>0.2.0</version>
         </Inovarti_Pagarme>
     </modules>
     <global>
@@ -48,6 +48,9 @@
                     <marketplacemenu>
                         <table>pagarme_marketplace_menu</table>
                     </marketplacemenu>
+                    <splitRulesGroup>
+                        <table>pagarme_split_rules_group</table>
+                    </splitRulesGroup>
                 </entities>
             </pagarme_resource>
             <customer>
