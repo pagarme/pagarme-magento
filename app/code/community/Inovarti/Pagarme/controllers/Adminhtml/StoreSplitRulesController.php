@@ -1,9 +1,7 @@
 <?php
 
-class Inovarti_Pagarme_Adminhtml_StoreSplitRulesController
-    extends Inovarti_Pagarme_Model_AbstractPagarmeApiAdminController
+class Inovarti_Pagarme_Adminhtml_StoreSplitRulesController extends Inovarti_Pagarme_Model_AbstractPagarmeApiAdminController
 {
-
     public function indexAction()
     {
         $this->_title($this->__('Pagarme'))->_title($this->__('Store Split Rules'));
@@ -13,12 +11,13 @@ class Inovarti_Pagarme_Adminhtml_StoreSplitRulesController
         $this->renderLayout();
     }
 
-    public function newAction() {
+    public function newAction()
+    {
         $this->_title($this->__('Pagarme'));
         $model = Mage::getModel('pagarme/storeSplitRules');
         $data  = Mage::getSingleton('adminhtml/session')->getFormData(true);
 
-        if(!empty($data)) {
+        if (!empty($data)) {
             $model->setData($data);
         }
 
@@ -39,13 +38,46 @@ class Inovarti_Pagarme_Adminhtml_StoreSplitRulesController
         $this->renderLayout();
     }
 
-    public function saveAction() {
-        $splitRuleData = $this->getRequest()->getPost();
-        $splitRuleId = $this->getRequest()->getParam('entity_id');
+    public function saveAction()
+    {
+        $data = $this->getRequest()->getPost();
 
-        try {
+        $splitRulesData = $data['split_rules'];
+        $storeId = $data['store_id'];
+        $amount = 0;
+        $hasResponsibleForChargeProcessingFee = false;
+        $hasResponsibleForChargeback = false;
 
+        $conn = Mage::getSingleton('core/resource')
+            ->getConnection('core_write');
+
+        $conn->beginTransaction();
+
+        $splitRulesGroup = Mage::getModel('pagarme/splitRulesGroup');
+        $splitRulesGroup->setGroupName('xablaaaaaaaaaaaau!');
+
+        $store = Mage::getModel('core/store')->load($data['store_id']);
+
+        $splitRulesGroup->setStore($store);
+
+        foreach ($splitRulesData as $splitRuleData) {
+            $splitRule = Mage::getModel('pagarme/splitrules');
+            $splitRule->setData($splitRuleData);
+            $splitRulesGroup->addSplitRule($splitRule);
+
+            if (!$hasResponsibleForChargeProcessingFee) {
+                $hasResponsibleForChargeProcessingFee = $splitRuleData['charge_processing_fee'] == true;
+            }
+
+            if (!$hasResponsibleForChargeback) {
+                $hasResponsibleForChargeback = $splitRuleData['liable'] == true;
+            }
+
+            $amount += (double) $splitRuleData['amount'];
         }
-    }
 
+        $splitRulesGroup->save();
+
+        $conn->commit();
+    }
 }

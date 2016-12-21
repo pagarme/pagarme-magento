@@ -101,12 +101,10 @@ class Inovarti_Pagarme_Model_Split extends Inovarti_Pagarme_Model_AbstractSplit
     protected function splitItemsBetweenSellers($baseSplitRules, $baseSplitRule, $recipientId)
     {
         foreach ($baseSplitRule as $splitRule) {
-
             $recipientRule = $baseSplitRules['recipent_rules'][$recipientId];
             $recipientValue = $this->calculatePercetage($recipientRule->getAmount(), $splitRule['amount']);
 
             if (isset($splitRules[$recipientId])) {
-
                 $lastedSplitRule    =  $splitRules[$recipientId];
                 $currentAmount      = $splitRule['amount']-$recipientValue;
 

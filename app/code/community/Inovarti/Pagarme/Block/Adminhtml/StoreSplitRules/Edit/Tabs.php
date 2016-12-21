@@ -10,7 +10,8 @@ class Inovarti_Pagarme_Block_Adminhtml_StoreSplitRules_Edit_Tabs extends Mage_Ad
         $this->setTitle(Mage::helper('pagarme')->__('Split details'));
     }
 
-    protected function _beforeToHtml() {
+    protected function _beforeToHtml()
+    {
         $this->addTab('form_section', array(
             'label'    => Mage::helper('pagarme')->__('Details'),
             'title'    => Mage::helper('pagarme')->__('Details'),
