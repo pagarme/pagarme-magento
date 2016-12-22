@@ -38,46 +38,106 @@ class Inovarti_Pagarme_Adminhtml_StoreSplitRulesController extends Inovarti_Paga
         $this->renderLayout();
     }
 
+    public function editAction()
+    {
+        $this->_title($this->__('Pagarme'));
+
+        $splitRulesGroupId = $this->getRequest()->getParam('entity_id');
+        $splitRulesGroup = Mage::getModel('pagarme/splitRulesGroup')
+            ->load($splitRulesGroupId);
+
+
+        if($splitRulesGroup->getId() != '') {
+            $splitRules = Mage::getModel('pagarme/splitrules')
+                ->getCollection()
+                ->addFieldToFilter('group_id', $splitRulesGroup->getId());
+
+            $splitRulesGroupData = $splitRulesGroup->getData();
+            $splitRulesGroupData['split_rules'] = $splitRules->getData();
+
+            Mage::register('storeSplitRules_data', $splitRulesGroupData);
+
+            $this->loadLayout();
+            $this->_setActiveMenu('pagarme/storeSplitRules');
+
+            $this->getLayout()->getBlock('head')->setCanLoadExtJs(true);
+
+            $this->_addBreadcrumb(
+                Mage::helper('adminhtml')->__('Split Rules Manager')
+            );
+
+            $this->_addContent($this->getLayout()->createBlock('pagarme/adminhtml_storeSplitRules_edit'))
+            ->_addLeft($this->getLayout()->createBlock('pagarme/adminhtml_storeSplitRules_edit_tabs'));
+
+            $this->renderLayout();
+        } else {
+            Mage::getSingleton('adminhtml/session')->addError(Mage::helper('pagarme')->__('Split not found'));
+            return $this->_redirect('*/*/');
+        }
+    }
+
     public function saveAction()
     {
+        $pagarMeHelper = Mage::helper('pagarme');
+        $session = Mage::getSingleton('adminhtml/session');
+
         $data = $this->getRequest()->getPost();
-
-        $splitRulesData = $data['split_rules'];
-        $storeId = $data['store_id'];
-        $amount = 0;
-        $hasResponsibleForChargeProcessingFee = false;
-        $hasResponsibleForChargeback = false;
-
-        $conn = Mage::getSingleton('core/resource')
-            ->getConnection('core_write');
-
-        $conn->beginTransaction();
-
         $splitRulesGroup = Mage::getModel('pagarme/splitRulesGroup');
-        $splitRulesGroup->setGroupName('xablaaaaaaaaaaaau!');
+        $splitRulesGroupId = $this->getRequest()->getParam('entity_id');
 
         $store = Mage::getModel('core/store')->load($data['store_id']);
-
         $splitRulesGroup->setStore($store);
 
-        foreach ($splitRulesData as $splitRuleData) {
-            $splitRule = Mage::getModel('pagarme/splitrules');
-            $splitRule->setData($splitRuleData);
-            $splitRulesGroup->addSplitRule($splitRule);
+        if($splitRulesGroupId > 0) {
+            $splitRulesGroup->load($splitRulesGroupId);
+            $splitRulesGroup->addData($data);
 
-            if (!$hasResponsibleForChargeProcessingFee) {
-                $hasResponsibleForChargeProcessingFee = $splitRuleData['charge_processing_fee'] == true;
+            foreach($data['split_rules'] as $splitRuleData) {
+                $splitRule = Mage::getModel('pagarme/splitrules')
+                    ->load($splitRuleData['entity_id']);
+                $splitRule->addData($splitRuleData);
+
+                $splitRulesGroup->addSplitRule($splitRule);
             }
 
-            if (!$hasResponsibleForChargeback) {
-                $hasResponsibleForChargeback = $splitRuleData['liable'] == true;
-            }
+        } else {
+            $splitRulesGroup->setGroupName('xablau');
 
-            $amount += (double) $splitRuleData['amount'];
+            foreach($data['split_rules'] as $splitRuleData) {
+                $splitRule = Mage::getModel('pagarme/splitrules')
+                    ->setData($splitRuleData);
+
+                $splitRulesGroup->addSplitRule($splitRule);
+            }
         }
 
-        $splitRulesGroup->save();
+        $errors = $splitRulesGroup->validate();
 
-        $conn->commit();
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
+                $session->addError($pagarMeHelper->__($error));
+            }
+
+            return $this->_redirect('*/*/');
+        }
+
+        try {
+            $splitRulesGroup->save();
+            $session->addSuccess($pagarMeHelper->__('Salvo com sucesso!'));
+            return $this->_redirect('*/*/');
+        } catch (Exception $e) {
+            $session->addError($pagarMeHelper->__('Error saving split rules: ' . $e->getMessage()));
+            return $this->_redirect('*/*/');
+        }
+    }
+
+    public function deleteAction()
+    {
+        $splitRulesGroupId = $this->getRequest()->getParam('entity_id');
+
+        $splitRulesGroup = Mage::getModel('pagarme/splitRulesGroup')
+            ->load($splitRulesGroupId);
+
+        $splitRulesGroup->delete();
     }
 }
