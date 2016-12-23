@@ -18,6 +18,7 @@ class Inovarti_Pagarme_Block_Adminhtml_Splitrules_Edit_Form
 
         $form->setUseContainer(true);
         $this->setForm($form);
+
         return parent::_prepareForm();
     }
 }

@@ -97,7 +97,7 @@ class Inovarti_Pagarme_Helper_Data extends Mage_Core_Helper_Abstract
 	private function getCpfOrCnpj($customer, $customCpfField, $customCnpjField)
 	{
   		$cpf = preg_replace( '/[^0-9]/', '', $customer->getData($customCpfField));
-			
+
 			if ($cpf) {
 					return $cpf;
 			}

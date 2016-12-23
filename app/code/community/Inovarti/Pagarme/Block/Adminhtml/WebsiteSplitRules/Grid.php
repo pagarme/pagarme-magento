@@ -1,11 +1,11 @@
 <?php
 
-class Inovarti_Pagarme_Block_Adminhtml_StoreSplitRules_Grid
+class Inovarti_Pagarme_Block_Adminhtml_WebsiteSplitRules_Grid
     extends Mage_Adminhtml_Block_Widget_Grid
 {
     public function __construct() {
         parent::__construct();
-        $this->setId('pagarmeStoreSplitRulesGrid');
+        $this->setId('pagarmeWebsiteSplitRulesGrid');
         $this->setDefaultSort('entity_id');
         $this->setDefaultDir('DESC');
     }

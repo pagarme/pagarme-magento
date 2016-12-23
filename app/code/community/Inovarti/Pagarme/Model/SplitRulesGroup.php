@@ -2,7 +2,7 @@
 
 class Inovarti_Pagarme_Model_SplitRulesGroup extends Mage_Core_Model_Abstract
 {
-    private $store = null;
+    private $website = null;
     private $splitRules = array();
 
     protected function _construct()
@@ -15,19 +15,38 @@ class Inovarti_Pagarme_Model_SplitRulesGroup extends Mage_Core_Model_Abstract
         $this->splitRules[] = $splitRule;
     }
 
+    public function setSplitRules(Varien_Data_Collection $splitRules)
+    {
+        $this->splitRules = $splitRules;
+    }
+
     public function getSplitRules()
     {
         return $this->splitRules;
     }
 
-    public function getStore()
+    public function getWebsite()
     {
-        return $this->store;
+        return $this->website;
     }
 
-    public function setStore(Mage_Core_Model_Store $store)
+    public function setWebsite(Mage_Core_Model_Website $website)
     {
-        $this->store = $store;
+        $this->website = $website;
+    }
+
+    public function loadByWebsite(Mage_Core_Model_Website $website)
+    {
+        $splitRulesGroup = Mage::getModel('pagarme/splitRulesGroup')
+            ->load($website->getId(), 'website_id');
+
+        $splitRules = Mage::getModel('pagarme/splitrules')
+            ->getCollection()
+            ->addFieldToFilter('group_id', $splitRulesGroup->getId());
+
+        $splitRulesGroup->setSplitRules($splitRules);
+
+        return $splitRulesGroup;
     }
 
     public function validate()
@@ -60,7 +79,7 @@ class Inovarti_Pagarme_Model_SplitRulesGroup extends Mage_Core_Model_Abstract
             $errors[] = 'Ninguém é responsável pelo chargeback';
 
         $splitRulesGroup = Mage::getModel('pagarme/splitRulesGroup')
-            ->load($this->getStore()->getId(), 'store_id');
+            ->load($this->getWebsite()->getId(), 'website_id');
 
         if($splitRulesGroup->getId() > 0 && $splitRulesGroup->getId() != $this->getId())
             $errors[] = 'Essa loja já possui uma regra de split';
@@ -70,12 +89,13 @@ class Inovarti_Pagarme_Model_SplitRulesGroup extends Mage_Core_Model_Abstract
 
     public function save()
     {
-        $this->setStoreId($this->getStore()->getId());
+        $this->setWebsiteId($this->getWebsite()->getId());
         $originalReturn = parent::save();
 
-        $relationships = array();
-
         foreach ($this->splitRules as $splitRule) {
+            if($splitRule->getId() < 1)
+                $splitRule->setId(null);
+
             $splitRule->setGroupId($this->getId());
             $splitRule->save();
         }

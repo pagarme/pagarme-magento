@@ -1,13 +1,13 @@
 <?php
 
-class Inovarti_Pagarme_Block_Adminhtml_StoreSplitRules_Edit_Tab_Form extends Mage_Adminhtml_Block_Widget_Form
+class Inovarti_Pagarme_Block_Adminhtml_WebsiteSplitRules_Edit_Tab_Form extends Mage_Adminhtml_Block_Widget_Form
 {
     protected function _prepareForm()
     {
-        $formData = Mage::registry('storeSplitRules_data');
+        $formData = Mage::registry('websiteSplitRules_data');
 
-        $stores = $this->getStores();
-        array_unshift($stores, array('' => 'Select'));
+        $websites = $this->getWebsites();
+        array_unshift($websites, array('' => 'Select'));
 
         $recipients = $this->getRecipients();
         array_unshift($recipients, array('' => 'Select'));
@@ -22,9 +22,13 @@ class Inovarti_Pagarme_Block_Adminhtml_StoreSplitRules_Edit_Tab_Form extends Mag
             'value'    => $formData['split_rules'][0]['entity_id']
         ));
 
-        $fieldset->addField('split_rules_0_recipient_id', 'hidden', array(
+        $fieldset->addField('split_rules_0_recipient_id', 'select', array(
+            'label'    => Mage::helper('pagarme')->__('Recipient'),
             'name'     => 'split_rules[0][recipient_id]',
-            'value'    => 'asdfasdfasdfasdfasdfsdafasd'
+            'class'    => 'required-entry',
+            'options'  => $recipients,
+            'value'   => $formData['split_rules'][0]['recipient_id'],
+            'required' => true
         ));
 
         $fieldset->addField('split_rules_0_charge_processing_fee', 'select', array(
@@ -60,9 +64,13 @@ class Inovarti_Pagarme_Block_Adminhtml_StoreSplitRules_Edit_Tab_Form extends Mag
             'value'    => $formData['split_rules'][1]['entity_id']
         ));
 
-        $fieldset->addField('split_rules_1_recipient_id', 'hidden', array(
+        $fieldset->addField('split_rules_1_recipient_id', 'select', array(
+            'label'    => Mage::helper('pagarme')->__('Recipient'),
             'name'     => 'split_rules[1][recipient_id]',
-            'value'    => '2asdfasdfasdfasdfasdfsdafasd'
+            'class'    => 'required-entry',
+            'options'  => $recipients,
+            'value'   => $formData['split_rules'][1]['recipient_id'],
+            'required' => true
         ));
 
         $fieldset->addField('split_rules_1_charge_processing_fee', 'select', array(
@@ -91,19 +99,19 @@ class Inovarti_Pagarme_Block_Adminhtml_StoreSplitRules_Edit_Tab_Form extends Mag
             'required' => true
         ));
 
-        $fieldset = $form->addFieldset('store_form', array('legend' => Mage::helper('pagarme')->__('Store')));
+        $fieldset = $form->addFieldset('website_form', array('legend' => Mage::helper('pagarme')->__('website')));
 
         $fieldset->addField('split_rules_2_entity_id', 'hidden', array(
             'name'     => 'split_rules[2][entity_id]',
             'value'    => $formData['split_rules'][2]['entity_id']
         ));
 
-        $fieldset->addField('store_id', 'select', array(
+        $fieldset->addField('website_id', 'select', array(
             'label'    => Mage::helper('pagarme')->__('Loja'),
-            'name'     => 'store_id',
+            'name'     => 'website_id',
             'class'    => 'required-entry',
-            'options'  => $stores,
-            'value'   => $formData['store_id'],
+            'options'  => $websites,
+            'value'   => $formData['website_id'],
             'required' => true
         ));
 
@@ -147,8 +155,6 @@ class Inovarti_Pagarme_Block_Adminhtml_StoreSplitRules_Edit_Tab_Form extends Mag
             Mage::getSingleton("adminhtml/session")->setSplitRulesGroupData(null);
         }
 
-        $this->getStores();
-
         return parent::_prepareForm();
     }
 
@@ -163,14 +169,14 @@ class Inovarti_Pagarme_Block_Adminhtml_StoreSplitRules_Edit_Tab_Form extends Mag
         return $recipients;
     }
 
-    private function getStores()
+    private function getWebsites()
     {
-        $stores = array();
-        foreach(Mage::app()->getStores() as $store)
+        $websites = array();
+        foreach(Mage::app()->getWebsites() as $website)
         {
-            $stores[$store->getId()] = $store->getName();
+            $websites[$website->getId()] = $website->getName();
         }
 
-        return $stores;
+        return $websites;
     }
 }

@@ -28,7 +28,7 @@
                 <store_split_rules module="pagarme">
                     <title>Store Split Rules</title>
                     <sort_order>40</sort_order>
-                    <action>adminhtml/storeSplitRules</action>
+                    <action>adminhtml/websiteSplitRules</action>
                 </store_split_rules>
             </children>
         </pagarme>

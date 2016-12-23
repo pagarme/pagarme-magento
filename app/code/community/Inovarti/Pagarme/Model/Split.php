@@ -33,63 +33,35 @@ class Inovarti_Pagarme_Model_Split extends Inovarti_Pagarme_Model_AbstractSplit
      */
     public function prepareSplit($quote)
     {
-        if (!Mage::getStoreConfig('payment/pagarme_settings/marketplace_is_active')
-            || !$this->getMarketplaceRecipientId()) {
+        if (!Mage::getStoreConfig('payment/pagarme_settings/marketplace_is_active'))
             return false;
-        }
 
-        $this->marketplaceRecipientId = $this->getMarketplaceRecipientId();
-        $this->carrierAmount = $quote->getShippingAddress()->getShippingInclTax();
+        $splitRules = array();
+        $marketplaceRecipientId = $this->getMarketplaceRecipientId();
+        $amount = $quote->getGrandTotal();
+        $carrierAmount = $quote->getShippingAddress()->getShippingInclTax();
+        $itemsAmount = $amount - $carrierAmount;
 
-        $splitItems = $this->getSplitItems($quote->getId());
+        $websiteSplitRules = Mage::getModel('pagarme/splitRulesGroup')
+            ->loadByWebsite(Mage::app()->getWebsite())
+            ->getSplitRules();
 
-        if (!$this->checkSplitItems($splitItems)) {
-            return false;
-        }
+        foreach($websiteSplitRules as $websiteSplitRule)
+        {
+            $websiteSplitRuleAmount = $itemsAmount * $websiteSplitRule->getAmount() / 100;
 
-        $baseSplitRules = $this->getBaseSplitRules($quote->getItemsCollection(), $quote);
-        $splitRules     = $this->getSplitRules($baseSplitRules);
+            if($websiteSplitRule->getRecipientId() == $marketplaceRecipientId)
+                $websiteSplitRuleAmount += $carrierAmount;
 
-        $splitRule = array();
-        $splitRuleMarketplace = array();
-
-        foreach ($splitRules as $recipientId => $splitData) {
-            $splitAmount = $this->getAmount($recipientId, $splitData['seller']);
-
-            if ($splitAmount) {
-                $amount = Mage::helper('pagarme')->formatAmount($splitAmount + $this->orderFeeAmount);
-                $splitRule[] = array(
-                    'recipient_id'          => $recipientId,
-                    'charge_processing_fee' => $splitData['charge_processing_fee'],
-                    'liable'                => $splitData['liable'],
-                    'amount'                => $amount
-                );
-            }
-
-            if ($splitRuleMarketplace[$this->marketplaceRecipientId]) {
-                $currentAmount  = $splitRuleMarketplace;
-                $amount         = $currentAmount['amount'] + $splitData['fee_marketplace'];
-
-                $splitRuleMarketplace[$splitRuleMarketplace['amount']] = $amount;
-                continue;
-            }
-
-            $marketplaceAmount = $this->getMarketplaceAmount($recipientId, $splitData);
-
-            $splitRuleMarketplace[$this->marketplaceRecipientId] = array(
-                'recipient_id'          => $this->marketplaceRecipientId,
-                'charge_processing_fee' => (Mage::getStoreConfig('payment/pagarme_settings/charge_processing_fee') == true),
-                'liable'                => (Mage::getStoreConfig('payment/pagarme_settings/liable') == true),
-                'amount'                => $marketplaceAmount
+            $splitRules[] = array(
+                'recipient_id' => $websiteSplitRule->getRecipientId(),
+                'charge_processing_fee' => $websiteSplitRule->getChargeProcessingFee(),
+                'liable' => $websiteSplitRule->getLiable(),
+                'amount' => $websiteSplitRuleAmount * 100
             );
         }
 
-        $amount = Mage::helper('pagarme')->formatAmount($splitRuleMarketplace[$this->marketplaceRecipientId]['amount'] + $this->orderFeeAmount + $this->getMarketplaceSplitItemsAmount($quote->getId()) + $this->carrierAmount);
-
-        $splitRuleMarketplace[$this->marketplaceRecipientId]['amount'] = $amount;
-        $splitRule[] = $splitRuleMarketplace[$this->marketplaceRecipientId];
-
-        return $splitRule;
+        return $splitRules;
     }
 
     /**

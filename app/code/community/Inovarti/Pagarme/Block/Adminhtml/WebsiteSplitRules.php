@@ -1,6 +1,6 @@
 <?php
 
-class Inovarti_Pagarme_Block_Adminhtml_StoreSplitRules
+class Inovarti_Pagarme_Block_Adminhtml_WebsiteSplitRules
     extends Mage_Adminhtml_Block_Widget_Grid_Container
 {
     /**
@@ -8,9 +8,9 @@ class Inovarti_Pagarme_Block_Adminhtml_StoreSplitRules
      */
     public function __construct()
     {
-        $this->_controller = "adminhtml_storeSplitRules";
+        $this->_controller = "adminhtml_websiteSplitRules";
         $this->_blockGroup = "pagarme";
-        $this->_headerText = Mage::helper("pagarme")->__("Store Split Rules");
+        $this->_headerText = Mage::helper("pagarme")->__("Website Split Rules");
         $this->_addButtonLabel = Mage::helper("pagarme")->__("Add New split rule");
 
         parent::__construct();

@@ -379,7 +379,7 @@ $table = $installer->getConnection()
 $this->getConnection()->createTable($table);
 
 $table = $installer->getConnection()
-    ->newTable($installer->getTable('pagarme_split_rules_store_belogs_to_group'))
+    ->newTable($installer->getTable('pagarme_split_rules_website_belogs_to_group'))
     ->addColumn('entity_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
         'nullable' => false,
         'primary' => true,
@@ -387,9 +387,9 @@ $table = $installer->getConnection()
     ->addColumn('group_id', Varien_Db_Ddl_Table::TYPE_VAR_CHAR, null, array(
         'nullable' => false
             ), 'Group ID')
-    ->addColumn('store_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
+    ->addColumn('website_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
         'nullable' => false
-            ), 'Store ID');
+            ), 'Website ID');
 
 $this->getConnection()->createTable($table);
 
