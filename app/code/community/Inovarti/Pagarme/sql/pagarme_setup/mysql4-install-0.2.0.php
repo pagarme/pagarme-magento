@@ -351,43 +351,26 @@ $installer->getConnection()
         'PRECISION' => 12,
     ));
 
+$table = $installer->getTable('pagarme/split_rules');
+
+$installer->getConnection()
+    ->addColumn($table, 'group_id', array(
+        'type'     => Varien_Db_Ddl_Table::TYPE_INTEGER,
+        'unsigned' => true,
+        'nullable' => true,
+        'comment'  => 'Group ID'
+    ));
+
 $table = $installer->getConnection()
     ->newTable($installer->getTable('pagarme_split_rules_group'))
     ->addColumn('entity_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
         'nullable' => false,
-        'primary' => true,
+        'primary' => true
             ), 'Id')
     ->addColumn('group_name', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
-        'nullable' => false,
-            ), 'Group Name');
-
-$this->getConnection()->createTable($table);
-
-$table = $installer->getConnection()
-    ->newTable($installer->getTable('pagarme_split_rules_group_has_split_rule'))
-    ->addColumn('entity_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
-        'nullable' => false,
-        'primary' => true,
-            ), 'Id')
-    ->addColumn('group_id', Varien_Db_Ddl_Table::TYPE_VAR_CHAR, null, array(
         'nullable' => false
-            ), 'Group ID')
-    ->addColumn('split_rule_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
-        'nullable' => false
-            ), 'Split Rule ID');
-
-$this->getConnection()->createTable($table);
-
-$table = $installer->getConnection()
-    ->newTable($installer->getTable('pagarme_split_rules_website_belogs_to_group'))
-    ->addColumn('entity_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
-        'nullable' => false,
-        'primary' => true,
-            ), 'Id')
-    ->addColumn('group_id', Varien_Db_Ddl_Table::TYPE_VAR_CHAR, null, array(
-        'nullable' => false
-            ), 'Group ID')
-    ->addColumn('website_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
+            ), 'Group Name')
+    ->addColumn('website_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, ARRAY(
         'nullable' => false
             ), 'Website ID');
 

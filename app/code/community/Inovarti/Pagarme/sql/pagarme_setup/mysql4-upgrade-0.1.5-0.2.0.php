@@ -21,21 +21,10 @@ $table = $installer->getConnection()
             ), 'Id')
     ->addColumn('group_name', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
         'nullable' => false
-            ), 'Group Name');
-
-$this->getConnection()->createTable($table);
-
-$table = $installer->getConnection()
-    ->newTable($installer->getTable('pagarme_website_rules_stores'))
-    ->addColumn('entity_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
-        'nullable' => false,
-        'primary' => true), 'Id')
-    ->addColumn('group_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, null, array(
-        'nullable' => false,
-        'primary' => false), 'Group ID')
-    ->addColumn('website_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
-        'nullable' => false,
-        'primary' => false), 'Website ID');
+            ), 'Group Name')
+    ->addColumn('website_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, ARRAY(
+        'nullable' => false
+            ), 'Website ID');
 
 $this->getConnection()->createTable($table);
 

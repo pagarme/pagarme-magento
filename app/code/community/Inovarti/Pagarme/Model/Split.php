@@ -36,14 +36,33 @@ class Inovarti_Pagarme_Model_Split extends Inovarti_Pagarme_Model_AbstractSplit
         if (!Mage::getStoreConfig('payment/pagarme_settings/marketplace_is_active'))
             return false;
 
-        $splitRules = array();
+        $productSplitRules = array();
         $marketplaceRecipientId = $this->getMarketplaceRecipientId();
         $amount = $quote->getGrandTotal();
         $carrierAmount = $quote->getShippingAddress()->getShippingInclTax();
         $itemsAmount = $amount - $carrierAmount;
 
+        $websiteSplitRules = $this->prepareWebsiteSplitrules(Mage::app()->getWebsite(), $amout);
+
+        $splitRules = array_merge($splitRules, $websiteSplitRules);
+
+        return $splitRules;
+    }
+
+    private function prepareProductSplitrules($quote, $amount)
+    {
+    }
+
+    /**
+     * @param Mage_Core_Model_Webiste $website
+     * @param $amount
+     */
+    private function prepareWebsiteSplitrules(Mage_Core_Model_Website $website, $amount)
+    {
+        $splitRules = array();
+
         $websiteSplitRules = Mage::getModel('pagarme/splitRulesGroup')
-            ->loadByWebsite(Mage::app()->getWebsite())
+            ->loadByWebsite($website)
             ->getSplitRules();
 
         foreach($websiteSplitRules as $websiteSplitRule)
