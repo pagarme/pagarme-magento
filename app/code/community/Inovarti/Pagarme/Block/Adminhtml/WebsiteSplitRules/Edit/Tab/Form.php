@@ -22,11 +22,10 @@ class Inovarti_Pagarme_Block_Adminhtml_WebsiteSplitRules_Edit_Tab_Form extends M
             'value'    => $formData['split_rules'][0]['entity_id']
         ));
 
-        $fieldset->addField('split_rules_0_recipient_id', 'select', array(
-            'label'    => Mage::helper('pagarme')->__('Recipient'),
+        $fieldset->addField('split_rules_0_recipient_id', 'text', array(
+            'label'    => Mage::helper('pagarme')->__('Recipient Id'),
             'name'     => 'split_rules[0][recipient_id]',
             'class'    => 'required-entry',
-            'options'  => $recipients,
             'value'   => $formData['split_rules'][0]['recipient_id'],
             'required' => true
         ));
@@ -64,11 +63,10 @@ class Inovarti_Pagarme_Block_Adminhtml_WebsiteSplitRules_Edit_Tab_Form extends M
             'value'    => $formData['split_rules'][1]['entity_id']
         ));
 
-        $fieldset->addField('split_rules_1_recipient_id', 'select', array(
-            'label'    => Mage::helper('pagarme')->__('Recipient'),
+        $fieldset->addField('split_rules_1_recipient_id', 'text', array(
+            'label'    => Mage::helper('pagarme')->__('Recipient Id'),
             'name'     => 'split_rules[1][recipient_id]',
             'class'    => 'required-entry',
-            'options'  => $recipients,
             'value'   => $formData['split_rules'][1]['recipient_id'],
             'required' => true
         ));
@@ -115,11 +113,10 @@ class Inovarti_Pagarme_Block_Adminhtml_WebsiteSplitRules_Edit_Tab_Form extends M
             'required' => true
         ));
 
-        $fieldset->addField('split_rules_2_recipient_id', 'select', array(
-            'label'    => Mage::helper('pagarme')->__('Recipient'),
+        $fieldset->addField('split_rules_2_recipient_id', 'text', array(
+            'label'    => Mage::helper('pagarme')->__('Recipient Id'),
             'name'     => 'split_rules[2][recipient_id]',
             'class'    => 'required-entry',
-            'options'  => $recipients,
             'value'   => $formData['split_rules'][2]['recipient_id'],
             'required' => true
         ));
