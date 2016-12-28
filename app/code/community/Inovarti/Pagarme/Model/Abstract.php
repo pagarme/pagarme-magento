@@ -58,6 +58,8 @@ abstract class Inovarti_Pagarme_Model_Abstract
 		$dateCustomer = new DateTime($customer->getBornAt(), new DateTimeZone(Mage::getStoreConfig('general/locale/timezone')));
 		$dateCustomer = $dateCustomer->format('c');
 
+		$customerZipcode = preg_replace('/[^0-9]/', '', Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getData('postcode'));
+
 		$shoppingCart = array();
 		foreach ($cart->getAllItems() as $item) {
 			$itemToAdd = array(
@@ -91,7 +93,7 @@ abstract class Inovarti_Pagarme_Model_Abstract
 					"country"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getData('country_id'),
 					"state"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getData('region'),
 					"city"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getData('city'),
-					"zipcode" => Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getData('postcode'),
+					"zipcode" => $customerZipcode,
 					"neighborhood"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getStreet(4),
 					"street"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getStreet(1),
 					"street_number"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getStreet(2),
@@ -116,7 +118,7 @@ abstract class Inovarti_Pagarme_Model_Abstract
 					"country"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getData('country_id'),
 					"state"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getData('region'),
 					"city"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getData('city'),
-					"zipcode" => Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getData('postcode'),
+					"zipcode" => $customerZipcode,
 					"neighborhood"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getStreet(4),
 					"street"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getStreet(1),
 					"street_number"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getStreet(2),
@@ -141,7 +143,7 @@ abstract class Inovarti_Pagarme_Model_Abstract
 					"country"=> Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getData('country_id'),
 					"state"=> Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getData('region'),
 					"city"=> Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getData('city'),
-					"zipcode" => Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getData('postcode'),
+					"zipcode" =>  $customerZipcode,
 					"neighborhood"=> Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getStreet(4),
 					"street"=> Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getStreet(1),
 					"street_number"=> Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getStreet(2),
