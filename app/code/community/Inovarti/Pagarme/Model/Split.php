@@ -48,9 +48,12 @@ class Inovarti_Pagarme_Model_Split extends Inovarti_Pagarme_Model_AbstractSplit
         $shippingFee = $quote->getShippingAddress()->getShippingInclTax();
         $cartAmount = $amount - $shippingFee;
 
-        $websiteSplitRules = $this->prepareWebsiteSplitrules(Mage::app()->getWebsite(), $cartAmount, $shippingFee, $productSplitRules);
-        $splitRules = $this->addShippingFeeToSplitRules($websiteSplitRules, $shippingFee);
+        $splitRules = $this->getSplitRulesByWebsite(Mage::app()->getWebsite(), $cartAmount, $shippingFee, $productSplitRules);
 
+        if(!$splitRules)
+            return false;
+
+        $splitRules = $this->addShippingFeeToSplitRules($splitRules, $shippingFee);
 
         return array_values($splitRules);
     }
@@ -94,12 +97,15 @@ class Inovarti_Pagarme_Model_Split extends Inovarti_Pagarme_Model_AbstractSplit
      * @param Mage_Core_Model_Webiste $website
      * @param $amount
      */
-    private function prepareWebsiteSplitrules(Mage_Core_Model_Website $website, $amount, $shippingFee, $splitRules = array())
+    private function getSplitRulesByWebsite(Mage_Core_Model_Website $website, $amount, $shippingFee, $splitRules = array())
     {
         $splitRules = array_merge(array(), $splitRules);
         $websiteSplitRules = Mage::getModel('pagarme/splitRulesGroup')
             ->loadByWebsite($website)
             ->getSplitRules();
+
+        if($websiteSplitRules->count() == 0)
+            return false;
 
         foreach ($websiteSplitRules as $websiteSplitRule) {
             $splitRuleAmount = Mage::helper('pagarme')->formatAmount($websiteSplitRule->getAmount() / 100 * $amount);

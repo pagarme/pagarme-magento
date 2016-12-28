@@ -146,69 +146,74 @@ $installer->getConnection()
         'comment' => 'Base Fee Amount',
     ));
 
-$table = $installer->getConnection()
-    ->newTable($installer->getTable('pagarme_split_rules'))
-    ->addColumn('entity_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
-        'identity' => true,
-        'unsigned' => true,
-        'nullable' => false,
-        'primary' => true,
-            ), 'Id')
-    ->addColumn('split_rule_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
-        'nullable' => false,
-            ), 'Pagarme Split Rule Id')
-    ->addColumn('recipient_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
-        'nullable' => false,
-            ), 'Recipient id.')
-    ->addColumn('charge_processing_fee', Varien_Db_Ddl_Table::TYPE_BOOLEAN, 1, array(
-        'nullable' => false,
-        'default' => 0,
-            ), 'Status')
-    ->addColumn('liable', Varien_Db_Ddl_Table::TYPE_BOOLEAN, 1, array(
-        'nullable' => false,
+if(!$installer->getConnection()->isTableExists($installer->getTable('pagarme_split_rules'))) {
+    $table = $installer->getConnection()
+        ->newTable($installer->getTable('pagarme_split_rules'))
+        ->addColumn('entity_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
+            'identity' => true,
+            'unsigned' => true,
+            'nullable' => false,
+            'primary' => true,
+                ), 'Id')
+        ->addColumn('split_rule_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
+            'nullable' => false,
+                ), 'Pagarme Split Rule Id')
+        ->addColumn('recipient_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
+            'nullable' => false,
+                ), 'Recipient id.')
+        ->addColumn('charge_processing_fee', Varien_Db_Ddl_Table::TYPE_BOOLEAN, 1, array(
+            'nullable' => false,
+            'default' => 0,
+                ), 'Status')
+        ->addColumn('liable', Varien_Db_Ddl_Table::TYPE_BOOLEAN, 1, array(
+            'nullable' => false,
         'default' => 0,
             ), 'Sets whether the receiver linked to this rule will be responsible for transaction risk (chargeback)')
-    ->addColumn('type_amount_charged', Varien_Db_Ddl_Table::TYPE_VARCHAR, 20, array(
-        'nullable' => true,
-            ), 'Percentage that the recipient will receive the transaction amount')
-    ->addColumn('amount', Varien_Db_Ddl_Table::TYPE_VARCHAR, 20, array(
-        'nullable' => true,
-            ), 'Value that the recipient will receive the transaction.')
-    ->addColumn('shipping_charge', Varien_Db_Ddl_Table::TYPE_BOOLEAN, 1, array(
-        'nullable' => false,
-        'default' => 0,
-            ), 'Value that the recipient will receive the transaction.')
-    ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
-        'nullable' => false,
-            ), 'date time created row')
-    ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
-        'nullable' => false,
-            ), 'date time updated row');
+        ->addColumn('type_amount_charged', Varien_Db_Ddl_Table::TYPE_VARCHAR, 20, array(
+            'nullable' => true,
+                ), 'Percentage that the recipient will receive the transaction amount')
+        ->addColumn('amount', Varien_Db_Ddl_Table::TYPE_VARCHAR, 20, array(
+            'nullable' => true,
+                ), 'Value that the recipient will receive the transaction.')
+        ->addColumn('shipping_charge', Varien_Db_Ddl_Table::TYPE_BOOLEAN, 1, array(
+            'nullable' => false,
+            'default' => 0,
+                ), 'Value that the recipient will receive the transaction.')
+        ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+            'nullable' => false,
+                ), 'date time created row')
+        ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+            'nullable' => false,
+                ), 'date time updated row');
 
-$installer->getConnection()->createTable($table);
+    $installer->getConnection()->createTable($table);
+}
 
-$table = $installer->getConnection()
-    ->newTable($installer->getTable('pagarme_marketplace_menu'))
-    ->addColumn('entity_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
-        'identity' => true,
-        'unsigned' => true,
-        'nullable' => false,
-        'primary' => true,
-            ), 'Id')
-    ->addColumn('sku', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
-        'nullable' => false,
-            ), 'Product Sku')
-    ->addColumn('recipient_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
-        'nullable' => false,
-            ), 'Recipient id.')
-    ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
-        'nullable' => false,
-            ), 'date time created row')
-    ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
-        'nullable' => false,
-            ), 'date time updated row');
 
-$installer->getConnection()->createTable($table);
+if(!$installer->getConnection()->isTableExists($installer->getTable('pagarme_marketplace_menu'))) {
+    $table = $installer->getConnection()
+        ->newTable($installer->getTable('pagarme_marketplace_menu'))
+        ->addColumn('entity_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
+            'identity' => true,
+            'unsigned' => true,
+            'nullable' => false,
+            'primary' => true,
+                ), 'Id')
+        ->addColumn('sku', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
+            'nullable' => false,
+                ), 'Product Sku')
+        ->addColumn('recipient_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
+            'nullable' => false,
+                ), 'Recipient id.')
+        ->addColumn('created_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+            'nullable' => false,
+                ), 'date time created row')
+        ->addColumn('updated_at', Varien_Db_Ddl_Table::TYPE_DATETIME, null, array(
+            'nullable' => false,
+                ), 'date time updated row');
+
+    $installer->getConnection()->createTable($table);
+}
 
 $entities = array(
     'quote_item',
@@ -351,7 +356,25 @@ $installer->getConnection()
         'PRECISION' => 12,
     ));
 
-$table = $installer->getTable('pagarme/split_rules');
+if(!$installer->getConnection()->isTableExists($installer->getTable('pagarme_split_rules_group'))) {
+    $table = $installer->getConnection()
+        ->newTable($installer->getTable('pagarme_split_rules_group'))
+        ->addColumn('entity_id', Varien_Db_Ddl_Table::TYPE_INTEGER, null, array(
+            'nullable' => false,
+            'unsigned' => true,
+            'primary' => true
+                ), 'Id')
+        ->addColumn('group_name', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
+            'nullable' => false
+                ), 'Group Name')
+        ->addColumn('website_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, ARRAY(
+            'nullable' => false
+                ), 'Website ID');
+
+    $installer->getConnection()->createTable($table);
+}
+
+$table = $installer->getTable('pagarme_split_rules');
 
 $installer->getConnection()
     ->addColumn($table, 'group_id', array(
@@ -360,20 +383,5 @@ $installer->getConnection()
         'nullable' => true,
         'comment'  => 'Group ID'
     ));
-
-$table = $installer->getConnection()
-    ->newTable($installer->getTable('pagarme_split_rules_group'))
-    ->addColumn('entity_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
-        'nullable' => false,
-        'primary' => true
-            ), 'Id')
-    ->addColumn('group_name', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, array(
-        'nullable' => false
-            ), 'Group Name')
-    ->addColumn('website_id', Varien_Db_Ddl_Table::TYPE_VARCHAR, 255, ARRAY(
-        'nullable' => false
-            ), 'Website ID');
-
-$this->getConnection()->createTable($table);
 
 $installer->endSetup();
