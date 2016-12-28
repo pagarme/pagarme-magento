@@ -38,16 +38,129 @@ abstract class Inovarti_Pagarme_Model_Abstract
 			$incrementId = $payment->getOrder()->getQuote()->getIncrementId();
 			$requestParams->setMetadata(
 				array(
-					'order_id' => $incrementId,
-					'customerTest' => $customer
+					'order_id' => $incrementId
 				)
 			);
+			$requestParams->setAntifraudMetadata($this->prepareAntifraudMetadata($amount, $requestType, $customer, $checkout));
             $transaction = $this->charge($requestParams);
 
             $this->prepareTransaction($transaction, $payment, $checkout);
             return $this;
         }
     }
+
+	private function prepareAntifraudMetadata( $amount, $requestType, $customer, $checkout) {
+
+		$customerRegistered = Mage::getModel('customer/customer')->setWebsiteId(Mage::app()->getStore()->getWebsiteId())->loadByEmail($customer->getEmail());
+
+		$cart = Mage::getModel('checkout/cart')->getQuote();
+
+		$dateCustomer = new DateTime($customer->getBornAt(), new DateTimeZone(Mage::getStoreConfig('general/locale/timezone')));
+		$dateCustomer = $dateCustomer->format('c');
+
+		$shoppingCart = array();
+		foreach ($cart->getAllItems() as $item) {
+			$itemToAdd = array(
+				"id_product" => $item->getProductId(),
+				"name" => $item->getProduct()->getName(),
+				"quantity" => $item->getQty(),
+				"unit_price" => $item->getProduct()->getPrice(),
+				"totalAdditions" => 0,
+				"totalDiscounts" => ($item->getProduct()->getFinalPrice() < $item->getProduct()->getPrice()) ? ($item->getProduct()->getPrice() - $item->getProduct()->getSpecialPrice())* $item->getQty() : 0
+			);
+			$shoppingCart[] = $itemToAdd;
+		}
+		return array(
+			"session_id" => Mage::getSingleton("core/session")->getEncryptedSessionId(),
+			"ip" => Mage::helper('core/http')->getRemoteAddr(),
+			"plataform" => "web",
+			"register" => array(
+				"id" => (Mage::getSingleton('customer/session')->isLoggedIn() ? Mage::getSingleton('customer/session')->getId() : ""),
+				"email" => $customerRegistered->getEmail(),
+				"registered_at" => $customerRegistered->getCreatedAt(),
+				"login_source" => Mage::getSingleton('checkout/session')->getQuote()->getCheckoutMethod()
+			),
+			"billing" => array(
+				"customer" => array(
+					"name" => $customer->getName(),
+					"document_number" => $customer->getDocumentNumber(),
+					"born_at" => $dateCustomer,
+					"gender" => $customer->getGender()
+				),
+				"address"=> array(
+					"country"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getData('country_id'),
+					"state"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getData('region'),
+					"city"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getData('city'),
+					"zipcode" => Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getData('postcode'),
+					"neighborhood"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getStreet(4),
+					"street"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getStreet(1),
+					"street_number"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getStreet(2),
+					"complementary"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getStreet(3)
+				),
+				"phone_numbers"=> array(
+					array(
+						"ddi" => "55",
+						"ddd" => $customer->getPhone('ddd'),
+						"number" => $customer->getPhone('number')
+					)
+				)
+			),
+			"buyer"=> array(
+				"customer"=> array(
+					"name" => $customer->getName(),
+					"document_number" => $customer->getDocumentNumber(),
+					"born_at" => $dateCustomer,
+					"gender" => $customer->getGender()
+				),
+				"address"=> array(
+					"country"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getData('country_id'),
+					"state"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getData('region'),
+					"city"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getData('city'),
+					"zipcode" => Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getData('postcode'),
+					"neighborhood"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getStreet(4),
+					"street"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getStreet(1),
+					"street_number"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getStreet(2),
+					"complementary"=> Mage::getSingleton('checkout/session')->getQuote()->getBillingAddress()->getStreet(3)
+				),
+				"phone_numbers"=> array(
+					array(
+						"ddi"=> "55",
+						"ddd" => $customer->getPhone('ddd'),
+						"number" => $customer->getPhone('number')
+					)
+				)
+			),
+			"shipping"=> array(
+				"customer"=> array(
+					"name" => $customer->getName(),
+					"document_number" => $customer->getDocumentNumber(),
+					"born_at" => $dateCustomer, 
+					"gender" => $customer->getGender()
+				),
+				"address"=> array(
+					"country"=> Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getData('country_id'),
+					"state"=> Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getData('region'),
+					"city"=> Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getData('city'),
+					"zipcode" => Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getData('postcode'),
+					"neighborhood"=> Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getStreet(4),
+					"street"=> Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getStreet(1),
+					"street_number"=> Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getStreet(2),
+					"complementary"=> Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getStreet(3)
+				),
+				"phone_numbers"=> [
+					array(
+						"ddi"=> "55",
+						"ddd" => $customer->getPhone('ddd'),
+						"number" => $customer->getPhone('number')
+					)
+				],
+				"shipping_method" => Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getShippingMethod(),
+				"fee"=> Mage::getSingleton('checkout/session')->getQuote()->getShippingAddress()->getShippingAmount()
+			),
+			"shopping_cart" => $shoppingCart
+		);
+
+	}
 
     /**
      * @param Varien_Object $payment
