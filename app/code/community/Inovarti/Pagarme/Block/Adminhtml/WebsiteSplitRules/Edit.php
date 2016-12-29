@@ -4,10 +4,9 @@ class Inovarti_Pagarme_Block_Adminhtml_WebsiteSplitRules_Edit
     extends Mage_Adminhtml_Block_Widget_Form_Container
 {
     public function __construct() {
-        $this->_objectId      = 'entityId';
+        $this->_objectId      = 'entity_id';
         $this->_blockGroup    = 'pagarme';
         $this->_controller    = 'adminhtml_websiteSplitRules';
-        $this->_updateButton('delete', 'label', Mage::helper('pagarme')->__('Delete'));
 
         parent::__construct();
     }

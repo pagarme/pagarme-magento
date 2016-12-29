@@ -139,5 +139,6 @@ class Inovarti_Pagarme_Adminhtml_WebsiteSplitRulesController extends Inovarti_Pa
             ->load($splitRulesGroupId);
 
         $splitRulesGroup->delete();
+        return $this->_redirect('*/*/');
     }
 }

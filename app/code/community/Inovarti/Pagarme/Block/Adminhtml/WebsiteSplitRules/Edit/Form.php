@@ -13,6 +13,7 @@ class Inovarti_Pagarme_Block_Adminhtml_WebsiteSplitRules_Edit_Form extends Mage_
 
         $form->setUseContainer(true);
         $this->setForm($form);
+
         return parent::_prepareForm();
     }
 }
