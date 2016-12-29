@@ -115,4 +115,27 @@ class Inovarti_Pagarme_Model_SplitRulesGroup extends Mage_Core_Model_Abstract
 
         return parent::delete();
     }
+
+    public function getCollectionWithSplitRuleAmount()
+    {
+        $tableName = Mage::getSingleton('core/resource')->getTableName('pagarme_split_rules');
+
+        $subqueryTemplate = "(SELECT amount from {$tableName} sr WHERE sr.group_id = main_table.entity_id ORDER BY sr.entity_id LIMIT %d,1)";
+
+        $bbmAmountSubquery = new Zend_Db_Expr(sprintf($subqueryTemplate, 0));
+        $worldwineAmountSubquery = new Zend_Db_Expr(sprintf($subqueryTemplate, 1));
+        $websiteAmountSubquery = new Zend_Db_Expr(sprintf($subqueryTemplate, 2));
+
+        $collection = $this->getCollection();
+        $collection->getSelect()
+            ->join(array('website' => 'core_website'), 'website.website_id = main_table.website_id')
+            ->columns(array(
+                'bbm_amount' => $bbmAmountSubquery,
+                'worldwine_amount' => $worldwineAmountSubquery,
+                'website_amount' => $websiteAmountSubquery,
+                'website_name' => 'website.name'
+            ));
+
+        return $collection;
+    }
 }
