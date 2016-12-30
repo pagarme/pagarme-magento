@@ -12,8 +12,10 @@ class Inovarti_Pagarme_Block_Adminhtml_WebsiteSplitRules_Edit
     }
 
     public function getHeaderText() {
-        if(Mage::registry('websiteSplitRules_data') && Mage::registry('websiteSplitRules_data')['entity_id']) {
-            return Mage::helper('pagarme')->__('Edit Split Rule \'%s\'', $this->getEntityId());
+        $splitRulesData = Mage::registry('websiteSplitRules_data');
+
+        if($splitRulesData && $splitRulesData['entity_id']) {
+            return Mage::helper('pagarme')->__("Edit Split Rule '%s'", $this->htmlEscape($splitRulesData['entity_id']));
         }
 
         return Mage::helper('pagarme')->__('Create Split Rule');

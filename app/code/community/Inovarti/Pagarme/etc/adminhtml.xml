@@ -26,7 +26,7 @@
                     <action>adminhtml/marketplacemenu</action>
                 </marketplace_Menu>
                 <store_split_rules module="pagarme">
-                    <title>Store Split Rules</title>
+                    <title>Website Split Rules</title>
                     <sort_order>40</sort_order>
                     <action>adminhtml/websiteSplitRules</action>
                 </store_split_rules>
@@ -61,7 +61,7 @@
                                 <sort_order>30</sort_order>
                             </marketplace_Menu>
                             <split_rules_group translate="title">
-                                <title>Store Split Rule`s</title>
+                                <title>Website Split Rules</title>
                                 <sort_order>40</sort_order>
                             </split_rules_group>
                         </children>

@@ -69,14 +69,14 @@ class Inovarti_Pagarme_Model_SplitRulesGroup extends Mage_Core_Model_Abstract
         }
 
         if($amount != 100) {
-            $errors[] = 'Amount < 100';
+            $errors[] = 'The sum of amount must be 100%.';
         }
 
         if(!$hasResponsibleForChargeProcessingFee)
-            $errors[] = 'Ninguém é responsável pela taxa do pagarme';
+            $errors[] = 'At least one recipient must be responsible for charge processing fee.';
 
         if(!$hasResponsibleForChargeback)
-            $errors[] = 'Ninguém é responsável pelo chargeback';
+            $errors[] = 'At least one recipient must be liable.';
 
         $splitRulesGroup = Mage::getModel('pagarme/splitRulesGroup')
             ->load($this->getWebsite()->getId(), 'website_id');
@@ -128,7 +128,7 @@ class Inovarti_Pagarme_Model_SplitRulesGroup extends Mage_Core_Model_Abstract
 
         $collection = $this->getCollection();
         $collection->getSelect()
-            ->join(array('website' => 'core_website'), 'website.website_id = main_table.website_id')
+            ->join(array('website' => Mage::getConfig()->getTablePrefix() . 'core_website'), 'website.website_id = main_table.website_id')
             ->columns(array(
                 'bbm_amount' => $bbmAmountSubquery,
                 'worldwine_amount' => $worldwineAmountSubquery,

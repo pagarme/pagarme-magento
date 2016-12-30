@@ -97,7 +97,7 @@ class Inovarti_Pagarme_Block_Adminhtml_WebsiteSplitRules_Edit_Tab_Form extends M
             'required' => true
         ));
 
-        $fieldset = $form->addFieldset('website_form', array('legend' => Mage::helper('pagarme')->__('website')));
+        $fieldset = $form->addFieldset('website_form', array('legend' => Mage::helper('pagarme')->__('Website')));
 
         $fieldset->addField('split_rules_2_entity_id', 'hidden', array(
             'name'     => 'split_rules[2][entity_id]',

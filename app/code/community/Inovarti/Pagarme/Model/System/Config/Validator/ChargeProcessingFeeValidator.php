@@ -10,7 +10,7 @@ class Inovarti_Pagarme_Model_System_Config_Validator_ChargeProcessingFeeValidato
                 ->getCollection()
                 ->addFieldToFilter('charge_processing_fee', array('eq', '0'));
             $splitRuleCollection->getSelect()
-                ->join(array('marketplace_menu' => 'pagarme_marketplace_menu'),
+                ->join(array('marketplace_menu' => Mage::getConfig()->getTablePrefix() . 'pagarme_marketplace_menu'),
                     'main_table.recipient_id = marketplace_menu.recipient_id');
 
             $qtdRulesThatAreNotResponsibleForChargeProcessingFee = $splitRuleCollection->count();

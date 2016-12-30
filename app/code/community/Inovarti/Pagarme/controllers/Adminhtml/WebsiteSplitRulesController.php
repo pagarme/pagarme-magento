@@ -123,7 +123,7 @@ class Inovarti_Pagarme_Adminhtml_WebsiteSplitRulesController extends Inovarti_Pa
 
         try {
             $splitRulesGroup->save();
-            $session->addSuccess($pagarMeHelper->__('Salvo com sucesso!'));
+            $session->addSuccess($pagarMeHelper->__('Saved with success.'));
             return $this->_redirect('*/*/');
         } catch (Exception $e) {
             $session->addError($pagarMeHelper->__('Error saving split rules: ' . $e->getMessage()));
@@ -139,6 +139,8 @@ class Inovarti_Pagarme_Adminhtml_WebsiteSplitRulesController extends Inovarti_Pa
             ->load($splitRulesGroupId);
 
         $splitRulesGroup->delete();
+
+        Mage::getSingleton('adminhtml/session')->addSuccess(Mage::helper('pagarme')->__('Removed with success.'));
         return $this->_redirect('*/*/');
     }
 }
