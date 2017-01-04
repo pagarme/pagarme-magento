@@ -12,9 +12,8 @@ class Inovarti_Pagarme_Block_Adminhtml_Recipients_Edit
         $this->_objectId = "id";
         $this->_blockGroup = "pagarme";
         $this->_controller = "adminhtml_recipients";
-        $this->_updateButton("save", "label", Mage::helper("pagarme")->__("Save Recipient"));
-        $this->_updateButton("delete", "label", Mage::helper("pagarme")->__("Delete Recipient"));
-        
+        $this->_updateButton("save", "label", Mage::helper("pagarme")->__("Update Recipient"));
+        $this->_removeButton('delete');
     }
 
     /**
@@ -26,6 +25,6 @@ class Inovarti_Pagarme_Block_Adminhtml_Recipients_Edit
             return Mage::helper("pagarme")->__("Edit Recipient '%s'", $this->htmlEscape(Mage::registry("recipients_data")->getEntityId()));
         }
 
-        return Mage::helper("pagarme")->__("Create Recipient");
+        return Mage::helper("pagarme")->__("Edit Recipient");
     }
 }

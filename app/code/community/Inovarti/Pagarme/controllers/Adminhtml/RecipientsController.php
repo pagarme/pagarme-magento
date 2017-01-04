@@ -90,23 +90,28 @@ class Inovarti_Pagarme_Adminhtml_RecipientsController
         $data['transfer_interval'] = $data['transfer_interval'] == '' ? null : $data['transfer_interval'];
         $data['transfer_day'] = $data['transfer_day'] == '' ? null : $data['transfer_day'];
 
-        $recipientId = $data['recipientId'];
+        $recipientId = $this->getRequest()->getParam('id');
 
+        $message = '';
         try {
             if(!$recipientId) {
                 $recipient = new PagarMe_Recipient($data);
                 $recipient->create();
+
+                $message = 'Success create Recipient account';
             } else {
-                $recipient = PagarMe_Recipient::findById($this->getRequest()->getParam('id'));
+                $recipient = PagarMe_Recipient::findById($recipientId);
                 $recipient->setTransferEnabled($data['transfer_enabled']);
                 $recipient->setTransferInterval($data['transfer_interval']);
                 $recipient->setTransferDay($data['transfer_day']);
                 $recipient->setBankAccountId($data['bank_account_id']);
                 $recipient->save();
+
+                $message = 'Success on editing Recipient account';
             }
 
             Mage::getSingleton('adminhtml/session')
-                ->addSuccess(Mage::helper('pagarme')->__('Success create Recipient account'));
+                ->addSuccess(Mage::helper('pagarme')->__($message));
             $this->_redirect('*/*/');
         } catch(Exception $e) {
             Mage::getSingleton('adminhtml/session')
