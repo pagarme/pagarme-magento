@@ -7,6 +7,8 @@ class Inovarti_Pagarme_Block_Adminhtml_WebsiteSplitRules_Edit_Tab_Form extends M
         $formData = Mage::registry('websiteSplitRules_data');
 
         $websites = $this->getWebsites();
+        $marketplaceRecipientId = Mage::getModel('pagarme/split')
+            ->getMarketplaceRecipientId();
 
         $form = new Varien_Data_Form();
 
@@ -23,7 +25,7 @@ class Inovarti_Pagarme_Block_Adminhtml_WebsiteSplitRules_Edit_Tab_Form extends M
             'label'    => Mage::helper('pagarme')->__('Recipient Id'),
             'name'     => 'split_rules[0][recipient_id]',
             'class'    => 'required-entry',
-            'value'   => $formData['split_rules'][0]['recipient_id'],
+            'value'   => $formData['split_rules'][0]['recipient_id'] == null ? $marketplaceRecipientId : $formData['split_rules'][0]['recipient_id'],
 
             'required' => true
         ));

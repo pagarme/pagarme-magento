@@ -8,7 +8,7 @@ abstract class Inovarti_Pagarme_Model_AbstractSplit extends Mage_Payment_Model_M
     /**
      * @return mixed
      */
-    protected function getMarketplaceRecipientId()
+    public function getMarketplaceRecipientId()
     {
         $api = Mage::getModel('pagarme/api');
 
