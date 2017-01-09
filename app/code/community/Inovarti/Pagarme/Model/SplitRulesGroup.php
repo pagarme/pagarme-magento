@@ -122,8 +122,8 @@ class Inovarti_Pagarme_Model_SplitRulesGroup extends Mage_Core_Model_Abstract
 
         $subqueryTemplate = "(SELECT amount from {$tableName} sr WHERE sr.group_id = main_table.entity_id ORDER BY sr.entity_id LIMIT %d,1)";
 
-        $bbmAmountSubquery = new Zend_Db_Expr(sprintf($subqueryTemplate, 0));
-        $worldwineAmountSubquery = new Zend_Db_Expr(sprintf($subqueryTemplate, 1));
+        $worldwineAmountSubquery = new Zend_Db_Expr(sprintf($subqueryTemplate, 0));
+        $bbmAmountSubquery = new Zend_Db_Expr(sprintf($subqueryTemplate, 1));
         $websiteAmountSubquery = new Zend_Db_Expr(sprintf($subqueryTemplate, 2));
 
         $collection = $this->getCollection();

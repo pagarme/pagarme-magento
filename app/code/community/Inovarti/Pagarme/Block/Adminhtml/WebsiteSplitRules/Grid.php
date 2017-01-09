@@ -38,18 +38,19 @@ class Inovarti_Pagarme_Block_Adminhtml_WebsiteSplitRules_Grid
         ));
 
         $this->addColumn('bbm_amount', array(
-            'header'    => Mage::helper('pagarme')->__('BBM Amount'),
-            'align'     => 'right',
-            'type'      => 'varchar',
-            'index'     => 'bbm_amount',
-            'sortable'  => false
-        ));
-
-        $this->addColumn('split_rules_1_amount', array(
             'header'    => Mage::helper('pagarme')->__('Worldwine Amount'),
             'align'     => 'right',
             'type'      => 'varchar',
             'index'     => 'worldwine_amount',
+            'sortable'  => false
+        ));
+
+        $bbmAmountSubquery = new Zend_Db_Expr(sprintf($subqueryTemplate, 0));
+        $this->addColumn('split_rules_1_amount', array(
+            'header'    => Mage::helper('pagarme')->__('BBM Amount'),
+            'align'     => 'right',
+            'type'      => 'varchar',
+            'index'     => 'bbm_amount',
             'sortable'  => false
         ));
 

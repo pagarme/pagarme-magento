@@ -7,12 +7,9 @@ class Inovarti_Pagarme_Block_Adminhtml_WebsiteSplitRules_Edit_Tab_Form extends M
         $formData = Mage::registry('websiteSplitRules_data');
 
         $websites = $this->getWebsites();
-        array_unshift($websites, array('' => 'Select'));
-
-        $recipients = $this->getRecipients();
-        array_unshift($recipients, array('' => 'Select'));
 
         $form = new Varien_Data_Form();
+
         $this->setForm($form);
 
         $fieldset = $form->addFieldset('ww_form', array('legend' => Mage::helper('pagarme')->__('Worldwine')));
@@ -27,6 +24,7 @@ class Inovarti_Pagarme_Block_Adminhtml_WebsiteSplitRules_Edit_Tab_Form extends M
             'name'     => 'split_rules[0][recipient_id]',
             'class'    => 'required-entry',
             'value'   => $formData['split_rules'][0]['recipient_id'],
+
             'required' => true
         ));
 
@@ -73,6 +71,7 @@ class Inovarti_Pagarme_Block_Adminhtml_WebsiteSplitRules_Edit_Tab_Form extends M
 
         $fieldset->addField('split_rules_1_charge_processing_fee', 'select', array(
             'label'   => Mage::helper('pagarme')->__('Charge Processing Fee'),
+
             'name'    => 'split_rules[1][charge_processing_fee]',
             'class'   => 'required-entry',
             'options' => Mage::getModel('adminhtml/system_config_source_yesno')->toArray(),
@@ -168,12 +167,17 @@ class Inovarti_Pagarme_Block_Adminhtml_WebsiteSplitRules_Edit_Tab_Form extends M
 
     private function getWebsites()
     {
-        $websites = array();
+        $websites = array(
+            '' => Mage::helper('pagarme')->__('Select')
+        );
+
+
         foreach(Mage::app()->getWebsites() as $website)
         {
-            $websites[$website->getId()] = $website->getName();
+            $websites[$website->getWebsiteId()] = $website->getName();
         }
 
         return $websites;
+
     }
 }

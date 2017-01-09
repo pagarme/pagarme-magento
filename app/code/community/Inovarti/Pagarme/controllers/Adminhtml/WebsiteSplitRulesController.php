@@ -101,8 +101,6 @@ class Inovarti_Pagarme_Adminhtml_WebsiteSplitRulesController extends Inovarti_Pa
             }
 
         } else {
-            $splitRulesGroup->setGroupName('xablau');
-
             foreach($data['split_rules'] as $splitRuleData) {
                 $splitRule = Mage::getModel('pagarme/splitrules')
                     ->setData($splitRuleData);
