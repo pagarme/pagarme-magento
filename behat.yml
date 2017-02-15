@@ -5,8 +5,16 @@ default:
   extensions:
     Behat\MinkExtension:
       base_url: http://pagarme-magento.dev/
-      browser_name: firefox
+      sessions:
+        default_session:
+          selenium2:
+            wd_host: 'http://selenium:4444/wd/hub'
   suites:
+    configure:
+      paths:
+        - %paths.base%/tests/acceptance/features/configure.feature
+      contexts:
+        - ConfigureContext
     checkout:
       paths:
         - %paths.base%/tests/acceptance/features/checkout.feature

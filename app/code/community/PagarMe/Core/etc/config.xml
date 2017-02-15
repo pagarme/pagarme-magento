@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <PagarMe_Core>
+            <version>2.0.0</version>
+        </PagarMe_Core>
+    </modules>
+    <global>
+        <models>
+            <pagarme_core>
+                <class>PagarMe_Core_Model</class>
+            </pagarme_core>
+        </models>
+        <helpers>
+            <pagarme_core>
+                <class>PagarMe_Core_Helper</class>
+            </pagarme_core>
+        </helpers>
+        <events>
+            <add_spl_autoloader>
+                <observers>
+                    <pagarme_core>
+                        <class>PagarMe_Core_Model_Observer_Autoloader</class>
+                        <method>registerSplAutoloader</method>
+                    </pagarme_core>
+                </observers>
+            </add_spl_autoloader>
+        </events>
+    </global>
+    <default>
+        <payment>
+            <pagarme_checkout>
+                <active>1</active>
+                <model>pagarme_checkout/checkout</model>
+                <order_status>pending</order_status>
+                <title>Pagarme Checkout</title>
+                <allowspecific>0</allowspecific>
+                <payment_action>sale</payment_action>
+            </pagarme_checkout>
+        </payment>
+    </default>
+</config>

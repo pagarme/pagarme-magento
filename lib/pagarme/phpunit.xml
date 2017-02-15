@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<phpunit
+    bootstrap="./vendor/autoload.php"
+    colors="true"
+>
+    <testsuites>
+        <testsuite name="Pagar.Me Sdk">
+            <directory suffix="Test.php">./tests/unit/</directory>
+            <exclude>vendor</exclude>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory>./lib</directory>
+            <exclude>
+                <directory>./tests/unit</directory>
+                <directory>./vendor</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>

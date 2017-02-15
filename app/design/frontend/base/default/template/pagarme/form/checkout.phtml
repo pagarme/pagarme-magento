@@ -1,0 +1,31 @@
+<ul class="form-list" id="payment_form_pagarme_checkout" style="display:none;">
+    <input type="hidden" value="" name="payment[pagarme_checkout_hash]" id="pagarme-checkout-hash" class="required-entry" />
+    <input type="hidden" value="" name="payment[pagarme_checkout_payment_method]" id="pagarme-checkout-payment-method" />
+    <input type="hidden" value="1" name="payment[pagarme_checkout_installments]" id="pagarme-checkout-installments" />
+
+    <div style="display:none;" id="advice-required-entry-pagarme-checkout-hash" class="validation-advice">
+        <?php echo __("Please click the button below<br />and complete the information."); ?>
+    </div>
+
+    <button id="pagarme-checkout-fill-info-button" class="button" type="button">
+        <span><span><?php echo __('Fill in the card data'); ?></span></span>
+    </button>
+</ul>
+
+<script type="text/javascript">
+    $("pagarme-checkout-fill-info-button").observe("click", function (event){
+        var checkoutPagarme = new PagarMeCheckout.Checkout({
+            "encryption_key" : "ek_test_AU1bfM7ulvJGr9bE63Ct1Qkwl9LeKQ",
+            success: function (response) {
+                console.log(response);
+                $('pagarme-checkout-hash').value = response['card_hash'];
+                $('pagarme-checkout-payment-method').value = response['payment_method'];
+            }
+        });
+
+        checkoutPagarme.open({
+            "amount" : "10000",
+            "createToken": "false"
+        });
+    });
+</script>
