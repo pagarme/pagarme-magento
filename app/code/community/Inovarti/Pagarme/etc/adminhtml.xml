@@ -20,11 +20,6 @@
                     <sort_order>20</sort_order>
                     <action>adminhtml/splitrules</action>
                 </split_rules>
-                <marketplace_Menu module="pagarme">
-                    <title>Marketplace Menu</title>
-                    <sort_order>30</sort_order>
-                    <action>adminhtml/marketplacemenu</action>
-                </marketplace_Menu>
                 <store_split_rules module="pagarme">
                     <title>Website Split Rules</title>
                     <sort_order>40</sort_order>
