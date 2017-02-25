@@ -33,13 +33,13 @@ class Inovarti_Pagarme_Model_Cc extends Inovarti_Pagarme_Model_Abstract
         return $this;
     }
 
-    public function authorize(Varien_Object $payment)
+    public function authorize(Varien_Object $payment, $amount)
     {
         $this->_place($payment, $this->getGrandTotalFromPayment($payment), self::REQUEST_TYPE_AUTH_ONLY);
         return $this;
     }
 
-    public function capture(Varien_Object $payment)
+    public function capture(Varien_Object $payment, $amount)
     {
         $amount = $this->getGrandTotalFromPayment($payment);
 
