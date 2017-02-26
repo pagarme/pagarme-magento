@@ -192,7 +192,7 @@ abstract class Inovarti_Pagarme_Model_Abstract extends Inovarti_Pagarme_Model_Sp
 
     public function getGrandTotalFromPayment(Mage_Sales_Model_Order_Payment $payment)
     {
-        return $payment->getOrder()->getQuote()->getGrandTotal();
+        return $payment->getOrder()->getGrandTotal();
     }
 
     /**
