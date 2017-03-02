@@ -41,6 +41,10 @@ abstract class Inovarti_Pagarme_Model_Abstract extends Inovarti_Pagarme_Model_Sp
 
             $this->prepareTransaction($transaction, $payment, $checkout);
             return $this;
+        } elseif ($requestType === self::REQUEST_TYPE_CAPTURE_ONLY) {
+            $transaction = $this->pagarmeApi->capture($payment->getPagarmeTransactionId());
+            $this->prepareTransaction($transaction, $payment, $checkout);
+            return $this;
         }
     }
 
