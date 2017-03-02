@@ -103,7 +103,7 @@ Event.observe($('<?php echo $_code ?>_cc_cid'), 'keyup', function(){
 <?php endif; ?>
 <script type="text/javascript">
 //<![CDATA[
-    function pagarmeValidateFields() {
+    pagarmeValidateFields = function() {
 
         pagarmeCardNumber          = (document.getElementById( '<?php echo $_code ?>_cc_number' ).value);
         pagarmeCardInstallments    = (document.getElementById( '<?php echo $_code ?>_installments' ).value);
@@ -139,7 +139,7 @@ Event.observe($('<?php echo $_code ?>_cc_cid'), 'keyup', function(){
         pagarmeCreditCard.generateHash(function(cardHash) {
             $("<?php echo $_code ?>_pagarme_card_hash").setValue(cardHash);
         });
-    }
+    };
 
     $(document).on('click','#onestepcheckout-place-order-button',function(){
         pagarmeValidateFields();
