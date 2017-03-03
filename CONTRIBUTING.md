@@ -27,8 +27,7 @@ Não descartamos esse tipo de alteração, porém damos prioridade à features m
 
 - Vamos analisar todo o código envolvido, portanto, antes de enviar seu Pull Request, tenha certeza que ele atende os seguintes requisitos:
     - Deve conter uma descrição clara e o mais completa possível sobre os testes realizados para validar as alterações. Isso facilitará a aprovação do seu Pull Request :wink:
-    -
-- Assim que criar seu Pull Request, em seguida marque um dos membros do Pagar.me para revisão.
+    - Assim que criar seu Pull Request, em seguida marque um dos membros do Pagar.me para revisão.
 
 
 ### Atribuição
