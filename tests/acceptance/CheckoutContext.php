@@ -10,16 +10,25 @@ class CheckoutContext extends MinkContext
 {
     use PagarMe\Magento\Test\Helper\CustomerDataProvider;
     use PagarMe\Magento\Test\Helper\ProductDataProvider;
+    use PagarMe\Magento\Test\Helper\PagarMeCheckoutSwitch;
 
     private $customer;
 
     private $session;
+
+    private $pagarMeCheckout;
 
     /**
      * @BeforeScenario
      */
     public function setUp()
     {
+        $config = Mage::getModel('core/config')
+            ->saveConfig(
+                'payment/pagarme_settings/payment_methods',
+                'credit_card,boleto'
+            );
+
         $this->magentoUrl = getenv('MAGENTO_URL');
         $this->session = $this->getSession();
         $this->product = $this->getProduct();
@@ -28,6 +37,8 @@ class CheckoutContext extends MinkContext
         $stock = $this->getProductStock();
         $stock->assignProduct($this->product);
         $stock->save();
+
+        $this->enablePagarmeCheckout();
     }
 
     public function waitForElement($element, $timeout)
@@ -49,19 +60,6 @@ class CheckoutContext extends MinkContext
         $this->customerAddress = $this->getCustomerAddress();
         $this->customerAddress->setCustomerId($this->customer->getId());
         $this->customerAddress->save();
-    }
-
-    /**
-     * @Given a valid credit card
-     */
-    public function aValidCreditCard()
-    {
-        $this->creditCard = [
-            'customer_name'   => $this->customer->getName(),
-            'number'          => '4111111111111111',
-            'cvv'             => '123',
-            'expiration_date' => '0220'
-        ];
     }
 
     /**
@@ -138,52 +136,32 @@ class CheckoutContext extends MinkContext
         );
     }
 
-    /**
-     * @When I use a valid credit card to pay
+     /**
+     * @When choose pay with pagar me checkout using :paymentMethod
      */
-    public function iUseAValidCreditCardToPay()
+    public function choosePayWithPagarMeCheckoutUsing($paymentMethod)
     {
         $page = $this->session->getPage();
 
         $this->session->switchToIframe(
-            $page->find('css' ,'iframe')->getAttribute('name')
+            $page->find('css', 'iframe')->getAttribute('name')
         );
 
-        $pagarMeCheckout = $this->session->getPage();
+        $this->pagarMeCheckout = $this->session->getPage();
+        $this->pagarMeCheckout->pressButton($paymentMethod);
+    }
 
-        $pagarMeCheckout->pressButton('Cartão de crédito');
-
+    /**
+     * @When I confirm my personal data
+     */
+    public function iConfirmMyPersonalData()
+    {
         $this->waitForElement(
             '#pagarme-modal-box-step-buyer-information',
             1000
         );
 
-        $this->fillField(
-            'pagarme-modal-box-buyer-name',
-            $this->customer->getName()
-        );
-
-        $this->fillField(
-            'pagarme-modal-box-buyer-email',
-            $this->customer->getEmail()
-        );
-
-        $this->fillField(
-            'pagarme-modal-box-buyer-document-number',
-            $this->customer->getTaxvat()
-        );
-
-        $this->fillField(
-            'pagarme-modal-box-buyer-ddd',
-            '11'
-        );
-
-        $this->fillField(
-            'pagarme-modal-box-buyer-number',
-            '995551668'
-        );
-
-        $pagarMeCheckout->find(
+        $this->pagarMeCheckout->find(
             'css',
             '#pagarme-modal-box-step-buyer-information .pagarme-modal-box-next-step'
         )->click();
@@ -193,82 +171,25 @@ class CheckoutContext extends MinkContext
             1000
         );
 
-        $this->fillField(
-            'pagarme-modal-box-customer-address-zipcode',
-            $this->customerAddress->getPostcode()
-        );
-
-        $this->fillField(
-            'pagarme-modal-box-customer-address-street',
-            $this->customerAddress->getStreet()[0]
-        );
-
-        $this->fillField(
-            'pagarme-modal-box-customer-address-number',
-            $this->customerAddress->getStreet()[1]
-        );
-
-        $this->fillField(
-            'pagarme-modal-box-customer-address-complementary',
-            $this->customerAddress->getStreet()[2]
-        );
-
-        $this->fillField(
-            'pagarme-modal-box-customer-address-neighborhood',
-            $this->customerAddress->getStreet()[3]
-        );
-
-        $this->fillField(
-            'pagarme-modal-box-customer-address-city',
-            $this->customerAddress->getCity()
-        );
-
-        $this->fillField(
-            'pagarme-modal-box-customer-address-state',
-            $this->customerAddress->getState()
-        );
-
-        $pagarMeCheckout->find(
+        $this->pagarMeCheckout->find(
             'css',
             '#pagarme-modal-box-step-customer-address-information .pagarme-modal-box-next-step'
         )->click();
+    }
 
-        $this->waitForElement(
-            '#pagarme-modal-box-step-credit-card-information',
-            1000
-        );
-
-        $this->fillField(
-            'pagarme-modal-box-credit-card-number',
-            $this->creditCard['number']
-        );
-
-        $pagarMeCheckout->fillField(
-            'pagarme-modal-box-credit-card-name',
-            $this->creditCard['customer_name']
-        );
-
-        $pagarMeCheckout->fillField(
-            'pagarme-modal-box-credit-card-expiration',
-            $this->creditCard['expiration_date']
-        );
-
-        $pagarMeCheckout->fillField(
-            'pagarme-modal-box-credit-card-cvv',
-            $this->creditCard['cvv']
-        );
-
-        $pagarMeCheckout->find(
-            'css',
-            '#pagarme-modal-box-step-credit-card-information .pagarme-modal-box-next-step'
-        )->click();
-
+    /**
+     * @Then finish purchase
+     */
+    public function finishPurchase()
+    {
         $this->session->switchToIframe();
 
         $this->session->wait(
             5000,
             "document.querySelector('#pagarme-checkout-container').style.display == 'none'"
         );
+
+        $page = $this->session->getPage();
 
         $page->find(
             'css',
@@ -280,16 +201,16 @@ class CheckoutContext extends MinkContext
         $page->pressButton(Mage::helper('pagarme_checkout')->__('Place Order'));
     }
 
-    /**
-     * @Then the purchase must be paid with success
+     /**
+     * @Then the purchase must be created success
      */
-    public function thePurchaseMustBePaidWithSuccess()
+    public function thePurchaseMustBeCreatedWithSuccess()
     {
         $this->session->wait(5000);
 
         $page = $this->session->getPage();
 
-        $successMsg = $page->find('css', 'h1')
+        $successMessage = $page->find('css', 'h1')
             ->getText();
 
         \PHPUnit_Framework_TestCase::assertEquals(
@@ -299,17 +220,43 @@ class CheckoutContext extends MinkContext
 
         \PHPUnit_Framework_TestCase::assertEquals(
             Mage::helper(
-                'pagarme_checkout')->__('Your order has been received.'
-            ),
-            $successMsg
+                'pagarme_checkout'
+            )->__('Your order has been received.'),
+            $successMessage
+        );
+    }
+
+    /**
+     * @Then a link to boleto must be provided
+     */
+    public function aLinkToBoletoMustBeProvided()
+    {
+        $page = $this->session->getPage();
+
+        \PHPUnit_Framework_TestCase::assertContains(
+            'Para imprimir o boleto',
+            $page->find(
+                'css',
+                '.pagarme_info_boleto'
+            )->getText()
+        );
+
+        \PHPUnit_Framework_TestCase::assertContains(
+            'https://pagar.me',
+            $page ->find(
+                'css',
+                '.pagarme_info_boleto a'
+            )->getAttribute('href')
         );
     }
 
     /**
      * @AfterScenario
      */
-    public function tearDown() {
+    public function tearDown()
+    {
         $this->customer->delete();
         $this->product->delete();
+        $this->disablePagarmeCheckout();
     }
 }

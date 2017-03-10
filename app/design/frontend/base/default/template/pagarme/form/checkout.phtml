@@ -2,6 +2,22 @@
     <input type="hidden" value="" name="payment[pagarme_checkout_hash]" id="pagarme-checkout-hash" class="required-entry" />
     <input type="hidden" value="" name="payment[pagarme_checkout_payment_method]" id="pagarme-checkout-payment-method" />
     <input type="hidden" value="1" name="payment[pagarme_checkout_installments]" id="pagarme-checkout-installments" />
+    <input type="hidden" name="payment[pagarme_checkout_customer_document_number]" id="pagarme_checkout_customer_document_number"/>
+    <input type="hidden" name="payment[pagarme_checkout_customer_document_type]" id="pagarme_checkout_customer_document_type"/>
+    <input type="hidden" name="payment[pagarme_checkout_customer_name]" id="pagarme_checkout_customer_name"/>
+    <input type="hidden" name="payment[pagarme_checkout_customer_email]" id="pagarme_checkout_customer_email"/>
+    <input type="hidden" name="payment[pagarme_checkout_customer_born_at]" id="pagarme_checkout_customer_born_at"/>
+    <input type="hidden" name="payment[pagarme_checkout_customer_gender]" id="pagarme_checkout_customer_gender"/>
+    <input type="hidden" name="payment[pagarme_checkout_customer_address_street_1]" id="pagarme_checkout_customer_address_street_1"/>
+    <input type="hidden" name="payment[pagarme_checkout_customer_address_street_2]" id="pagarme_checkout_customer_address_street_2"/>
+    <input type="hidden" name="payment[pagarme_checkout_customer_address_street_3]" id="pagarme_checkout_customer_address_street_3"/>
+    <input type="hidden" name="payment[pagarme_checkout_customer_address_street_4]" id="pagarme_checkout_customer_address_street_4"/>
+    <input type="hidden" name="payment[pagarme_checkout_customer_address_city]" id="pagarme_checkout_customer_address_city"/>
+    <input type="hidden" name="payment[pagarme_checkout_customer_address_state]" id="pagarme_checkout_customer_address_state"/>
+    <input type="hidden" name="payment[pagarme_checkout_customer_address_zipcode]" id="pagarme_checkout_customer_address_zipcode"/>
+    <input type="hidden" name="payment[pagarme_checkout_customer_address_country]" id="pagarme_checkout_customer_address_country"/>
+    <input type="hidden" name="payment[pagarme_checkout_customer_phone_ddd]" id="pagarme_checkout_customer_phone_ddd"/>
+    <input type="hidden" name="payment[pagarme_checkout_customer_phone_number]" id="pagarme_checkout_customer_phone_number"/>
 
     <div style="display:none;" id="advice-required-entry-pagarme-checkout-hash" class="validation-advice">
         <?php echo __("Please click the button below<br />and complete the information."); ?>
@@ -12,20 +28,29 @@
     </button>
 </ul>
 
-<script type="text/javascript">
+<script type="text/javascript" id="pagarme-checkout">
     $("pagarme-checkout-fill-info-button").observe("click", function (event){
         var checkoutPagarme = new PagarMeCheckout.Checkout({
-            "encryption_key" : "ek_test_AU1bfM7ulvJGr9bE63Ct1Qkwl9LeKQ",
+            "encryption_key" : "<?= $this->getEncryptionKey() ?>",
             success: function (response) {
-                console.log(response);
                 $('pagarme-checkout-hash').value = response['card_hash'];
                 $('pagarme-checkout-payment-method').value = response['payment_method'];
+                $('pagarme_checkout_customer_name').value = response['customer']['name'];
+                $('pagarme_checkout_customer_email').value = response['customer']['email'];
+                $('pagarme_checkout_customer_document_number').value = response['customer']['document_number'];
+
+                $('pagarme_checkout_customer_address_street_1').value = response['customer']['address']['street'];
+                $('pagarme_checkout_customer_address_street_2').value = response['customer']['address']['street_number'];
+                $('pagarme_checkout_customer_address_street_3').value = response['customer']['address']['complementary'];
+                $('pagarme_checkout_customer_address_street_4').value = response['customer']['address']['neighborhood'];
+                $('pagarme_checkout_customer_address_city').value = response['customer']['address']['city'];
+                $('pagarme_checkout_customer_address_state').value = response['customer']['address']['state'];
+                $('pagarme_checkout_customer_address_zipcode').value = response['customer']['address']['zipcode'];
+                $('pagarme_checkout_customer_phone_ddd').value = response['customer']['phone']['ddd'];
+                $('pagarme_checkout_customer_phone_number').value = response['customer']['phone']['number'];
             }
         });
 
-        checkoutPagarme.open({
-            "amount" : "10000",
-            "createToken": "false"
-        });
+        checkoutPagarme.open(<?= $this->getCheckoutConfig() ?>);
     });
 </script>

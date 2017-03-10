@@ -6,36 +6,78 @@
         </PagarMe_Core>
     </modules>
     <global>
-        <models>
-            <pagarme_core>
-                <class>PagarMe_Core_Model</class>
-            </pagarme_core>
-        </models>
         <helpers>
             <pagarme_core>
                 <class>PagarMe_Core_Helper</class>
             </pagarme_core>
         </helpers>
         <events>
-            <add_spl_autoloader>
+            <resource_get_tablename>
                 <observers>
                     <pagarme_core>
                         <class>PagarMe_Core_Model_Observer_Autoloader</class>
                         <method>registerSplAutoloader</method>
                     </pagarme_core>
                 </observers>
-            </add_spl_autoloader>
+            </resource_get_tablename>
         </events>
+        <models>
+            <pagarme_core>
+                <class>PagarMe_Core_Model</class>
+                <resourceModel>pagarme_core_resource</resourceModel>
+            </pagarme_core>
+            <pagarme_core_resource>
+                <class>PagarMe_Core_Model_Resource</class>
+                <entities>
+                    <transaction>
+                        <table>pagarme_transaction</table>
+                    </transaction>
+                </entities>
+            </pagarme_core_resource>
+        </models>
+        <resources>
+            <pagarme_core_setup>
+                <setup>
+                    <module>PagarMe_Core</module>
+                    <class>PagarMe_Core_Model_Resource_Setup</class>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </pagarme_core_setup>
+            <pagarme_core_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </pagarme_core_write>
+            <pagarme_core_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </pagarme_core_read>
+        </resources>
     </global>
+    <frontend>
+        <routers>
+            <pagarme_core>
+                <use>standard</use>
+                <args>
+                    <module>PagarMe_Core</module>
+                    <frontName>pagarme</frontName>
+                </args>
+            </pagarme_core>
+        </routers>
+    </frontend>
     <default>
         <payment>
             <pagarme_checkout>
-                <active>1</active>
+                <active>0</active>
                 <model>pagarme_checkout/checkout</model>
                 <order_status>pending</order_status>
                 <title>Pagarme Checkout</title>
                 <allowspecific>0</allowspecific>
-                <payment_action>sale</payment_action>
+                <payment_methods>credit_card,boleto</payment_methods>
+                <payment_action>authorize</payment_action>
             </pagarme_checkout>
         </payment>
     </default>

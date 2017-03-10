@@ -6,10 +6,20 @@ Feature: Configuration Form
     Scenario: Inserting the API_KEY and EK_KEY
         Given a admin user
         And a api key
-        And a enryption key
+        And a encryption key
         When I access the admin
         And go to system configuration page
         And insert an API key
         And insert an encryption key
         And save configuration
         Then the configuration must be saved with success
+
+    Scenario: Enabling module
+        Given a admin user
+        And a api key
+        And a encryption key
+        When I access the admin
+        And go to system configuration page
+        And enable Pagar.me Checkout
+        And save configuration
+        Then Pagar.me checkout must be enabled

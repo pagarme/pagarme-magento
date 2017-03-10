@@ -23,16 +23,12 @@ services:
         env_file: .env
 
     magento:
-        image: magento:${MAGENTO_VERSION}
+        image: ricardotulio/magento:master
         env_file: .env
         volumes:
-            - .:/docker-magento-module/
+            - .:/opt/docker/magento/module/
         working_dir: /var/www
         ports:
             - "80:80"
         depends_on:
             - mysql
-
-volumes:
-    config:
-        driver: local

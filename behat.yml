@@ -20,3 +20,13 @@ default:
         - %paths.base%/tests/acceptance/features/checkout.feature
       contexts:
         - CheckoutContext
+    postback:
+      paths:
+        - %paths.base%/tests/acceptance/features/postback.feature
+      contexts:
+        - PostbackContext
+    payment_method_availability:
+      paths:
+        - %paths.base%/tests/acceptance/features/payment_method_availability.feature
+      contexts:
+        - PaymentMethodAvailabilityContext

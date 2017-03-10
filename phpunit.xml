@@ -19,7 +19,16 @@
     <filter>
         <whitelist>
             <directory suffix=".php">./app/code/community/PagarMe/</directory>
+            <exclude>
+                <directory>./app/code/community/PagarMe/Core/sql/</directory>
+            </exclude>
         </whitelist>
+        <blacklist>
+            <directory suffix=".php">./</directory>
+            <exclude>
+                <directory suffix=".php">./app/code/community/PagarMe/</directory>
+            </exclude>
+        </blacklist>
     </filter>
     <logging>
         <log type="coverage-clover" target="build/logs/clover.xml" />

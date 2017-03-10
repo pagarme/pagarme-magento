@@ -8,9 +8,36 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 class ConfigureContext extends MinkContext
 {
+    use PagarMe\Magento\Test\Helper\CustomerDataProvider;
+    use PagarMe\Magento\Test\Helper\ProductDataProvider;
+
     const ADMIN_PASSWORD = 'admin123';
 
     private $adminUser;
+
+    private $magentoUrl;
+
+    private $customer;
+
+    /**
+     * @BeforeScenario
+     */
+    public function setUp()
+    {
+        $this->customer = $this->getCustomer();
+        $this->customer->save();
+
+        $this->customerAddress = $this->getCustomerAddress();
+        $this->customerAddress->setCustomerId($this->customer->getId());
+        $this->customerAddress->save();
+
+        $this->product = $this->getProduct();
+        $this->product->save();
+
+        $stock = $this->getProductStock();
+        $stock->assignProduct($this->product);
+        $stock->save();
+    }
 
     /**
      * @Given a admin user
@@ -41,15 +68,15 @@ class ConfigureContext extends MinkContext
      */
     public function aApiKey()
     {
-        $this->apiKey = 'ak_test_xpto';
+        $this->apiKey = PAGARME_API_KEY;
     }
 
     /**
-     * @Given a enryption key
+     * @Given a encryption key
      */
-    public function aEnryptionKey()
+    public function aEncryptionKey()
     {
-        $this->encryptionKey = 'ek_test_xpto';
+        $this->encryptionKey = PAGARME_ENCRYPTION_KEY;
     }
 
     /**
@@ -79,6 +106,12 @@ class ConfigureContext extends MinkContext
         $session = $this->getSession();
         $page = $session->getPage();
 
+        $popup = $page->find('css', '.message-popup-head a');
+
+        if ($popup instanceof \Behat\Mink\Element\NodeElement) {
+            $popup->click();
+        }
+
         $page->find('named', array('link', 'System'))
             ->mouseOver();
 
@@ -87,6 +120,8 @@ class ConfigureContext extends MinkContext
 
         $page->find('named', array('link', 'Payment Methods'))
             ->click();
+
+        $page->find('css', '#payment_pagarme_settings-head')->click();
 
         $this->spin(function () use ($page) {
             return $page->findById('config_edit_form') != null;
@@ -104,19 +139,10 @@ class ConfigureContext extends MinkContext
         $page->find(
             'named',
             array(
-                'link',
-                'Pagar.me'
-            )
-        )
-        ->click();
-
-        $page->find(
-            'named',
-            array(
                 'id',
                 'payment_pagarme_settings_api_key'
             )
-        )->setValue('ak_test_');
+        )->setValue($this->apiKey);
     }
 
     /**
@@ -133,7 +159,7 @@ class ConfigureContext extends MinkContext
                 'id',
                 'payment_pagarme_settings_encryption_key'
             )
-        )->setValue('ek_test_');
+        )->setValue($this->encryptionKey);
     }
 
     /**
@@ -165,6 +191,14 @@ class ConfigureContext extends MinkContext
         \PHPUnit_Framework_TestCase::assertEquals("The configuration has been saved.", $successMsg->getText());
     }
 
+    public function waitForElement($element, $timeout)
+    {
+        $this->getSession()->wait(
+            $timeout,
+            "document.querySelector('${element}').style.display != 'none'"
+        );
+    }
+
     public function spin($lambda, $wait)
     {
         for ($i = 0; $i < $wait; $i++) {
@@ -180,10 +214,41 @@ class ConfigureContext extends MinkContext
     }
 
     /**
+     * @When enable Pagar.me Checkout
+     */
+    public function enablePagarMeCheckout()
+    {
+        $page = $this->getSession()->getPage();
+
+        $page->find('css', '#payment_pagarme_checkout-head')->click();
+
+        $this->getSession()->wait(5000);
+        $select = $page->find(
+            'css',
+            '#payment_pagarme_checkout_active'
+        );
+        $select->selectOption('Yes');
+
+    }
+
+    /**
+     * @Then Pagar.me checkout must be enabled
+     */
+    public function pagarMeCheckoutMustBeEnabled()
+    {
+        \PHPUnit_Framework_TestCase::assertTrue(
+            Mage::helper('core')->isModuleEnabled('PagarMe_Checkout')
+        );
+    }
+
+
+    /**
      * @AfterScenario
      */
     public function tearDown()
     {
         $this->adminUser->delete();
+        $this->customer->delete();
+        $this->product->delete();
     }
 }

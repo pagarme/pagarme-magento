@@ -1,0 +1,64 @@
+<?php
+
+
+class PagarMe_Core_Helper_DataTest extends \PHPUnit_Framework_TestCase
+{
+    protected $helper;
+
+    public function setup()
+    {
+        $this->helper = Mage::helper('pagarme_core');
+    }
+    /**
+     * @test
+     */
+    public function mustPrepareCustomerData()
+    {
+        $plainData = [
+            'pagarme_checkout_customer_document_number' => '251.233.171-71',
+            'pagarme_checkout_customer_document_type' => 'cpf',
+            'pagarme_checkout_customer_name' => 'John Doe',
+            'pagarme_checkout_customer_email' => 'john@test.com',
+            'pagarme_checkout_customer_born_at' => null,
+            'pagarme_checkout_customer_gender' => null,
+            'pagarme_checkout_customer_address_street_1' => 'Rua Teste',
+            'pagarme_checkout_customer_address_street_2' => '123',
+            'pagarme_checkout_customer_address_street_3' => null,
+            'pagarme_checkout_customer_address_street_4' => 'Centro',
+            'pagarme_checkout_customer_address_city' => null,
+            'pagarme_checkout_customer_address_state' => null,
+            'pagarme_checkout_customer_address_zipcode' => '01034020',
+            'pagarme_checkout_customer_address_country' => null,
+            'pagarme_checkout_customer_phone_ddd' => '11',
+            'pagarme_checkout_customer_phone_number' => '44445555'
+        ];
+
+        $customerData = $this->helper->prepareCustomerData($plainData);
+
+        $customerTemplate = '{"document_number":"25123317171","document_type":"cpf","name":"John Doe","email":"john@test.com","born_at":null,"gender":null,"date_created": null, "addresses":[{"street":"Rua Teste","complementary":null,"street_number":"123","neighborhood":"Centro","city":null,"state":null,"zipcode":"01034020","country":null}],"phones":[{"ddd":"11","number":"44445555"}]}';
+
+        $this->assertEquals(json_decode($customerTemplate), $customerData);
+    }
+
+    /**
+     * @test
+     */
+    public function mustReturnDddFromPhoneNumber()
+    {
+        $expected = '15';
+        $phone = '(15) 5485-5444';
+
+        $this->assertEquals($expected, $this->helper->getDddFromPhoneNumber($phone));
+    }
+
+    /**
+     * @test
+     */
+    public function mustReturnPhoneWithoutDdd()
+    {
+        $expected = '51115849';
+        $phone = '11 5111-5849';
+
+        $this->assertEquals($expected, $this->helper->getPhoneWithoutDdd($phone));
+    }
+}
