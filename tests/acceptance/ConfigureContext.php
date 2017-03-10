@@ -121,14 +121,7 @@ class ConfigureContext extends MinkContext
         $page->find('named', array('link', 'Payment Methods'))
             ->click();
 
-        $page->find(
-            'named',
-            array(
-                'link',
-                'Pagar.me'
-            )
-        )
-        ->click();
+        $page->find('css', '#payment_pagarme_settings-head')->click();
 
         $this->spin(function () use ($page) {
             return $page->findById('config_edit_form') != null;
