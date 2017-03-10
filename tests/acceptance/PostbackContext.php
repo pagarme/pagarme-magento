@@ -11,6 +11,7 @@ class PostbackContext extends MinkContext
     use PagarMe\Magento\Test\Helper\CustomerDataProvider;
     use PagarMe\Magento\Test\Helper\ProductDataProvider;
     use PagarMe\Magento\Test\Helper\PostbackDataProvider;
+    use PagarMe\Magento\Test\Helper\PagarMeCheckoutSwitch;
 
     /**
      * @BeforeScenario
@@ -28,6 +29,8 @@ class PostbackContext extends MinkContext
         $this->product->save();
 
         $this->apiKey = PAGARME_API_KEY;
+
+        $this->enablePagarmeCheckout();
     }
 
     /**
@@ -97,5 +100,13 @@ class PostbackContext extends MinkContext
             $status,
             $order->getStatus()
         );
+    }
+
+    /**
+     * @AfterScenario
+     */
+    public function tearDown()
+    {
+        $this->disablePagarmeCheckout();
     }
 }
