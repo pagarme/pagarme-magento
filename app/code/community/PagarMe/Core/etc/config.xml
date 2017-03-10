@@ -71,7 +71,7 @@
     <default>
         <payment>
             <pagarme_checkout>
-                <active>1</active>
+                <active>0</active>
                 <model>pagarme_checkout/checkout</model>
                 <order_status>pending</order_status>
                 <title>Pagarme Checkout</title>
