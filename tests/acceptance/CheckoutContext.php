@@ -36,6 +36,25 @@ class CheckoutContext extends MinkContext
         $stock = $this->getProductStock();
         $stock->assignProduct($this->product);
         $stock->save();
+
+        $this->enablePagarmeCheckout();
+    }
+
+    protected function enablePagarmeCheckout()
+    {
+        $this->changePagarmeCheckout(true);
+    }
+
+    protected function disablePagarmeCheckout()
+    {
+        $this->changePagarmeCheckout(false);
+    }
+
+    protected function changePagarmeCheckout($value)
+    {
+        $nodePath = "payment/pagarme_checkout/active";
+        Mage::getConfig()->saveConfig($nodePath, $value);
+        Mage::getConfig()->cleanCache();
     }
 
     public function waitForElement($element, $timeout)
