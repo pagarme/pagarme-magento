@@ -214,6 +214,35 @@ class ConfigureContext extends MinkContext
     }
 
     /**
+     * @When enable Pagar.me Checkout
+     */
+    public function enablePagarMeCheckout()
+    {
+        $page = $this->getSession()->getPage();
+
+        $page->find('css', '#payment_pagarme_checkout-head')->click();
+
+        $this->getSession()->wait(5000);
+        $select = $page->find(
+            'css',
+            '#payment_pagarme_checkout_active'
+        );
+        $select->selectOption('Yes');
+
+    }
+
+    /**
+     * @Then Pagar.me checkout must be enabled
+     */
+    public function pagarMeCheckoutMustBeEnabled()
+    {
+        \PHPUnit_Framework_TestCase::assertTrue(
+            Mage::helper('core')->isModuleEnabled('PagarMe_Checkout')
+        );
+    }
+
+
+    /**
      * @AfterScenario
      */
     public function tearDown()
