@@ -10,6 +10,7 @@ class CheckoutContext extends MinkContext
 {
     use PagarMe\Magento\Test\Helper\CustomerDataProvider;
     use PagarMe\Magento\Test\Helper\ProductDataProvider;
+    use PagarMe\Magento\Test\Helper\PagarMeCheckoutSwitch;
 
     private $customer;
 
@@ -38,23 +39,6 @@ class CheckoutContext extends MinkContext
         $stock->save();
 
         $this->enablePagarmeCheckout();
-    }
-
-    protected function enablePagarmeCheckout()
-    {
-        $this->changePagarmeCheckout(true);
-    }
-
-    protected function disablePagarmeCheckout()
-    {
-        $this->changePagarmeCheckout(false);
-    }
-
-    protected function changePagarmeCheckout($value)
-    {
-        $nodePath = "payment/pagarme_checkout/active";
-        Mage::getConfig()->saveConfig($nodePath, $value);
-        Mage::getConfig()->cleanCache();
     }
 
     public function waitForElement($element, $timeout)
@@ -273,5 +257,6 @@ class CheckoutContext extends MinkContext
     {
         $this->customer->delete();
         $this->product->delete();
+        $this->disablePagarmeCheckout();
     }
 }
