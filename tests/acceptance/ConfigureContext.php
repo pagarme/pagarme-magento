@@ -220,12 +220,10 @@ class ConfigureContext extends MinkContext
     {
         $page = $this->getSession()->getPage();
 
-        $page->find('css', '#payment_pagarme_checkout-head')->click();
-
         $this->getSession()->wait(5000);
         $select = $page->find(
             'css',
-            '#payment_pagarme_checkout_active'
+            '#payment_pagarme_settings_active'
         );
         $select->selectOption('Yes');
 
@@ -237,7 +235,7 @@ class ConfigureContext extends MinkContext
     public function pagarMeCheckoutMustBeEnabled()
     {
         \PHPUnit_Framework_TestCase::assertTrue(
-            Mage::helper('core')->isModuleEnabled('PagarMe_Checkout')
+            Mage::helper('core')->isModuleEnabled('PagarMe_Core')
         );
     }
 

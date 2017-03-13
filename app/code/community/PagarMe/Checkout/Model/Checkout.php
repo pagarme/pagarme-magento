@@ -28,6 +28,17 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
     /** @var string */
     protected $_formBlockType          = 'pagarme_checkout/form_checkout';
 
+    public function isAvailable($quote = null)
+    {
+        if (!parent::isAvailable($quote)) {
+            return false;
+        }
+
+        return (bool) Mage::getStoreConfig(
+            'payment/pagarme_settings/active'
+        );
+    }
+
     /**
      * @codeCoverageIgnore
      * @return \PagarMe\Sdk\PagarMe
