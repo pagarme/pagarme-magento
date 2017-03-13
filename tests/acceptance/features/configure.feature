@@ -16,8 +16,6 @@ Feature: Configuration Form
 
     Scenario: Enabling module
         Given a admin user
-        And a api key
-        And a encryption key
         When I access the admin
         And go to system configuration page
         And enable Pagar.me Checkout
