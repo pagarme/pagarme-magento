@@ -31,4 +31,11 @@
             </updates>
         </layout>
     </frontend>
+    <default>
+        <payment>
+            <pagarme_checkout>
+                <active>1</active>
+            </pagarme_checkout>
+        </payment>
+    </default>
 </config>
