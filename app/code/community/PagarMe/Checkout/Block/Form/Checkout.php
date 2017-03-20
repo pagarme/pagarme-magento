@@ -123,7 +123,9 @@ class PagarMe_Checkout_Block_Form_Checkout extends Mage_Payment_Block_Form
             'customerAddressComplementary' => $address->getStreet(3),
             'customerAddressNeighborhood' => $address->getStreet(4),
             'customerAddressCity' => $address->getCity(),
-            'customerAddressState' => $address->getRegion()
+            'customerAddressState' => $address->getRegion(),
+            'maxInstallments' => 10,
+            'interestRate' => 10
         ]);
     }
 }
