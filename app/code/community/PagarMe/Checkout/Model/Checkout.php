@@ -53,6 +53,8 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
      * @param array $data
      *
      * @return $this
+     *
+     * @codeCoverageIgnore
      */
     public function assignData($data)
     {
@@ -78,11 +80,13 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
      * @throws Exception
      *
      * @return $this
+     *
+     * @codeCoverageIgnore
      */
     public function authorize(Varien_Object $payment, $amount)
     {
         $infoInstance = $this->getInfoInstance();
-        
+
         $preTransaction = Mage::getModel('pagarme_core/entity_PaymentMethodFactory')
             ->createTransactionObject(
                 $amount,
@@ -118,6 +122,8 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
      * @param type $order
      *
      * @return array
+     *
+     * @codeCoverageIgnore
      */
     private function extractAdditionalInfo($infoInstance, $transaction, $order)
     {
