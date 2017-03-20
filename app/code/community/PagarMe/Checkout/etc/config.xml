@@ -21,6 +21,35 @@
                 <class>PagarMe_Checkout_Block</class>
             </pagarme_checkout>
         </blocks>
+        <sales>
+            <quote>
+                <totals>
+                    <pagarme_checkout>
+                        <class>pagarme_checkout/total_screen_quote</class>
+                        <after>subtotal</after>
+                        <before>tax</before>
+                    </pagarme_checkout>
+                </totals>
+            </quote>
+            <order_invoice>
+                <totals>
+                    <pagarme_checkout>
+                        <class>pagarme_checkout/total_screen_invoice</class>
+                        <after>subtotal</after>
+                        <before>tax</before>
+                    </pagarme_checkout>
+                </totals>
+            </order_invoice>
+            <order_creditmemo>
+                <totals>
+                    <pagarme_checkout>
+                        <class>pagarme_checkout/total_screen_creditmemo</class>
+                        <after>subtotal</after>
+                        <before>tax</before>
+                    </pagarme_checkout>
+                </totals>
+            </order_creditmemo>
+        </sales>
     </global>
     <frontend>
         <layout>

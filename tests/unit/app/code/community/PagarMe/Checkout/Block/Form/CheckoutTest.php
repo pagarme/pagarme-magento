@@ -62,7 +62,7 @@ class PagarMe_Checkout_Block_Form_CheckoutTest extends PHPUnit_Framework_TestCas
         $checkoutBlock->setQuote($quote);
 
         $this->assertEquals(
-            json_encode($checkoutConfig),
+            $checkoutConfig,
             $checkoutBlock->getCheckoutConfig()
         );
     }
