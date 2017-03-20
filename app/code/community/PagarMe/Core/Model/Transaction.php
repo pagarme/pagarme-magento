@@ -3,7 +3,9 @@
 class PagarMe_Core_Model_Transaction extends Mage_Core_Model_Abstract
 {
     /**
-     * @return type
+     * @return PagarMe_Core_Model_Transaction
+     *
+     * @codeCoverageIgnore
      */
     public function _construct()
     {
