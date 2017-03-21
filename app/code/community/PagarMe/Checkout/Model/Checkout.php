@@ -148,6 +148,8 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
      * @param Mage_Sales_Model_Order_Payment $infoInstance
      *
      * @return void
+     *
+     * @codeCoverageIgnore
      */
     private function saveTransactionInformation(
         Mage_Sales_Model_Order $order,
