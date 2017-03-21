@@ -63,11 +63,11 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
     {
         $paymentMethod = $this->_code
             .'_'.$data['pagarme_checkout_payment_method'];
-        $token = $data['pagarme_checkout_token'];
 
         $additionalInfoData = [
             'pagarme_payment_method' => $paymentMethod,
-            'token' => $token
+            'token' => $data['pagarme_checkout_token'],
+            'interest_rate' => $data['pagarme_checkout_interest_rate']
         ];
 
         $this->getInfoInstance()
@@ -89,12 +89,13 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
     public function authorize(Varien_Object $payment, $amount)
     {
         $infoInstance = $this->getInfoInstance();
-        
-        $preTransaction = Mage::getModel('pagarme_core/entity_PaymentMethodFactory')
-            ->createTransactionObject(
-                $amount,
-                $infoInstance
-            );
+
+        $preTransaction = Mage::getModel(
+            'pagarme_core/entity_PaymentMethodFactory'
+        )->createTransactionObject(
+            $amount,
+            $infoInstance
+        );
 
         $infoInstance->unsAdditionalInformation('token');
 
@@ -111,13 +112,13 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
             $this->extractAdditionalInfo($infoInstance, $transaction, $order)
         );
 
-        $this->saveTransactionInformation($order, $transaction);
+        $this->saveTransactionInformation($order, $transaction, $infoInstance);
 
         return $this;
     }
 
     /**
-     * @param type $infoInstance
+     * @param Mage_Sales_Model_Order_Payment $infoInstance
      * @param \PagarMe\Sdk\Transaction\AbstractTransaction $transaction
      * @param Mage_Sales_Model_Order $order
      *
@@ -144,19 +145,23 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
     /**
      * @param Mage_Sales_Model_Order $order
      * @param PagarMe\Sdk\Transaction\AbstractTransaction $transaction
+     * @param Mage_Sales_Model_Order_Payment $infoInstance
      *
      * @return void
      */
     private function saveTransactionInformation(
         Mage_Sales_Model_Order $order,
-        PagarMe\Sdk\Transaction\AbstractTransaction $transaction
+        PagarMe\Sdk\Transaction\AbstractTransaction $transaction,
+        $infoInstance
     ) {
         Mage::getModel('pagarme_core/transaction')
             ->setTransactionId($transaction->getId())
             ->setOrderId($order->getId())
-            ->setInstallments(2)
-            ->setInterestRate(10)
-            ->setFutureValue(100)
+            ->setInstallments($transaction->getInstallments())
+            ->setInterestRate(
+                $infoInstance->getAdditionalInformation('interest_rate')
+            )
+            ->setFutureValue(null)
             ->save();
     }
 }
