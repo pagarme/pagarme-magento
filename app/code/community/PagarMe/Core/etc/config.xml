@@ -79,6 +79,11 @@
                 <payment_methods>credit_card,boleto</payment_methods>
                 <payment_action>authorize</payment_action>
             </pagarme_checkout>
+            <pagarme_settings>
+                <interest_rate>0</interest_rate>
+                <free_installments>1</free_installments>
+                <max_installments>1</max_installments>
+            </pagarme_settings>
         </payment>
     </default>
 </config>
