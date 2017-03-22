@@ -163,7 +163,10 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
             ->setInterestRate(
                 $infoInstance->getAdditionalInformation('interest_rate')
             )
-            ->setFutureValue(null)
+            ->setFutureValue(
+                Mage::helper('pagarme_core')
+                    ->parseAmountToFloat($transaction->getAmount())
+            )
             ->save();
     }
 }
