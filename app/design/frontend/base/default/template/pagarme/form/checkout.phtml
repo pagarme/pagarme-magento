@@ -21,6 +21,6 @@
             }
         });
 
-        checkoutPagarme.open(<?= $this->getCheckoutConfig() ?>);
+        checkoutPagarme.open(<?= json_encode($this->getCheckoutConfig()) ?>);
     });
 </script>
