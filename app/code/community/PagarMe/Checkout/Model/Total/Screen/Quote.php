@@ -34,10 +34,17 @@ class PagarMe_Checkout_Model_Total_Screen_Quote extends Mage_Sales_Model_Quote_A
             return $this;
         }
 
-        $transaction = Mage::getModel('pagarme_core/sdk_adapter')->getPagarMeSdk()->transaction()->get($paymentData['pagarme_checkout_token']);
+        $transaction = Mage::getModel(
+            'pagarme_core/sdk_adapter'
+            )->getPagarMeSdk()
+            ->transaction()
+            ->get($paymentData['pagarme_checkout_token']);
 
         $quote = $address->getQuote();
-        $baseSubtotalWithDiscount = $quote->getTotals()['subtotal']->getValue();
+
+        $quoteTotals = $quote->getTotals();
+        $baseSubtotalWithDiscount = $quoteTotals['subtotal']->getValue();
+
         $shippingAmount = $quote->getShippingAddress()->getShippingAmount();
 
         $subTotal = $baseSubtotalWithDiscount + $shippingAmount;
@@ -60,7 +67,9 @@ class PagarMe_Checkout_Model_Total_Screen_Quote extends Mage_Sales_Model_Quote_A
      */
     public function fetch(Mage_Sales_Model_Quote_Address $address)
     {
-        if ($this->interestAmount != 0 && $address->getTotalAmount($this->getCode()) == 0) {
+        $addressTotalAmount = $address->getTotalAmount($this->getCode());
+
+        if ($this->interestAmount != 0 && $addressTotalAmount == 0) {
             $address->addTotal(array(
                 'code'  => $this->getCode(),
                 'title' => $this->getLabel(),
