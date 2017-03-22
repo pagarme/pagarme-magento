@@ -21,7 +21,7 @@ Feature: Configuration Form
         And enable Pagar.me Checkout
         And save configuration
         Then Pagar.me checkout must be enabled
-@only
+
     Scenario Outline: Configuring installments info
         Given Pagar.me settings panel
         When I set interest rate to "<interest_rate>"
