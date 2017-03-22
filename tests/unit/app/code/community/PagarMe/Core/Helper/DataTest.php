@@ -61,4 +61,54 @@ class PagarMe_Core_Helper_DataTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected, $this->helper->getPhoneWithoutDdd($phone));
     }
+
+    /**
+     * @test
+     *
+     * @dataProvider getFloatValues
+     */
+    public function mustParseFloatValuesToInteger($value)
+    {
+        $subject = $this->helper->parseAmountToInteger($value);
+
+        $this->assertInternalType('int', $subject);
+    }
+
+    /**
+     * @test
+     *
+     * @dataProvider getIntegerValues
+     */
+    public function mustParseIntegerValuesToToFloat($value)
+    {
+        $subject = $this->helper->parseAmountToFloat($value);
+
+        $this->assertInternalType('float', $subject);
+    }
+
+    /**
+     * @return array
+     */
+    public function getFloatValues()
+    {
+        return [
+            [123.45],
+            [1.1],
+            [0.8],
+            [12345678.90],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getIntegerValues()
+    {
+        return [
+            [12345],
+            [2],
+            [1],
+            [1234567890],
+        ];
+    }
 }
