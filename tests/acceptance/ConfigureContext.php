@@ -1,12 +1,12 @@
 <?php
 
 use Behat\Behat\Tester\Exception\PendingException;
-use Behat\MinkExtension\Context\MinkContext;
+use Behat\MinkExtension\Context\RawMinkContext;
 
 require_once __DIR__ . '/../bootstrap.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-class ConfigureContext extends MinkContext
+class ConfigureContext extends RawMinkContext
 {
     use PagarMe\Magento\Test\Helper\CustomerDataProvider;
     use PagarMe\Magento\Test\Helper\ProductDataProvider;
