@@ -82,19 +82,24 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
     public function authorize(Varien_Object $payment, $amount)
     {
         $infoInstance = $this->getInfoInstance();
-        
-        $preTransaction = Mage::getModel('pagarme_core/entity_PaymentMethodFactory')
-            ->createTransactionObject(
-                $amount,
-                $infoInstance
-            );
+
+        $token = $infoInstance->getAdditionalInformation('token');
 
         $infoInstance->unsAdditionalInformation('token');
 
+        $pagarMeSdk = Mage::getModel(
+            'pagarme_core/sdk_adapter'
+            )->getPagarMeSdk();
+
+        $transaction = $pagarMeSdk->transaction()->get($token);
+
         try {
-            $transaction = Mage::getModel('pagarme_core/service_transaction')
-                ->capture($preTransaction);
+            $transaction = $pagarMeSdk->transaction()->capture(
+                $transaction,
+                $transaction->getAmount()
+            );
         } catch (\Exception $exception) {
+            die($exception->getMessage());
             throw $exception;
         }
 
