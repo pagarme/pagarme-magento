@@ -90,19 +90,32 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
     {
         $infoInstance = $this->getInfoInstance();
 
+<<<<<<< d5e8266f65a2febafc96f33b8f00eb208056ecee
         $preTransaction = Mage::getModel(
             'pagarme_core/entity_PaymentMethodFactory'
         )->createTransactionObject(
             $amount,
             $infoInstance
         );
+=======
+        $token = $infoInstance->getAdditionalInformation('token');
+>>>>>>> Capture correct value
 
         $infoInstance->unsAdditionalInformation('token');
 
+        $pagarMeSdk = Mage::getModel(
+            'pagarme_core/sdk_adapter'
+            )->getPagarMeSdk();
+
+        $transaction = $pagarMeSdk->transaction()->get($token);
+
         try {
-            $transaction = Mage::getModel('pagarme_core/service_transaction')
-                ->capture($preTransaction);
+            $transaction = $pagarMeSdk->transaction()->capture(
+                $transaction,
+                $transaction->getAmount()
+            );
         } catch (\Exception $exception) {
+            die($exception->getMessage());
             throw $exception;
         }
 
