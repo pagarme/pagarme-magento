@@ -364,7 +364,7 @@ class CheckoutContext extends MinkContext
     public function tearDown()
     {
         $this->customer->delete();
-        // $this->product->delete();
-        // $this->disablePagarmeCheckout();
+        $this->product->delete();
+        $this->disablePagarmeCheckout();
     }
 }
