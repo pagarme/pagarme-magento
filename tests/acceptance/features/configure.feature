@@ -29,5 +29,6 @@ Feature: Configuration Form
         And change the boleto helper text
         And change the credit card helper text
         And change the ui color
+        And change the header text
         And save configuration
         Then the configuration must be saved with success
