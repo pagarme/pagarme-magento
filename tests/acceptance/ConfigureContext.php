@@ -244,7 +244,21 @@ class ConfigureContext extends MinkContext
      */
     public function changeTheBoletoHelperText()
     {
-        $this->fillField('payment_pagarme_settings_boleto_helper_text', 'Some info text');
+        $this->fillField(
+            'payment_pagarme_settings_boleto_helper_text',
+            'Some info text'
+        );
+    }
+
+    /**
+     * @When change the credit card helper text
+     */
+    public function changeTheCreditCardHelperText()
+    {
+        $this->fillField(
+            'payment_pagarme_settings_credit_card_helper_text',
+            'Some info text'
+        );
     }
 
 

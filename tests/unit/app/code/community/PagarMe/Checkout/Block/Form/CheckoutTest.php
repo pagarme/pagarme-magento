@@ -25,6 +25,9 @@ class PagarMe_Checkout_Block_Form_CheckoutTest extends PHPUnit_Framework_TestCas
             'customerAddressState' => 'XP',
             'boletoHelperText' => Mage::getStoreConfig(
                 'payment/pagarme_settings/boleto_helper_text'
+            ),
+            'creditCardHelperText' => Mage::getStoreConfig(
+                'payment/pagarme_settings/credit_card_helper_text'
             )
         ];
 
