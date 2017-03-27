@@ -138,6 +138,9 @@ class PagarMe_Checkout_Block_Form_Checkout extends Mage_Payment_Block_Form
             ),
             'boletoHelperText' => Mage::getStoreConfig(
                 'payment/pagarme_settings/boleto_helper_text'
+            ),
+            'creditCardHelperText' => Mage::getStoreConfig(
+                'payment/pagarme_settings/credit_card_helper_text'
             )
         ];
     }

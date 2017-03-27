@@ -50,5 +50,6 @@ Feature: Configuration Form
         When I access the admin
         And go to system configuration page
         And change the boleto helper text
+        And change the credit card helper text
         And save configuration
         Then the configuration must be saved with success
