@@ -144,6 +144,9 @@ class PagarMe_Checkout_Block_Form_Checkout extends Mage_Payment_Block_Form
             ),
             'uiColor' => Mage::getStoreConfig(
                 'payment/pagarme_settings/ui_color'
+            ),
+            'headerText' => Mage::getStoreConfig(
+                'payment/pagarme_settings/header_text'
             )
         ];
     }

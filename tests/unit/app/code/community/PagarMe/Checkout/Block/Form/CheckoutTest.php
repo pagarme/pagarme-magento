@@ -35,6 +35,9 @@ class PagarMe_Checkout_Block_Form_CheckoutTest extends PHPUnit_Framework_TestCas
             ),
             'uiColor' => Mage::getStoreConfig(
                 'payment/pagarme_settings/ui_color'
+            ),
+            'headerText' => Mage::getStoreConfig(
+                'payment/pagarme_settings/header_text'
             )
         ];
 

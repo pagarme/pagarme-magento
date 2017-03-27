@@ -333,6 +333,17 @@ class ConfigureContext extends RawMinkContext
     }
 
     /**
+     * @When change the header text
+     */
+    public function changeTheHeaderText()
+    {
+        $this->fillField(
+            'payment_pagarme_settings_header_text',
+            'Some info text'
+        );
+    }
+
+    /**
      * @AfterScenario
      */
     public function tearDown()
