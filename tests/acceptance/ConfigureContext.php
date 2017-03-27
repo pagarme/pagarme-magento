@@ -355,6 +355,17 @@ class ConfigureContext extends RawMinkContext
     }
 
     /**
+     * @When change the checkout button text
+     */
+    public function changeTheCheckoutButtonText()
+    {
+        $this->fillField(
+            'payment_pagarme_settings_checkout_button_text',
+            'Pagar!'
+        );
+    }
+
+    /**
      * @AfterScenario
      */
     public function tearDown()

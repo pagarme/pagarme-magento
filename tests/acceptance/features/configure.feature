@@ -54,5 +54,6 @@ Feature: Configuration Form
         And change the ui color
         And change the header text
         And change the payment button text
+        And change the checkout button text
         And save configuration
         Then the configuration must be saved with success
