@@ -110,7 +110,6 @@
                         <boleto_helper_text translate="label">
                             <label>Mensagem opcional que aparecerá embaixo do botão de pagamento Boleto</label>
                             <frontend_type>text</frontend_type>
-                            <source_model>adminhtml/system_config_source_order_status_newprocessing</source_model>
                             <sort_order>100</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -119,7 +118,6 @@
                         <credit_card_helper_text translate="label">
                             <label>Mensagem opcional que aparecerá embaixo do botão de pagamento Cartão de Crédito</label>
                             <frontend_type>text</frontend_type>
-                            <source_model>adminhtml/system_config_source_order_status_newprocessing</source_model>
                             <sort_order>105</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -128,7 +126,6 @@
                         <ui_color translate="label">
                             <label>Cor primária da interface de Checkout</label>
                             <frontend_type>text</frontend_type>
-                            <source_model>adminhtml/system_config_source_order_status_newprocessing</source_model>
                             <sort_order>110</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -137,7 +134,6 @@
                         <header_text translate="label">
                             <label>Define o texto do cabeçalho</label>
                             <frontend_type>text</frontend_type>
-                            <source_model>adminhtml/system_config_source_order_status_newprocessing</source_model>
                             <sort_order>115</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -146,7 +142,6 @@
                         <checkout_button_text translate="label">
                             <label>Texto do botão para abrir o checkout</label>
                             <frontend_type>text</frontend_type>
-                            <source_model>adminhtml/system_config_source_order_status_newprocessing</source_model>
                             <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -155,7 +150,6 @@
                         <payment_button_text translate="label">
                             <label>Texto do botão final de pagamento</label>
                             <frontend_type>text</frontend_type>
-                            <source_model>adminhtml/system_config_source_order_status_newprocessing</source_model>
                             <sort_order>125</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
