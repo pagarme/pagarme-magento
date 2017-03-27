@@ -34,6 +34,9 @@ class PagarMe_Checkout_Block_Form_CheckoutTest extends PHPUnit_Framework_TestCas
             ),
             'headerText' => Mage::getStoreConfig(
                 'payment/pagarme_settings/header_text'
+            ),
+            'paymentButtonText' => Mage::getStoreConfig(
+                'payment/pagarme_settings/payment_button_text'
             )
         ];
 

@@ -135,6 +135,9 @@ class PagarMe_Checkout_Block_Form_Checkout extends Mage_Payment_Block_Form
             ),
             'headerText' => Mage::getStoreConfig(
                 'payment/pagarme_settings/header_text'
+            ),
+            'paymentButtonText' => Mage::getStoreConfig(
+                'payment/pagarme_settings/payment_button_text'
             )
         ];
     }
