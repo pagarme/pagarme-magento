@@ -3,7 +3,7 @@
 ?>
 
 <?php if ($transaction->getRateAmount() > 0): ?>
-    <tr>
+    <tr id="pagarme_order_info_rate_amount">
         <td class="label">Rate Amount</td>
         <td><?= $this->displayPrices($transaction->getRateAmount(), $transaction->getRateAmount()) ?></td>
     </tr>

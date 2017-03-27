@@ -8,25 +8,26 @@ Feature: Order Visualization
         When I access the store page
         And add any product to basket
         And I go to checkout page
-        And login with registered user
+        When login with registered user
         And confirm billing and shipping address information
         And choose pay with pagar me checkout using "Cartão de crédito"
         And I confirm my personal data
+        Given a valid credit card
+        And I confirm my payment information
         And finish purchase
         Then the purchase must be paid with success
         Then as an Admin user
         When I access the admin
         And navigate to the Order page
         And click on the last created Order
-        Then I see that the interest rate value is present
-        And I see the payment information is displayed as well
+        Then I see that the interest rate information for "Cartão de Crédito" is present
 
     Scenario: Order Rate Value and Info from Boleto Purchase
         Given a registered user
         When I access the store page
         And add any product to basket
         And I go to checkout page
-        And login with registered user
+        When login with registered user
         And confirm billing and shipping address information
         And choose pay with pagar me checkout using "Boleto"
         And I confirm my personal data
@@ -36,5 +37,4 @@ Feature: Order Visualization
         When I access the admin
         And navigate to the Order page
         And click on the last created Order
-        Then I see that the interest rate value is present
-        And I see the payment information is displayed as well
+        Then I see that the interest rate information for "Boleto" is present

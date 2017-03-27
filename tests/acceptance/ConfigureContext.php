@@ -41,6 +41,7 @@ class ConfigureContext extends RawMinkContext
 
     /**
      * @Given a admin user
+     * @Then as an Admin user
      */
     public function aAdminUser()
     {
@@ -238,7 +239,6 @@ class ConfigureContext extends RawMinkContext
             Mage::helper('core')->isModuleEnabled('PagarMe_Core')
         );
     }
-
 
     /**
      * @AfterScenario
