@@ -32,6 +32,9 @@ class PagarMe_Checkout_Block_Form_CheckoutTest extends PHPUnit_Framework_TestCas
             ),
             'creditCardHelperText' => Mage::getStoreConfig(
                 'payment/pagarme_settings/credit_card_helper_text'
+            ),
+            'uiColor' => Mage::getStoreConfig(
+                'payment/pagarme_settings/ui_color'
             )
         ];
 

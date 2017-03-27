@@ -141,6 +141,9 @@ class PagarMe_Checkout_Block_Form_Checkout extends Mage_Payment_Block_Form
             ),
             'creditCardHelperText' => Mage::getStoreConfig(
                 'payment/pagarme_settings/credit_card_helper_text'
+            ),
+            'uiColor' => Mage::getStoreConfig(
+                'payment/pagarme_settings/ui_color'
             )
         ];
     }
