@@ -44,3 +44,11 @@ Feature: Configuration Form
         | 0             | 3                 | 3                 |
         | 4             | 0                 | 1                 |
         | 0             | 0                 | 1                 |
+
+    Scenario: Customizing checkout
+        Given a admin user
+        When I access the admin
+        And go to system configuration page
+        And change the boleto helper text
+        And save configuration
+        Then the configuration must be saved with success

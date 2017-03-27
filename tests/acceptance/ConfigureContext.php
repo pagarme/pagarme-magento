@@ -88,7 +88,6 @@ class ConfigureContext extends RawMinkContext
         $session->visit(getenv('MAGENTO_URL') . 'index.php/admin');
 
         $page = $session->getPage();
-
         $inputLogin = $page->find('named', array('id', 'username'));
         $inputLogin->setValue($this->adminUser->getUsername());
 
@@ -292,6 +291,17 @@ class ConfigureContext extends RawMinkContext
         $this->getSession()->getPage()->fillField(
             'payment_pagarme_settings_free_installments',
             $freeInstallments
+        );
+    }
+
+    /**
+     * @When change the boleto helper text
+     */
+    public function changeTheBoletoHelperText()
+    {
+        $this->getSession()->getPage()->fillField(
+            'payment_pagarme_settings_boleto_helper_text',
+            'Some info text'
         );
     }
 
