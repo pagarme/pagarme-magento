@@ -261,6 +261,16 @@ class ConfigureContext extends MinkContext
         );
     }
 
+    /**
+     * @When change the ui color
+     */
+    public function changeTheUiColor()
+    {
+        $this->fillField(
+            'payment_pagarme_settings_ui_color',
+            '#ff00ff'
+        );
+    }
 
     /**
      * @AfterScenario
