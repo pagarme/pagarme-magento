@@ -108,6 +108,10 @@ class PagarMe_Checkout_Block_Form_Checkout extends Mage_Payment_Block_Form
 
         $telephone = $address->getTelephone();
 
+        $cardBrands = \Mage::getStoreConfig(
+            'payment/pagarme_settings/allowed_credit_card_brands'
+        );
+
         return json_encode([
             'amount' => $helper->parseAmountToInteger($quote->getGrandTotal()),
             'createToken' => 'true',
@@ -123,7 +127,8 @@ class PagarMe_Checkout_Block_Form_Checkout extends Mage_Payment_Block_Form
             'customerAddressComplementary' => $address->getStreet(3),
             'customerAddressNeighborhood' => $address->getStreet(4),
             'customerAddressCity' => $address->getCity(),
-            'customerAddressState' => $address->getRegion()
+            'customerAddressState' => $address->getRegion(),
+            'brands' => $cardBrands
         ]);
     }
 }

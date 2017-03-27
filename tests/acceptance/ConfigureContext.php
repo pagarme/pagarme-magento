@@ -239,6 +239,96 @@ class ConfigureContext extends MinkContext
         );
     }
 
+    /**
+     * @Given a credit card list to allow
+     */
+    public function aCreditCardListToAllow()
+    {
+        $page = $this->getSession()->getPage();
+
+        $this->getSession()->wait(5000);
+        $select = $page->find(
+            'css',
+            '#payment_pagarme_settings_allowed_credit_card_brands'
+        );
+
+        $allCreditCardBrands = [
+            'visa',
+            'mastercard',
+            'amex',
+            'hipercard',
+            'aura',
+            'jcb',
+            'diners',
+            'elo'
+        ];
+
+        $savedCreditCardsBrands = explode(',', \Mage::getStoreConfig(
+            'payment/pagarme_settings/allowed_credit_card_brands'
+        ));
+
+        $this->creditCardListToAllow = array_diff(
+            $allCreditCardBrands,
+            $savedCreditCardsBrands
+        );
+
+        if (empty($this->creditCardListToAllow)) {
+            $this->creditCardListToAllow = [
+                'visa',
+                'amex',
+                'aura',
+                'diners'
+            ];
+        }
+    }
+
+    /**
+     * @When select the allowed credit cards
+     */
+    public function selectTheAllowedCreditCards()
+    {
+        $page = $this->getSession()->getPage();
+
+        $this->getSession()->wait(5000);
+        $select = $page->find(
+            'css',
+            '#payment_pagarme_settings_allowed_credit_card_brands'
+        );
+
+        $multiple = false;
+
+        foreach ($this->creditCardListToAllow as $creditCardValue) {
+            $select->selectOption($creditCardValue, $multiple);
+
+            if ($multiple === false) {
+                $multiple = true;
+            }
+        }
+    }
+
+    /**
+     * @Then the credit card list must be saved in database
+     */
+    public function theCreditCardListMustBeSavedInDatabase()
+    {
+        $this->flushCachedStoreConfig();
+
+        $creditCardsSavedAsString = \Mage::getStoreConfig(
+            'payment/pagarme_settings/allowed_credit_card_brands'
+        );
+
+        $creditCardsSavedAsArray = explode(',', $creditCardsSavedAsString);
+
+        \PHPUnit_Framework_TestCase::assertEquals(
+            sort($this->creditCardListToAllow),
+            sort($creditCardsSavedAsArray)
+        );
+    }
+
+    private function flushCachedStoreConfig()
+    {
+        Mage::app()->getStore()->resetConfig();
+    }
 
     /**
      * @AfterScenario

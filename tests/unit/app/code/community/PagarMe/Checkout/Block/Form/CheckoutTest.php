@@ -2,6 +2,8 @@
 
 class PagarMe_Checkout_Block_Form_CheckoutTest extends PHPUnit_Framework_TestCase
 {
+    private $brands = 'mastercard,visa,elo,aura';
+
     /**
      * @test
      */
@@ -22,7 +24,8 @@ class PagarMe_Checkout_Block_Form_CheckoutTest extends PHPUnit_Framework_TestCas
             'customerAddressComplementary' => '',
             'customerAddressNeighborhood' => 'Downtown',
             'customerAddressCity' => 'Nowhere',
-            'customerAddressState' => 'XP'
+            'customerAddressState' => 'XP',
+            'brands' => $this->brands
         ];
 
         $quote = Mage::getModel('sales/quote')
@@ -51,6 +54,11 @@ class PagarMe_Checkout_Block_Form_CheckoutTest extends PHPUnit_Framework_TestCas
             ->setIsDefaultShipping(true)
             ->setSaveInAddressBook(true)
             ->save();
+
+        \Mage::app()->getStore()->setConfig(
+            'payment/pagarme_settings/allowed_credit_card_brands',
+            $this->brands
+        );
 
         $customer = Mage::getModel('customer/customer')
             ->load($customer->getId());

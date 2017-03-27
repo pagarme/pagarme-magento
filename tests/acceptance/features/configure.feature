@@ -21,3 +21,13 @@ Feature: Configuration Form
         And enable Pagar.me Checkout
         And save configuration
         Then Pagar.me checkout must be enabled
+
+    Scenario: Setting up allowed credit card brands
+        Given a admin user
+        And a credit card list to allow
+        When I access the admin
+        And go to system configuration page
+        And select the allowed credit cards
+        And save configuration
+        Then the configuration must be saved with success
+        And the credit card list must be saved in database
