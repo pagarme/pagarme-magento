@@ -96,7 +96,7 @@ class PagarMe_Checkout_Block_Form_Checkout extends Mage_Payment_Block_Form
     }
 
     /**
-     * @return string
+     * @return array
      */
     public function getCheckoutConfig()
     {
@@ -108,7 +108,7 @@ class PagarMe_Checkout_Block_Form_Checkout extends Mage_Payment_Block_Form
 
         $telephone = $address->getTelephone();
 
-        return json_encode([
+        return [
             'amount' => $helper->parseAmountToInteger($quote->getGrandTotal()),
             'createToken' => 'true',
             'paymentMethods' => $this->getAvailablePaymentMethods(),
@@ -123,7 +123,10 @@ class PagarMe_Checkout_Block_Form_Checkout extends Mage_Payment_Block_Form
             'customerAddressComplementary' => $address->getStreet(3),
             'customerAddressNeighborhood' => $address->getStreet(4),
             'customerAddressCity' => $address->getCity(),
-            'customerAddressState' => $address->getRegion()
-        ]);
+            'customerAddressState' => $address->getRegion(),
+            'boletoHelperText' => Mage::getStoreConfig(
+                'payment/pagarme_settings/boleto_helper_text'
+            )
+        ];
     }
 }

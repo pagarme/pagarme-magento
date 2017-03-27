@@ -239,6 +239,14 @@ class ConfigureContext extends MinkContext
         );
     }
 
+    /**
+     * @When change the boleto helper text
+     */
+    public function changeTheBoletoHelperText()
+    {
+        $this->fillField('payment_pagarme_settings_boleto_helper_text', 'Some info text');
+    }
+
 
     /**
      * @AfterScenario

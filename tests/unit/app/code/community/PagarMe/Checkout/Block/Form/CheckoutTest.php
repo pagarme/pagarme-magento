@@ -22,7 +22,10 @@ class PagarMe_Checkout_Block_Form_CheckoutTest extends PHPUnit_Framework_TestCas
             'customerAddressComplementary' => '',
             'customerAddressNeighborhood' => 'Downtown',
             'customerAddressCity' => 'Nowhere',
-            'customerAddressState' => 'XP'
+            'customerAddressState' => 'XP',
+            'boletoHelperText' => Mage::getStoreConfig(
+                'payment/pagarme_settings/boleto_helper_text'
+            )
         ];
 
         $quote = Mage::getModel('sales/quote')
@@ -60,7 +63,7 @@ class PagarMe_Checkout_Block_Form_CheckoutTest extends PHPUnit_Framework_TestCas
         $checkoutBlock->setQuote($quote);
 
         $this->assertEquals(
-            json_encode($checkoutConfig),
+            $checkoutConfig,
             $checkoutBlock->getCheckoutConfig()
         );
     }

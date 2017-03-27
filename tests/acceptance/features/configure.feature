@@ -21,3 +21,11 @@ Feature: Configuration Form
         And enable Pagar.me Checkout
         And save configuration
         Then Pagar.me checkout must be enabled
+
+    Scenario: Customizing checkout
+        Given a admin user
+        When I access the admin
+        And go to system configuration page
+        And change the boleto helper text
+        And save configuration
+        Then the configuration must be saved with success
