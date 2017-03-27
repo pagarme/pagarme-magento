@@ -38,6 +38,18 @@ class PagarMe_Checkout_Block_Form_Checkout extends Mage_Payment_Block_Form
     /**
      * @codeCoverageIgnore
      *
+     * @return string
+     */
+    public function getButtonText()
+    {
+        return Mage::getStoreConfig(
+            'payment/pagarme_settings/button_text'
+        );
+    }
+
+    /**
+     * @codeCoverageIgnore
+     *
      * @return Mage_Sales_Model_Quote
      */
     public function getQuote()

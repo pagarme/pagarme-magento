@@ -83,8 +83,9 @@
                 <interest_rate>0</interest_rate>
                 <free_installments>1</free_installments>
                 <max_installments>1</max_installments>
+                <capture_customer_data>true</capture_customer_data>
+                <button_text>Realizar pagamento</button_text>
             </pagarme_settings>
-            <capture_customer_data>true</capture_customer_data>
         </payment>
     </default>
 </config>
