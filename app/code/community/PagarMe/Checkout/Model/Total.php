@@ -20,11 +20,9 @@ class PagarMe_Checkout_Model_Total extends Mage_Sales_Model_Quote_Address_Total_
 
     public function collect(Mage_Sales_Model_Quote_Address $address)
     {
-
         parent::collect($address);
 
         $paymentData = Mage::app()->getRequest()->getPost('payment');
-
 
         if (is_null($paymentData)) {
             return $this;

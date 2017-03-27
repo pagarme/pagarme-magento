@@ -106,7 +106,6 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
                 $transaction->getAmount()
             );
         } catch (\Exception $exception) {
-            die($exception->getMessage());
             throw $exception;
         }
 
