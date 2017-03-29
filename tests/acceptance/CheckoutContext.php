@@ -255,7 +255,7 @@ class CheckoutContext extends MinkContext
      */
     public function thePurchaseMustBePaidWithSuccess()
     {
-        $this->session->wait(5000);
+        $this->session->wait(8000);
 
         $page = $this->session->getPage();
 

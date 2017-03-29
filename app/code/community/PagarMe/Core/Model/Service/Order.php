@@ -23,7 +23,7 @@ class PagarMe_Core_Model_Service_Order
     /**
      * @codeCoverageIgnore
      *
-     * @param Mage_Sales_Model_Order
+     * @param Mage_Sales_Model_Order $order
      *
      * @return int $transactionId
      */
@@ -32,5 +32,18 @@ class PagarMe_Core_Model_Service_Order
         return Mage::getModel('pagarme_core/transaction')
             ->load($order->getId(), 'order_id')
             ->getTransactionId();
+    }
+
+    /**
+     * @codeCoverageIgnore
+     *
+     * @param int $orderId
+     *
+     * @return PagarMe_Core_Model_Transaction
+     */
+    public function getTransactionByOrderId($orderId)
+    {
+        return Mage::getModel('pagarme_core/transaction')
+            ->load($orderId, 'order_id');
     }
 }
