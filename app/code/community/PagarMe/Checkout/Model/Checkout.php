@@ -34,6 +34,10 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
      * @var string
      */
     protected $_formBlockType = 'pagarme_checkout/form_checkout';
+    /**
+     * @var string
+     */
+    protected $_infoBlockType = 'pagarme_checkout/info_checkout';
 
     const PAGARME_CHECKOUT_CREDIT_CARD = 'pagarme_checkout_credit_card';
     const PAGARME_CHECKOUT_BOLETO = 'pagarme_checkout_boleto';

@@ -1,0 +1,10 @@
+<?php
+    $transaction = \Mage::getModel('pagarme_core/service_order')->getTransactionByOrderId($this->getOrder()->getId());
+?>
+
+<?php if ($transaction->getRateAmount() > 0): ?>
+    <tr id="pagarme_order_info_rate_amount">
+        <td class="label">Rate Amount</td>
+        <td><?= $this->displayPrices($transaction->getRateAmount(), $transaction->getRateAmount()) ?></td>
+    </tr>
+<?php endif; ?>

@@ -1,0 +1,44 @@
+<?php $transaction = $this->getTransaction(); ?>
+
+<h3>Checkout Pagar.me</h3>
+
+<table id="pagarme_order_info_payment_details">
+    <tr>
+        <td>
+            <strong>Payment Method</strong>
+        </td>
+        <td>
+           <?= ($transaction->getInstallments() > 0) ? 'Cartão de Crédito' : 'Boleto' ?>
+        </td>
+    </tr>
+    <?php if ($transaction->getInstallments() > 0): ?>
+        <tr>
+            <td>
+                <strong>Installments</strong>
+            </td>
+            <td style="text-align:right;">
+               <?= $transaction->getInstallments() ?>
+            </td>
+        </tr>
+    <?php endif; ?>
+    <?php if ($transaction->getInterestRate() > 0): ?>
+        <tr>
+            <td>
+                <strong>Interest Fee (%)</strong>
+            </td>
+            <td style="text-align:right;">
+               <?= $transaction->getInterestRate() ?>
+            </td>
+        </tr>
+    <?php endif; ?>
+    <tr>
+        <td>
+            <strong>Transaction Id</strong>
+        </td>
+        <td style="text-align:right;">
+           <?= $transaction->getTransactionId() ?>
+        </td>
+    </tr>
+</table>
+
+<br/>

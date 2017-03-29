@@ -42,6 +42,11 @@ $table = $installer->getConnection()
         'future_value',
         Varien_Db_Ddl_Table::TYPE_FLOAT,
         null
+    )
+    ->addColumn(
+        'rate_amount',
+        Varien_Db_Ddl_Table::TYPE_FLOAT,
+        null
     );
 
 $installer->getConnection()

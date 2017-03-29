@@ -33,6 +33,15 @@
             </quote>
         </sales>
     </global>
+    <adminhtml>
+        <layout>
+            <updates>
+                <pagarme_checkout>
+                    <file>pagarme/pagarme_checkout.xml</file>
+                </pagarme_checkout>
+            </updates>
+        </layout>
+    </adminhtml>
     <frontend>
         <layout>
             <updates>
