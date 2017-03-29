@@ -18,6 +18,10 @@ class PagarMe_Checkout_Model_Total extends Mage_Sales_Model_Quote_Address_Total_
         return Mage::helper('pagarme_checkout')->__('Interest/Discount');
     }
 
+    /**
+     * @param Mage_Sales_Model_Quote_Address $address
+     * @return PagarMe_Checkout_Model_Total
+     */
     public function collect(Mage_Sales_Model_Quote_Address $address)
     {
         parent::collect($address);
