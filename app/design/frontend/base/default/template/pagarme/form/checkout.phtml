@@ -16,7 +16,7 @@
 
 <script type="text/javascript" id="pagarme-checkout">
     $("pagarme-checkout-fill-info-button").observe("click", function (event){
-        var pagarmeCheckoutSettings = <?= $this->getCheckoutConfig() ?>;
+        var pagarmeCheckoutSettings = <?= json_encode($this->getCheckoutConfig()) ?>;
 
         var checkoutPagarme = new PagarMeCheckout.Checkout({
             "encryption_key" : "<?= $this->getEncryptionKey() ?>",

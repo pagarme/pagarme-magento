@@ -21,6 +21,17 @@
                 <class>PagarMe_Checkout_Block</class>
             </pagarme_checkout>
         </blocks>
+        <sales>
+            <quote>
+                <totals>
+                    <pagarme_checkout>
+                        <class>pagarme_checkout/total</class>
+                        <after>subtotal,shipping</after>
+                        <before>tax</before>
+                    </pagarme_checkout>
+                </totals>
+            </quote>
+        </sales>
     </global>
     <adminhtml>
         <layout>
@@ -40,4 +51,11 @@
             </updates>
         </layout>
     </frontend>
+    <default>
+        <payment>
+            <pagarme_checkout>
+                <active>1</active>
+            </pagarme_checkout>
+        </payment>
+    </default>
 </config>

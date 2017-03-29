@@ -241,6 +241,49 @@ class ConfigureContext extends RawMinkContext
     }
 
     /**
+     * @Given Pagar.me settings panel
+     */
+    public function pagarMeSettingsPanel()
+    {
+        $this->aAdminUser();
+        $this->iAccessTheAdmin();
+        $this->goToSystemConfigurationPage();
+    }
+
+    /**
+     * @When I set interest rate to :interestRate
+     */
+    public function iSetInterestRateTo($interestRate)
+    {
+        $this->fillField(
+            'payment_pagarme_settings_interest_rate',
+            $interestRate
+        );
+    }
+
+    /**
+     * @When I set max instalments to :maxInstallmets
+     */
+    public function iSetMaxInstalmentsTo($maxInstallmets)
+    {
+        $this->fillField(
+            'payment_pagarme_settings_max_installments',
+            $maxInstallmets
+        );
+    }
+
+    /**
+     * @When I set free instalments to :freeInstallments
+     */
+    public function iSetFreeInstalmentsTo($freeInstallments)
+    {
+        $this->fillField(
+            'payment_pagarme_settings_free_installments',
+            $freeInstallments
+        );
+    }
+
+    /**
      * @AfterScenario
      */
     public function tearDown()
