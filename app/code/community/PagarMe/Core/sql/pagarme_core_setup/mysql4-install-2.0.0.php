@@ -24,6 +24,29 @@ $table = $installer->getConnection()
             'nullable' => false,
             'primary'  => true
         ]
+    )
+    ->addColumn(
+        'installments',
+        Varien_Db_Ddl_Table::TYPE_SMALLINT,
+        1,
+        [
+            'nullable' => false,
+        ]
+    )
+    ->addColumn(
+        'interest_rate',
+        Varien_Db_Ddl_Table::TYPE_FLOAT,
+        null
+    )
+    ->addColumn(
+        'future_value',
+        Varien_Db_Ddl_Table::TYPE_FLOAT,
+        null
+    )
+    ->addColumn(
+        'rate_amount',
+        Varien_Db_Ddl_Table::TYPE_FLOAT,
+        null
     );
 
 $installer->getConnection()

@@ -16,6 +16,8 @@ class CheckoutContext extends MinkContext
 
     private $session;
 
+    private $grandTotal;
+
     private $pagarMeCheckout;
 
     /**
@@ -27,6 +29,22 @@ class CheckoutContext extends MinkContext
             ->saveConfig(
                 'payment/pagarme_settings/payment_methods',
                 'credit_card,boleto'
+            );
+
+        $config = Mage::getModel('core/config');
+        $config->saveConfig(
+                'payment/pagarme_settings/payment_methods',
+                'credit_card,boleto'
+            );
+
+        $config->saveConfig(
+                'payment/pagarme_settings/interest_rate',
+                5
+            );
+
+        $config->saveConfig(
+                'payment/pagarme_settings/max_installments',
+                12
             );
 
         $this->magentoUrl = getenv('MAGENTO_URL');
@@ -191,9 +209,9 @@ class CheckoutContext extends MinkContext
     }
 
     /**
-     * @When I confirm my payment information
+     * @When I confirm my payment information with :number installments
      */
-    public function iConfirmMyPaymentInformation()
+    public function iConfirmMyPaymentInformationWithInstallments($installmentsNumber)
     {
         $this->waitForElement(
             '#pagarme-modal-box-step-credit-card-information',
@@ -220,16 +238,27 @@ class CheckoutContext extends MinkContext
             '#pagarme-modal-box-credit-card-cvv'
         )->setValue($this->creditCard['cvv']);
 
+        if ($installmentsNumber > 1) {
+            $field = $this->pagarMeCheckout->find(
+                'css',
+                "[data-value='$installmentsNumber']"
+            );
+            $field->click();
+            $this->grandTotal = $field->getAttribute('data-amount');
+        }
+
         $this->pagarMeCheckout->find(
             'css',
             '#pagarme-modal-box-step-credit-card-information .pagarme-modal-box-next-step'
         )->click();
+
+        $this->session->wait(2000);
     }
 
     /**
-     * @Then finish purchase
+     * @Then finish payment process
      */
-    public function finishPurchase()
+    public function finishPaymentProcess()
     {
         $this->session->switchToIframe();
 
@@ -238,15 +267,20 @@ class CheckoutContext extends MinkContext
             "document.querySelector('#pagarme-checkout-container').style.display == 'none'"
         );
 
-        $page = $this->session->getPage();
-
-        $page->find(
+        $this->session->getPage()->find(
             'css',
             '#payment-buttons-container button'
         )->press();
 
-        $this->waitForElement('#checkout-step-review', 2000);
+        $this->waitForElement('#checkout-step-review', 5000);
+    }
 
+    /**
+     * @Then place order
+     */
+    public function placeOrder()
+    {
+        $page = $this->session->getPage();
         $page->pressButton(Mage::helper('pagarme_checkout')->__('Place Order'));
     }
 
@@ -255,7 +289,7 @@ class CheckoutContext extends MinkContext
      */
     public function thePurchaseMustBePaidWithSuccess()
     {
-        $this->session->wait(5000);
+        $this->session->wait(8000);
 
         $page = $this->session->getPage();
 
@@ -272,6 +306,31 @@ class CheckoutContext extends MinkContext
                 'pagarme_checkout'
             )->__('Your order has been received.'),
             $successMessage
+        );
+    }
+
+    /**
+     * @Then the interest must applied
+     */
+    public function theInterestMustApplied()
+    {
+        $this->session->wait(10000);
+        $pricesCell = $this->session->getPage()->find('css', 'tfoot strong span.price');
+
+        \PHPUnit_Framework_TestCase::assertEquals(
+            $this->grandTotal,
+            filter_var($pricesCell->getHtml(), FILTER_SANITIZE_NUMBER_FLOAT)
+        );
+    }
+
+    /**
+     * @Then the interest must be described in checkout
+     */
+    public function mustBeDescribedInCheckout()
+    {
+        \PHPUnit_Framework_TestCase::assertContains(
+            Mage::helper('pagarme_checkout')->__('Interest/Discount'),
+            $this->getSession()->getPage()->getText()
         );
     }
 

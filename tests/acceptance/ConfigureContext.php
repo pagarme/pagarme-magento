@@ -1,12 +1,12 @@
 <?php
 
 use Behat\Behat\Tester\Exception\PendingException;
-use Behat\MinkExtension\Context\MinkContext;
+use Behat\MinkExtension\Context\RawMinkContext;
 
 require_once __DIR__ . '/../bootstrap.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-class ConfigureContext extends MinkContext
+class ConfigureContext extends RawMinkContext
 {
     use PagarMe\Magento\Test\Helper\CustomerDataProvider;
     use PagarMe\Magento\Test\Helper\ProductDataProvider;
@@ -41,6 +41,7 @@ class ConfigureContext extends MinkContext
 
     /**
      * @Given a admin user
+     * @Then as an Admin user
      */
     public function aAdminUser()
     {
@@ -244,7 +245,7 @@ class ConfigureContext extends MinkContext
      */
     public function changeTheBoletoHelperText()
     {
-        $this->fillField(
+        $this->getSession()->getPage()->fillField(
             'payment_pagarme_settings_boleto_helper_text',
             'Some info text'
         );
@@ -255,7 +256,7 @@ class ConfigureContext extends MinkContext
      */
     public function changeTheCreditCardHelperText()
     {
-        $this->fillField(
+        $this->getSession()->getPage()->fillField(
             'payment_pagarme_settings_credit_card_helper_text',
             'Some info text'
         );
@@ -266,7 +267,7 @@ class ConfigureContext extends MinkContext
      */
     public function changeTheUiColor()
     {
-        $this->fillField(
+        $this->getSession()->getPage()->fillField(
             'payment_pagarme_settings_ui_color',
             '#ff00ff'
         );
@@ -277,9 +278,30 @@ class ConfigureContext extends MinkContext
      */
     public function changeTheHeaderText()
     {
-        $this->fillField(
+        $this->getSession()->getPage()->fillField(
             'payment_pagarme_settings_header_text',
             'Some info text'
+        );
+    }
+
+    /**
+     * @Given Pagar.me settings panel
+     */
+    public function pagarMeSettingsPanel()
+    {
+        $this->aAdminUser();
+        $this->iAccessTheAdmin();
+        $this->goToSystemConfigurationPage();
+    }
+
+    /**
+     * @When I set interest rate to :interestRate
+     */
+    public function iSetInterestRateTo($interestRate)
+    {
+        $this->getSession()->getPage()->fillField(
+            'payment_pagarme_settings_interest_rate',
+            $interestRate
         );
     }
 
@@ -288,9 +310,19 @@ class ConfigureContext extends MinkContext
      */
     public function changeThePaymentButtonText()
     {
-        $this->fillField(
+        $this->getSession()->getPage()->fillField(
             'payment_pagarme_settings_payment_button_text',
             'Pagar!'
+        );
+    }
+    /**
+     * @When I set max instalments to :maxInstallmets
+     */
+    public function iSetMaxInstalmentsTo($maxInstallmets)
+    {
+        $this->getSession()->getPage()->fillField(
+            'payment_pagarme_settings_max_installments',
+            $maxInstallmets
         );
     }
 
@@ -299,9 +331,20 @@ class ConfigureContext extends MinkContext
      */
     public function changeTheCheckoutButtonText()
     {
-        $this->fillField(
+        $this->getSession()->getPage()->fillField(
             'payment_pagarme_settings_checkout_button_text',
             'Pagar!'
+        );
+    }
+
+    /**
+     * @When I set free instalments to :freeInstallments
+     */
+    public function iSetFreeInstalmentsTo($freeInstallments)
+    {
+        $this->getSession()->getPage()->fillField(
+            'payment_pagarme_settings_free_installments',
+            $freeInstallments
         );
     }
 

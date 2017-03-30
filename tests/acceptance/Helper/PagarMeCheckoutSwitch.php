@@ -16,15 +16,9 @@ trait PagarMeCheckoutSwitch
 
     protected function changePagarmeCheckout($value)
     {
-        \Mage::getConfig()->saveConfig(
-            'payment/pagarme_settings/active',
-            $value
-        );
+        $nodePath = "payment/pagarme_settings/active";
 
-        \Mage::getConfig()->saveConfig(
-            'payment/pagarme_checkout/active',
-            $value
-        );
+        \Mage::getConfig()->saveConfig($nodePath, $value);
 
         \Mage::getConfig()->cleanCache();
     }

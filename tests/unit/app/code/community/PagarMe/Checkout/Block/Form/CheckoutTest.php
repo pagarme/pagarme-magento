@@ -8,17 +8,17 @@ class PagarMe_Checkout_Block_Form_CheckoutTest extends PHPUnit_Framework_TestCas
     public function mustReturnCheckoutConfig()
     {
         $checkoutConfig = [
-            'amount' => 1234,
-            'createToken' => 'true',
-            'paymentMethods' => Mage::getStoreConfig('payment/pagarme_settings/payment_methods'),
-            'customerName' => 'John Due',
-            'customerEmail' => mktime() . 'john.due@email.com',
-            'customerDocumentNumber' => '123.456.789-52',
-            'customerPhoneDdd' => '15',
-            'customerPhoneNumber' => '958483521',
-            'customerAddressZipcode' => '12345678',
-            'customerAddressStreet' => 'Potato Av',
-            'customerAddressStreetNumber' => '123',
+            'amount'                       => 1234,
+            'createToken'                  => 'true',
+            'paymentMethods'               => Mage::getStoreConfig('payment/pagarme_settings/payment_methods'),
+            'customerName'                 => 'John Due',
+            'customerEmail'                => mktime() . 'john.due@email.com',
+            'customerDocumentNumber'       => '123.456.789-52',
+            'customerPhoneDdd'             => '15',
+            'customerPhoneNumber'          => '958483521',
+            'customerAddressZipcode'       => '12345678',
+            'customerAddressStreet'        => 'Potato Av',
+            'customerAddressStreetNumber'  => '123',
             'customerAddressComplementary' => '',
             'customerAddressNeighborhood' => 'Downtown',
             'customerAddressCity' => 'Nowhere',
@@ -37,7 +37,10 @@ class PagarMe_Checkout_Block_Form_CheckoutTest extends PHPUnit_Framework_TestCas
             ),
             'paymentButtonText' => Mage::getStoreConfig(
                 'payment/pagarme_settings/payment_button_text'
-            )
+            ),
+            'interestRate' => Mage::getStoreConfig('payment/pagarme_settings/interest_rate'),
+            'maxInstallments' => Mage::getStoreConfig('payment/pagarme_settings/max_installments'),
+            'freeInstallments' => Mage::getStoreConfig('payment/pagarme_settings/free_installments')
         ];
 
         $quote = Mage::getModel('sales/quote')

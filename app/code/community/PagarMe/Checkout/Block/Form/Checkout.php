@@ -150,6 +150,14 @@ class PagarMe_Checkout_Block_Form_Checkout extends Mage_Payment_Block_Form
             ),
             'paymentButtonText' => Mage::getStoreConfig(
                 'payment/pagarme_settings/payment_button_text'
+            'interestRate' => Mage::getStoreConfig(
+                'payment/pagarme_settings/interest_rate'
+            ),
+            'maxInstallments' => Mage::getStoreConfig(
+                'payment/pagarme_settings/max_installments'
+            ),
+            'freeInstallments' => Mage::getStoreConfig(
+                'payment/pagarme_settings/free_installments'
             )
         ];
     }
