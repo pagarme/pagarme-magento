@@ -366,6 +366,34 @@ class CheckoutContext extends RawMinkContext
     }
 
     /**
+     * @When choose pay with checkmo
+     */
+    public function choosePayWithCheckmo()
+    {
+        $this->session->getPage()->find('css', '#p_method_checkmo')->click();
+
+        $this->session->getPage()->find(
+            'css',
+            '#payment-buttons-container button'
+        )->press();
+
+        $this->waitForElement('#checkout-step-review', 5000);
+    }
+
+    /**
+     * @Then I must be able to finish the payment process
+     */
+    public function iMustBeAbleToFinishThePaymentProcess()
+    {
+        $isPlaceOrderButtonVisible = $this->session->getPage()->find(
+            'css',
+            '.btn-checkout'
+        )->isVisible();
+
+        \PHPUnit_Framework_TestCase::assertTrue($isPlaceOrderButtonVisible);
+    }
+
+    /**
      * @AfterScenario
      */
     public function tearDown()

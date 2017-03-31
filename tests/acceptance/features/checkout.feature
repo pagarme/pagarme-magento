@@ -46,3 +46,13 @@ Feature: Checkout Pagar.me
         And finish payment process
         Then the interest must applied
         And the interest must be described in checkout
+
+    Scenario: Select a different payment method to ensure that it is working
+        Given a registered user
+        When I access the store page
+        And add any product to basket
+        And I go to checkout page
+        And login with registered user
+        And confirm billing and shipping address information
+        And choose pay with checkmo
+        Then I must be able to finish the payment process

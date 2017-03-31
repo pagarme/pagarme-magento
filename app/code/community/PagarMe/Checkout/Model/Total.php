@@ -34,6 +34,15 @@ class PagarMe_Checkout_Model_Total
             return $this;
         }
 
+        $paymentMethod = $address->getQuote()
+            ->getPayment()
+            ->getMethodInstance()
+            ->getCode();
+
+        if ($paymentMethod != $this->getCode()) {
+            return $this;
+        }
+
         if ($this->interestAmount != 0) {
             return $this;
         }
