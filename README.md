@@ -1,4 +1,11 @@
-# Módulo de integração Pagar.me para Magento 1.x
+<img src="https://cdn.rawgit.com/pagarme/brand/9ec30d3d4a6dd8b799bca1c25f60fb123ad66d5b/logo-circle.svg" width="127px" height="127px" align="left"/>
+
+# Pagar.me Magento
+
+Módulo de integração Pagar.me para Magento 1.x
+
+<br>
+ 
 [![Build Status](https://travis-ci.org/pagarme/pagarme-magento.svg?branch=v2)](https://travis-ci.org/pagarme/pagarme-magento)
 [![Coverage Status](https://coveralls.io/repos/github/pagarme/pagarme-magento/badge.svg?branch=v2)](https://coveralls.io/github/pagarme/pagarme-magento?branch=master)
 
