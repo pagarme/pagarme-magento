@@ -100,7 +100,7 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
 
         $pagarMeSdk = Mage::getModel(
             'pagarme_core/sdk_adapter'
-            )->getPagarMeSdk();
+        )->getPagarMeSdk();
 
         $transaction = $pagarMeSdk->transaction()->get($token);
 
@@ -163,17 +163,27 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
         PagarMe\Sdk\Transaction\AbstractTransaction $transaction,
         $infoInstance
     ) {
-        Mage::getModel('pagarme_core/transaction')
+        $transaction = Mage::getModel('pagarme_core/transaction')
             ->setTransactionId($transaction->getId())
-            ->setOrderId($order->getId())
-            ->setInstallments($transaction->getInstallments())
+            ->setOrderId($order->getId());
+
+        if ($infoInstance->getAdditionalInformation('pagarme_payment_method')
+            == self::PAGARME_CHECKOUT_CREDIT_CARD
+            ) {
+            $transaction->setInstallments(
+                $transaction->getInstallments()
+            )
             ->setInterestRate(
                 $infoInstance->getAdditionalInformation('interest_rate')
             )
             ->setFutureValue(
                 Mage::helper('pagarme_core')
-                    ->parseAmountToFloat($transaction->getAmount())
-            )
-            ->save();
+                ->parseAmountToFloat(
+                    $transaction->getAmount()
+                )
+            );
+        }
+
+        $transaction->save();
     }
 }
