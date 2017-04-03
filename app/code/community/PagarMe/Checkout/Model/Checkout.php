@@ -100,7 +100,7 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
 
         $pagarMeSdk = Mage::getModel(
             'pagarme_core/sdk_adapter'
-            )->getPagarMeSdk();
+        )->getPagarMeSdk();
 
         $transaction = $pagarMeSdk->transaction()->get($token);
 
