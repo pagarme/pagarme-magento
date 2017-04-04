@@ -39,23 +39,11 @@ class PagarMe_Checkout_Block_Form_CheckoutTest extends PHPUnit_Framework_TestCas
             'paymentButtonText' => Mage::getStoreConfig(
                 'payment/pagarme_settings/payment_button_text'
             ),
-            'interestRate' => Mage::getStoreConfig('payment/pagarme_settings/interest_rate'),
-            'maxInstallments' => Mage::getStoreConfig('payment/pagarme_settings/max_installments'),
-            'freeInstallments' => Mage::getStoreConfig('payment/pagarme_settings/free_installments'),
-            'boletoHelperText' => Mage::getStoreConfig(
-                'payment/pagarme_settings/boleto_helper_text'
+            'interestRate' => Mage::getStoreConfig('payment/pagarme_settings/interest_rate'
             ),
-            'creditCardHelperText' => Mage::getStoreConfig(
-                'payment/pagarme_settings/credit_card_helper_text'
+            'maxInstallments' => Mage::getStoreConfig('payment/pagarme_settings/max_installments'
             ),
-            'uiColor' => Mage::getStoreConfig(
-                'payment/pagarme_settings/ui_color'
-            ),
-            'headerText' => Mage::getStoreConfig(
-                'payment/pagarme_settings/header_text'
-            ),
-            'paymentButtonText' => Mage::getStoreConfig(
-                'payment/pagarme_settings/payment_button_text'
+            'freeInstallments' => Mage::getStoreConfig('payment/pagarme_settings/free_installments'
             )
         ];
 

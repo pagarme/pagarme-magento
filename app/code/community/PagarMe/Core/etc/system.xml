@@ -80,46 +80,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </capture_customer_data>
-                        <boleto_helper_text translate="label">
-                            <label>Mensagem opcional que aparecerá embaixo do botão de pagamento Boleto</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>100</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </boleto_helper_text>
-                        <credit_card_helper_text translate="label">
-                            <label>Mensagem opcional que aparecerá embaixo do botão de pagamento Cartão de Crédito</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>105</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </credit_card_helper_text>
-                        <ui_color translate="label">
-                            <label>Cor primária da interface de Checkout</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>110</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </ui_color>
-                        <header_text translate="label">
-                            <label>Define o texto do cabeçalho</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>115</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </header_text>
-                        <checkout_button_text translate="label">
-                            <label>Texto do botão para abrir o checkout</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>120</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </checkout_button_text>
                         <payment_button_text translate="label">
                             <label>Texto do botão final de pagamento</label>
                             <frontend_type>text</frontend_type>
@@ -195,14 +155,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </checkout_button_text>
-                        <payment_button_text translate="label">
-                            <label>Texto do botão final de pagamento</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>125</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </payment_button_text>
                     </fields>
                 </pagarme_settings>
             </groups>
