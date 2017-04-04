@@ -252,6 +252,50 @@ class ConfigureContext extends RawMinkContext
     }
 
     /**
+     * @When change the boleto helper text
+     */
+    public function changeTheBoletoHelperText()
+    {
+        $this->getSession()->getPage()->fillField(
+            'payment_pagarme_settings_boleto_helper_text',
+            'Some info text'
+        );
+    }
+
+    /**
+     * @When change the credit card helper text
+     */
+    public function changeTheCreditCardHelperText()
+    {
+        $this->getSession()->getPage()->fillField(
+            'payment_pagarme_settings_credit_card_helper_text',
+            'Some info text'
+        );
+    }
+
+    /**
+     * @When change the ui color
+     */
+    public function changeTheUiColor()
+    {
+        $this->getSession()->getPage()->fillField(
+            'payment_pagarme_settings_ui_color',
+            '#ff00ff'
+        );
+    }
+
+    /**
+     * @When change the header text
+     */
+    public function changeTheHeaderText()
+    {
+        $this->getSession()->getPage()->fillField(
+            'payment_pagarme_settings_header_text',
+            'Some info text'
+        );
+    }
+
+    /**
      * @Given Pagar.me settings panel
      */
     public function pagarMeSettingsPanel()
@@ -273,6 +317,16 @@ class ConfigureContext extends RawMinkContext
     }
 
     /**
+     * @When change the payment button text
+     */
+    public function changeThePaymentButtonText()
+    {
+        $this->getSession()->getPage()->fillField(
+            'payment_pagarme_settings_payment_button_text',
+            'Pagar!'
+        );
+    }
+    /**
      * @When I set max instalments to :maxInstallmets
      */
     public function iSetMaxInstalmentsTo($maxInstallmets)
@@ -284,6 +338,17 @@ class ConfigureContext extends RawMinkContext
     }
 
     /**
+     * @When change the checkout button text
+     */
+    public function changeTheCheckoutButtonText()
+    {
+        $this->getSession()->getPage()->fillField(
+            'payment_pagarme_settings_checkout_button_text',
+            'Pagar!'
+        );
+    }
+
+    /**
      * @When I set free instalments to :freeInstallments
      */
     public function iSetFreeInstalmentsTo($freeInstallments)
@@ -291,77 +356,6 @@ class ConfigureContext extends RawMinkContext
         $this->getSession()->getPage()->fillField(
             'payment_pagarme_settings_free_installments',
             $freeInstallments
-        );
-    }
-
-    /**
-     * @When change the boleto helper text
-     */
-    public function changeTheBoletoHelperText()
-    {
-        $this->getSession()->getPage()->fillField(
-            'payment_pagarme_settings_boleto_helper_text',
-            'Some info text'
-        );
-
-        $this->fillField(
-            'payment_pagarme_settings_boleto_helper_text',
-            'Some info text'
-        );
-    }
-
-    /**
-     * @When change the credit card helper text
-     */
-    public function changeTheCreditCardHelperText()
-    {
-        $this->fillField(
-            'payment_pagarme_settings_credit_card_helper_text',
-            'Some info text'
-        );
-    }
-
-    /**
-     * @When change the ui color
-     */
-    public function changeTheUiColor()
-    {
-        $this->fillField(
-            'payment_pagarme_settings_ui_color',
-            '#ff00ff'
-        );
-    }
-
-    /**
-     * @When change the header text
-     */
-    public function changeTheHeaderText()
-    {
-        $this->fillField(
-            'payment_pagarme_settings_header_text',
-            'Some info text'
-        );
-    }
-
-    /**
-     * @When change the payment button text
-     */
-    public function changeThePaymentButtonText()
-    {
-        $this->fillField(
-            'payment_pagarme_settings_payment_button_text',
-            'Pagar!'
-        );
-    }
-
-    /**
-     * @When change the checkout button text
-     */
-    public function changeTheCheckoutButtonText()
-    {
-        $this->fillField(
-            'payment_pagarme_settings_checkout_button_text',
-            'Pagar!'
         );
     }
 

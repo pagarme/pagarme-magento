@@ -30,6 +30,19 @@ Feature: Configuration Form
         And save configuration
         Then Pagar.me checkout must be enabled
 
+    Scenario: Customizing checkout
+        Given a admin user
+        When I access the admin
+        And go to system configuration page
+        And change the boleto helper text
+        And change the credit card helper text
+        And change the ui color
+        And change the header text
+        And change the payment button text
+        And change the checkout button text
+        And save configuration
+        Then the configuration must be saved with success
+
     Scenario Outline: Configuring installments info
         Given Pagar.me settings panel
         When I set interest rate to "<interest_rate>"

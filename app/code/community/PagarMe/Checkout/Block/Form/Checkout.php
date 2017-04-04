@@ -136,6 +136,21 @@ class PagarMe_Checkout_Block_Form_Checkout extends Mage_Payment_Block_Form
             'customerAddressNeighborhood' => $address->getStreet(4),
             'customerAddressCity' => $address->getCity(),
             'customerAddressState' => $address->getRegion(),
+            'boletoHelperText' => Mage::getStoreConfig(
+                'payment/pagarme_settings/boleto_helper_text'
+            ),
+            'creditCardHelperText' => Mage::getStoreConfig(
+                'payment/pagarme_settings/credit_card_helper_text'
+            ),
+            'uiColor' => Mage::getStoreConfig(
+                'payment/pagarme_settings/ui_color'
+            ),
+            'headerText' => Mage::getStoreConfig(
+                'payment/pagarme_settings/header_text'
+            ),
+            'paymentButtonText' => Mage::getStoreConfig(
+                'payment/pagarme_settings/payment_button_text'
+            ),
             'interestRate' => Mage::getStoreConfig(
                 'payment/pagarme_settings/interest_rate'
             ),

@@ -162,7 +162,9 @@ class CheckoutContext extends RawMinkContext
 
         $page->find('css', '#p_method_pagarme_checkout')->click();
         $page->pressButton(
-            Mage::helper('pagarme_checkout')->__('Fill in the card data')
+            Mage::getStoreConfig(
+                'payment/pagarme_settings/button_text'
+            )
         );
     }
 
@@ -293,7 +295,7 @@ class CheckoutContext extends RawMinkContext
      */
     public function thePurchaseMustBePaidWithSuccess()
     {
-        $this->session->wait(8000);
+        $this->session->wait(10000);
 
         $page = $this->session->getPage();
 
