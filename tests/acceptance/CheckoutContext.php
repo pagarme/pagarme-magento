@@ -269,7 +269,7 @@ class CheckoutContext extends RawMinkContext
         $this->session->switchToIframe();
 
         $this->session->wait(
-            5000,
+            10000,
             "document.querySelector('#pagarme-checkout-container').style.display == 'none'"
         );
 
