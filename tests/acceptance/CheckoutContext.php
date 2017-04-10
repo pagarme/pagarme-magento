@@ -159,13 +159,6 @@ class CheckoutContext extends RawMinkContext
             ->press();
 
         $this->waitForElement('#checkout-step-payment', 5000);
-
-        $page->find('css', '#p_method_pagarme_checkout')->click();
-        $page->pressButton(
-            Mage::getStoreConfig(
-                'payment/pagarme_settings/button_text'
-            )
-        );
     }
 
      /**
@@ -174,6 +167,13 @@ class CheckoutContext extends RawMinkContext
     public function choosePayWithPagarMeCheckoutUsing($paymentMethod)
     {
         $page = $this->session->getPage();
+
+        $page->find('css', '#p_method_pagarme_checkout')->click();
+        $page->pressButton(
+            Mage::getStoreConfig(
+                'payment/pagarme_settings/button_text'
+            )
+        );
 
         $this->session->switchToIframe(
             $page->find('css', 'iframe')->getAttribute('name')
