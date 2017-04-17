@@ -162,13 +162,6 @@ class CheckoutContext extends RawMinkContext
             ->press();
 
         $this->waitForElement('#checkout-step-payment', 5000);
-
-        $page->find('css', '#p_method_pagarme_checkout')->click();
-        $page->pressButton(
-            Mage::getStoreConfig(
-                'payment/pagarme_settings/button_text'
-            )
-        );
     }
 
      /**
@@ -177,6 +170,13 @@ class CheckoutContext extends RawMinkContext
     public function choosePayWithPagarMeCheckoutUsing($paymentMethod)
     {
         $page = $this->session->getPage();
+
+        $page->find('css', '#p_method_pagarme_checkout')->click();
+        $page->pressButton(
+            Mage::getStoreConfig(
+                'payment/pagarme_settings/button_text'
+            )
+        );
 
         $this->session->switchToIframe(
             $page->find('css', 'iframe')->getAttribute('name')
@@ -368,6 +368,34 @@ class CheckoutContext extends RawMinkContext
                 '.pagarme_info_boleto a'
             )->getAttribute('href')
         );
+    }
+
+    /**
+     * @When choose pay with checkmo
+     */
+    public function choosePayWithCheckmo()
+    {
+        $this->session->getPage()->find('css', '#p_method_checkmo')->click();
+
+        $this->session->getPage()->find(
+            'css',
+            '#payment-buttons-container button'
+        )->press();
+
+        $this->waitForElement('#checkout-step-review', 5000);
+    }
+
+    /**
+     * @Then I must be able to finish the payment process
+     */
+    public function iMustBeAbleToFinishThePaymentProcess()
+    {
+        $isPlaceOrderButtonVisible = $this->session->getPage()->find(
+            'css',
+            '.btn-checkout'
+        )->isVisible();
+
+        \PHPUnit_Framework_TestCase::assertTrue($isPlaceOrderButtonVisible);
     }
 
     /**
