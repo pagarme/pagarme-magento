@@ -32,7 +32,7 @@
 
 [descreva o que atualmente está ocorrendo com a execução do processo e explique o problema]
 
-## Posssível correção
+## Possível correção
 
 [opcional, mas você pode sugerir possíveis correções para este problema]
 
