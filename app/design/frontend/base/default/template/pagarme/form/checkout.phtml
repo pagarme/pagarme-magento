@@ -26,6 +26,10 @@
                 $('pagarme_checkout_token').value = response['token'];
                 $('pagarme_checkout_payment_method').value = response['payment_method'];
                 $('pagarme_checkout_interest_rate').value = pagarmeCheckoutSettings.interestRate;
+
+                if (typeof OSCPayment !== undefined) {
+                    OSCPayment.savePayment();
+                }
             }
         });
 
