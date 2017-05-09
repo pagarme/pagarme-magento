@@ -39,6 +39,99 @@ class OneStepCheckoutContext extends RawMinkContext
     }
 
     /**
+     * @Given fixed :amount discount for boleto payment is provided
+     */
+    public function fixedDiscountForBoletoPaymentIsProvided($amount)
+    {
+        \Mage::getModel('core/config')->saveConfig(
+            'payment/pagarme_settings/boleto_discount',
+            $amount
+        );
+
+        \Mage::getModel('core/config')->saveConfig(
+            'payment/pagarme_settings/boleto_discount_mode',
+            PagarMe_Core_Model_System_Config_Source_BoletoDiscountMode::FIXED_VALUE
+        );
+
+        \Mage::getConfig()->cleanCache();
+    }
+
+    /**
+     * @Given percentual :amount discount for boleto payment is provided
+     */
+    public function percentualDiscountForBoletoPaymentIsProvided($amount)
+    {
+        \Mage::getModel('core/config')->saveConfig(
+            'payment/pagarme_settings/boleto_discount',
+            $amount
+        );
+
+        \Mage::getModel('core/config')->saveConfig(
+            'payment/pagarme_settings/boleto_discount_mode',
+            PagarMe_Core_Model_System_Config_Source_BoletoDiscountMode::PERCENTAGE
+        );
+
+        \Mage::getConfig()->cleanCache();
+    }
+
+    /**
+     * @Then the absolute discount of :boletoDiscount must be informed on checkout
+     */
+    public function theAbsoluteDiscountOfMustBeInformedOnCheckout($boletoDiscount)
+    {
+        $discountElement = $this->getSession()->getPage()->find(
+            'xpath',
+            '//*[@class="onestepcheckout-cart-table"]//tfoot//tr[2]//td//span'
+        );
+
+        \PHPUnit_Framework_TestCase::assertContains(
+            $boletoDiscount,
+            $discountElement->getText()
+        );
+    }
+
+    /**
+     * @Then the percentual discount of :boletoDiscount must be informed on checkout
+     */
+    public function thePercentualDiscountOfMustBeInformedOnCheckout($boletoDiscount)
+    {
+        $subTotal = preg_replace(
+            "/[^0-9,.]/",
+            "",
+            $this->getSession()->getPage()->find(
+                'xpath',
+                '//*[@class="onestepcheckout-cart-table"]//tfoot//tr[1]//td//span'
+                )
+            ->getText()
+        );
+
+        $shipping = preg_replace(
+            "/[^0-9,.]/",
+            "",
+            $this->getSession()->getPage()->find(
+                'xpath',
+                '//*[@class="onestepcheckout-cart-table"]//tfoot//tr[3]//td//span'
+                )
+            ->getText()
+        );
+
+        $discountElement = $this->getSession()->getPage()->find(
+            'xpath',
+            '//*[@class="onestepcheckout-cart-table"]//tfoot//tr[2]//td//span'
+        );
+
+
+        $subTotal =  $subTotal + $shipping;
+
+        $calculatedDiscount = round($subTotal * ($boletoDiscount/100), 2);
+
+        \PHPUnit_Framework_TestCase::assertContains(
+            (string) $calculatedDiscount,
+            $discountElement->getText()
+        );
+    }
+
+    /**
      * @When I confirm payment
      */
     public function iConfirmPayment()
