@@ -7,6 +7,7 @@ Feature: One Step Checkout Pagar.me
     Scenario: Make a purchase by boleto without discount
         Given I am on checkout page using Inovarti One Step Checkout
         When I confirm payment
+        And place order
         Then the purchase must be created with success
         And a link to boleto must be provided
 
@@ -29,3 +30,19 @@ Feature: One Step Checkout Pagar.me
         | boleto_discount |
         | 13.37           |
         | 42              |
+
+    Scenario: Make a purchase by boleto with fixed discount
+        Given fixed "10.5" discount for boleto payment is provided
+        And I am on checkout page using Inovarti One Step Checkout
+        When I confirm payment
+        And place order
+        Then the purchase must be created with success
+        And a link to boleto must be provided
+
+    Scenario: Make a purchase by boleto with a percentual discount
+        Given percentual "13.37" discount for boleto payment is provided
+        And I am on checkout page using Inovarti One Step Checkout
+        When I confirm payment
+        And place order
+        Then the purchase must be created with success
+        And a link to boleto must be provided

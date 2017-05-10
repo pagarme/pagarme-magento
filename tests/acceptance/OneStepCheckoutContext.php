@@ -173,13 +173,23 @@ class OneStepCheckoutContext extends RawMinkContext
             '#pagarme-modal-box-step-customer-address-information .pagarme-modal-box-next-step'
         )->click();
 
-        $page = $this->getSession()->wait(5000);
-
         $this->getSession()->switchToIframe();
-        $page = $this->getSession()->getPage();
-        $page->pressButton(Mage::helper('pagarme_checkout')->__('Place Order'));
 
-        $this->getSession()->wait(5000);
+        $page = $this->getSession()->wait(7000);
+
+
+    }
+
+    /**
+     * @When place order
+     */
+    public function placeOrder()
+    {
+        $this->getSession()->getPage()->pressButton(
+            Mage::helper('pagarme_checkout')->__('Place Order')
+        );
+
+        $page = $this->getSession()->wait(10000);
     }
 
     /**
@@ -262,6 +272,13 @@ class OneStepCheckoutContext extends RawMinkContext
     private function setupInovarti()
     {
         $this->enableInovartiOneStepCheckout();
+
+        \Mage::getModel('core/config')->saveConfig(
+            'payment/pagarme_settings/boleto_discount_mode',
+            PagarMe_Core_Model_System_Config_Source_BoletoDiscountMode::NO_DISCOUNT
+        );
+
+        \Mage::getConfig()->cleanCache();
     }
 
     private function setupPagarMe()
