@@ -30,6 +30,7 @@ Feature: Configuration Form
         And save configuration
         Then Pagar.me checkout must be enabled
 
+    @OSC
     Scenario: Customizing checkout
         Given a admin user
         When I access the admin
@@ -58,6 +59,7 @@ Feature: Configuration Form
         | 4             | 0                 | 1                 |
         | 0             | 0                 | 1                 |
 
+    @OSC
     Scenario: Customizing checkout
         Given a admin user
         When I access the admin
