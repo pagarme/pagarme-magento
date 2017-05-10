@@ -1,0 +1,11 @@
+{
+    "name": "pagarme/pagarme-magento",
+    "type": "magento-module",
+    "description":"Magento Extension for Pagar.me Payment Gateway",
+    "authors":[
+        {
+            "name":"Pagar.me",
+            "email":"contato@pagar.me"
+        }
+    ]
+}
