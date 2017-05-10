@@ -1,5 +1,8 @@
 # behat.yml
 default:
+  gherkin:
+    filters:
+      tags: ~@OSC
   autoload:
     - %paths.base%/tests/acceptance/
   extensions:
