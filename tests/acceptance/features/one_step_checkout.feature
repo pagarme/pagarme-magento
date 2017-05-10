@@ -10,7 +10,7 @@ Feature: One Step Checkout Pagar.me
         Then the purchase must be created with success
         And a link to boleto must be provided
 
-    Scenario Outline: Make a purchase by boleto with fixed discount
+    Scenario Outline: Display discount on checkout when a fixed discount was applied
         Given fixed "<boleto_discount>" discount for boleto payment is provided
         And I am on checkout page using Inovarti One Step Checkout
         When I confirm payment
@@ -20,7 +20,7 @@ Feature: One Step Checkout Pagar.me
         | 10.5            |
         | 1.23            |
 
-    Scenario Outline: Make a purchase by boleto with percentual discount
+    Scenario Outline: Display discount on checkout when a percentual discount was applied
         Given percentual "<boleto_discount>" discount for boleto payment is provided
         And I am on checkout page using Inovarti One Step Checkout
         When I confirm payment
