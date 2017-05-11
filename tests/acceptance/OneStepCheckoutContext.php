@@ -151,6 +151,7 @@ class OneStepCheckoutContext extends RawMinkContext
         );
 
         $this->pagarMeCheckout = $this->getSession()->getPage();
+        $this->getSession()->wait(1000);
         $this->pagarMeCheckout->pressButton('Boleto');
 
         $this->waitForElement(
