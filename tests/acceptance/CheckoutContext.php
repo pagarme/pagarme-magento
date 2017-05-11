@@ -186,6 +186,10 @@ class CheckoutContext extends RawMinkContext
         );
 
         $this->pagarMeCheckout = $this->session->getPage();
+        $this->waitForElement(
+            '.choose-method-button-container',
+            2000
+        );
         $this->pagarMeCheckout->pressButton($paymentMethod);
     }
 
@@ -502,5 +506,26 @@ class CheckoutContext extends RawMinkContext
         $this->customer->delete();
         $this->product->delete();
         $this->restorePagarMeSettings();
+    }
+
+    /**
+     * @AfterStep
+     */
+    public function takeScreenshotAfterFailedStep(\Behat\Behat\Hook\Scope\AfterStepScope $scope)
+    {
+        if (99 === $scope->getTestResult()->getResultCode()) {
+            $this->takeScreenshot();
+        }
+    }
+
+    private function takeScreenshot()
+    {
+        $driver = $this->getSession()->getDriver();
+        $baseUrl = $this->getMinkParameter('base_url');
+        $fileName = date('Y-m-d').'-'.uniqid().'.png';
+        $filePath = \Mage::getBaseDir().'/';
+
+        $this->saveScreenshot($fileName, $filePath);
+        print 'Screenshot '.$fileName.' at '.$baseUrl.$fileName;
     }
 }
