@@ -152,7 +152,7 @@ class OrderViewContext extends RawMinkContext
         $session = $this->getSession();
         $page = $session->getPage();
 
-        $session->wait(3000);
+        $session->wait(5000);
 
         $elementIdentifier = '#payment-progress-opcheckout';
         if (getenv('MAGENTO_VERSION') === '1.7.0.2') {

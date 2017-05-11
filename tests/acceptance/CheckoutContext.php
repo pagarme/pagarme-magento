@@ -1,6 +1,8 @@
 <?php
 
 use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Behat\Hook\Scope\AfterStepScope;
+use Behat\Testwork\Tester\Result\TestResult;
 
 require_once __DIR__ . '/../bootstrap.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
@@ -186,6 +188,10 @@ class CheckoutContext extends RawMinkContext
         );
 
         $this->pagarMeCheckout = $this->session->getPage();
+        $this->waitForElement(
+            '.choose-method-button-container',
+            2000
+        );
         $this->pagarMeCheckout->pressButton($paymentMethod);
     }
 
@@ -502,5 +508,26 @@ class CheckoutContext extends RawMinkContext
         $this->customer->delete();
         $this->product->delete();
         $this->restorePagarMeSettings();
+    }
+
+    /**
+     * @AfterStep
+     */
+    public function takeScreenshotAfterFailedStep(AfterStepScope $scope)
+    {
+        if (TestResult::FAILED === $scope->getTestResult()->getResultCode()) {
+            $this->takeScreenshot();
+        }
+    }
+
+    private function takeScreenshot()
+    {
+        $driver = $this->getSession()->getDriver();
+        $baseUrl = $this->getMinkParameter('base_url');
+        $fileName = date('Y-m-d_H-i-s').'_'.uniqid().'.png';
+        $filePath = \Mage::getBaseDir().'/';
+
+        $this->saveScreenshot($fileName, $filePath);
+        print 'Screenshot '.$fileName.' at '.$baseUrl.$fileName;
     }
 }
