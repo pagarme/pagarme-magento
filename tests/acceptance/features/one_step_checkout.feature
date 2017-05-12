@@ -117,3 +117,10 @@ Feature: One Step Checkout Pagar.me
         | 3     | 9         |
         | 10.1  | 3         |
 
+
+    Scenario: Make a purchase by credit card with multiple installments
+        Given "4.2" interest rate for multi installment payment
+        And I am on checkout page using Inovarti One Step Checkout
+        When I confirm payment using "5" installments
+        And place order
+        Then the purchase must be created with success
