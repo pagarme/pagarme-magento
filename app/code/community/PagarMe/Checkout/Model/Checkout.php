@@ -118,7 +118,9 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
         }
 
         $subTotal = $payment->getOrder()->getSubtotal();
-        $subtotalWithDiscount = $payment->getOrder()->getQuote()->getSubtotalWithDiscount();
+        $subtotalWithDiscount = $payment->getOrder()
+            ->getQuote()
+            ->getSubtotalWithDiscount();
         $discount = $subTotal - $subtotalWithDiscount;
 
         $order->setDiscountAmount($discount);
