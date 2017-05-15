@@ -80,14 +80,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </capture_customer_data>
-                        <payment_button_text translate="label">
-                            <label>Checkout final button text</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>125</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </payment_button_text>
                         <interest_rate translate="label">
                             <label>Interest Rate (%)</label>
                             <frontend_type>text</frontend_type>
@@ -182,6 +174,14 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </checkout_button_text>
+                        <payment_button_text translate="label">
+                            <label>Checkout final button text</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>125</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </payment_button_text>
                     </fields>
                 </pagarme_settings>
             </groups>
