@@ -10,6 +10,13 @@
                     <show_in_website>1</show_in_website>
                     <show_in_store>1</show_in_store>
                     <fields>
+                        <heading_general translate="label">
+                            <label>General Configurations</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                        </heading_general>
                          <active translate="label">
                             <label>Enabled</label>
                             <frontend_type>select</frontend_type>
@@ -43,7 +50,7 @@
                            <show_in_default>1</show_in_default>
                            <show_in_website>1</show_in_website>
                            <show_in_store>1</show_in_store>
-                       </payment_methods>
+                        </payment_methods>
                         <payment_action translate="label">
                             <label>Payment Action</label>
                             <frontend_type>select</frontend_type>
@@ -80,19 +87,27 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </capture_customer_data>
-                        <payment_button_text translate="label">
-                            <label>Checkout final button text</label>
+                        <heading_credit_card translate="label">
+                            <label>Credit Card Configurations</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                        </heading_credit_card>
+                        <max_installments translate="label">
+                            <label>Max Installments</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>125</sort_order>
+                            <frontend_class>validate-number</frontend_class>
+                            <sort_order>105</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                        </payment_button_text>
+                        </max_installments>
                         <interest_rate translate="label">
                             <label>Interest Rate (%)</label>
                             <frontend_type>text</frontend_type>
                             <frontend_class>validate-number</frontend_class>
-                            <sort_order>45</sort_order>
+                            <sort_order>110</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -101,34 +116,32 @@
                             <label>Free Installments</label>
                             <frontend_type>text</frontend_type>
                             <frontend_class>validate-number</frontend_class>
-                            <sort_order>50</sort_order>
+                            <sort_order>115</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </free_installments>
-                        <max_installments translate="label">
-                            <label>Max Installments</label>
-                            <frontend_type>text</frontend_type>
-                            <frontend_class>validate-number</frontend_class>
-                            <sort_order>55</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </max_installments>
                         <allowed_credit_card_brands translate="label">
                             <label>Allowed Credit Card Brands</label>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>pagarme_core/system_config_source_creditCardBrands</source_model>
-                            <sort_order>60</sort_order>
+                            <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </allowed_credit_card_brands>
+                        <heading_boleto translate="label">
+                            <label>Boleto Configurations</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>200</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                        </heading_boleto>
                         <boleto_discount translate="label">
                             <label>Boleto discount</label>
                             <frontend_type>text</frontend_type>
                             <frontend_class>validate-number</frontend_class>
-                            <sort_order>55</sort_order>
+                            <sort_order>205</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -137,15 +150,30 @@
                             <label>Boleto discount mode</label>
                             <frontend_type>select</frontend_type>
                             <source_model>pagarme_core/system_config_source_boletoDiscountMode</source_model>
-                            <sort_order>55</sort_order>
+                            <sort_order>210</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </boleto_discount_mode>
+                        <heading_visual_config translate="label">
+                            <label>Visual Configurations</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>300</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                        </heading_visual_config>
+                        <payment_button_text translate="label">
+                            <label>Checkout final button text</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>305</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </payment_button_text>
                         <boleto_helper_text translate="label">
                             <label>Optional message for Boleto payment</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>100</sort_order>
+                            <sort_order>310</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -153,7 +181,7 @@
                         <credit_card_helper_text translate="label">
                             <label>Optional message for Credit Card payment</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>105</sort_order>
+                            <sort_order>315</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -161,7 +189,7 @@
                         <ui_color translate="label">
                             <label>Payment primary color</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>110</sort_order>
+                            <sort_order>320</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -169,7 +197,7 @@
                         <header_text translate="label">
                             <label>Checkout header text</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>115</sort_order>
+                            <sort_order>325</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -177,7 +205,7 @@
                         <checkout_button_text translate="label">
                             <label>Checkout button text</label>
                             <frontend_type>text</frontend_type>
-                            <sort_order>120</sort_order>
+                            <sort_order>330</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
