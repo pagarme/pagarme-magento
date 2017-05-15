@@ -17,7 +17,6 @@ Feature: Checkout Pagar.me
         Then the purchase must be paid with success
         And a link to boleto must be provided
 
-    @only
     Scenario Outline: Make a purchase by boleto with fixed discount
         Given a registered user
         And a <discount_mode> discount of <discount_value>
