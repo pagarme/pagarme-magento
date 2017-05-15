@@ -43,7 +43,7 @@ class PagarMe_Checkout_Block_Form_Checkout extends Mage_Payment_Block_Form
     public function getButtonText()
     {
         return Mage::getStoreConfig(
-            'payment/pagarme_settings/button_text'
+            'payment/pagarme_settings/checkout_button_text'
         );
     }
 
