@@ -42,6 +42,10 @@ class PagarMe_Core_Model_System_Config_Source_CreditCardBrands
                 'value' => 'elo',
                 'label' => 'Elo'
             ],
+            [
+                'value' => 'discover',
+                'label' => 'Discover'
+            ],
         ];
     }
 }
