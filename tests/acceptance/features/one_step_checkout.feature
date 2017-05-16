@@ -4,6 +4,7 @@ Feature: One Step Checkout Pagar.me
     And One Step Checkout
     To make purchase
 
+    @OSC
     Scenario: Make a purchase by boleto without discount
         Given I am on checkout page using Inovarti One Step Checkout
         When I confirm payment
