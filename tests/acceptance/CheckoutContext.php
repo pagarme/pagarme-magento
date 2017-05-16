@@ -185,6 +185,8 @@ class CheckoutContext extends RawMinkContext
             $page->find('css', 'iframe')->getAttribute('name')
         );
 
+        $this->getSession()->wait(1000);
+
         $this->pagarMeCheckout = $this->session->getPage();
         $this->pagarMeCheckout->pressButton($paymentMethod);
     }
