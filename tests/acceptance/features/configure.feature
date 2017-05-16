@@ -58,19 +58,6 @@ Feature: Configuration Form
         | 4             | 0                 | 1                 |
         | 0             | 0                 | 1                 |
 
-    Scenario: Customizing checkout
-        Given a admin user
-        When I access the admin
-        And go to system configuration page
-        And change the boleto helper text
-        And change the credit card helper text
-        And change the ui color
-        And change the header text
-        And change the payment button text
-        And change the checkout button text
-        And save configuration
-        Then the configuration must be saved with success
-
     Scenario: Setting up allowed credit card brands
         Given a admin user
         And a credit card list to allow
@@ -81,7 +68,7 @@ Feature: Configuration Form
         Then the configuration must be saved with success
         And the credit card list must be saved in database
 
-    Scenario Outline: Cunfigure boleto discount
+    Scenario Outline: Configure boleto discount
         Given a admin user
         When I access the admin
         And go to system configuration page
