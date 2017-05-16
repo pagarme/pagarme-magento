@@ -104,7 +104,7 @@
                             <show_in_store>0</show_in_store>
                         </max_installments>
                         <interest_rate translate="label">
-                            <label>Interest Rate (%)</label>
+                            <label>Interest Rate (1,99% = 1.99)</label>
                             <frontend_type>text</frontend_type>
                             <frontend_class>validate-number</frontend_class>
                             <sort_order>110</sort_order>
