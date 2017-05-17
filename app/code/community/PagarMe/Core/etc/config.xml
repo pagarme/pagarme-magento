@@ -100,8 +100,8 @@
                 <payment_action>authorize</payment_action>
             </pagarme_checkout>
             <pagarme_settings>
-                <checkout_button_text>Realizar pagamento</checkout_button_text>
-                <payment_button_text>Pagar</payment_button_text>
+                <fill_payment_data_button_text>Realizar pagamento</fill_payment_data_button_text>
+                <pay_button_text>Pagar</pay_button_text>
                 <interest_rate>0</interest_rate>
                 <free_installments>1</free_installments>
                 <max_installments>1</max_installments>

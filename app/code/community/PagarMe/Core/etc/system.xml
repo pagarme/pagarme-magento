@@ -162,14 +162,14 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                         </heading_visual_config>
-                        <payment_button_text translate="label">
+                        <pay_button_text translate="label">
                             <label>Checkout final button text</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>305</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                        </payment_button_text>
+                        </pay_button_text>
                         <boleto_helper_text translate="label">
                             <label>Optional message for Boleto payment</label>
                             <frontend_type>text</frontend_type>
@@ -202,22 +202,22 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </header_text>
-                        <checkout_button_text translate="label">
+                        <fill_payment_data_button_text translate="label">
                             <label>Checkout button text</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>330</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                        </checkout_button_text>
-                        <payment_button_text translate="label">
+                        </fill_payment_data_button_text>
+                        <pay_button_text translate="label">
                             <label>Checkout final button text</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>125</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                        </payment_button_text>
+                        </pay_button_text>
                     </fields>
                 </pagarme_settings>
             </groups>
