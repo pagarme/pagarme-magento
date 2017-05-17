@@ -31,7 +31,8 @@ trait PagarMeSettings
             'ui_color' => '',
             'header_text' => '',
             'checkout_button_text' => '',
-            'payment_action' => 'authorize_capture'
+            'payment_action' => 'authorize_capture',
+            'title' => 'Pagar.me Checkout'
         ];
     }
 }

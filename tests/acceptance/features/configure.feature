@@ -40,6 +40,7 @@ Feature: Configuration Form
         And change the header text
         And change the payment button text
         And change the checkout button text
+        And change payment method title
         And save configuration
         Then the configuration must be saved with success
 

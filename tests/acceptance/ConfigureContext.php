@@ -328,6 +328,17 @@ class ConfigureContext extends RawMinkContext
     }
 
     /**
+     * @When change payment method title
+     */
+    public function changeThePaymentMethodTitle()
+    {
+        $this->getSession()->getPage()->fillField(
+            'payment_pagarme_settings_title',
+            'Meu meio de pagamento'
+        );
+    }
+
+    /**
      * @When I set max instalments to :maxInstallmets
      */
     public function iSetMaxInstalmentsTo($maxInstallmets)
