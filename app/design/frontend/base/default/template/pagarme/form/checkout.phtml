@@ -19,48 +19,49 @@
 <script type="text/javascript" id="pagarme-checkout">
 
     var btnContinuePayment = $('payment-buttons-container').select('.button')[0]
-    var btnRealizarPagamento = $('pagarme-checkout-fill-info-button')
-    var magentoContinue = btnContinuePayment.onclick
+    var pagarmeCheckoutRadio = document.getElementById('p_method_pagarme_checkout')
+
+    function enableContinue () {
+      btnContinuePayment.classList.remove('disabled')
+      btnContinuePayment.disabled = false
+    }
+
+    function disableContinue () {
+      btnContinuePayment.classList.add('disabled')
+      btnContinuePayment.disabled = true
+    }
 
     function pagarmeChecked () {
-        if ($('pagarme_checkout_token').value === '') {
-            btnContinuePayment.classList.add('disabled')
-            btnContinuePayment.onclick = null
-            return
-        }
-        pagarmeUnchecked()
+      if ($('pagarme_checkout_token').value === '') {
+        return disableContinue()
+      }
+      enableContinue()
     }
 
-    function pagarmeUnchecked () {
-      btnContinuePayment.classList.remove('disabled')
-      btnContinuePayment.onclick = magentoContinue
-    }
-
-    var pagarmeCheckoutRadio = document.getElementById('p_method_pagarme_checkout')
     if (pagarmeCheckoutRadio.checked) {
       pagarmeChecked()
     }
 
-    $('checkout-payment-method-load').observe('click', function (e) {
-        if (e.target.tagName === 'INPUT') {
-          if (e.target.id === 'p_method_pagarme_checkout') {
-            return pagarmeChecked()
-          }
-          return pagarmeUnchecked()
+    function togglePagarmeCheckoutButtonBehaviour (e) {
+      if (e.target.tagName === 'INPUT') {
+        if (e.target.id === 'p_method_pagarme_checkout') {
+          return pagarmeChecked()
         }
-    })
+        return enableContinue()
+      }
+    }
 
+    $('checkout-payment-method-load').observe('click', togglePagarmeCheckoutButtonBehaviour)
 
     $("pagarme-checkout-fill-info-button").observe("click", function (event){
         var pagarmeCheckoutSettings = <?= json_encode($this->getCheckoutConfig()) ?>
 
         var checkoutPagarme = new PagarMeCheckout.Checkout({
-            "encryption_key" : "<?= $this->getEncryptionKey() ?>",
+            encryption_key : "<?= $this->getEncryptionKey() ?>",
             success: function (response) {
-                btnContinuePayment.classList.remove('disabled')
-                btnRealizarPagamento.classList.add('disabled')
-                btnContinuePayment.onclick = magentoContinue
-                btnRealizarPagamento.onclick = null
+                enableContinue()
+                $('pagarme-checkout-fill-info-button').remove()
+
                 $('pagarme_checkout_token').value = response['token']
                 $('pagarme_checkout_payment_method').value = response['payment_method']
                 $('pagarme_checkout_interest_rate').value = pagarmeCheckoutSettings.interestRate
