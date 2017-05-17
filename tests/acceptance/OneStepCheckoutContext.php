@@ -30,7 +30,100 @@ class OneStepCheckoutContext extends RawMinkContext
     }
 
     /**
-     * @Given i Am on checkout page using Inovarti One Step Checkout
+     * @Given a webstore with Inovarti One Step Checkout enabled
+     * @Given I am on checkout page using Inovarti One Step Checkout
+     */
+    public function aWebstoreWithOSCEnabled()
+    {
+        $this->setupCart();
+        $this->loginOnOneStepCheckout();
+    }
+
+    /**
+     * @When I make the purchase with :paymentMethod
+     */
+    public function iMakeThePurchaseWith($paymentMethod)
+    {
+        $page = $this->getSession()->getPage();
+
+        $page->find('css', '#p_method_pagarme_checkout')->click();
+        $this->getSession()->wait(5000);
+
+        $button = $page->find('css', '#pagarme-checkout-fill-info-button');
+
+        $page->find('css', '#pagarme-checkout-fill-info-button')->click();
+        $this->getSession()->wait(5000);
+
+        $this->getSession()->switchToIframe(
+            $page->find('css', 'iframe')->getAttribute('name')
+        );
+
+        $this->pagarMeCheckout = $this->getSession()->getPage();
+        $this->pagarMeCheckout->pressButton($paymentMethod);
+
+        $this->waitForElement(
+            '#pagarme-modal-box-step-buyer-information',
+            1000
+        );
+
+        $this->pagarMeCheckout->find(
+            'css',
+            '#pagarme-modal-box-step-buyer-information .pagarme-modal-box-next-step'
+        )->click();
+
+        $this->waitForElement(
+            '#pagarme-modal-box-step-customer-address-information',
+            1000
+        );
+
+        $this->pagarMeCheckout->find(
+            'css',
+            '#pagarme-modal-box-step-customer-address-information .pagarme-modal-box-next-step'
+        )->click();
+
+        if ($paymentMethod === 'Cartão de crédito') {
+            $this->waitForElement(
+                '#pagarme-modal-box-step-credit-card-information',
+                1000
+            );
+
+            $this->pagarMeCheckout->find(
+                'css',
+                '#pagarme-modal-box-credit-card-number'
+            )->setValue('4111111111111111');
+
+            $this->pagarMeCheckout->find(
+                'css',
+                '#pagarme-modal-box-credit-card-name'
+            )->setValue('JOSE DAS COUVES');
+
+            $this->pagarMeCheckout->find(
+                'css',
+                '#pagarme-modal-box-credit-card-expiration'
+            )->setValue('0722');
+
+            $this->pagarMeCheckout->find(
+                'css',
+                '#pagarme-modal-box-credit-card-cvv'
+            )->setValue('123');
+
+            $this->pagarMeCheckout->find(
+                'css',
+                '#pagarme-modal-box-step-credit-card-information .pagarme-modal-box-next-step'
+            )->click();
+        }
+
+        $page = $this->getSession()->wait(6000);
+
+        $this->getSession()->switchToIframe();
+        $page = $this->getSession()->getPage();
+        $page->pressButton(Mage::helper('pagarme_checkout')->__('Place Order'));
+
+        $this->getSession()->wait(20000);
+    }
+
+    /**
+     * @Given I Am on the checkout page using Inovarti One Step Checkout
      */
     public function iAmOnCheckoutPageUsingInovartiOneStepCheckout()
     {
