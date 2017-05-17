@@ -19,16 +19,16 @@
 <script type="text/javascript" id="pagarme-checkout">
 
     var btnContinuePayment = $('payment-buttons-container').select('.button')[0]
+    var btnRealizarPagamento = $('pagarme-checkout-fill-info-button')
     var magentoContinue = btnContinuePayment.onclick
 
     function pagarmeChecked () {
-      btnContinuePayment.classList.add('disabled')
-      btnContinuePayment.onclick = null
-      btnContinuePayment.addEventListener('click', function(event) {
-        if ($('pagarme_checkout_token').value !== '') {
-          magentoContinue()
+        if ($('pagarme_checkout_token').value === '') {
+            btnContinuePayment.classList.add('disabled')
+            btnContinuePayment.onclick = null
+            return
         }
-      })
+        pagarmeUnchecked()
     }
 
     function pagarmeUnchecked () {
@@ -58,6 +58,9 @@
             "encryption_key" : "<?= $this->getEncryptionKey() ?>",
             success: function (response) {
                 btnContinuePayment.classList.remove('disabled')
+                btnRealizarPagamento.classList.add('disabled')
+                btnContinuePayment.onclick = magentoContinue
+                btnRealizarPagamento.onclick = null
                 $('pagarme_checkout_token').value = response['token']
                 $('pagarme_checkout_payment_method').value = response['payment_method']
                 $('pagarme_checkout_interest_rate').value = pagarmeCheckoutSettings.interestRate
