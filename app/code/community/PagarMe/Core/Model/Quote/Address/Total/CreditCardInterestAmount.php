@@ -27,7 +27,10 @@ class PagarMe_Core_Model_Quote_Address_Total_CreditCardInterestAmount
     public function collect(Mage_Sales_Model_Quote_Address $address)
     {
         parent::collect($address);
-        
+
+        $address->setDiscountAmount(0);
+        $address->setBaseDiscountAmount(0);
+
         if (!$this->shouldCollect()) {
             return $this;
         }

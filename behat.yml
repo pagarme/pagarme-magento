@@ -30,13 +30,6 @@ default:
         - %paths.base%/tests/acceptance/features/payment_method_availability.feature
       contexts:
         - PaymentMethodAvailabilityContext
-    order_view:
-      paths:
-        - %paths.base%/tests/acceptance/features/order_view.feature
-      contexts:
-        - OrderViewContext
-        - CheckoutContext
-        - ConfigureContext
     one_step_checkout:
       paths:
         - %paths.base%/tests/acceptance/features/one_step_checkout.feature
