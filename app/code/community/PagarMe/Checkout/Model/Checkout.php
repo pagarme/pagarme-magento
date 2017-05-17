@@ -59,6 +59,18 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
     }
 
     /**
+     * Retrieve payment method title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return Mage::getStoreConfig(
+            'payment/pagarme_settings/title'
+        );
+    }
+
+    /**
      * @param array $data
      *
      * @return $this

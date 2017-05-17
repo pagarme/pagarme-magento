@@ -94,12 +94,12 @@
                 <active>0</active>
                 <model>pagarme_checkout/checkout</model>
                 <order_status>pending</order_status>
-                <title>Pagarme Checkout</title>
                 <allowspecific>0</allowspecific>
                 <payment_methods>credit_card,boleto</payment_methods>
                 <payment_action>authorize</payment_action>
             </pagarme_checkout>
             <pagarme_settings>
+                <title>Pagarme Checkout</title>
                 <button_text>Realizar pagamento</button_text>
                 <interest_rate>0</interest_rate>
                 <free_installments>1</free_installments>
