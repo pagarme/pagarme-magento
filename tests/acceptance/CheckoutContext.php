@@ -169,7 +169,7 @@ class CheckoutContext extends RawMinkContext
         $page->find('css', '#p_method_pagarme_checkout')->click();
         $page->pressButton(
             Mage::getStoreConfig(
-                'payment/pagarme_settings/button_text'
+                'payment/pagarme_settings/checkout_button_text'
             )
         );
     }
