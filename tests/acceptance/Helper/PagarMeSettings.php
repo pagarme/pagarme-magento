@@ -21,7 +21,7 @@ trait PagarMeSettings
             'active' => '1',
             'payment_method' => 'credit_card,boleto',
             'capture_customer_data' => 'true',
-            'payment_button_text' => '',
+            'payment_button_text' => 'Realizar pagamento',
             'interest_rate' => '0',
             'free_installments' => '1',
             'max_installments' => '1',
@@ -30,7 +30,7 @@ trait PagarMeSettings
             'credit_card_helper_text' => '',
             'ui_color' => '',
             'header_text' => '',
-            'checkout_button_text' => '',
+            'checkout_button_text' => 'Pagar',
             'payment_action' => 'authorize_capture'
         ];
     }
