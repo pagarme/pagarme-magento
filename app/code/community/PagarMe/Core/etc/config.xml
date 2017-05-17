@@ -100,12 +100,12 @@
                 <payment_action>authorize</payment_action>
             </pagarme_checkout>
             <pagarme_settings>
-                <button_text>Realizar pagamento</button_text>
+                <fill_payment_data_button_text>Realizar pagamento</fill_payment_data_button_text>
+                <pay_button_text>Pagar</pay_button_text>
                 <interest_rate>0</interest_rate>
                 <free_installments>1</free_installments>
                 <max_installments>1</max_installments>
                 <capture_customer_data>true</capture_customer_data>
-                <button_text>Realizar pagamento</button_text>
                 <boleto_discount>0</boleto_discount>
                 <boleto_discount_mode>no_discount</boleto_discount_mode>
             </pagarme_settings>

@@ -345,7 +345,7 @@ class ConfigureContext extends RawMinkContext
     {
         $this->getSession()->getPage()->fillField(
             'payment_pagarme_settings_checkout_button_text',
-            'Pagar!'
+            'Abrir checkout'
         );
     }
 
