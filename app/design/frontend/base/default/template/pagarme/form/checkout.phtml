@@ -17,22 +17,57 @@
 </ul>
 
 <script type="text/javascript" id="pagarme-checkout">
+
+    var btnContinuePayment = $('payment-buttons-container').select('.button')[0]
+    var magentoContinue = btnContinuePayment.onclick
+
+    function pagarmeChecked () {
+      btnContinuePayment.classList.add('disabled')
+      btnContinuePayment.onclick = null
+      btnContinuePayment.addEventListener('click', function(event) {
+        if ($('pagarme_checkout_token').value !== '') {
+          magentoContinue()
+        }
+      })
+    }
+
+    function pagarmeUnchecked () {
+      btnContinuePayment.classList.remove('disabled')
+      btnContinuePayment.onclick = magentoContinue
+    }
+
+    var pagarmeCheckoutRadio = document.getElementById('p_method_pagarme_checkout')
+    if (pagarmeCheckoutRadio.checked) {
+      pagarmeChecked()
+    }
+
+    $('checkout-payment-method-load').observe('click', function (e) {
+        if (e.target.tagName === 'INPUT') {
+          if (e.target.id === 'p_method_pagarme_checkout') {
+            return pagarmeChecked()
+          }
+          return pagarmeUnchecked()
+        }
+    })
+
+
     $("pagarme-checkout-fill-info-button").observe("click", function (event){
-        var pagarmeCheckoutSettings = <?= json_encode($this->getCheckoutConfig()) ?>;
+        var pagarmeCheckoutSettings = <?= json_encode($this->getCheckoutConfig()) ?>
 
         var checkoutPagarme = new PagarMeCheckout.Checkout({
             "encryption_key" : "<?= $this->getEncryptionKey() ?>",
             success: function (response) {
-                $('pagarme_checkout_token').value = response['token'];
-                $('pagarme_checkout_payment_method').value = response['payment_method'];
-                $('pagarme_checkout_interest_rate').value = pagarmeCheckoutSettings.interestRate;
+                btnContinuePayment.classList.remove('disabled')
+                $('pagarme_checkout_token').value = response['token']
+                $('pagarme_checkout_payment_method').value = response['payment_method']
+                $('pagarme_checkout_interest_rate').value = pagarmeCheckoutSettings.interestRate
 
                 if (typeof OSCPayment !== undefined) {
                     OSCPayment.savePayment();
                 }
             }
-        });
+        })
 
-        checkoutPagarme.open(pagarmeCheckoutSettings);
-    });
+        checkoutPagarme.open(pagarmeCheckoutSettings)
+    })
 </script>

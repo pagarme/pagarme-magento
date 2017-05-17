@@ -18,7 +18,8 @@ abstract class PagarMe_Core_Model_Quote_Address_Total_Abstract
             return false;
         }
 
-        if (!isset($paymentData['pagarme_checkout_token'])) {
+        if (!isset($paymentData['pagarme_checkout_token'])
+            && $paymentData['pagarme_checkout_token'] != '') {
             return false;
         }
 
