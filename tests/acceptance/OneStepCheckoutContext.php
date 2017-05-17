@@ -205,7 +205,7 @@ class OneStepCheckoutContext extends RawMinkContext
             $this->getSession()->getPage()->find(
                 'xpath',
                 '//*[@class="onestepcheckout-cart-table"]//tfoot//tr[3]//td//span'
-                )
+            )
             ->getText()
         );
 
@@ -213,7 +213,6 @@ class OneStepCheckoutContext extends RawMinkContext
             'xpath',
             '//*[@class="onestepcheckout-cart-table"]//tfoot//tr[2]//td//span'
         );
-
 
         $subTotal =  $subTotal + $shipping;
 
