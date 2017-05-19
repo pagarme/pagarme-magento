@@ -50,6 +50,11 @@ function pagarmeIsValidCardNumber(cardNumber) {
 Validation.add('validate-pagarme-cc-exp', 'Incorrect credit card expiration date.', function(v, elm){
     var ccExpMonth   = v;
     var ccExpYear    = $(elm.id.substr(0,elm.id.indexOf('_expiration')) + '_expiration_yr').value;
+
+    if (ccExpMonth == "" && ccExpYear == "") {
+        return true;
+    }
+
     if (ccExpMonth && ccExpYear && Validation.get('validate-cc-exp').test(v, elm)) {
         return true;
     }
