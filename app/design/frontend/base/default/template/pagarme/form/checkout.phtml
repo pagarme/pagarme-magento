@@ -2,6 +2,7 @@
     <input type="hidden" value="" name="payment[pagarme_checkout_token]" id="pagarme_checkout_token" class="required_entry" />
     <input type="hidden" value="" name="payment[pagarme_checkout_payment_method]" id="pagarme_checkout_payment_method" />
     <input type="hidden" value="" name="payment[pagarme_checkout_interest_rate]" id="pagarme_checkout_interest_rate" />
+    <input type="hidden" value="" name="payment[pagarme_checkout_installments]" id="pagarme_checkout_installments" />
 
     <div style="display:none;" id="advice-required-entry-pagarme-checkout-hash" class="validation-advice">
         <?php echo __("Please click the button below<br />and complete the information."); ?>
@@ -26,6 +27,7 @@
                 $('pagarme_checkout_token').value = response['token'];
                 $('pagarme_checkout_payment_method').value = response['payment_method'];
                 $('pagarme_checkout_interest_rate').value = pagarmeCheckoutSettings.interestRate;
+                $('pagarme_checkout_installments').value = response.installments;
 
                 if (typeof OSCPayment !== undefined) {
                     OSCPayment.savePayment();

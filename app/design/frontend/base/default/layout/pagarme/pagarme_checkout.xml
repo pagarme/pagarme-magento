@@ -6,7 +6,7 @@
                 <action method="setText">
                     <text><![CDATA[<script src="https://assets.pagar.me/checkout/checkout.js" type="text/javascript"></script>]]></text>
                 </action>
-        	</block>
+            </block>
         </reference>
     </default>
     <checkout_onepage_success>
@@ -17,6 +17,9 @@
     <sales_order_view>
         <reference name="order_totals">
             <block type="pagarme_checkout/sales_RateAmount" name="pagarme_checkout.rateamount"/>
+        </reference>
+        <reference name="content">
+            <block type="core/text_list" name="pagarme_checkout.payment_info" as="review.extra" template="pagarme/test.phtml"/>
         </reference>
     </sales_order_view>
 </layout>
