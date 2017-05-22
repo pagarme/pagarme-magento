@@ -94,7 +94,10 @@ class PagarMe_Checkout_Block_Info_Checkout extends Mage_Payment_Block_Info
             ) {
                 $specificInformation['Interest Fee %'] = $additionalInformation['interest_rate'];
             }
+
         }
+        $this->setChild('review.extra', $this);
+        var_dump($this->getChildHtml('review.extra'));die();
 
         return new Varien_Object($specificInformation);
     }

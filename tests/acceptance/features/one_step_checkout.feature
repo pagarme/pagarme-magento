@@ -106,3 +106,31 @@ Feature: One Step Checkout Pagar.me
         When I confirm payment using "5" installments
         And place order
         Then the purchase must be created with success
+    
+    Scenario Outline: Display interest rate when applied
+        Given "<rate>" interest rate for multi installment payment
+        And I am on checkout page using Inovarti One Step Checkout
+        When I confirm payment using "<number>" installments
+        Then the percentual interest of "<rate>" over "<number>" isntallments must be informed on checkout
+        Examples:
+        | rate  | number    |
+        | 3     | 9         |
+        | 10.1  | 3         |
+
+    @only
+    Scenario Outline: Make a purchase in installments by credit card without interest
+        Given that the max number of interest-free installments is "5"
+        And I am on checkout page using Inovarti One Step Checkout
+        When I confirm payment using "<number>" installments
+        Then interest fee should not be applied
+        Examples:
+        | number |
+        | 1      |
+        | 5      |
+
+    Scenario: Make a purchase by credit card with multiple installments
+        Given "4.2" interest rate for multi installment payment
+        And I am on checkout page using Inovarti One Step Checkout
+        When I confirm payment using "5" installments
+        And place order
+        Then the purchase must be created with success

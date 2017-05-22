@@ -14,6 +14,7 @@ class OneStepCheckoutContext extends RawMinkContext
     use PagarMe\Magento\Test\Helper\ProductDataProvider;
     use PagarMe\Magento\Test\Helper\Interaction;
     use PagarMe\Magento\Test\Helper\Configuration\Inovarti;
+    use PagarMe\Magento\Test\Helper\Interaction\OneStepCheckout;
 
     protected $pagarMeCheckout;
     protected $product;
@@ -204,7 +205,7 @@ class OneStepCheckoutContext extends RawMinkContext
             $this->getSession()->getPage()->find(
                 'xpath',
                 '//*[@class="onestepcheckout-cart-table"]//tfoot//tr[3]//td//span'
-                )
+            )
             ->getText()
         );
 
@@ -212,7 +213,6 @@ class OneStepCheckoutContext extends RawMinkContext
             'xpath',
             '//*[@class="onestepcheckout-cart-table"]//tfoot//tr[2]//td//span'
         );
-
 
         $subTotal =  $subTotal + $shipping;
 
@@ -269,7 +269,7 @@ class OneStepCheckoutContext extends RawMinkContext
 
         $this->getSession()->switchToIframe();
 
-        $this->getSession()->wait(10000);
+        $page = $this->getSession()->wait(7000);
     }
 
     /**
@@ -277,11 +277,12 @@ class OneStepCheckoutContext extends RawMinkContext
      */
     public function placeOrder()
     {
+        $page = $this->getSession()->wait(1000);
         $this->getSession()->getPage()->pressButton(
             Mage::helper('pagarme_checkout')->__('Place Order')
         );
 
-        $this->getSession()->wait(10000);
+        $page = $this->getSession()->wait(8000);
     }
 
     /**
@@ -441,38 +442,13 @@ class OneStepCheckoutContext extends RawMinkContext
     /**
      * @Then the percentual interest of :interestRate over :installments installments must be informed on checkout
      */
-    public function thePercentualInterestOfOverInstallmentsMustBeInformedOnCheckout($interestRate, $installments)
+    public function thePercentualInterestOfOverIsntallmentsMustBeInformedOnCheckout($interestRate, $installments)
     {
         $page = $this->getSession()->wait(10000);
-        $subTotal = preg_replace(
-            "/[^0-9,.]/",
-            "",
-            $this->getSession()->getPage()->find(
-                'xpath',
-                '//*[@class="onestepcheckout-cart-table"]//tfoot//tr[1]//td//span'
-                )
-            ->getText()
-        );
 
-        $shipping = preg_replace(
-            "/[^0-9,.]/",
-            "",
-            $this->getSession()->getPage()->find(
-                'xpath',
-                '//*[@class="onestepcheckout-cart-table"]//tfoot//tr[2]//td//span'
-                )
-            ->getText()
-        );
-
-        $interest = preg_replace(
-            "/[^0-9,.]/",
-            "",
-            $this->getSession()->getPage()->find(
-                'xpath',
-                '//*[@class="onestepcheckout-cart-table"]//tfoot//tr[3]//td//span'
-                )
-            ->getText()
-        );
+        $subTotal = $this->getSubtotal();
+        $shipping = $this->getShipping();
+        $interest = $this->getInterestFee();
 
         $subTotalWithoutInterest = $subTotal + $shipping;
 
@@ -486,7 +462,6 @@ class OneStepCheckoutContext extends RawMinkContext
             $interest
         );
     }
-
 
     /**
      * @AfterScenario
@@ -559,9 +534,20 @@ class OneStepCheckoutContext extends RawMinkContext
         );
     }
 
+    private function isLoggedIn()
+    {
+        return $this->getSession()
+            ->getPage()
+            ->find('named', array('link', 'Log Out')) != null;
+    }
+
     private function loginOnOneStepCheckout()
     {
         $page = $this->getSession()->getPage();
+
+        if ($this->isLoggedIn()) {
+            return;
+        }
 
         $page->fillField(
             Mage::helper('pagarme_checkout')->__('Email Address'),
@@ -576,5 +562,31 @@ class OneStepCheckoutContext extends RawMinkContext
         $page->pressButton('Login');
 
         $this->getSession()->wait(2000);
+    }
+
+    /**
+     * @Given that the max number of interest-free installments is :installments
+     */
+    public function thatTheMaxNumberOfInterestFreeInstallmentsIs($installments)
+    {
+        \Mage::getModel('core/config')->saveConfig(
+            'payment/pagarme_settings/free_installments',
+            $installments
+        );
+    }
+
+    /**
+     * @Then interest fee should not be applied
+     */
+    public function interestFeeShouldNotBeApplied()
+    {
+        $subtotal = $this->getSubtotal();
+        $shipping = $this->getShipping();
+        $total = $this->getTotal();
+
+        \PHPUnit_Framework_TestCase::assertEquals(
+            $total,
+            $subtotal + $shipping
+        );
     }
 }
