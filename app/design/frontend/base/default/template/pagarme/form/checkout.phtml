@@ -17,7 +17,13 @@
 </ul>
 
 <script type="text/javascript" id="pagarme-checkout">
-    $("pagarme-checkout-fill-info-button").observe("click", function (event){
+    var checkoutButton = $('pagarme-checkout-fill-info-button')
+
+    if ($('pagarme_checkout_payment_method').value !== "") {
+      checkoutButton.remove();
+    }
+
+    checkoutButton && checkoutButton.observe("click", function (event){
         var pagarmeCheckoutSettings = <?= json_encode($this->getCheckoutConfig()) ?>;
 
         var checkoutPagarme = new PagarMeCheckout.Checkout({
@@ -26,6 +32,7 @@
                 $('pagarme_checkout_token').value = response['token'];
                 $('pagarme_checkout_payment_method').value = response['payment_method'];
                 $('pagarme_checkout_interest_rate').value = pagarmeCheckoutSettings.interestRate;
+                checkoutButton.remove();
 
                 if (typeof OSCPayment !== undefined) {
                     OSCPayment.savePayment();

@@ -106,3 +106,9 @@ Feature: One Step Checkout Pagar.me
         When I confirm payment using "5" installments
         And place order
         Then the purchase must be created with success
+
+    Scenario: Hide pagarme checkout button after success
+        Given I am on checkout page using Inovarti One Step Checkout
+        When I confirm payment
+        Then The button that opens pagarme checkout must be hidden
+

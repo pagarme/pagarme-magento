@@ -577,4 +577,20 @@ class OneStepCheckoutContext extends RawMinkContext
 
         $this->getSession()->wait(2000);
     }
+
+    /**
+     * @Then The button that opens pagarme checkout must be hidden
+     */
+    public function theButtonThatOpensPagarmeCheckoutMustBeHidden()
+    {
+        $checkoutButton = $this->getSession()->getPage()->find(
+            'css',
+            '#pagarme-checkout-fill-info-button'
+        );
+        \PHPUnit_Framework_TestCase::assertEquals(
+            $checkoutButton,
+            NULL
+        );
+    }
+
 }

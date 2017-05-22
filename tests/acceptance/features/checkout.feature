@@ -65,3 +65,18 @@ Feature: Checkout Pagar.me
         And finish payment process
         Then the interest must applied
         And the interest must be described in checkout
+
+    Scenario: Hide pagarme checkout button after success
+        Given a registered user
+        And a valid credit card
+        When I access the store page
+        And add any product to basket
+        And I go to checkout page
+        And login with registered user
+        And confirm billing and shipping address information
+        And choose pay with pagar me checkout using "Cartão de crédito"
+        And I confirm my personal data
+        And I confirm my payment information with "1" installments
+        And finish payment process
+        Then The button that opens pagarme checkout must be hidden
+
