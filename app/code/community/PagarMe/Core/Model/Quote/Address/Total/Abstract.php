@@ -44,7 +44,6 @@ abstract class PagarMe_Core_Model_Quote_Address_Total_Abstract
     }
 
     /**
-     * @param $token string
      * @return PagarMe\Sdk\PagarMe\AbstractTransaction
      */
     protected function getTransaction()
