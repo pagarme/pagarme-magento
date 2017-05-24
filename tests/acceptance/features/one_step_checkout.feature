@@ -4,9 +4,21 @@ Feature: One Step Checkout Pagar.me
     And One Step Checkout
     To make purchase
 
+    Scenario Outline: Confirm the selected payment method
+        Given I am on checkout page using Inovarti One Step Checkout
+        When I confirm payment via "<payment_method>" with "<installments>" installments
+        Then I should see payment method equals to "<payment_method_expected>"
+        And installments equals to "<installments>"
+        Examples:
+        |   payment_method  | installments | payment_method_expected |
+        | Boleto bancário   | 1            | Boleto                  |
+        | Cartão de crédito | 1            | Cartão de Crédito       |
+        | Cartão de crédito | 6            | Cartão de Crédito       |
+        | Cartão de crédito | 12           | Cartão de Crédito       |
+
     Scenario: Make a purchase by boleto without discount
         Given I am on checkout page using Inovarti One Step Checkout
-        When I confirm payment
+        When I confirm payment via "Boleto" with "1" installments
         And place order
         Then the purchase must be created with success
         And a link to boleto must be provided
@@ -14,7 +26,7 @@ Feature: One Step Checkout Pagar.me
     Scenario Outline: Display discount on checkout when a fixed discount was applied
         Given fixed "<boleto_discount>" discount for boleto payment is provided
         And I am on checkout page using Inovarti One Step Checkout
-        When I confirm payment
+        When I confirm payment via "Boleto" with "1" installments
         Then the absolute discount of "<boleto_discount>" must be informed on checkout
         Examples:
         | boleto_discount |
@@ -24,7 +36,7 @@ Feature: One Step Checkout Pagar.me
     Scenario Outline: Display discount on checkout when a percentual discount was applied
         Given percentual "<boleto_discount>" discount for boleto payment is provided
         And I am on checkout page using Inovarti One Step Checkout
-        When I confirm payment
+        When I confirm payment via "Boleto" with "1" installments
         Then the percentual discount of "<boleto_discount>" must be informed on checkout
         Examples:
         | boleto_discount |
@@ -34,7 +46,7 @@ Feature: One Step Checkout Pagar.me
     Scenario: Make a purchase by boleto with fixed discount
         Given fixed "10.5" discount for boleto payment is provided
         And I am on checkout page using Inovarti One Step Checkout
-        When I confirm payment
+        When I confirm payment via "Boleto" with "1" installments
         And place order
         Then the purchase must be created with success
         And a link to boleto must be provided
@@ -42,7 +54,7 @@ Feature: One Step Checkout Pagar.me
     Scenario: Make a purchase by boleto with a percentual discount
         Given percentual "13.37" discount for boleto payment is provided
         And I am on checkout page using Inovarti One Step Checkout
-        When I confirm payment
+        When I confirm payment via "Boleto" with "1" installments
         And place order
         Then the purchase must be created with success
         And a link to boleto must be provided
@@ -50,7 +62,7 @@ Feature: One Step Checkout Pagar.me
     Scenario Outline: Display discount on checkout when a fixed discount was applied
         Given fixed "<boleto_discount>" discount for boleto payment is provided
         And I am on checkout page using Inovarti One Step Checkout
-        When I confirm payment
+        When I confirm payment via "Boleto" with "1" installments
         Then the absolute discount of "<boleto_discount>" must be informed on checkout
         Examples:
         | boleto_discount |
@@ -60,7 +72,7 @@ Feature: One Step Checkout Pagar.me
     Scenario Outline: Display discount on checkout when a percentual discount was applied
         Given percentual "<boleto_discount>" discount for boleto payment is provided
         And I am on checkout page using Inovarti One Step Checkout
-        When I confirm payment
+        When I confirm payment via "Boleto" with "1" installments
         Then the percentual discount of "<boleto_discount>" must be informed on checkout
         Examples:
         | boleto_discount |
@@ -70,7 +82,7 @@ Feature: One Step Checkout Pagar.me
     Scenario: Make a purchase by boleto with fixed discount
         Given fixed "10.5" discount for boleto payment is provided
         And I am on checkout page using Inovarti One Step Checkout
-        When I confirm payment
+        When I confirm payment via "Boleto" with "1" installments
         And place order
         Then the purchase must be created with success
         And a link to boleto must be provided
@@ -78,7 +90,7 @@ Feature: One Step Checkout Pagar.me
     Scenario: Make a purchase by boleto with a percentual discount
         Given percentual "13.37" discount for boleto payment is provided
         And I am on checkout page using Inovarti One Step Checkout
-        When I confirm payment
+        When I confirm payment via "Boleto" with "1" installments
         And place order
         Then the purchase must be created with success
         And a link to boleto must be provided

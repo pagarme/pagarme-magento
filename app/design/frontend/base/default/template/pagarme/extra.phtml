@@ -39,7 +39,7 @@
             <td class="a-right" colspan="<?php echo $_colspan; ?>">
                 <strong>Installments</strong>
             </td>
-            <td>
+            <td id="pagarme-checkout-installments">
                 <?= $transaction->getInstallments() ?: 1  ?>
             </td>
         </tr>

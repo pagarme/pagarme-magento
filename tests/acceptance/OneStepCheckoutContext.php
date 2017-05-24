@@ -225,9 +225,9 @@ class OneStepCheckoutContext extends RawMinkContext
     }
 
     /**
-     * @When I confirm payment
+     * @When I confirm payment via :paymentMethod with :installments installments
      */
-    public function iConfirmPayment()
+    public function iConfirmPayment($paymentMethod, $installments)
     {
         $page = $this->getSession()->getPage();
 
@@ -245,7 +245,7 @@ class OneStepCheckoutContext extends RawMinkContext
 
         $this->pagarMeCheckout = $this->getSession()->getPage();
         $this->getSession()->wait(1000);
-        $this->pagarMeCheckout->pressButton('Boleto');
+        $this->pagarMeCheckout->pressButton($paymentMethod);
 
         $this->waitForElement(
             '#pagarme-modal-box-step-buyer-information',
@@ -266,6 +266,43 @@ class OneStepCheckoutContext extends RawMinkContext
             'css',
             '#pagarme-modal-box-step-customer-address-information .pagarme-modal-box-next-step'
         )->click();
+
+        if ($paymentMethod === 'Cartão de crédito') {
+            $this->waitForElement(
+                '#pagarme-modal-box-step-credit-card-information',
+                1000
+            );
+
+            $this->pagarMeCheckout->find(
+                'css',
+                '#pagarme-modal-box-credit-card-number'
+            )->setValue('4111111111111111');
+
+            $this->pagarMeCheckout->find(
+                'css',
+                '#pagarme-modal-box-credit-card-name'
+            )->setValue('JOSE DAS COUVES');
+
+            $this->pagarMeCheckout->find(
+                'css',
+                '#pagarme-modal-box-credit-card-expiration'
+            )->setValue('0722');
+
+            $this->pagarMeCheckout->find(
+                'css',
+                '#pagarme-modal-box-credit-card-cvv'
+            )->setValue('123');
+
+            $field = $this->pagarMeCheckout->find(
+                'css',
+                "[data-value='$installments']"
+            )->click();
+
+            $this->pagarMeCheckout->find(
+                'css',
+                '#pagarme-modal-box-step-credit-card-information .pagarme-modal-box-next-step'
+            )->click();
+        }
 
         $this->getSession()->switchToIframe();
 
@@ -615,5 +652,37 @@ class OneStepCheckoutContext extends RawMinkContext
         );
 
         $this->getSession()->getDriver()->getWebDriverSession()->accept_alert();
+    }
+
+    /**
+     * @Then I should see payment method equals to :paymentMethodExpected
+     */
+    public function iShouldSeePaymentMethodEqualsTo($paymentMethodExpected)
+    {
+        $selectedMethod = $this->pagarMeCheckout->find(
+            'css',
+            '#onestepcheckout-review-table-cart-wrapper'
+        );
+
+        \PHPUnit_Framework_TestCase::assertContains(
+            $paymentMethodExpected,
+            $selectedMethod->getText()
+        );
+    }
+
+     /**
+     * @Then installments equals to :installments
+     */
+    public function installmentsEqualsTo($installments)
+    {
+        $selectedInstallment = $this->pagarMeCheckout->find(
+            'css',
+            '#pagarme-checkout-installments'
+        );
+
+        \PHPUnit_Framework_TestCase::assertContains(
+            $installments,
+            $selectedInstallment->getText()
+        );
     }
 }
