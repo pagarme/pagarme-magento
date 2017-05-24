@@ -54,7 +54,7 @@ Feature: Configuration Form
         Examples:
         | interest_rate | free_installments | max_installments  |
         | 10            | 2                 | 12                |
-        | 3             | 5                 | 15                |
+        | 3             | 5                 | 11                |
         | 0             | 3                 | 3                 |
         | 4             | 0                 | 1                 |
         | 0             | 0                 | 1                 |

@@ -110,6 +110,15 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
 
         $infoInstance->unsAdditionalInformation('token');
 
+        if (empty($token)) {
+            throw new \Exception(
+                Mage::helper('pagarme_checkout')->__(
+                    'Error, please review your payment info'
+                ),
+                1
+            );
+        }
+
         $pagarMeSdk = Mage::getModel('pagarme_core/sdk_adapter')
             ->getPagarMeSdk();
 

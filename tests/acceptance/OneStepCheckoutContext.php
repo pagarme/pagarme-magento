@@ -277,11 +277,19 @@ class OneStepCheckoutContext extends RawMinkContext
      */
     public function placeOrder()
     {
+        $this->clickOnPlaceOrderButton();
+
+        $this->getSession()->wait(10000);
+    }
+
+    /**
+     * @When click on place order button
+     */
+    public function clickOnPlaceOrderButton()
+    {
         $this->getSession()->getPage()->pressButton(
             Mage::helper('pagarme_checkout')->__('Place Order')
         );
-
-        $this->getSession()->wait(10000);
     }
 
     /**
@@ -592,5 +600,35 @@ class OneStepCheckoutContext extends RawMinkContext
             NULL
         );
     }
+    
+    /**
+     * @When select Pagar.me Checkout as payment method
+     */
+    public function selectPagarMeCheckoutAsPaymentMethod()
+    {
+        $this->getSession()->getPage()->find(
+            'css',
+            '#p_method_pagarme_checkout'
+        )->click();
 
+        $this->getSession()->wait(5000);
+    }
+
+    /**
+     * @Then an alert box must be displayed
+     */
+    public function anAlertBoxMustBeDisplayed()
+    {
+        \PHPUnit_Framework_TestCase::assertEquals(
+            $this->getSession()
+                ->getDriver()
+                ->getWebDriverSession()
+                ->getAlert_text(),
+            Mage::helper('pagarme_checkout')->__(
+                'Error, please review your payment info'
+            )
+        );
+
+        $this->getSession()->getDriver()->getWebDriverSession()->accept_alert();
+    }
 }
