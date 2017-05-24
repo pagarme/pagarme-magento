@@ -106,3 +106,9 @@ Feature: One Step Checkout Pagar.me
         When I confirm payment using "5" installments
         And place order
         Then the purchase must be created with success
+
+    Scenario: Show alert when payment information is not provided
+        Given I am on checkout page using Inovarti One Step Checkout
+        When select Pagar.me Checkout as payment method
+        And click on place order button
+        Then an alert box must be displayed
