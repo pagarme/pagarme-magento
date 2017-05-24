@@ -293,7 +293,12 @@ class OneStepCheckoutContext extends RawMinkContext
                 '#pagarme-modal-box-credit-card-cvv'
             )->setValue('123');
 
-            $field = $this->pagarMeCheckout->find(
+            $this->waitForElement(
+                '#pagarme-modal-box-installments',
+                2000
+            );
+
+            $this->pagarMeCheckout->find(
                 'css',
                 "[data-value='$installments']"
             )->click();
@@ -306,7 +311,7 @@ class OneStepCheckoutContext extends RawMinkContext
 
         $this->getSession()->switchToIframe();
 
-        $this->getSession()->wait(10000);
+        $this->getSession()->wait(30000);
     }
 
     /**
