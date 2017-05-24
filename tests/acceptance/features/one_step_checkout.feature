@@ -4,18 +4,6 @@ Feature: One Step Checkout Pagar.me
     And One Step Checkout
     To make purchase
 
-    Scenario Outline: Confirm the selected payment method
-        Given I am on checkout page using Inovarti One Step Checkout
-        When I confirm payment via "<payment_method>" with "<installments>" installments
-        Then I should see payment method equals to "<payment_method_expected>"
-        And installments equals to "<installments>"
-        Examples:
-        |   payment_method  | installments | payment_method_expected |
-        | Boleto bancário   | 1            | Boleto                  |
-        | Cartão de crédito | 1            | Cartão de Crédito       |
-        | Cartão de crédito | 6            | Cartão de Crédito       |
-        | Cartão de crédito | 12           | Cartão de Crédito       |
-
     Scenario: Make a purchase by boleto without discount
         Given I am on checkout page using Inovarti One Step Checkout
         When I confirm payment via "Boleto" with "1" installments
@@ -124,3 +112,15 @@ Feature: One Step Checkout Pagar.me
         When select Pagar.me Checkout as payment method
         And click on place order button
         Then an alert box must be displayed
+
+    @showInfo
+    Scenario Outline: Confirm the selected payment method
+        Given I am on checkout page using Inovarti One Step Checkout
+        When I confirm payment via "<payment_method>" with "<installments>" installments
+        Then I should see payment method equals to "<payment_method_expected>"
+        And installments equals to "<installments>"
+        Examples:
+        |   payment_method  | installments | payment_method_expected |
+        | Boleto bancário   | 1            | Boleto                  |
+        | Cartão de crédito | 1            | Cartão de Crédito       |
+        | Cartão de crédito | 6            | Cartão de Crédito       |
