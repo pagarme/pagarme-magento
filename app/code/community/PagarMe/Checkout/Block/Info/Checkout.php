@@ -6,7 +6,7 @@ class PagarMe_Checkout_Block_Info_Checkout extends Mage_Payment_Block_Info
      * @var \PagarMe\Sdk\Transaction\AbstractTransaction
      */
     protected $transaction;
-    
+
     const PAYMENT_METHOD_CREDIT_CARD_LABEL = 'Cartão de Crédito';
     const PAYMENT_METHOD_BOLETO_LABEL = 'Boleto';
 

@@ -44,21 +44,14 @@ abstract class PagarMe_Core_Model_Quote_Address_Total_Abstract
     }
 
     /**
-     * @param $token string
      * @return PagarMe\Sdk\PagarMe\AbstractTransaction
      */
     protected function getTransaction()
     {
         if ($this->transaction == null) {
-            $paymentData = Mage::app()
-                ->getRequest()
-                ->getPost('payment');
-
-            $this->transaction = Mage::getModel(
-                'pagarme_core/sdk_adapter'
-            )->getPagarMeSdk()
-            ->transaction()
-            ->get($paymentData['pagarme_checkout_token']);
+            $this->transaction = Mage::app()
+                ->getHelper('pagarme_checkout')
+                ->getTransaction();
         }
 
         return $this->transaction;

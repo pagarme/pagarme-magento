@@ -19,4 +19,11 @@
             <block type="pagarme_checkout/sales_RateAmount" name="pagarme_checkout.rateamount"/>
         </reference>
     </sales_order_view>
+    <onestepcheckout_index_index>
+        <reference name="checkout.onepage.review.info.totals">
+            <action method="setTemplate">
+                <template>pagarme/extra.phtml</template>
+            </action>
+        </reference>
+    </onestepcheckout_index_index>
 </layout>
