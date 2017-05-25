@@ -113,13 +113,13 @@ class OneStepCheckoutContext extends RawMinkContext
             )->click();
         }
 
-        $page = $this->getSession()->wait(10000);
+        $page = $this->getSession()->wait(6000);
 
         $this->getSession()->switchToIframe();
         $page = $this->getSession()->getPage();
         $page->pressButton(Mage::helper('pagarme_checkout')->__('Place Order'));
 
-        $this->getSession()->wait(30000);
+        $this->getSession()->wait(20000);
     }
 
     /**
@@ -311,7 +311,7 @@ class OneStepCheckoutContext extends RawMinkContext
 
         $this->getSession()->switchToIframe();
 
-        $this->getSession()->wait(50000);
+        $this->getSession()->wait(10000);
     }
 
     /**
@@ -485,7 +485,7 @@ class OneStepCheckoutContext extends RawMinkContext
 
         $this->getSession()->switchToIframe();
 
-        $page = $this->getSession()->wait(8000);
+        $page = $this->getSession()->wait(7000);
     }
 
     /**

@@ -19,7 +19,9 @@ class PagarMe_Checkout_Helper_Data extends Mage_Core_Helper_Abstract
                 ->getRequest()
                 ->getPost('payment');
 
-            if (isset($paymentData['pagarme_checkout_token'])) {
+            if (isset($paymentData['pagarme_checkout_token'])
+                && $paymentData['pagarme_checkout_token'] != ''
+            ) {
                 $this->transaction = Mage::getModel(
                     'pagarme_core/sdk_adapter'
                 )->getPagarMeSdk()
