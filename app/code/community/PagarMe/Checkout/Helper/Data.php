@@ -41,9 +41,9 @@ class PagarMe_Checkout_Helper_Data extends Mage_Core_Helper_Abstract
         if ($this->transaction->getPaymentMethod()
             === CreditCardTransaction::PAYMENT_METHOD
         ) {
-            return 'Cartão de Crédito';
+            return PagarMe_Checkout_Block_Info_Checkout::PAYMENT_METHOD_CREDIT_CARD_LABEL;
         }
 
-        return 'Boleto';
+        return PagarMe_Checkout_Block_Info_Checkout::PAYMENT_METHOD_BOLETO_LABEL;
     }
 }
