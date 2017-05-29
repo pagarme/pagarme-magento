@@ -17,8 +17,8 @@ Módulo de integração Pagar.me para Magento 1.x
 ## Instalação 
 
 1. Solicite a última versão do nosso módulo através do e-mail: magento@pagar.me
-2. Descompacte o arquivo **zip** e copie as pastas `app`, `js` e `skin` para a a pasta raiz da sua instalação do Magento
-3. Limpe o cache em `Sistema > Gerenciamento de Cache`
+2. Descompacte o arquivo **zip** e copie as pastas `app`, `js`, `skin` e `vendor` para a a pasta raiz da sua instalação do Magento
+3. Limpe o cache em `Sistema > Gerenciamento de Cache
 
 ## Configuração
 
