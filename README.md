@@ -27,7 +27,7 @@ Módulo de integração Pagar.me para Magento 1.x
 3. Informe sua **Chave de API** e sua **Chave de criptografia**
 4. Salve as configurações
 
-## Para desnvolvedores - Avançado
+## Para desenvolvedores - Avançado
 
 ### Requisitos
 
