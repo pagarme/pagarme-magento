@@ -26,6 +26,10 @@ Módulo de integração Pagar.me para Magento 1.x
 2. Vá em `Sistema > Configuração > Métodos de Pagamento > Pagar.me`
 3. Informe sua **Chave de API** e sua **Chave de criptografia**
 4. Salve as configurações
+5. Em `Sistema > Configuração > Configuração do cliente > Opções de Nome e Endereço`, altere o valor dos campos:
+* `Número de linhas em um endereço de rua` com valor `4`
+*  `Exibir Tax/Vat` com valor `Habilitado`
+7. Salve as configurações
 
 ## Para desenvolvedores - Avançado
 
@@ -37,10 +41,6 @@ Módulo de integração Pagar.me para Magento 1.x
 
 1. Execute o comando `docker-compose up -d` para iniciar os containers
 2. Execute o comando `docker-compose exec magento install` para executar a instalação do Magento. Caso queira alguma configuração específica, verifique o arquivo `.env`.
-
-### Instalando o módulo Pagar.me para Magento
-
-Execute o comando `docker-compose exec magento install-modules` para instalar o módulo **Pagar.me para Magento 1.x**
 
 ### Executando os testes unitários
 
