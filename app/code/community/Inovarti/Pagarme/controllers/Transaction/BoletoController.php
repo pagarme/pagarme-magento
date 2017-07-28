@@ -17,9 +17,10 @@ class Inovarti_Pagarme_Transaction_BoletoController extends Mage_Core_Controller
             $this->_forward('400');
         }
 
+        $orderId = Mage::helper('pagarme')->getOrderIdByTransactionId($request->getPost('id'));
+        $order = Mage::getModel('sales/order')->load($orderId);
+
         if ($request->getPost('current_status') == Inovarti_Pagarme_Model_Api::TRANSACTION_STATUS_WAITING_PAYMENT) {
-            $orderId = Mage::helper('pagarme')->getOrderIdByTransactionId($request->getPost('id'));
-            $order = Mage::getModel('sales/order')->load($orderId);
             $postbackTransaction = $request->getPost('transaction');
             $payment = $order->getPayment();
 
@@ -34,8 +35,6 @@ class Inovarti_Pagarme_Transaction_BoletoController extends Mage_Core_Controller
             $this->getResponse()->setBody('Ok - Boleto processed');
             return;
         } else if ($request->getPost('current_status') == Inovarti_Pagarme_Model_Api::TRANSACTION_STATUS_PAID) {
-            $orderId = Mage::helper('pagarme')->getOrderIdByTransactionId($request->getPost('id'));
-            $order = Mage::getModel('sales/order')->load($orderId);
 
             if (!$order->canInvoice()) {
                 Mage::log($this->__('The order does not allow creating an invoice.'), null, 'pagarme.log');
@@ -62,6 +61,21 @@ class Inovarti_Pagarme_Transaction_BoletoController extends Mage_Core_Controller
 
             $invoice->sendEmail($sendEmail);
             $this->getResponse()->setBody('Ok - Boleto paid');
+            return;
+        } else if ($request->getPost('current_status') == Inovarti_Pagarme_Model_Api::TRANSACTION_STATUS_REFUNDED) {
+
+            foreach ($order->getInvoiceCollection() as $invoice) {
+                if (!$invoice->canCancel()) {
+                    Mage::throwException($this->__('Invoice cannot be cancelled.'));
+                }
+                $invoice->cancel();
+            }
+
+            $order->cancel()->save();
+
+            $order->addStatusHistoryComment($this->__('Canceled by Pagarme via Boleto postback.'))->save();
+
+            $this->getResponse()->setBody('Ok - Boleto refunded');
             return;
         }
 
