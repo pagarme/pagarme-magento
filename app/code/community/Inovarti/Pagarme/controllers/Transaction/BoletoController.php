@@ -14,6 +14,26 @@ class Inovarti_Pagarme_Transaction_BoletoController extends Mage_Core_Controller
 
 		if ($request->isPost()
 			&& $pagarme->validateFingerprint($request->getPost('id'), $request->getPost('fingerprint'))
+			&& $request->getPost('current_status') == Inovarti_Pagarme_Model_Api::TRANSACTION_STATUS_WAITING_PAYMENT
+		) {
+			$orderId = Mage::helper('pagarme')->getOrderIdByTransactionId($request->getPost('id'));
+			$order = Mage::getModel('sales/order')->load($orderId);
+			$postbackTransaction = $request->getPost('transaction');
+			$payment = $order->getPayment();
+			$payment->setPagarmeBoletoUrl($postbackTransaction['boleto_url']) // PS: Pagar.me in test mode always returns NULL
+      			->setPagarmeBoletoBarcode($postbackTransaction['boleto_barcode'])
+      			->setPagarmeBoletoExpirationDate($postbackTransaction['boleto_expiration_date'])
+      			->save();
+
+
+			$sendEmail = Mage::getStoreConfig('payment/pagarme_boleto/email_status_change');
+
+			$this->getResponse()->setBody('ok - boleto processed');
+			return;
+		}
+
+		else if ($request->isPost()
+			&& $pagarme->validateFingerprint($request->getPost('id'), $request->getPost('fingerprint'))
 			&& $request->getPost('current_status') == Inovarti_Pagarme_Model_Api::TRANSACTION_STATUS_PAID
 		) {
 			$orderId = Mage::helper('pagarme')->getOrderIdByTransactionId($request->getPost('id'));
@@ -39,10 +59,10 @@ class Inovarti_Pagarme_Transaction_BoletoController extends Mage_Core_Controller
 				->save();
 
 			$invoice->sendEmail($sendEmail);
-			$this->getResponse()->setBody('ok');
+			$this->getResponse()->setBody('ok - boleto paid');
 			return;
 		}
 
-		$this->_forward('404');
+		$this->_forward('400');
 	}
 }
