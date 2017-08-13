@@ -8,9 +8,12 @@
 ?>
 <?php echo $this->htmlEscape($this->getMethod()->getTitle()) ?>
 
-<?php if($this->getBoletoUrl()): ?>
+<?php if(!empty($this->getBoletoUrl())): ?>
 <br />
 <a href="<?php echo $this->getBoletoUrl() ?>" target="_blank"><?php echo $this->__('Click here to print your Boleto') ?></a>
+<?php else: ?>
+<br />
+<?php echo $this->__('Boleto not yet generated') ?>
 <?php endif ?>
 
 <?php echo $this->getChildHtml()?>

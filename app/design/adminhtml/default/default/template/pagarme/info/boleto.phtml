@@ -14,6 +14,14 @@
 <?php echo $this->__('Transaction') ?>: <a href="#" onclick="return Pagarme.load('<?php echo $this->getTransactionUrl() ?>');">#<?php echo $this->escapeHtml($this->getTransactionId()) ?></a>
 <br />
 <?php echo $this->__('Expiration Date') ?>: <?php echo $this->escapeHtml($this->getBoletoExpirationDate()) ?>
+
+<?php if(!empty($this->getBoletoUrl())): ?>
 <br />
 <a href="<?php echo $this->getBoletoUrl() ?>" target="_blank"><?php echo $this->__('Click here to print your Boleto') ?></a>
+<?php else: ?>
+<br />
+<?php echo $this->__('Boleto not yet generated') ?>
+<?php endif ?>
+
+
 <?php endif ?>
