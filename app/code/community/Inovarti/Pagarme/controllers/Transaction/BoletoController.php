@@ -20,13 +20,13 @@ class Inovarti_Pagarme_Transaction_BoletoController extends Mage_Core_Controller
 			$order = Mage::getModel('sales/order')->load($orderId);
 			$postbackTransaction = $request->getPost('transaction');
 			$payment = $order->getPayment();
-			$payment->setPagarmeBoletoUrl($postbackTransaction['boleto_url']) // PS: Pagar.me in test mode always returns NULL
-      			->setPagarmeBoletoBarcode($postbackTransaction['boleto_barcode'])
-      			->setPagarmeBoletoExpirationDate($postbackTransaction['boleto_expiration_date'])
-      			->save();
+			$payment->setPagarmeBoletoUrl($postbackTransaction['boleto_url'])
+				->setPagarmeBoletoBarcode($postbackTransaction['boleto_barcode'])
+				->setPagarmeBoletoExpirationDate($postbackTransaction['boleto_expiration_date'])
+				->save();
 
-
-			$sendEmail = Mage::getStoreConfig('payment/pagarme_boleto/email_status_change');
+			$order->addStatusHistoryComment($this->__('Boleto generated!'))
+				->save();
 
 			$this->getResponse()->setBody('ok - boleto processed');
 			return;

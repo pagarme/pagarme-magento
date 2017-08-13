@@ -67,7 +67,7 @@ class Inovarti_Pagarme_Transaction_CreditcardController
             return $this->getResponse()->setBody('ok');
         }
 
-        $this->_forward('404');
+        $this->_forward('400');
     }
 
     protected function isCancel($request)
