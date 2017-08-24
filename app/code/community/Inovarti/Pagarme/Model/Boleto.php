@@ -57,6 +57,11 @@ class Inovarti_Pagarme_Model_Boleto extends Inovarti_Pagarme_Model_Split
             $requestParams->setSplitRules($splitRules);
         }
 
+        if (!$this->getConfigData('async')) {
+            $payment->setIsTransactionPending(false);
+            $requestParams->setAsync(false);
+        }
+
         $pagarme = Mage::getModel('pagarme/api');
 
     		$transaction = $pagarme->charge($requestParams);
