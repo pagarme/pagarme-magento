@@ -8,7 +8,7 @@
 ?>
 <?php echo $this->htmlEscape($this->getMethod()->getTitle()) ?>
 
-<?php if(!empty($this->getBoletoUrl())): ?>
+<?php if(trim($this->getBoletoUrl()) != false): ?>
 <br />
 <a href="<?php echo $this->getBoletoUrl() ?>" target="_blank"><?php echo $this->__('Click here to print your Boleto') ?></a>
 <?php else: ?>
