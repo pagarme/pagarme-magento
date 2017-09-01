@@ -297,6 +297,7 @@
                 <allowspecific>0</allowspecific>
                 <sort_order>1</sort_order>
                 <group>pagarme</group>
+                <async>0</async>
             </pagarme_boleto>
             <pagarme_cc>
                 <active>0</active>
