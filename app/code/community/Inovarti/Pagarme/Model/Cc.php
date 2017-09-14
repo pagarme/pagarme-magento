@@ -17,6 +17,7 @@ class Inovarti_Pagarme_Model_Cc extends Inovarti_Pagarme_Model_Abstract
     protected $_canRefund                   = true;
     protected $_canUseForMultishipping      = true;
     protected $_canManageRecurringProfiles  = false;
+    const MIN_INSTALLMENT_VALUE = 5;
 
     public function assignData($data)
     {
@@ -27,8 +28,8 @@ class Inovarti_Pagarme_Model_Cc extends Inovarti_Pagarme_Model_Abstract
         $info = $this->getInfoInstance();
 
         $info->setInstallments($data->getInstallments())
-            ->setInstallmentDescription($data->getInstallmentDescription())
-            ->setPagarmeCardHash($data->getPagarmeCardHash());
+        ->setInstallmentDescription($data->getInstallmentDescription())
+        ->setPagarmeCardHash($data->getPagarmeCardHash());
 
         return $this;
     }
@@ -54,10 +55,12 @@ class Inovarti_Pagarme_Model_Cc extends Inovarti_Pagarme_Model_Abstract
 
     public function calculateInterestFeeAmount($amount, $numberOfInstallments, $installmentConfig)
     {
-        $availableInstallments = $this->getAvailableInstallments($amount, $installmentConfig);
+        $api = Mage::getModel('pagarme/api');
+        $availableInstallments = $this->getAvailableInstallments($amount, $installmentConfig, $api);
 
-        if(!$availableInstallments)
+        if (!$availableInstallments) {
             return null;
+        }
 
         $installment = array_shift(array_filter($availableInstallments,
             function ($availableInstallment) use ($numberOfInstallments) {
@@ -65,12 +68,15 @@ class Inovarti_Pagarme_Model_Cc extends Inovarti_Pagarme_Model_Abstract
             }
         ));
 
-        if($installment != null)
-            return Mage::helper('pagarme')->convertCurrencyFromCentsToReal(($installment->getAmount() - $amount));
+        if ($installment != null) {
+            $pagarmeHelper = Mage::helper('pagarme');
+            return $pagarmeHelper->convertCurrencyFromCentsToReal(($installment->getAmount() - $amount));
+        }
+
         return 0;
     }
 
-    private function getAvailableInstallments($amount, $installmentConfig)
+    public function getAvailableInstallments($amount, $installmentConfig, $api)
     {
         $data = new Varien_Object();
         $data->setMaxInstallments($installmentConfig->getMaxInstallments());
@@ -78,8 +84,37 @@ class Inovarti_Pagarme_Model_Cc extends Inovarti_Pagarme_Model_Abstract
         $data->setInterestRate($installmentConfig->getInterestRate());
         $data->setAmount($amount);
 
-        $api = Mage::getModel('pagarme/api');
-        return $api->calculateInstallmentsAmount($data)
-            ->getInstallments();
+        return $api->calculateInstallmentsAmount($data)->getInstallments();
+    }
+
+    public function getPagarMeCcInstallmentConfig()
+    {
+        $config = new Varien_Object();
+        $config->setMaxInstallments((int) Mage::getStoreConfig('payment/pagarme_cc/max_installments'));
+        $config->setMinInstallments((int) Mage::getStoreConfig('payment/pagarme_cc/min_installment_value'));
+        $config->setFreeInstallments((int) Mage::getStoreConfig('payment/pagarme_cc/free_installments'));
+        $config->setInterestRate((float) Mage::getStoreConfig('payment/pagarme_cc/interest_rate'));
+
+        return $config;
+    }
+
+    public function getInstallmentNumber($total, $installmentConfig)
+    {
+        $maxInstallments = $installmentConfig->getMaxInstallments();
+        $minInstallmentValue = $installmentConfig->getMinInstallments();
+
+        if ($minInstallmentValue < self::MIN_INSTALLMENT_VALUE) {
+            $minInstallmentValue = self::MIN_INSTALLMENT_VALUE;
+        }
+
+        $installmentNumber = floor($total / $minInstallmentValue);
+        
+        if ($installmentNumber > $maxInstallments) {
+            $installmentNumber = $maxInstallments;
+        } elseif ($installmentNumber < 1) {
+            $installmentNumber = 1;
+        }
+
+        return $installmentNumber;
     }
 }

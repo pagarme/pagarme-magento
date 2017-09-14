@@ -12,7 +12,7 @@
  */
 class Inovarti_Pagarme_Block_Form_Cc extends Mage_Payment_Block_Form_Cc
 {
-    const MIN_INSTALLMENT_VALUE = 5;
+    const PAYMENT_METHOD_TYPE = 'pagarme_cc';
 
     protected function _construct()
     {
@@ -33,50 +33,92 @@ class Inovarti_Pagarme_Block_Form_Cc extends Mage_Payment_Block_Form_Cc
         return $months;
     }
 
+    public function getCheckoutQuote()
+    {
+        return Mage::helper('checkout')->getQuote();
+    }
+
+    public function getPagarmeAPI()
+    {
+        return Mage::getModel('pagarme/api');
+    }
+
+    public function getSalesRuleCollection()
+    {
+        return Mage::getResourceModel('salesrule/rule_collection')->load();
+    }
+
+    public function hasCreditCardDiscountRules()
+    {
+        $ruleCollection = $this->getSalesRuleCollection();
+        $checkoutPaymentMethod = $this->getCheckoutQuote()->getPayment()->getMethod();
+
+        foreach ($ruleCollection as $rule) {
+            $ruleIsValid = $rule->validate(Mage::helper('checkout'));
+            $isPaymentMethodEqual = ($checkoutPaymentMethod == self::PAYMENT_METHOD_TYPE);
+            if ($ruleIsValid && $isPaymentMethodEqual) {
+                return true;
+            }  
+        } 
+
+        return false;
+    }
+
+    public function getCheckoutTotalAmount()
+    {
+        $hasDiscountRules = $this->hasCreditCardDiscountRules();
+        $checkoutQuote = $this->getCheckoutQuote();
+        $totalAmount = $checkoutQuote->getBaseSubtotal();
+
+        if ($hasDiscountRules) {
+            $totalAmount = $checkoutQuote->getBaseSubtotalWithDiscount();
+        }
+
+        return $totalAmount + $checkoutQuote->getShippingAddress()->getShippingAmount();
+    }
+
+    private function getInstallmentsOptions($collection, $pagarmeHelper, $installmentConfig)
+    {
+        $installments = array();
+        $checkoutQuote = $this->getCheckoutQuote();
+
+        foreach ($collection as $item) {
+            $installmentItem = $item->getInstallment();
+            $amount = $item->getInstallmentAmount();
+            $installmentAmountInReal = $pagarmeHelper->convertCurrencyFromCentsToReal($amount);
+            $formatPrice = $checkoutQuote->getStore()->formatPrice($installmentAmountInReal, false);
+
+            $label = $this->__('%sx - %s', $installmentItem, $formatPrice);
+
+            if ($installmentItem == 1) {
+                $installments[$installmentItem] = $this->__('Pay in full - %s', $formatPrice);
+                continue;
+            }
+
+            $interestLabel = $this->__('interest-free');
+            if ($installmentItem > $installmentConfig->getFreeInstallments()) {
+                $interestRate = $installmentConfig->getInterestRate();
+                $interestLabel = $this->__('monthly interest rate (%s)', $interestRate.'%');
+            }
+
+            $installments[$installmentItem] = "{$label} {$interestLabel}";
+        }
+
+        return $installments;
+    }
+
     public function getInstallmentsAvailables()
     {
-        $maxInstallments = (int)Mage::getStoreConfig('payment/pagarme_cc/max_installments');
-        $minInstallmentValue = (float)Mage::getStoreConfig('payment/pagarme_cc/min_installment_value');
-        $interestRate = (float)Mage::getStoreConfig('payment/pagarme_cc/interest_rate');
-        $freeInstallments = (int)Mage::getStoreConfig('payment/pagarme_cc/free_installments');
-        if ($minInstallmentValue < self::MIN_INSTALLMENT_VALUE) {
-            $minInstallmentValue = self::MIN_INSTALLMENT_VALUE;
-        }
-
         $pagarmeHelper = Mage::helper('pagarme');
+        $creditCardModel = Mage::getModel('pagarme/cc');
+        $total = $this->getCheckoutTotalAmount();
+        $installmentConfig = $creditCardModel->getPagarMeCcInstallmentConfig();
+        $installmentNumber = $creditCardModel->getInstallmentNumber($total, $installmentConfig);
+        $installmentConfig->setMaxInstallments($installmentNumber);
+        $total = $pagarmeHelper->formatAmount($total);
+        $api = $this->getPagarmeAPI();
 
-        $quote = Mage::helper('checkout')->getQuote();
-        $total = $pagarmeHelper->getBaseSubtotalWithDiscount() + $quote->getShippingAddress()->getShippingAmount();
-
-        $n = floor($total / $minInstallmentValue);
-        if ($n > $maxInstallments) {
-            $n = $maxInstallments;
-        } elseif ($n < 1) {
-            $n = 1;
-        }
-
-        $data = new Varien_Object();
-        $data->setAmount(Mage::helper('pagarme')
-            ->formatAmount($total))
-            ->setInterestRate($interestRate)
-            ->setMaxInstallments($n)
-            ->setFreeInstallments($freeInstallments);
-
-        $response = Mage::getModel('pagarme/api')
-            ->calculateInstallmentsAmount($data);
-        $collection = $response->getInstallments();
-
-        $installments = array();
-        foreach ($collection as $item) {
-            if ($item->getInstallment() == 1) {
-                $label = $this->__('Pay in full - %s', $quote->getStore()->formatPrice($total, false));
-            } else {
-                $installmentAmountInReal = $pagarmeHelper->convertCurrencyFromCentsToReal($item->getInstallmentAmount());
-                $label = $this->__('%sx - %s', $item->getInstallment(), $quote->getStore()->formatPrice($installmentAmountInReal, false)) . ' ';
-                $label .= $item->getInstallment() > $freeInstallments ? $this->__('monthly interest rate (%s)', $interestRate.'%') : $this->__('interest-free');
-            }
-            $installments[$item->getInstallment()] = $label;
-        }
-        return $installments;
+        $collection = $creditCardModel->getAvailableInstallments($total, $installmentConfig, $api);
+        return $this->getInstallmentsOptions($collection, $pagarmeHelper, $installmentConfig);
     }
 }

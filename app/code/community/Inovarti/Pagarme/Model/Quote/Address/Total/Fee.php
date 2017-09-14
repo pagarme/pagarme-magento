@@ -85,12 +85,12 @@ class Inovarti_Pagarme_Model_Quote_Address_Total_Fee extends Mage_Sales_Model_Qu
         return $paymentMethod == 'pagarme_checkout' || $paymentMethod == 'pagarme_cc';
     }
 
-    private function getInstallmentConfig($paymentMethod)
+    public function getInstallmentConfig($paymentMethod)
     {
         if ($paymentMethod == 'pagarme_checkout') {
             return $this->getPagarMeCheckoutInstallmentConfig();
         } elseif ($paymentMethod == 'pagarme_cc') {
-            return $this->getPagarMeCcInstallmentConfig();
+            return Mage::getModel('pagarme/cc')->getPagarMeCcInstallmentConfig();
         }
         return null;
     }
@@ -101,16 +101,6 @@ class Inovarti_Pagarme_Model_Quote_Address_Total_Fee extends Mage_Sales_Model_Qu
         $config->setMaxInstallments((int) Mage::getStoreConfig('payment/pagarme_checkout/max_installments'));
         $config->setFreeInstallments((int) Mage::getStoreConfig('payment/pagarme_checkout/free_installments'));
         $config->setInterestRate((float) Mage::getStoreConfig('payment/pagarme_checkout/interest_rate'));
-
-        return $config;
-    }
-
-    private function getPagarMeCcInstallmentConfig()
-    {
-        $config = new Varien_Object();
-        $config->setMaxInstallments((int) Mage::getStoreConfig('payment/pagarme_cc/max_installments'));
-        $config->setFreeInstallments((int) Mage::getStoreConfig('payment/pagarme_cc/free_installments'));
-        $config->setInterestRate((float) Mage::getStoreConfig('payment/pagarme_cc/interest_rate'));
 
         return $config;
     }

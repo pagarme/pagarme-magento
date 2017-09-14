@@ -33,3 +33,9 @@
 
 ## Observações
 * Por padrão o modulo utiliza o campo ```taxvat``` como ```document_number``` e 4 linhas em um endereço(```Sistema > Configuração > Configuração do cliente > Opções de Nome e Endereço``` e o campo ```Número de linhas em um endereço de rua``` com valor ```4```) respectivamente a ```street```, ```street_number```, ```complementary``` e ```neighborhood```.  Mas não se preocupe, caso esteja utilizando diferente do padrão, você pode utilizar o observer ```pagarme_get_customer_info_from_order_after``` e definir os valores de acordo com o seu Magento
+
+## Tests
+wget https://phar.phpunit.de/phpunit-4.1.0.phar
+chmod +x phpunit-4.1.0.phar
+mv phpunit-4.1.0.phar /usr/bin/phpunit
+

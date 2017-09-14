@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         syntaxCheck="true"
+         bootstrap="./autoload.php">
+<testsuite name="Magento Unit Test">
+    <directory>./</directory>
+</testsuite>
+<filter>
+    <whitelist>
+        <directory suffix=".php">../app/code</directory>
+    </whitelist>
+</filter>
+</phpunit>
