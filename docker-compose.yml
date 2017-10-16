@@ -32,3 +32,11 @@ services:
             - "80:80"
         depends_on:
             - mysql
+
+    composer:
+        image: pagarme/composer
+        working_dir: /magneto
+        volumes:
+            - .:/magneto
+        command:
+            -  install
