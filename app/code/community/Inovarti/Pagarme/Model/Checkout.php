@@ -20,7 +20,7 @@ class Inovarti_Pagarme_Model_Checkout extends Inovarti_Pagarme_Model_Abstract
     protected $_canAuthorize                = true;
     protected $_canCapture                  = true;
     protected $_canRefund                   = true;
-    protected $_canUseForMultishipping        = true;
+    protected $_canUseForMultishipping      = true;
     protected $_canManageRecurringProfiles  = false;
 
     public function assignData($data)
@@ -37,7 +37,7 @@ class Inovarti_Pagarme_Model_Checkout extends Inovarti_Pagarme_Model_Abstract
         return $this;
     }
 
-    public function authorize(Varien_Object $payment)
+    public function authorize(Varien_Object $payment, $amount = 0)
     {
         $amount = $this->getGrandTotalFromPayment($payment);
 
@@ -45,7 +45,7 @@ class Inovarti_Pagarme_Model_Checkout extends Inovarti_Pagarme_Model_Abstract
         return $this;
     }
 
-    public function capture(Varien_Object $payment)
+    public function capture(Varien_Object $payment, $amount = 0)
     {
         $amount = $this->getGrandTotalFromPayment($payment);
 
