@@ -11,13 +11,13 @@ Módulo de integração Pagar.me para Magento 1.x
 
 ## Requisitos
 
-- [Magento Community](https://magento.com/products/community-edition) 1.5.x, 1.6.x, 1.7.x, 1.8.x ou 1.9.x.
+- [Magento Community](https://magento.com/products/community-edition) 1.7.x, 1.8.x ou 1.9.x.
 - [PHP](http://php.net) >= 5.4.x
 
 ## Instalação 
 
 1. Solicite a última versão do nosso módulo através do e-mail: magento@pagar.me
-2. Descompacte o arquivo **zip** e copie as pastas `app`, `js`, `skin` e `vendor` para a a pasta raiz da sua instalação do Magento
+2. Descompacte o arquivo **zip** e copie as pastas `app` e `vendor` para a a pasta raiz da sua instalação do Magento
 3. Limpe o cache em `Sistema > Gerenciamento de Cache`
 
 ## Configuração
@@ -35,19 +35,31 @@ Módulo de integração Pagar.me para Magento 1.x
 
 ### Requisitos
 
+- [Docker](https://docs.docker.com)
 - [Docker Compose](https://docs.docker.com/compose/)
 
 ### Instalando o Magento Community 1.x
 
-1. Execute o comando `docker-compose up -d` para iniciar os containers
-2. Execute o comando `docker-compose exec magento install` para executar a instalação do Magento. Caso queira alguma configuração específica, verifique o arquivo `.env`.
+1. Execute o comando `docker-compose up -d` para iniciar os containers e a instalação do Magento
+2. Execute o comando `docker-compose logs -f magento` para acompanhar o processo de instalação.
+3. Execute o comando `docker run -it --rm -v $(pwd):/code -w /code pagarme/composer install` para a instalação das dependências do projeto através do [Composer](https://getcomposer.org/).
 
 ### Executando os testes unitários
 
-Execute o comando `docker-compose exec magento php vendor/bin/phpunit` para iniciar os testes
+Execute o comando `docker-compose exec magento vendor/bin/phpunit` para iniciar os testes
 
 ### Executando os testes de comportamento
 
-Execute o comando `docker-compose exec magento php vendor/bin/behat` para iniciar os testes
+Execute o comando `docker-compose exec magento vendor/bin/behat` para iniciar os testes
 
 ### Acompanhando a execução dos testes de comportamento
+
+1. Instale um cliente VNC. Sugerimos o [Vinagre](https://wiki.gnome.org/Apps/Vinagre)
+2. Conecte-se no servidor.
+*  Utilize `localhost` para o host e `secret` para senha
+
+### Acessando a loja virtual através do navegador
+
+1. Altere seu arquivo `/etc/hosts` adicionando a entrada `127.0.0.1 magento`
+2. Acesse a loja no navegador utilizando o endereço `http://magento`
+
