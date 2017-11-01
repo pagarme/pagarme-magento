@@ -53,6 +53,7 @@ class CheckoutContext extends RawMinkContext
         $stock->assignProduct($this->product);
         $stock->save();
 
+        $this->disablePagarmeTransparent();
         $this->enablePagarmeCheckout();
     }
 

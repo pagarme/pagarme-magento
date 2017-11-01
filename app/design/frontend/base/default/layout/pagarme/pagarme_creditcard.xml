@@ -11,7 +11,7 @@
     </default>
     <checkout_onepage_index>
         <reference name="head">
-            <action method="addJs"><script>pagarme/creditcard.js</script></action>
+            <action method="addJs" ifconfig="payment/pagarme_settings/transparent_active"><script>pagarme/creditcard.js</script></action>
         </reference>
     </checkout_onepage_index>
 </layout>
