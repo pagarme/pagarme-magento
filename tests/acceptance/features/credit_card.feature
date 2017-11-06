@@ -1,6 +1,6 @@
 Feature: Credit Card
     As an administrator of a webstore
-    I want to use the transparent checkout for credit card purchases without installments
+    I want to use the transparent checkout for credit card purchases with installments
     So that the clients on my store can buy their goods without knowing that the payment is resolved by Pagar.me
 
     Scenario: Make a purchase by credit card
