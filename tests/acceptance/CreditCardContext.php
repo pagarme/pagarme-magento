@@ -137,6 +137,15 @@ class CreditCardContext extends RawMinkContext
 
         $page->find('css', '#p_method_pagarme_creditcard')->click();
     }
+    /**
+     * @When I choose :installments installments
+     */
+    public function iChooseInstallments($installments) {
+        $page = $this->session->getPage();
+        
+        $page->find('css', '#pagarme_creditcard_creditcard_installments')
+          ->selectOption('12');
+    }
 
     /**
      * @When I confirm my payment information

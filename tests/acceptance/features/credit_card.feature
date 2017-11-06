@@ -15,3 +15,16 @@ Feature: Credit Card
         And place order
         Then the purchase must be paid with success
 
+  
+    Scenario: Make a purchase in installment by credit card
+        Given a registered user
+        When I access the store page
+        And add any product to basket
+        And I go to checkout page
+        And login with registered user
+        And confirm billing and shipping address information
+        And choose pay with transparent checkout using credit card
+        And I choose "12" installments
+        And I confirm my payment information
+        And place order
+        Then the purchase must be paid with success

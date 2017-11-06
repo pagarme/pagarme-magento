@@ -62,7 +62,25 @@
                 value=""
             />
         </div>
-    </li></ul>
+    </li>
+    <li>
+        <label for="<?= $_code ?>_creditcard_installments" class="required">
+            <em>*</em><?= $this->__('Installments') ?>
+        </label>
+        <div class="input-box">
+            <select
+                name="<?= $_code ?>_creditcard_installments"
+                id="<?= $_code ?>_creditcard_installments"
+                title="<?= $this->__('Installments') ?>"
+                class="input-text required-entry"
+            >
+            <?php for($i = 1; $i <= 12; $i++) : ?>
+                <option value="<?= $i ?>"><?= $i ?></option>
+            <?php endfor; ?>
+            </select>
+        </div>
+    </li>
+</ul>
 <div>
     <?= $this->getMethod()->getConfigData('message');?>
 </div>
