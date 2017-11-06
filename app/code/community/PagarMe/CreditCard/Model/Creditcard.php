@@ -48,7 +48,8 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     public function assignData($data)
     {
         $additionalInfoData = [
-            'card_hash' => $data['card_hash']
+            'card_hash' => $data['card_hash'],
+            'installments' => $data['installments']
         ];
 
         $this->getInfoInstance()
@@ -61,7 +62,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     {
         $infoInstance = $this->getInfoInstance();
         $cardHash = $infoInstance->getAdditionalInformation('card_hash');
-
+        $installments = $infoInstance->getAdditionalInformation('installments');
         try {
             $card = Mage::getModel('pagarme_core/sdk_adapter')
                 ->getPagarMeSdk()
@@ -120,7 +121,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                     $helper->parseAmountToInteger($quote->getGrandTotal()),
                     $card,
                     $customerPagarMe,
-                    1,
+                    $installments,
                     false
                 );
 
