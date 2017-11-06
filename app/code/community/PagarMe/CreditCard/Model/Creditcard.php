@@ -112,6 +112,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
 
         $customerPagarMe = $helper->buildCustomer($customer);
 
+        $order = $payment->getOrder();
         try {
             $pagarmeSdk = Mage::getModel('pagarme_core/sdk_adapter')
                 ->getPagarMeSdk();
@@ -125,7 +126,8 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                     false
                 );
 
-            $pagarmeSdk->transaction()->capture($authorizedTransaction);
+            $transaction = $pagarmeSdk->transaction()->capture($authorizedTransaction);
+            $this->saveTransactionInformation($order, $transaction, $infoInstance);
         } catch (\Exception $exception) {
             $json = json_decode($exception->getMessage());
             $json = json_decode($json);
@@ -148,5 +150,46 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
             ->getPagarMeSdk()
             ->transaction()
             ->capture($authorizedTransaction);
+    }
+    
+    /**
+     * @param Mage_Sales_Model_Order $order
+     * @param PagarMe\Sdk\Transaction\AbstractTransaction $transaction
+     * @param Mage_Sales_Model_Order_Payment $infoInstance
+     *
+     * @return void
+     *
+     * @codeCoverageIgnore
+     */
+    private function saveTransactionInformation(
+        Mage_Sales_Model_Order $order,
+        PagarMe\Sdk\Transaction\AbstractTransaction $transaction,
+        $infoInstance
+    ) {
+        $installments = 1;
+        $rateAmount = 0;
+        $interestRate = 0;
+        $totalAmount = Mage::helper('pagarme_core')
+            ->parseAmountToFloat($transaction->getAmount());
+
+        if ($transaction instanceof PagarMe\Sdk\Transaction\CreditCardTransaction) {
+            $installments = $transaction->getInstallments();
+
+            $rateAmount = ($totalAmount - $order->getBaseGrandTotal());
+            $interestRate = $infoInstance->getAdditionalInformation('interest_rate');
+        }
+
+        Mage::getModel('pagarme_core/transaction')
+            ->setTransactionId($transaction->getId())
+            ->setOrderId($order->getId())
+            ->setInstallments($installments)
+            ->setInterestRate($interestRate)
+            ->setPaymentMethod($transaction::PAYMENT_METHOD)
+            ->setFutureValue($totalAmount)
+            ->setRateAmount($rateAmount)
+            ->save();
+
+        $order->setGrandTotal($totalAmount);
+        $order->save();
     }
 }
