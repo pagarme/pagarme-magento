@@ -24,7 +24,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         }
 
         return (bool) Mage::getStoreConfig(
-            'payment/pagarme_settings/transparent_active'
+            'payment/pagarme_v2_settings/transparent_active'
         );
     }
 
@@ -36,7 +36,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     public function getTitle()
     {
         return Mage::getStoreConfig(
-            'payment/pagarme_settings/creditcard_title'
+            'payment/pagarme_v2_settings/creditcard_title'
         );
     }
 

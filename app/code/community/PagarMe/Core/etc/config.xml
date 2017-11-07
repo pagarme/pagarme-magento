@@ -106,7 +106,7 @@
                 <payment_methods>credit_card,boleto</payment_methods>
                 <payment_action>authorize</payment_action>
             </pagarme_creditcard>
-            <pagarme_settings>
+            <pagarme_v2_settings>
                 <checkout_title>Pagarme Checkout</checkout_title>
                 <checkout_button_text>Realizar pagamento</checkout_button_text>
                 <creditcard_interest_rate>0</creditcard_interest_rate>
@@ -122,7 +122,7 @@
                 <checkout_payment_methods>credit_card,boleto</checkout_payment_methods>
                 <payment_action>authorize_capture</payment_action>
                 <checkout_capture_customer_data>false</checkout_capture_customer_data>
-            </pagarme_settings>
+            </pagarme_v2_settings>
         </payment>
     </default>
 </config>

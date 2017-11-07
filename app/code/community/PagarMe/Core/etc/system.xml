@@ -3,7 +3,7 @@
     <sections>
         <payment>
             <groups>
-                <pagarme_settings translate="label" module="pagarme_core">
+                <pagarme_v2_settings translate="label" module="pagarme_core">
                     <label>Pagar.me - Settings</label>
                     <sort_order>100</sort_order>
                     <show_in_default>1</show_in_default>
@@ -241,7 +241,7 @@
                             <show_in_store>0</show_in_store>
                         </checkout_button_text>
                     </fields>
-                </pagarme_settings>
+                </pagarme_v2_settings>
             </groups>
         </payment>
     </sections>

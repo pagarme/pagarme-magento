@@ -54,7 +54,7 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
         }
 
         return (bool) Mage::getStoreConfig(
-            'payment/pagarme_settings/checkout_active'
+            'payment/pagarme_v2_settings/checkout_active'
         );
     }
 
@@ -66,7 +66,7 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
     public function getTitle()
     {
         return Mage::getStoreConfig(
-            'payment/pagarme_settings/checkout_title'
+            'payment/pagarme_v2_settings/checkout_title'
         );
     }
 

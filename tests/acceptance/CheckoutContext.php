@@ -28,17 +28,17 @@ class CheckoutContext extends RawMinkContext
     {
         $config = Mage::getModel('core/config');
         $config->saveConfig(
-            'payment/pagarme_settings/checkout_payment_methods',
+            'payment/pagarme_v2_settings/checkout_payment_methods',
             'credit_card,boleto'
         );
 
         $config->saveConfig(
-            'payment/pagarme_settings/creditcard_interest_rate',
+            'payment/pagarme_v2_settings/creditcard_interest_rate',
             5
         );
 
         $config->saveConfig(
-            'payment/pagarme_settings/creditcard_max_installments',
+            'payment/pagarme_v2_settings/creditcard_max_installments',
             12
         );
 
@@ -164,7 +164,7 @@ class CheckoutContext extends RawMinkContext
         $page->find('css', '#p_method_pagarme_checkout')->click();
         $page->pressButton(
             Mage::getStoreConfig(
-                'payment/pagarme_settings/checkout_button_text'
+                'payment/pagarme_v2_settings/checkout_button_text'
             )
         );
     }
@@ -391,13 +391,13 @@ class CheckoutContext extends RawMinkContext
 
         Mage::getModel('core/config')
             ->saveConfig(
-                'payment/pagarme_settings/boleto_discount_mode',
+                'payment/pagarme_v2_settings/boleto_discount_mode',
                 $this->configuredDiscountMode
             );
 
         Mage::getModel('core/config')
             ->saveConfig(
-                'payment/pagarme_settings/boleto_discount',
+                'payment/pagarme_v2_settings/boleto_discount',
                 $this->configuredDiscount
             );
     }

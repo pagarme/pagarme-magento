@@ -32,10 +32,10 @@ class PostbackContext extends MinkContext
         $this->product->save();
 
         \Mage::getConfig()
-            ->saveConfig('payment/pagarme_settings/general_api_key', PAGARME_API_KEY);
+            ->saveConfig('payment/pagarme_v2_settings/general_api_key', PAGARME_API_KEY);
 
         \Mage::getConfig()
-            ->saveConfig('payment/pagarme_settings/general_encryption_key', PAGARME_ENCRYPTION_KEY);
+            ->saveConfig('payment/pagarme_v2_settings/general_encryption_key', PAGARME_ENCRYPTION_KEY);
 
         $this->enablePagarmeCheckout();
     }
@@ -113,7 +113,7 @@ class PostbackContext extends MinkContext
 
         $payload = "id={$transactionId}&current_status={$currentStatus}";
 
-        $apiKey = \Mage::getStoreConfig('payment/pagarme_settings/general_api_key');
+        $apiKey = \Mage::getStoreConfig('payment/pagarme_v2_settings/general_api_key');
 
         $hash = hash_hmac($algorithm, $payload, $apiKey);
 

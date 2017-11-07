@@ -12,7 +12,7 @@ class PagarMe_Checkout_Block_Form_CheckoutTest extends PHPUnit_Framework_TestCas
         $checkoutConfig = [
             'amount'                       => 1234,
             'createToken'                  => 'true',
-            'paymentMethods'               => Mage::getStoreConfig('payment/pagarme_settings/checkout_payment_methods'),
+            'paymentMethods'               => Mage::getStoreConfig('payment/pagarme_v2_settings/checkout_payment_methods'),
             'customerName'                 => 'Amazing Spider Man',
             'customerEmail'                => mktime() . 'john.due@email.com',
             'customerDocumentNumber'       => '123.456.789-52',
@@ -26,27 +26,27 @@ class PagarMe_Checkout_Block_Form_CheckoutTest extends PHPUnit_Framework_TestCas
             'customerAddressCity' => 'Nowhere',
             'customerAddressState' => 'XP',
             'brands' => $this->brands,
-            'customerData' => Mage::getStoreConfig('payment/pagarme_settings/checkout_capture_customer_data'),
+            'customerData' => Mage::getStoreConfig('payment/pagarme_v2_settings/checkout_capture_customer_data'),
             'boletoHelperText' => Mage::getStoreConfig(
-                'payment/pagarme_settings/checkout_boleto_helper_text'
+                'payment/pagarme_v2_settings/checkout_boleto_helper_text'
             ),
             'creditCardHelperText' => Mage::getStoreConfig(
-                'payment/pagarme_settings/checkout_credit_card_helper_text'
+                'payment/pagarme_v2_settings/checkout_credit_card_helper_text'
             ),
             'uiColor' => Mage::getStoreConfig(
-                'payment/pagarme_settings/checkout_ui_color'
+                'payment/pagarme_v2_settings/checkout_ui_color'
             ),
             'headerText' => Mage::getStoreConfig(
-                'payment/pagarme_settings/checkout_header_text'
+                'payment/pagarme_v2_settings/checkout_header_text'
             ),
             'paymentButtonText' => Mage::getStoreConfig(
-                'payment/pagarme_settings/checkout_payment_button_text'
+                'payment/pagarme_v2_settings/checkout_payment_button_text'
             ),
-            'interestRate' => Mage::getStoreConfig('payment/pagarme_settings/creditcard_interest_rate'
+            'interestRate' => Mage::getStoreConfig('payment/pagarme_v2_settings/creditcard_interest_rate'
             ),
-            'maxInstallments' => Mage::getStoreConfig('payment/pagarme_settings/creditcard_max_installments'
+            'maxInstallments' => Mage::getStoreConfig('payment/pagarme_v2_settings/creditcard_max_installments'
             ),
-            'freeInstallments' => Mage::getStoreConfig('payment/pagarme_settings/creditcard_free_installments'
+            'freeInstallments' => Mage::getStoreConfig('payment/pagarme_v2_settings/creditcard_free_installments'
             )
         ];
 
@@ -72,7 +72,7 @@ class PagarMe_Checkout_Block_Form_CheckoutTest extends PHPUnit_Framework_TestCas
             ->save();
 
         \Mage::app()->getStore()->setConfig(
-            'payment/pagarme_settings/creditcard_allowed_credit_card_brands',
+            'payment/pagarme_v2_settings/creditcard_allowed_credit_card_brands',
             $this->brands
         );
 

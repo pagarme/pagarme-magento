@@ -9,7 +9,7 @@ trait PagarMeSettings
         foreach ($this->getDefaultSettings() as $key => $defaultSetting) {
             \Mage::getModel('core/config')
                 ->saveConfig(
-                    "payment/pagarme_settings/{$key}",
+                    "payment/pagarme_v2_settings/{$key}",
                     $defaultSetting
                 );
         }

@@ -64,9 +64,9 @@ class PagarMe_Core_Model_Quote_Address_Total_BoletoDiscount extends PagarMe_Core
      */
     private function hasDiscountOnBoleto()
     {
-        return (Mage::getStoreConfig('payment/pagarme_settings/boleto_discount_mode')
+        return (Mage::getStoreConfig('payment/pagarme_v2_settings/boleto_discount_mode')
             == PagarMe_Core_Model_System_Config_Source_BoletoDiscountMode::FIXED_VALUE) ||
-            (Mage::getStoreConfig('payment/pagarme_settings/boleto_discount_mode')
+            (Mage::getStoreConfig('payment/pagarme_v2_settings/boleto_discount_mode')
             == PagarMe_Core_Model_System_Config_Source_BoletoDiscountMode::PERCENTAGE);
     }
 

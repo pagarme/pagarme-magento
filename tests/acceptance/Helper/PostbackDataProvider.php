@@ -175,7 +175,7 @@ trait PostbackDataProvider
         $helper = \Mage::helper('pagarme_core');
 
         $encryptionKey = \Mage::getStoreConfig(
-            'payment/pagarme_settings/general_encryption_key'
+            'payment/pagarme_v2_settings/general_encryption_key'
         );
 
         return [

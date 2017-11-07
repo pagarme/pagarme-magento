@@ -137,12 +137,12 @@ class OneStepCheckoutContext extends RawMinkContext
     public function fixedDiscountForBoletoPaymentIsProvided($amount)
     {
         \Mage::getModel('core/config')->saveConfig(
-            'payment/pagarme_settings/boleto_discount',
+            'payment/pagarme_v2_settings/boleto_discount',
             $amount
         );
 
         \Mage::getModel('core/config')->saveConfig(
-            'payment/pagarme_settings/boleto_discount_mode',
+            'payment/pagarme_v2_settings/boleto_discount_mode',
             PagarMe_Core_Model_System_Config_Source_BoletoDiscountMode::FIXED_VALUE
         );
 
@@ -155,12 +155,12 @@ class OneStepCheckoutContext extends RawMinkContext
     public function percentualDiscountForBoletoPaymentIsProvided($amount)
     {
         \Mage::getModel('core/config')->saveConfig(
-            'payment/pagarme_settings/boleto_discount',
+            'payment/pagarme_v2_settings/boleto_discount',
             $amount
         );
 
         \Mage::getModel('core/config')->saveConfig(
-            'payment/pagarme_settings/boleto_discount_mode',
+            'payment/pagarme_v2_settings/boleto_discount_mode',
             PagarMe_Core_Model_System_Config_Source_BoletoDiscountMode::PERCENTAGE
         );
 
@@ -389,17 +389,17 @@ class OneStepCheckoutContext extends RawMinkContext
     public function interestRateForMultiInstallmentPayment($interestRate)
     {
         \Mage::getModel('core/config')->saveConfig(
-            'payment/pagarme_settings/creditcard_interest_rate',
+            'payment/pagarme_v2_settings/creditcard_interest_rate',
             $interestRate
         );
 
         \Mage::getModel('core/config')->saveConfig(
-            'payment/pagarme_settings/creditcard_free_installments',
+            'payment/pagarme_v2_settings/creditcard_free_installments',
             1
         );
 
         \Mage::getModel('core/config')->saveConfig(
-            'payment/pagarme_settings/creditcard_max_installments',
+            'payment/pagarme_v2_settings/creditcard_max_installments',
             12
         );
 
@@ -571,7 +571,7 @@ class OneStepCheckoutContext extends RawMinkContext
         $this->enableInovartiOneStepCheckout();
 
         \Mage::getModel('core/config')->saveConfig(
-            'payment/pagarme_settings/boleto_discount_mode',
+            'payment/pagarme_v2_settings/boleto_discount_mode',
             PagarMe_Core_Model_System_Config_Source_BoletoDiscountMode::NO_DISCOUNT
         );
 
@@ -580,13 +580,13 @@ class OneStepCheckoutContext extends RawMinkContext
 
     private function setupPagarMe()
     {
-        \Mage::getModel('core/config')->saveConfig('payment/pagarme_settings/checkout_active', 1);
+        \Mage::getModel('core/config')->saveConfig('payment/pagarme_v2_settings/checkout_active', 1);
         \Mage::getModel('core/config')->saveConfig(
-            'payment/pagarme_settings/general_api_key',
+            'payment/pagarme_v2_settings/general_api_key',
             PAGARME_API_KEY
         );
         \Mage::getModel('core/config')->saveConfig(
-            'payment/pagarme_settings/general_encryption_key',
+            'payment/pagarme_v2_settings/general_encryption_key',
             PAGARME_ENCRYPTION_KEY
         );
     }
