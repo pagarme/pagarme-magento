@@ -2,7 +2,7 @@
 
 class PagarMe_Checkout_Block_Form_Checkout extends Mage_Payment_Block_Form
 {
-    const TEMPLATE = 'pagarme/form/checkout.phtml';
+    const TEMPLATE = 'pagarme/form/pagarme_checkout.phtml';
 
     /**
      * @var Mage_Sales_Model_Quote

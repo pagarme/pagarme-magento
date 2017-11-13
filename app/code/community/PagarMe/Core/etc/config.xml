@@ -90,22 +90,22 @@
     </adminhtml>
     <default>
         <payment>
-            <pagarme_checkout>
+            <pagarme_v2_checkout>
                 <active>0</active>
                 <model>pagarme_checkout/checkout</model>
                 <order_status>pending</order_status>
                 <allowspecific>0</allowspecific>
                 <payment_methods>credit_card,boleto</payment_methods>
                 <payment_action>authorize</payment_action>
-            </pagarme_checkout>
-            <pagarme_creditcard>
+            </pagarme_v2_checkout>
+            <pagarme_v2_creditcard>
                 <active>1</active>
                 <model>pagarme_creditcard/creditcard</model>
                 <order_status>pending</order_status>
                 <allowspecific>0</allowspecific>
                 <payment_methods>credit_card,boleto</payment_methods>
                 <payment_action>authorize</payment_action>
-            </pagarme_creditcard>
+            </pagarme_v2_creditcard>
             <pagarme_v2_settings>
                 <checkout_title>Pagarme Checkout</checkout_title>
                 <checkout_button_text>Realizar pagamento</checkout_button_text>
