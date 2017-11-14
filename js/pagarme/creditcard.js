@@ -53,21 +53,21 @@ document.onreadystatechange = () => {
 
     const generateHash = () => {
       const card = {
-        card_number: document.getElementById('pagarme_creditcard_creditcard_number').value,
-        card_holder_name: document.getElementById('pagarme_creditcard_creditcard_owner').value,
-        card_expiration_date: document.getElementById('pagarme_creditcard_creditcard_expiration_date').value,
-        card_cvv: document.getElementById('pagarme_creditcard_creditcard_cvv').value,
+        card_number: document.getElementById('pagarme_v2_creditcard_creditcard_number').value,
+        card_holder_name: document.getElementById('pagarme_v2_creditcard_creditcard_owner').value,
+        card_expiration_date: document.getElementById('pagarme_v2_creditcard_creditcard_expiration_date').value,
+        card_cvv: document.getElementById('pagarme_v2_creditcard_creditcard_cvv').value,
       }
 
       return pagarme.client.connect({ encryption_key: 'ek_test_83vwMx5RoDNqC3rDi8jXNB3hIws0EO' })
         .then(client => client.security.encrypt(card))
         .then((card_hash) => {
-          document.getElementById('pagarme_card_hash').value = card_hash
+          document.getElementById('pagarme_v2_card_hash').value = card_hash
         })
     }
 
     const clearHash = () => {
-      get('#pagarme_card_hash').value = ''
+      get('#pagarme_v2_card_hash').value = ''
     }
 
     var addedEvent = false

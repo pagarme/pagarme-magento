@@ -1,7 +1,7 @@
 <?php $_code=$this->getMethodCode() ?>
 
 <ul class="form-list" id="payment_form_<?= $_code ?>" style="display: none">
-  <input type="hidden" value="" name="payment[card_hash]" id="pagarme_card_hash" class="required_entry" />
+  <input type="hidden" value="" name="payment[card_hash]" id="pagarme_v2_card_hash" class="required_entry" />
     <li>
         <label for="<?= $_code ?>_creditcard_number" class="required">
             <em>*</em><?= $this->__('Credit Card Number') ?>

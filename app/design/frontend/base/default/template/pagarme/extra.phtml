@@ -16,7 +16,7 @@
 
     <?php
 
-        $helper = Mage::app()->getHelper('pagarme_checkout');
+        $helper = Mage::app()->getHelper('pagarme_v2_checkout');
         $transaction = $helper->getTransaction();
 
         if (!is_null($transaction)) :

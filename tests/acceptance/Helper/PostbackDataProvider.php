@@ -56,9 +56,9 @@ trait PostbackDataProvider
         }
 
         $dataQuote = [
-            'method' => 'pagarme_checkout',
-            'pagarme_checkout_payment_method' => $paymentMethod,
-            'pagarme_checkout_token' => $token
+            'method' => 'pagarme_v2_checkout',
+            'pagarme_v2_checkout_payment_method' => $paymentMethod,
+            'pagarme_v2_checkout_token' => $token
         ];
 
         $quote->getPayment()->importData($dataQuote);
@@ -172,7 +172,7 @@ trait PostbackDataProvider
 
     private function createCommonDataForToken($amount, $customer, $customerAddress)
     {
-        $helper = \Mage::helper('pagarme_core');
+        $helper = \Mage::helper('pagarme_v2_core');
 
         $encryptionKey = \Mage::getStoreConfig(
             'payment/pagarme_v2_settings/general_encryption_key'

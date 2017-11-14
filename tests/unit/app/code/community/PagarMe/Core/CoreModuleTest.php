@@ -2,7 +2,7 @@
 
 class CoreModuleTest extends PHPUnit_Framework_TestCase
 {
-    const MODULE_NAME = 'PagarMe_Core';
+    const MODULE_NAME = 'PagarMe_V2_Core';
 
     public function setUp()
     {

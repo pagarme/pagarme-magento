@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <PagarMe_V2_CreditCard>
+            <version>2.0.1</version>
+        </PagarMe_V2_CreditCard>
+    </modules>
+    <global>
+        <models>
+            <pagarme_v2_creditcard>
+                <class>PagarMe_V2_CreditCard_Model</class>
+            </pagarme_v2_creditcard>
+        </models>
+        <blocks>
+            <pagarme_v2_creditcard>
+                <class>PagarMe_V2_CreditCard_Block</class>
+            </pagarme_v2_creditcard>
+        </blocks>
+        <helpers>
+            <pagarme_v2_creditcard>
+                <class>PagarMe_V2_CreditCard_Helper</class>
+            </pagarme_v2_creditcard>
+        </helpers>
+    </global>
+    <frontend>
+        <layout>
+            <updates>
+                <pagarme_v2_creditcard>
+                    <file>pagarme/pagarme_v2_creditcard.xml</file>
+                </pagarme_v2_creditcard>
+            </updates>
+        </layout>
+    </frontend>
+    <default>
+        <payment>
+            <pagarme_v2_creditcard>
+                <active>1</active>
+                <model>pagarme_v2_creditcard/creditcard</model>
+                <title>Credit Card</title>
+                <payment_action>authorize</payment_action>
+                <order_status>pending</order_status>
+                <allow_specific>0</allow_specific>
+                <sort_order>1</sort_order>
+            </pagarme_v2_creditcard>
+        </payment>
+    </default>
+</config>

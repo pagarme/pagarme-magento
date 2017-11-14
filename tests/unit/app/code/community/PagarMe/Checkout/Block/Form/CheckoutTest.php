@@ -1,6 +1,6 @@
 <?php
 
-class PagarMe_Checkout_Block_Form_CheckoutTest extends PHPUnit_Framework_TestCase
+class PagarMe_V2_Checkout_Block_Form_CheckoutTest extends PHPUnit_Framework_TestCase
 {
     private $brands = 'mastercard,visa,elo,aura';
 
@@ -90,7 +90,7 @@ class PagarMe_Checkout_Block_Form_CheckoutTest extends PHPUnit_Framework_TestCas
             ->setCustomerTaxvat($checkoutConfig['customerDocumentNumber']);
         $quote->setBillingAddress($address);
 
-        $checkoutBlock = new PagarMe_Checkout_Block_Form_Checkout();
+        $checkoutBlock = new PagarMe_V2_Checkout_Block_Form_Checkout();
         $checkoutBlock->setQuote($quote);
 
         $this->assertEquals(

@@ -110,7 +110,7 @@ class CheckoutContext extends RawMinkContext
         $page->clickLink($this->product->getName());
 
         $page->pressButton(
-            Mage::helper('pagarme_checkout')->__('Add to Cart')
+            Mage::helper('pagarme_v2_checkout')->__('Add to Cart')
         );
     }
 
@@ -122,7 +122,7 @@ class CheckoutContext extends RawMinkContext
         $page = $this->session->getPage();
 
         $page->pressButton(
-            Mage::helper('pagarme_checkout')->__('Proceed to Checkout')
+            Mage::helper('pagarme_v2_checkout')->__('Proceed to Checkout')
         );
     }
 
@@ -134,12 +134,12 @@ class CheckoutContext extends RawMinkContext
         $page = $this->session->getPage();
 
         $this->getSession()->getPage()->fillField(
-            Mage::helper('pagarme_checkout')->__('Email Address'),
+            Mage::helper('pagarme_v2_checkout')->__('Email Address'),
             $this->customer->getEmail()
         );
 
         $this->getSession()->getPage()->fillField(
-            Mage::helper('pagarme_checkout')->__('Password'),
+            Mage::helper('pagarme_v2_checkout')->__('Password'),
             $this->customer->getPassword()
         );
 
@@ -161,7 +161,7 @@ class CheckoutContext extends RawMinkContext
 
         $this->waitForElement('#checkout-step-payment', 5000);
 
-        $page->find('css', '#p_method_pagarme_checkout')->click();
+        $page->find('css', '#p_method_pagarme_v2_checkout')->click();
         $page->pressButton(
             Mage::getStoreConfig(
                 'payment/pagarme_v2_settings/checkout_button_text'
@@ -300,7 +300,7 @@ class CheckoutContext extends RawMinkContext
     public function placeOrder()
     {
         $page = $this->session->getPage();
-        $page->pressButton(Mage::helper('pagarme_checkout')->__('Place Order'));
+        $page->pressButton(Mage::helper('pagarme_v2_checkout')->__('Place Order'));
     }
 
      /**
@@ -323,7 +323,7 @@ class CheckoutContext extends RawMinkContext
         \PHPUnit_Framework_TestCase::assertEquals(
             strtolower(
                 Mage::helper(
-                    'pagarme_checkout'
+                    'pagarme_v2_checkout'
                 )->__('Your order has been received.')
             ),
             strtolower($successMessage)
@@ -350,7 +350,7 @@ class CheckoutContext extends RawMinkContext
     public function theInterestMustBeDescribedInCheckout()
     {
         \PHPUnit_Framework_TestCase::assertContains(
-            Mage::helper('pagarme_checkout')->__('Interest'),
+            Mage::helper('pagarme_v2_checkout')->__('Interest'),
             $this->getSession()->getPage()->getText()
         );
     }
@@ -366,7 +366,7 @@ class CheckoutContext extends RawMinkContext
             'Para imprimir o boleto',
             $page->find(
                 'css',
-                '.pagarme_info_boleto'
+                '.pagarme_v2_info_boleto'
             )->getText()
         );
 
@@ -374,7 +374,7 @@ class CheckoutContext extends RawMinkContext
             'https://pagar.me',
             $page ->find(
                 'css',
-                '.pagarme_info_boleto a'
+                '.pagarme_v2_info_boleto a'
             )->getAttribute('href')
         );
     }
@@ -408,7 +408,7 @@ class CheckoutContext extends RawMinkContext
     public function theDiscountMustBeDescribedInCheckout()
     {
         \PHPUnit_Framework_TestCase::assertContains(
-            Mage::helper('pagarme_checkout')->__('Discount'),
+            Mage::helper('pagarme_v2_checkout')->__('Discount'),
             $this->getSession()->getPage()->getText()
         );
     }
@@ -472,19 +472,19 @@ class CheckoutContext extends RawMinkContext
      */
     public function theDiscountMustBeApplied()
     {
-        $discountLabel = \Mage::helper('pagarme_core')->__('Discount');
+        $discountLabel = \Mage::helper('pagarme_v2_core')->__('Discount');
 
         $subtotal = $this->getSubtotal([ $discountLabel ]);
         $discount = (int) $this->getItemValue($discountLabel);
         $grandTotal = $this->getGrandTotal();
 
         if ($this->configuredDiscountMode ==
-            PagarMe_Core_Model_System_Config_Source_BoletoDiscountMode::FIXED_VALUE) {
+            PagarMe_V2_Core_Model_System_Config_Source_BoletoDiscountMode::FIXED_VALUE) {
             $expectedGrandTotal = $subtotal + $discount;
-            $expectedDiscountValue = \Mage::helper('pagarme_core')
+            $expectedDiscountValue = \Mage::helper('pagarme_v2_core')
                 ->parseAmountToInteger($this->configuredDiscount) * -1;
         } else if ($this->configuredDiscountMode ==
-            PagarMe_Core_Model_System_Config_Source_BoletoDiscountMode::PERCENTAGE) {
+            PagarMe_V2_Core_Model_System_Config_Source_BoletoDiscountMode::PERCENTAGE) {
             $expectedGrandTotal = ceil($subtotal * (1 - ($this->configuredDiscount / 100)));
             $expectedDiscountValue = ((int) ($subtotal * ($this->configuredDiscount / 100))) * -1;
         }

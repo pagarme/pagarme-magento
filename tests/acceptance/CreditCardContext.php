@@ -72,7 +72,7 @@ class CreditCardContext extends RawMinkContext
         $page->clickLink($this->product->getName());
 
         $page->pressButton(
-            Mage::helper('pagarme_checkout')->__('Add to Cart')
+            Mage::helper('pagarme_v2_checkout')->__('Add to Cart')
         );
 
     }
@@ -85,7 +85,7 @@ class CreditCardContext extends RawMinkContext
         $page = $this->session->getPage();
 
         $page->pressButton(
-            Mage::helper('pagarme_checkout')->__('Proceed to Checkout')
+            Mage::helper('pagarme_v2_checkout')->__('Proceed to Checkout')
         );
 
     }
@@ -98,12 +98,12 @@ class CreditCardContext extends RawMinkContext
         $page = $this->session->getPage();
 
         $this->getSession()->getPage()->fillField(
-            Mage::helper('pagarme_checkout')->__('Email Address'),
+            Mage::helper('pagarme_v2_checkout')->__('Email Address'),
             $this->customer->getEmail()
         );
 
         $this->getSession()->getPage()->fillField(
-            Mage::helper('pagarme_checkout')->__('Password'),
+            Mage::helper('pagarme_v2_checkout')->__('Password'),
             $this->customer->getPassword()
         );
 
@@ -135,7 +135,7 @@ class CreditCardContext extends RawMinkContext
 
         $this->waitForElement('#checkout-step-payment', 5000);
 
-        $page->find('css', '#p_method_pagarme_creditcard')->click();
+        $page->find('css', '#p_method_pagarme_v2_creditcard')->click();
     }
 
     /**
@@ -145,16 +145,16 @@ class CreditCardContext extends RawMinkContext
     {
         $page = $this->session->getPage();
 
-        $page->find('css', '#pagarme_creditcard_creditcard_number')
+        $page->find('css', '#pagarme_v2_creditcard_creditcard_number')
             ->setValue('4111111111111111');
 
-        $page->find('css', '#pagarme_creditcard_creditcard_owner')
+        $page->find('css', '#pagarme_v2_creditcard_creditcard_owner')
             ->setValue('Luiz Maria da Silva');
 
-        $page->find('css', '#pagarme_creditcard_creditcard_expiration_date')
+        $page->find('css', '#pagarme_v2_creditcard_creditcard_expiration_date')
             ->setValue('0722');
 
-        $page->find('css', '#pagarme_creditcard_creditcard_cvv')
+        $page->find('css', '#pagarme_v2_creditcard_creditcard_cvv')
             ->setValue('123');
 
         $this->session->getPage()->find(
@@ -173,7 +173,7 @@ class CreditCardContext extends RawMinkContext
         $this->session
             ->getPage()
             ->pressButton(
-                Mage::helper('pagarme_creditcard')
+                Mage::helper('pagarme_v2_creditcard')
                 ->__('Place Order')
             );
     }
@@ -197,7 +197,7 @@ class CreditCardContext extends RawMinkContext
         \PHPUnit_Framework_TestCase::assertEquals(
             strtolower(
                 Mage::helper(
-                    'pagarme_creditcard'
+                    'pagarme_v2_creditcard'
                 )->__('Your order has been received.')
             ),
             strtolower($successMessage)

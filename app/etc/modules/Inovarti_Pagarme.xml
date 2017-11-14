@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category   Inovarti
+ * @package    Inovarti_Pagarme
+ * @author     Suporte <suporte@inovarti.com.br>
+ */
+ -->
+<config>
+    <modules>
+        <Inovarti_Pagarme>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <Mage_Payment />
+            </depends>
+        </Inovarti_Pagarme>
+    </modules>
+</config>

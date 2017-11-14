@@ -1,6 +1,6 @@
 <?php
 
-class PagarMe_Core_Model_PostbackTest extends \PHPUnit_Framework_TestCase
+class PagarMe_V2_Core_Model_PostbackTest extends \PHPUnit_Framework_TestCase
 {
     public function validPostbackDataProvider()
     {
@@ -8,12 +8,12 @@ class PagarMe_Core_Model_PostbackTest extends \PHPUnit_Framework_TestCase
             [
                 true,
                 true,
-                PagarMe_Core_Model_Postback::POSTBACK_STATUS_PAID
+                PagarMe_V2_Core_Model_Postback::POSTBACK_STATUS_PAID
             ],
             [
                 true,
                 false,
-                PagarMe_Core_Model_Postback::POSTBACK_STATUS_REFUNDED
+                PagarMe_V2_Core_Model_Postback::POSTBACK_STATUS_REFUNDED
             ]
         ];
     }
@@ -29,7 +29,7 @@ class PagarMe_Core_Model_PostbackTest extends \PHPUnit_Framework_TestCase
             [
                 false,
                 false,
-                PagarMe_Core_Model_Postback::POSTBACK_STATUS_PAID
+                PagarMe_V2_Core_Model_Postback::POSTBACK_STATUS_PAID
             ]
         ];
     }
@@ -51,7 +51,7 @@ class PagarMe_Core_Model_PostbackTest extends \PHPUnit_Framework_TestCase
         $orderCanInvoice,
         $currentStatus
     ) {
-        $postback = Mage::getModel('pagarme_core/postback');
+        $postback = Mage::getModel('pagarme_v2_core/postback');
 
         $orderMock = $this->getMockBuilder('Mage_Sales_Model_Order')
             ->getMock();
@@ -69,7 +69,7 @@ class PagarMe_Core_Model_PostbackTest extends \PHPUnit_Framework_TestCase
      */
     public function mustSetOrderAsPaid()
     {
-        $postback = Mage::getModel('pagarme_core/postback');
+        $postback = Mage::getModel('pagarme_v2_core/postback');
 
         $resourceMock = $this->getMockBuilder('Mage_Core_Model_Resource_Resource')
             ->getMock();
@@ -90,7 +90,7 @@ class PagarMe_Core_Model_PostbackTest extends \PHPUnit_Framework_TestCase
         $invoiceMock->expects($this->once())
             ->method('save');
 
-        $invoiceServiceMock = $this->getMockBuilder('PagarMe_Core_Model_Service_Invoice')
+        $invoiceServiceMock = $this->getMockBuilder('PagarMe_V2_Core_Model_Service_Invoice')
             ->getMock();
 
         $postback->setInvoiceService($invoiceServiceMock);
@@ -137,7 +137,7 @@ class PagarMe_Core_Model_PostbackTest extends \PHPUnit_Framework_TestCase
         $orderMock->method('canInvoice')
             ->willReturn($orderCanInvoice);
 
-        $orderServiceMock = $this->getMockBuilder('PagarMe_Core_Model_Service_Order')
+        $orderServiceMock = $this->getMockBuilder('PagarMe_V2_Core_Model_Service_Order')
             ->getMock();
 
         $transactionId = rand(0, 9999);
@@ -147,7 +147,7 @@ class PagarMe_Core_Model_PostbackTest extends \PHPUnit_Framework_TestCase
             ->with($transactionId)
             ->willReturn($orderMock);
 
-        $postback = Mage::getModel('pagarme_core/postback');
+        $postback = Mage::getModel('pagarme_v2_core/postback');
         $postback->setOrderService($orderServiceMock);
         $postback->processPostback($transactionId, $currentStatus);
     }

@@ -234,7 +234,7 @@ class ConfigureContext extends RawMinkContext
     public function pagarMeCheckoutMustBeEnabled()
     {
         \PHPUnit_Framework_TestCase::assertTrue(
-            Mage::helper('core')->isModuleEnabled('PagarMe_Core')
+            Mage::helper('core')->isModuleEnabled('PagarMe_V2_Core')
         );
     }
 
@@ -484,7 +484,7 @@ class ConfigureContext extends RawMinkContext
         );
 
         $select->selectOption(
-            \Mage::helper('pagarme_core')->__($discountMode)
+            \Mage::helper('pagarme_v2_core')->__($discountMode)
         );
     }
 

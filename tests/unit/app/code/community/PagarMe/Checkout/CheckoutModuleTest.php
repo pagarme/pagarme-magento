@@ -2,7 +2,7 @@
 
 class CheckoutModuleTest extends PHPUnit_Framework_TestCase
 {
-    const MODULE_NAME = 'PagarMe_Checkout';
+    const MODULE_NAME = 'PagarMe_V2_Checkout';
 
     public function setUp()
     {

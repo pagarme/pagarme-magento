@@ -88,7 +88,7 @@ class PostbackContext extends MinkContext
     public function aOrderBePaid($paymentMethod)
     {
         $this->processPostbackByPaymentMethod(
-            PagarMe_Core_Model_Postback::POSTBACK_STATUS_PAID,
+            PagarMe_V2_Core_Model_Postback::POSTBACK_STATUS_PAID,
             $paymentMethod
         );
     }
@@ -99,14 +99,14 @@ class PostbackContext extends MinkContext
     public function thenThePaymentBeRefunded($paymentMethod)
     {
         $this->processPostbackByPaymentMethod(
-            PagarMe_Core_Model_Postback::POSTBACK_STATUS_REFUNDED,
+            PagarMe_V2_Core_Model_Postback::POSTBACK_STATUS_REFUNDED,
             $paymentMethod
         );
     }
 
     private function processPostbackByPaymentMethod($currentStatus, $paymentMethod)
     {
-        $transactionId = Mage::getModel('pagarme_core/service_order')
+        $transactionId = Mage::getModel('pagarme_v2_core/service_order')
             ->getTransactionIdByOrder($this->order);
 
         $algorithm = 'sha1';

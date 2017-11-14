@@ -1,19 +1,19 @@
 <?php
 
-class PagarMe_Checkout_Block_SuccessTest extends PHPUnit_Framework_TestCase
+class PagarMe_V2_Checkout_Block_SuccessTest extends PHPUnit_Framework_TestCase
 {
     private $successBlock;
 
     public function setUp()
     {
-        $this->successBlock = new PagarMe_Checkout_Block_Success();
+        $this->successBlock = new PagarMe_V2_Checkout_Block_Success();
     }
 
     public function paymentMethodsData()
     {
         return [
             [
-                PagarMe_Checkout_Model_Checkout::PAGARME_CHECKOUT_BOLETO,
+                PagarMe_V2_Checkout_Model_Checkout::PAGARME_CHECKOUT_BOLETO,
                 true
             ],
             [
@@ -30,7 +30,7 @@ class PagarMe_Checkout_Block_SuccessTest extends PHPUnit_Framework_TestCase
     public function mustVerifyIfIsBoletoTransactionOrNot($paymentMethod, $expect)
     {
         $additionalInfo = [
-            'pagarme_payment_method' => $paymentMethod
+            'pagarme_v2_payment_method' => $paymentMethod
         ];
 
         $paymentMock = $this->getMockBuilder('Mage_Sales_Model_Order_Payment')
@@ -59,8 +59,8 @@ class PagarMe_Checkout_Block_SuccessTest extends PHPUnit_Framework_TestCase
         $boletoUrl = 'https://pagar.me/boleto';
 
         $additionalInfo = [
-            'pagarme_payment_method' => $paymentMethod,
-            'pagarme_boleto_url'     => $boletoUrl
+            'pagarme_v2_payment_method' => $paymentMethod,
+            'pagarme_v2_boleto_url'     => $boletoUrl
         ];
 
         $paymentMock = $this->getMockBuilder('Mage_Sales_Model_Order_Payment')

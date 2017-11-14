@@ -11,12 +11,12 @@
     </default>
     <checkout_onepage_success>
         <reference name="content">
-            <block type="pagarme_checkout/success" name="pagarme_checkout.success" template="pagarme/success.phtml"/>
+            <block type="pagarme_v2_checkout/success" name="pagarme_v2_checkout.success" template="pagarme/success.phtml"/>
         </reference>
     </checkout_onepage_success>
     <adminhtml_sales_order_view>
         <reference name="order_totals">
-            <block name="pagarme_checkout_rate_amount" type="adminhtml/sales_order_totals_item" template="pagarme/checkout/interest_rate/rate_amount.phtml"/>
+            <block name="pagarme_v2_checkout_rate_amount" type="adminhtml/sales_order_totals_item" template="pagarme/checkout/interest_rate/rate_amount.phtml"/>
         </reference>
     </adminhtml_sales_order_view>
 </layout>
