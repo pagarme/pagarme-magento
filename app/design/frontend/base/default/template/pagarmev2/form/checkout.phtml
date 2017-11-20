@@ -1,0 +1,68 @@
+<?php
+/*
+ * @copyright   Copyright (C) 2015 Gamuza Technologies (http://www.gamuza.com.br/)
+ * @author     Eneias Ramos de Melo <eneias@gamuza.com.br>
+ */
+?>
+
+<?php $_code=$this->getMethodCode(); ?>
+
+<ul class="form-list" id="payment_form_<?php echo $_code ?>" style="display:none;">
+
+    <input type="hidden" value="" name="payment[pagarme_checkout_hash]" id="pagarme-checkout-hash" class="required-entry" />
+    <input type="hidden" value="" name="payment[pagarme_checkout_payment_method]" id="pagarme-checkout-payment-method" />
+    <input type="hidden" value="" name="payment[pagarme_checkout_installments]" id="pagarme-checkout-installments" />
+
+    <div style="display:none;" id="advice-required-entry-pagarme-checkout-hash" class="validation-advice">
+        <?php echo __("Please click the button below<br />and complete the information."); ?>
+    </div>
+
+    <button id="pagarme-checkout-button" class="button" type="button">
+        <span><span><?php echo __('Fill in the card data'); ?></span></span>
+    </button>
+
+</ul>
+
+<script type="text/javascript">
+    $("pagarme-checkout-button").observe ("click", function (event){
+        var checkoutPagarme = new PagarMeCheckout.Checkout({
+            "encryption_key" : "<?php echo $this->_getEncryptionKey(); ?>",
+            success: function (data){
+                $('pagarme-checkout-hash').value = data ['card_hash'];
+                $('pagarme-checkout-payment-method').value = data ['payment_method'];
+                $('pagarme-checkout-installments').value = data ['installments'];
+                if (typeof OSCForm !== "undefined") {
+                    OSCForm.enablePlaceOrderButton (); // For terms agreement ...
+                    if (OSCForm.validate () == true) OSCForm.placeOrder ();
+                } else if (typeof payment !== "undefined") {
+
+                    var checkoutPaymentOnclickSave = "<?php echo Mage::getStoreConfig('payment/pagarme_checkout/checkout_payment_onclick_save'); ?>";
+
+                    if (checkoutPaymentOnclickSave) {
+                        eval(checkoutPaymentOnclickSave).save();
+                    } else {
+                        payment.save ();
+                    }
+                }
+            },
+        });
+
+        checkoutPagarme.open({
+            "amount" : "<?php echo $this->_getAmount(); ?>",
+            "paymentMethods" : "<?php echo $this->_getInfoData('payment_method'); ?>",
+            "cardBrands" : "<?php echo $this->_getCardBrands('cctypes'); ?>",
+            "maxInstallments" : "<?php echo $this->_getMaxInstallments(); ?>",
+            "interestRate": "<?php echo $this->_getInfoData('interest_rate'); ?>",
+            "freeInstallments": "<?php echo $this->_getInfoData('free_installments'); ?>",
+            "postbackUrl" : "<?php echo $this->_getPostbackUrl(); ?>",
+            "createToken": "false", /* Do not authorize & capture automatically! */
+            "boletoDiscountAmount": "<?php echo $this->_getInfoData('boleto_discount_amount'); ?>",
+            "boletoDiscountPercentage": "<?php echo $this->_getInfoData('boleto_discount_percentage'); ?>",
+            "customerData" : "false",
+            "customerName" : "<?php echo $this->_getAddressData('firstname') . ' ' . $this->_getAddressData('lastname'); ?>",
+            "customerDocumentNumber" : "<?php echo $this->_getDocumentNumber(); ?>",
+            "customerEmail" : "<?php echo $this->_getAddressData('email'); ?>"
+        });
+    });
+</script>
+

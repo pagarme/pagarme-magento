@@ -1,0 +1,68 @@
+<?php $_code=$this->getMethodCode() ?>
+
+<ul class="form-list" id="payment_form_<?= $_code ?>" style="display: none">
+  <input type="hidden" value="" name="payment[card_hash]" id="pagarme_v2_card_hash" class="required_entry" />
+    <li>
+        <label for="<?= $_code ?>_creditcard_number" class="required">
+            <em>*</em><?= $this->__('Credit Card Number') ?>
+        </label>
+        <div class="input-box">
+            <input
+                type="text"
+                id="<?= $_code ?>_creditcard_number"
+                title="<?= $this->__('Credit Card Number') ?>"
+                class="input-text required-entry validate-digits"
+                maxlength="19"
+                value=""
+            />
+        </div>
+    </li>
+    <li>
+        <label for="<?= $_code ?>_creditcard_owner" class="required">
+            <em>*</em><?= $this->__('Credit Card Owner') ?>
+        </label>
+        <div class="input-box">
+            <input
+                type="text"
+                id="<?= $_code ?>_creditcard_owner"
+                placeholder="<?= $this->__('Name in credit card') ?>"
+                title="<?= $this->__('Credit Card Owner') ?>"
+                class="input-text required-entry"
+                value=""
+            />
+        </div>
+    </li>
+    <li>
+        <label for="<?= $_code ?>_creditcard_expiration_date" class="required">
+            <em>*</em><?= $this->__('Credit Card Expiration Date') ?>
+        </label>
+        <div class="input-box">
+            <input
+                type="text"
+                id="<?= $_code ?>_creditcard_expiration_date"
+                title="<?= $this->__('Credit Card Expiration Date') ?>"
+                placeholder="MMAA"
+                class="input-text required-entry validate-digits"
+                maxlength="4"
+                value=""
+            />
+        </div>
+    </li>
+    <li>
+        <label for="<?= $_code ?>_creditcard_cvv" class="required">
+            <em>*</em><?= $this->__('Credit Card Verification Number') ?>
+        </label>
+        <div class="input-box">
+            <input
+                type="text"
+                id="<?= $_code ?>_creditcard_cvv"
+                title="<?= $this->__('Credit Card Verification Number') ?>"
+                class="input-text required-entry validate-digits"
+                maxlength="4"
+                value=""
+            />
+        </div>
+    </li></ul>
+<div>
+    <?= $this->getMethod()->getConfigData('message');?>
+</div>
