@@ -2,7 +2,7 @@
 
 class PagarMe_V2_Creditcard_Block_Form_CreditCard extends Mage_Payment_Block_Form_Cc
 {
-    const TEMPLATE = 'pagarme/form/credit_card.phtml';
+    const TEMPLATE = 'pagarmev2/form/pagarme_v2_credit_card.phtml';
 
     protected function _construct()
     {

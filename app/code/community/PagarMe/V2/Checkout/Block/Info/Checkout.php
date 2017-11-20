@@ -16,7 +16,7 @@ class PagarMe_V2_Checkout_Block_Info_Checkout extends Mage_Payment_Block_Info
 
         if (Mage::app()->getStore()->isAdmin()) {
             $this->setTemplate(
-                'pagarme/checkout/order_info/payment_details.phtml'
+                'pagarmev2/checkout/order_info/payment_details.phtml'
             );
         }
     }

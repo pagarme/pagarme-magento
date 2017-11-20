@@ -26,7 +26,7 @@
         <layout>
             <updates>
                 <pagarme_v2_creditcard>
-                    <file>pagarme/pagarme_v2_creditcard.xml</file>
+                    <file>pagarmev2/pagarme_v2_creditcard.xml</file>
                 </pagarme_v2_creditcard>
             </updates>
         </layout>

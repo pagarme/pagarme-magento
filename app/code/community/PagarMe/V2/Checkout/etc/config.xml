@@ -42,7 +42,7 @@
         <layout>
             <updates>
                 <pagarme_v2_checkout>
-                    <file>pagarme/pagarme_v2_checkout.xml</file>
+                    <file>pagarmev2/pagarme_v2_checkout.xml</file>
                 </pagarme_v2_checkout>
             </updates>
         </layout>
@@ -51,7 +51,7 @@
         <layout>
             <updates>
                 <pagarme_v2_checkout>
-                    <file>pagarme/pagarme_v2_checkout.xml</file>
+                    <file>pagarmev2/pagarme_v2_checkout.xml</file>
                 </pagarme_v2_checkout>
             </updates>
         </layout>
