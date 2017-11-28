@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+    mysql:
+        image: mysql:5.5
+        env_file: .env
+
+    magento:
+        image: pagarme/magento:master
+        env_file: .env
+        volumes:
+            - .:/opt/docker/magento/module/
+        working_dir: /var/www
+        ports:
+            - "80:80"
+        depends_on:
+            - mysql

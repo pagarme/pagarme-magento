@@ -34,8 +34,30 @@
 ## Observações
 * Por padrão o modulo utiliza o campo ```taxvat``` como ```document_number``` e 4 linhas em um endereço(```Sistema > Configuração > Configuração do cliente > Opções de Nome e Endereço``` e o campo ```Número de linhas em um endereço de rua``` com valor ```4```) respectivamente a ```street```, ```street_number```, ```complementary``` e ```neighborhood```.  Mas não se preocupe, caso esteja utilizando diferente do padrão, você pode utilizar o observer ```pagarme_get_customer_info_from_order_after``` e definir os valores de acordo com o seu Magento
 
-## Tests
+
+## Para desenvolvedores - Avançado
+
+### Requisitos
+
+- [Docker](https://docs.docker.com)
+- [Docker Compose](https://docs.docker.com/compose/)
+
+### Instalando o Magento Community 1.x
+
+1. Execute o comando `docker-compose up -d` para iniciar os containers e a instalação do Magento
+2. Execute o comando `docker-compose logs -f magento` para acompanhar o processo de instalação.
+
+### Acessando a loja virtual através do navegador
+
+1. Altere seu arquivo `/etc/hosts` adicionando a entrada `127.0.0.1 magento`
+2. Acesse a loja no navegador utilizando o endereço `http://magento`
+
+### Acessando a área administrativa
+
+1. Acesse `http://magento/admin
+2. Utilize `admin` para o usuário e `magentorocks1` para a senha
+
+### Tests
 wget https://phar.phpunit.de/phpunit-4.1.0.phar
 chmod +x phpunit-4.1.0.phar
 mv phpunit-4.1.0.phar /usr/bin/phpunit
-
