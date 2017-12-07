@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ *
+ * @category   Inovarti
+ * @package    Inovarti_Pagarme
+ * @author     Suporte <suporte@inovarti.com.br>
+ *
+ * UPDATED:
+ *
+ * @copyright   Copyright (C) 2015 Gamuza Technologies (http://www.gamuza.com.br/)
+ * @author     Eneias Ramos de Melo <eneias@gamuza.com.br>
+ */
+-->
+
+<layout>
+    <default>
+        <reference name="notifications">
+            <block type="pagarme/adminhtml_notifications" name="pagarme_notifications" template="inovarti/pagarme/notifications.phtml"/>
+        </reference>
+    </default>
+</layout>
+

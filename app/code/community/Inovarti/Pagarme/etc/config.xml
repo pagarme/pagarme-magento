@@ -246,13 +246,6 @@
                 </Inovarti_Pagarme>
             </modules>
         </translate>
-        <layout>
-            <updates>
-                <pagarme>
-                    <file>pagarme.xml</file>
-                </pagarme>
-            </updates>
-        </layout>
     </frontend>
     <adminhtml>
         <translate>
@@ -269,6 +262,9 @@
                 <pagarme>
                     <file>pagarme.xml</file>
                 </pagarme>
+                <inovarti_pagarme>
+                    <file>inovarti/pagarme.xml</file>
+                </inovarti_pagarme>
             </updates>
         </layout>
     </adminhtml>
