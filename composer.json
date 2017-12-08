@@ -1,0 +1,6 @@
+{
+    "name": "root/code",
+    "require": {
+        "phpunit/phpunit": "4.8.*"
+    }
+}

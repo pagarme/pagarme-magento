@@ -116,6 +116,9 @@
                     <data>Inovarti_Pagarme_Helper_Checkout_Data</data>
                 </rewrite>
             </checkout>
+            <pagarme_notifications>
+                <class>Pagarme_Notifications_Helper</class>
+            </pagarme_notifications>
         </helpers>
         <payment>
             <cc>
@@ -246,6 +249,13 @@
                 </Inovarti_Pagarme>
             </modules>
         </translate>
+        <layout>
+            <updates>
+                <pagarme>
+                    <file>pagarme.xml</file>
+                </pagarme>
+            </updates>
+        </layout>
     </frontend>
     <adminhtml>
         <translate>
@@ -262,9 +272,9 @@
                 <pagarme>
                     <file>pagarme.xml</file>
                 </pagarme>
-                <inovarti_pagarme>
-                    <file>inovarti/pagarme.xml</file>
-                </inovarti_pagarme>
+                <pagarme_notifications>
+                    <file>pagarme/notifications.xml</file>
+                </pagarme_notifications>
             </updates>
         </layout>
     </adminhtml>

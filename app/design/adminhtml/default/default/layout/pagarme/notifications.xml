@@ -16,7 +16,7 @@
 <layout>
     <default>
         <reference name="notifications">
-            <block type="pagarme/adminhtml_notifications" name="pagarme_notifications" template="inovarti/pagarme/notifications.phtml"/>
+            <block type="pagarme/adminhtml_notifications" name="pagarme_notifications" template="pagarme/notifications.phtml"/>
         </reference>
     </default>
 </layout>
