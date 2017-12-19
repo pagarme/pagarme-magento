@@ -171,6 +171,21 @@ class Inovarti_Pagarme_Model_Api
 		return $response;
 	}
 
+    /**
+     * Return a string with Magento, Pagarme SDK and PHP versions
+     *
+     * @return string
+     */
+    public function getUserAgent()
+    {
+        return sprintf(
+            'Magento/%s PagarMe Module/%s PHP/%s',
+            Mage::getVersion(),
+            Mage::getConfig()->getNode()->modules->Inovarti_Pagarme->version,
+            phpversion()
+        );
+    }
+
 	/**
 	 * Send the HTTP request and return an HTTP response object
 	 *
@@ -184,6 +199,7 @@ class Inovarti_Pagarme_Model_Api
 		$client = new Varien_Http_Client($url, array('timeout'	=> 30));
 		$client->setMethod($method);
 		$client->setHeaders('Accept-Encoding: identity');
+		$client->setHeaders('User-Agent', $this->getUserAgent());
 
 		if ($method == Zend_Http_Client::POST) {
 			$client->setParameterPost($this->_parseArray($data));
