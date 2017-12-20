@@ -27,6 +27,7 @@ Não descartamos esse tipo de alteração, porém damos prioridade à features m
 
 - Vamos analisar todo o código envolvido, portanto, antes de enviar seu Pull Request, tenha certeza que ele atende os seguintes requisitos:
     - Seguir os padrões de código conhecidos por [PSR](http://www.php-fig.org/psr/);
+        - [PHPCS (CodeSniffer)](https://github.com/squizlabs/PHP_CodeSniffer)
     - Deve manter e/ou aumentar nossa cobertura de testes, onde usamos ferramentas padrão como:
         - [PHPUnit](https://phpunit.de/);
         - [Behat](http://behat.org/en/latest/).
