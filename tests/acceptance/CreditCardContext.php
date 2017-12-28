@@ -31,6 +31,17 @@ class CreditCardContext extends RawMinkContext
         $stock->save();
 
         $this->enablePagarmeTransparent();
+
+        $config = Mage::getModel('core/config');
+
+        $config->saveConfig(
+            'payment/pagarme_configurations/general_encryption_key',
+            PAGARME_ENCRYPTION_KEY
+        );
+        $config->saveConfig(
+            'payment/pagarme_configurations/general_api_key',
+            PAGARME_API_KEY
+        );
     }
 
     /**
@@ -44,6 +55,19 @@ class CreditCardContext extends RawMinkContext
         $this->customerAddress = $this->getCustomerAddress();
         $this->customerAddress->setCustomerId($this->customer->getId());
         $this->customerAddress->save();
+    }
+
+    /**
+     * @When I set max installments to :maxInstallments
+     */
+    public function iSetMaxInstallmentsTo($maxInstallments)
+    {
+        $config = Mage::getModel('core/config');
+
+        $config->saveConfig(
+            'payment/pagarme_configurations/creditcard_max_installments',
+            $maxInstallments
+        );
     }
 
     /**
@@ -89,13 +113,12 @@ class CreditCardContext extends RawMinkContext
     public function loginWithRegisteredUser()
     {
         $page = $this->session->getPage();
-
-        $this->getSession()->getPage()->fillField(
+        $page->fillField(
             Mage::helper('pagarme_modal')->__('Email Address'),
             $this->customer->getEmail()
         );
 
-        $this->getSession()->getPage()->fillField(
+        $page->fillField(
             Mage::helper('pagarme_modal')->__('Password'),
             $this->customer->getPassword()
         );
@@ -129,15 +152,6 @@ class CreditCardContext extends RawMinkContext
         $this->waitForElement('#checkout-step-payment', 5000);
 
         $page->find('css', '#p_method_pagarme_creditcard')->click();
-    }
-    /**
-     * @When I choose :installments installments
-     */
-    public function iChooseInstallments($installments) {
-        $page = $this->session->getPage();
-        
-        $page->find('css', '#pagarme_creditcard_creditcard_installments')
-          ->selectOption('12');
     }
 
     /**
@@ -204,5 +218,39 @@ class CreditCardContext extends RawMinkContext
             ),
             strtolower($successMessage)
         );
+    }
+
+    /**
+     * @When I should see only installment options up to :maxInstallments
+     */
+    public function iShouldSeeOnlyInstallmentOptionsUpTo($maxInstallments)
+    {
+        $this->assertSession()->elementsCount(
+            'css',
+            '#pagarme_creditcard_creditcard_installments > option',
+            intval($maxInstallments)
+        );
+        $this->assertThereIsEveryOptionValueUntil(
+            $maxInstallments,
+            '#pagarme_creditcard_creditcard_installments'
+        );
+    }
+
+    private function  assertThereIsEveryOptionValueUntil($maxValue, $selectCssSelector)
+    {
+        for ($value = 1; $value <= $maxValue; $value++) {
+            $this->assertSession()->elementExists(
+                'css',
+                $selectCssSelector . " > option[value={$value}]"
+            );
+        }
+    }
+
+    /**
+     * @AfterScenario
+     */
+    public function afterEveryScenario()
+    {
+        Mage::getSingleton('customer/session')->logout();
     }
 }

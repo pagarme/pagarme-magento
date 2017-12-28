@@ -15,16 +15,21 @@ Feature: Credit Card
         And place order
         Then the purchase must be paid with success
 
-  
-    Scenario: Make a purchase in installment by credit card
+    Scenario Outline: Change the max installments configuration
         Given a registered user
-        When I access the store page
+        When I set max installments to "<max_installments>"
+        And I access the store page
         And add any product to basket
         And I go to checkout page
         And login with registered user
         And confirm billing and shipping address information
         And choose pay with transparent checkout using credit card
-        And I choose "12" installments
         And I confirm my payment information
+        And I should see only installment options up to "<max_installments>"
         And place order
         Then the purchase must be paid with success
+        Examples:
+        | max_installments  |
+        | 12                |
+        | 3                 |
+        | 1                 |
