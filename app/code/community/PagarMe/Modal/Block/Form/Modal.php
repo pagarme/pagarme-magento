@@ -1,8 +1,8 @@
 <?php
 
-class PagarMe_Checkout_Block_Form_Checkout extends Mage_Payment_Block_Form
+class PagarMe_Modal_Block_Form_Modal extends Mage_Payment_Block_Form
 {
-    const TEMPLATE = 'pagarme/form/checkout.phtml';
+    const TEMPLATE = 'pagarme/form/pagarme_modal.phtml';
 
     /**
      * @var Mage_Sales_Model_Quote
@@ -32,7 +32,9 @@ class PagarMe_Checkout_Block_Form_Checkout extends Mage_Payment_Block_Form
      */
     public function getEncryptionKey()
     {
-        return Mage::getStoreConfig('payment/pagarme_settings/general_encryption_key');
+        return Mage::getStoreConfig(
+            'payment/pagarme_configurations/general_encryption_key'
+        );
     }
 
     /**
@@ -42,9 +44,12 @@ class PagarMe_Checkout_Block_Form_Checkout extends Mage_Payment_Block_Form
      */
     public function getButtonText()
     {
-        return Mage::getStoreConfig(
-            'payment/pagarme_settings/checkout_button_text'
+        $configuredMessage = Mage::getStoreConfig(
+          'payment/pagarme_configurations/modal_button_text'
         );
+        $defaultMessage = __('Confirm your information');
+
+        return empty($configuredMessage) ? $defaultMessage : $configuredMessage;
     }
 
     /**
@@ -99,30 +104,60 @@ class PagarMe_Checkout_Block_Form_Checkout extends Mage_Payment_Block_Form
         $this->customer = $customer;
     }
 
+    private function getPostbackUrl()
+    {
+        $activePaymentMethods = array_map('trim', explode(',', $this->getAvailablePaymentMethods()));
+        $isCreditCardActive = in_array('credit_card', $activePaymentMethods);
+        $isBoletoActive = in_array('boleto', $activePaymentMethods);
+
+        $postbackUrl = '';
+        if ($isCreditCardActive && !$isBoletoActive) {
+            $postbackUrl = $this->getCreditCardPostbackUrl();
+        }
+
+        if ($isBoletoActive && !$isCreditCardActive) {
+            $postbackUrl = $this->getBoletoPostbackUrl();
+        }
+
+        return $postbackUrl;
+    }
+
+    private function getCreditCardPostbackUrl()
+    {
+        return Mage::getBaseUrl() . 'pagarme_core/transaction_creditcard/postback';
+    }
+
+    private function getBoletoPostbackUrl()
+    {
+        return Mage::getBaseUrl() . 'pagarme_core/transaction_boleto/postback';
+    }
+
     /**
      * @return string
      */
     public function getAvailablePaymentMethods()
     {
-        return Mage::getStoreConfig('payment/pagarme_settings/checkout_payment_methods');
+        return Mage::getStoreConfig(
+            'payment/pagarme_configurations/modal_payment_methods'
+        );
     }
 
     public function hasFixedDiscountOnBoleto()
     {
-        return Mage::getStoreConfig('payment/pagarme_settings/boleto_discount_mode')
+        return Mage::getStoreConfig('payment/pagarme_configurations/boleto_discount_mode')
             == PagarMe_Core_Model_System_Config_Source_BoletoDiscountMode::FIXED_VALUE;
     }
 
     private function hasPercentageDiscountOnBoleto()
     {
-        return Mage::getStoreConfig('payment/pagarme_settings/boleto_discount_mode')
+        return Mage::getStoreConfig('payment/pagarme_configurations/boleto_discount_mode')
             == PagarMe_Core_Model_System_Config_Source_BoletoDiscountMode::PERCENTAGE;
     }
 
     private function getBoletoDiscount()
     {
         return Mage::getStoreConfig(
-            'payment/pagarme_settings/boleto_discount'
+            'payment/pagarme_configurations/boleto_discount'
         );
     }
 
@@ -143,7 +178,7 @@ class PagarMe_Checkout_Block_Form_Checkout extends Mage_Payment_Block_Form
         $helper = Mage::helper('pagarme_core');
 
         $cardBrands = \Mage::getStoreConfig(
-            'payment/pagarme_settings/creditcard_allowed_credit_card_brands'
+            'payment/pagarme_configurations/creditcard_allowed_credit_card_brands'
         );
 
         $config = [
@@ -164,32 +199,33 @@ class PagarMe_Checkout_Block_Form_Checkout extends Mage_Payment_Block_Form
             'customerAddressState' => $billingAddress->getRegion(),
             'brands' => $cardBrands,
             'boletoHelperText' => Mage::getStoreConfig(
-                'payment/pagarme_settings/checkout_boleto_helper_text'
+                'payment/pagarme_configurations/modal_boleto_helper_text'
             ),
             'creditCardHelperText' => Mage::getStoreConfig(
-                'payment/pagarme_settings/checkout_credit_card_helper_text'
+                'payment/pagarme_configurations/modal_credit_card_helper_text'
             ),
             'uiColor' => Mage::getStoreConfig(
-                'payment/pagarme_settings/checkout_ui_color'
+                'payment/pagarme_configurations/modal_ui_color'
             ),
             'headerText' => Mage::getStoreConfig(
-                'payment/pagarme_settings/checkout_header_text'
+                'payment/pagarme_configurations/modal_header_text'
             ),
             'paymentButtonText' => Mage::getStoreConfig(
-                'payment/pagarme_settings/checkout_payment_button_text'
+                'payment/pagarme_configurations/modal_payment_button_text'
             ),
             'interestRate' => Mage::getStoreConfig(
-                'payment/pagarme_settings/creditcard_interest_rate'
+                'payment/pagarme_configurations/creditcard_interest_rate'
             ),
             'maxInstallments' => Mage::getStoreConfig(
-                'payment/pagarme_settings/creditcard_max_installments'
+                'payment/pagarme_configurations/creditcard_max_installments'
             ),
             'freeInstallments' => Mage::getStoreConfig(
-                'payment/pagarme_settings/creditcard_free_installments'
+                'payment/pagarme_configurations/creditcard_free_installments'
             ),
             'customerData' => Mage::getStoreConfig(
-                'payment/pagarme_settings/checkout_capture_customer_data'
-            )
+                'payment/pagarme_configurations/modal_capture_customer_data'
+            ),
+            'postbackUrl' => $this->getPostbackUrl()
         ];
 
         if ($this->hasFixedDiscountOnBoleto()) {

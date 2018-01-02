@@ -21,7 +21,7 @@ class PagarMe_Core_Model_Entity_PaymentMethodFactory
             'pagarme_payment_method'
         );
         
-        if ($paymentMethod === PagarMe_Checkout_Model_Checkout::PAGARME_CHECKOUT_CREDIT_CARD) {
+        if ($paymentMethod === PagarMe_Modal_Model_Modal::PAGARME_MODAL_CREDIT_CARD) {
             $transaction = new CreditCardTransaction([
                 'token' => $infoInstance->getAdditionalInformation('token'),
                 'amount' => Mage::helper('pagarme_core')
@@ -32,7 +32,7 @@ class PagarMe_Core_Model_Entity_PaymentMethodFactory
             return $transaction;
         }
         
-        if ($paymentMethod === PagarMe_Checkout_Model_Checkout::PAGARME_CHECKOUT_BOLETO) {
+        if ($paymentMethod === PagarMe_Modal_Model_Modal::PAGARME_MODAL_BOLETO) {
             $transaction = new BoletoTransaction([
                 'token' => $infoInstance->getAdditionalInformation('token'),
                 'amount' => Mage::helper('pagarme_core')

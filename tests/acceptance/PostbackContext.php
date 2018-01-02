@@ -32,10 +32,10 @@ class PostbackContext extends MinkContext
         $this->product->save();
 
         \Mage::getConfig()
-            ->saveConfig('payment/pagarme_settings/general_api_key', PAGARME_API_KEY);
+            ->saveConfig('payment/pagarme_configurations/general_api_key', PAGARME_API_KEY);
 
         \Mage::getConfig()
-            ->saveConfig('payment/pagarme_settings/general_encryption_key', PAGARME_ENCRYPTION_KEY);
+            ->saveConfig('payment/pagarme_configurations/general_encryption_key', PAGARME_ENCRYPTION_KEY);
 
         $this->enablePagarmeCheckout();
     }
@@ -113,14 +113,14 @@ class PostbackContext extends MinkContext
 
         $payload = "id={$transactionId}&current_status={$currentStatus}";
 
-        $apiKey = \Mage::getStoreConfig('payment/pagarme_settings/general_api_key');
+        $apiKey = \Mage::getStoreConfig('payment/pagarme_configurations/general_api_key');
 
         $hash = hash_hmac($algorithm, $payload, $apiKey);
 
         $signature = "{$algorithm}={$hash}";
 
         $urlForPostback = getenv('MAGENTO_URL')
-            . 'index.php/pagarme/transaction_'
+            . 'index.php/pagarme_core/transaction_'
             . $paymentMethod . '/postback';
 
         $client = new GuzzleHttp\Client();

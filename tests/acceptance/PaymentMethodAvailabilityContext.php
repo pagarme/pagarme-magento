@@ -18,7 +18,7 @@ class PaymentMethodAvailabilityContext extends MinkContext
      */
     public static function setUp()
     {
-        self::$checkoutBlock = new \PagarMe_Checkout_Block_Form_Checkout();
+      self::$checkoutBlock = new \PagarMe_Modal_Block_Form_Modal();
     }
 
     /**

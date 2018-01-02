@@ -56,9 +56,9 @@ trait PostbackDataProvider
         }
 
         $dataQuote = [
-            'method' => 'pagarme_checkout',
-            'pagarme_checkout_payment_method' => $paymentMethod,
-            'pagarme_checkout_token' => $token
+            'method' => 'pagarme_modal',
+            'pagarme_modal_payment_method' => $paymentMethod,
+            'pagarme_modal_token' => $token
         ];
 
         $quote->getPayment()->importData($dataQuote);
@@ -175,7 +175,7 @@ trait PostbackDataProvider
         $helper = \Mage::helper('pagarme_core');
 
         $encryptionKey = \Mage::getStoreConfig(
-            'payment/pagarme_settings/general_encryption_key'
+            'payment/pagarme_configurations/general_encryption_key'
         );
 
         return [

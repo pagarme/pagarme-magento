@@ -18,11 +18,11 @@ abstract class PagarMe_Core_Model_Quote_Address_Total_Abstract
             return false;
         }
 
-        if (!isset($paymentData['pagarme_checkout_token'])) {
+        if (!isset($paymentData['pagarme_modal_token'])) {
             return false;
         }
 
-        if (empty($paymentData['pagarme_checkout_token'])) {
+        if (empty($paymentData['pagarme_modal_token'])) {
             return false;
         }
 
@@ -50,7 +50,7 @@ abstract class PagarMe_Core_Model_Quote_Address_Total_Abstract
     {
         if ($this->transaction == null) {
             $this->transaction = Mage::app()
-                ->getHelper('pagarme_checkout')
+                ->getHelper('pagarme_modal')
                 ->getTransaction();
         }
 

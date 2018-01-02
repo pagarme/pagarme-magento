@@ -1,0 +1,45 @@
+<ul class="form-list" id="payment_form_pagarme_modal" style="display:none;">
+    <input type="hidden" value="" name="payment[pagarme_modal_token]" id="pagarme_modal_token" class="required_entry" />
+    <input type="hidden" value="" name="payment[pagarme_modal_payment_method]" id="pagarme_modal_payment_method" />
+    <input type="hidden" value="" name="payment[pagarme_modal_interest_rate]" id="pagarme_modal_interest_rate" />
+
+    <div style="display:none;" id="advice-required-entry-pagarme-modal-hash" class="validation-advice">
+        <?php echo __("Please click the button below<br />and complete the information."); ?>
+    </div>
+
+    <button id="pagarme-modal-fill-info-button" class="button" type="button">
+        <span>
+            <span>
+                <?php echo __($this->getButtonText()); ?>
+            </span>
+        </span>
+    </button>
+</ul>
+
+<script type="text/javascript" id="pagarme-modal">
+  var checkoutButton = $('pagarme-modal-fill-info-button')
+
+  if ($('pagarme_modal_payment_method').value !== '') {
+    checkoutButton.remove()
+  }
+
+  checkoutButton && checkoutButton.observe('click', function (event) {
+    var pagarmeCheckoutSettings = <?= json_encode($this->getCheckoutConfig()) ?>;
+
+    var checkoutPagarme = new PagarMeCheckout.Checkout({
+      'encryption_key': "<?= $this->getEncryptionKey() ?>",
+      success: function (response) {
+        $('pagarme_modal_token').value = response['token']
+        $('pagarme_modal_payment_method').value = response['payment_method']
+        $('pagarme_modal_interest_rate').value = pagarmeCheckoutSettings.interestRate
+        checkoutButton.remove()
+
+        if (typeof OSCPayment !== undefined) {
+          OSCPayment.savePayment()
+        }
+      }
+    })
+
+    checkoutPagarme.open(pagarmeCheckoutSettings)
+  })
+</script>

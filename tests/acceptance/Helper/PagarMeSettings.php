@@ -9,7 +9,7 @@ trait PagarMeSettings
         foreach ($this->getDefaultSettings() as $key => $defaultSetting) {
             \Mage::getModel('core/config')
                 ->saveConfig(
-                    "payment/pagarme_settings/{$key}",
+                    "payment/pagarme_configurations/{$key}",
                     $defaultSetting
                 );
         }
@@ -18,21 +18,21 @@ trait PagarMeSettings
     public function getDefaultSettings()
     {
         return [
-            'checkout_active' => '1',
-            'checkout_payment_methods' => 'credit_card,boleto',
-            'checkout_capture_customer_data' => 'true',
-            'checkout_payment_button_text' => '',
+            'modal_active' => '1',
+            'modal_payment_methods' => 'credit_card,boleto',
+            'modal_capture_customer_data' => 'true',
+            'modal_payment_button_text' => '',
             'creditcard_interest_rate' => '0',
             'creditcard_free_installments' => '1',
             'creditcard_max_installments' => '1',
             'creditcard_allowed_credit_card_brands' => 'visa,mastercard,amex,hipercard,aura,jcb,diners,elo',
-            'checkout_boleto_helper_text' => '',
-            'checkout_credit_card_helper_text' => '',
-            'checkout_ui_color' => '',
-            'checkout_header_text' => '',
-            'checkout_button_text' => '',
+            'modal_boleto_helper_text' => '',
+            'modal_credit_card_helper_text' => '',
+            'modal_ui_color' => '',
+            'modal_header_text' => '',
+            'modal_button_text' => 'Confirm your information',
             'payment_action' => 'authorize_capture',
-            'checkout_title' => 'Pagar.me Checkout',
+            'modal_title' => 'Pagar.me Checkout',
             'creditcard_title' => 'Cartão de crédito Pagar.me',
             'transparent_payment_methods' => 'credit_card',
             'transparent_active' => '1'

@@ -44,6 +44,10 @@ Módulo de integração Pagar.me para Magento 1.x
 2. Execute o comando `docker-compose logs -f magento` para acompanhar o processo de instalação.
 3. Execute o comando `docker run -it --rm -v $(pwd):/code -w /code pagarme/composer install` para a instalação das dependências do projeto através do [Composer](https://getcomposer.org/).
 
+### Executando o PHPCS (Code sniffer)
+
+Execute o comando: `docker-compose exec magento vendor/bin/phpcs --standard=phpcsruleset.xml <dir|file>`
+
 ### Executando os testes unitários
 
 Execute o comando `docker-compose exec magento vendor/bin/phpunit` para iniciar os testes

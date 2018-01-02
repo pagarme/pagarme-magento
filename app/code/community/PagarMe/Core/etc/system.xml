@@ -3,7 +3,7 @@
     <sections>
         <payment>
             <groups>
-                <pagarme_settings translate="label" module="pagarme_core">
+                <pagarme_configurations translate="label" module="pagarme_core">
                     <label>Pagar.me - Settings</label>
                     <sort_order>100</sort_order>
                     <show_in_default>1</show_in_default>
@@ -156,7 +156,7 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                         </heading_visual_config>
-                        <checkout_active translate="label">
+                        <modal_active translate="label">
                             <label>Enabled</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
@@ -164,8 +164,8 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                        </checkout_active>
-                        <checkout_payment_methods translate="label">
+                        </modal_active>
+                        <modal_payment_methods translate="label">
                            <label>Payment Methods</label>
                            <frontend_type>select</frontend_type>
                            <source_model>pagarme_core/system_config_source_paymentMethods</source_model>
@@ -173,8 +173,8 @@
                            <show_in_default>1</show_in_default>
                            <show_in_website>1</show_in_website>
                            <show_in_store>1</show_in_store>
-                        </checkout_payment_methods>
-                        <checkout_capture_customer_data translate="label">
+                        </modal_payment_methods>
+                        <modal_capture_customer_data translate="label">
                             <label>Use Pagar.me checkout to capture customer data</label>
                             <frontend_type>select</frontend_type>
                             <source_model>pagarme_core/system_config_source_captureCustomerData</source_model>
@@ -182,40 +182,40 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                        </checkout_capture_customer_data>
-                        <checkout_title translate="label">
+                        </modal_capture_customer_data>
+                        <modal_title translate="label">
                             <label>Payment method title</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>301</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                        </checkout_title>
-                        <checkout_payment_button_text translate="label">
+                        </modal_title>
+                        <modal_payment_button_text translate="label">
                             <label>Checkout final button text</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>305</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                        </checkout_payment_button_text>
-                        <checkout_boleto_helper_text translate="label">
+                        </modal_payment_button_text>
+                        <modal_boleto_helper_text translate="label">
                             <label>Optional message for Boleto payment</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>310</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                        </checkout_boleto_helper_text>
-                        <checkout_credit_card_helper_text translate="label">
+                        </modal_boleto_helper_text>
+                        <modal_credit_card_helper_text translate="label">
                             <label>Optional message for Credit Card payment</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>315</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                        </checkout_credit_card_helper_text>
-                        <checkout_ui_color translate="label">
+                        </modal_credit_card_helper_text>
+                        <modal_ui_color translate="label">
                             <label>Payment primary color</label>
                             <comment>Hexadecimal color - Example: #00ff00</comment>
                             <frontend_type>text</frontend_type>
@@ -223,25 +223,25 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                        </checkout_ui_color>
-                        <checkout_header_text translate="label">
+                        </modal_ui_color>
+                        <modal_header_text translate="label">
                             <label>Checkout header text</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>325</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                        </checkout_header_text>
-                        <checkout_button_text translate="label">
+                        </modal_header_text>
+                        <modal_button_text translate="label">
                             <label>Checkout button text</label>
                             <frontend_type>text</frontend_type>
                             <sort_order>330</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
-                        </checkout_button_text>
+                        </modal_button_text>
                     </fields>
-                </pagarme_settings>
+                </pagarme_configurations>
             </groups>
         </payment>
     </sections>

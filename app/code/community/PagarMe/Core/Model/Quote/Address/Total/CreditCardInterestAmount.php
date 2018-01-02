@@ -7,7 +7,7 @@ class PagarMe_Core_Model_Quote_Address_Total_CreditCardInterestAmount
 
     public function __construct()
     {
-        $this->setCode('pagarme_checkout_credit_card');
+        $this->setCode('pagarme_modal_credit_card');
     }
 
     /**
@@ -17,12 +17,12 @@ class PagarMe_Core_Model_Quote_Address_Total_CreditCardInterestAmount
      */
     public function getLabel()
     {
-        return Mage::helper('pagarme_checkout')->__('Interest fee');
+        return Mage::helper('pagarme_modal')->__('Interest fee');
     }
 
     /**
      * @param Mage_Sales_Model_Quote_Address $address
-     * @return PagarMe_Checkout_Model_Total
+     * @return PagarMe_Modal_Model_Total
      */
     public function collect(Mage_Sales_Model_Quote_Address $address)
     {

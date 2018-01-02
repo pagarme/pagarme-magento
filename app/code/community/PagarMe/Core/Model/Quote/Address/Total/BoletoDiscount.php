@@ -6,7 +6,7 @@ class PagarMe_Core_Model_Quote_Address_Total_BoletoDiscount extends PagarMe_Core
 
     public function __construct()
     {
-        $this->setCode('pagarme_checkout_boleto');
+        $this->setCode('pagarme_modal_boleto');
     }
 
     /**
@@ -16,12 +16,12 @@ class PagarMe_Core_Model_Quote_Address_Total_BoletoDiscount extends PagarMe_Core
      */
     public function getLabel()
     {
-        return Mage::helper('pagarme_checkout')->__('Discount');
+        return Mage::helper('pagarme_modal')->__('Discount');
     }
 
     /**
      * @param Mage_Sales_Model_Quote_Address $address
-     * @return PagarMe_Checkout_Model_Total
+     * @return PagarMe_Modal_Model_Total
      */
     public function collect(Mage_Sales_Model_Quote_Address $address)
     {
@@ -64,9 +64,9 @@ class PagarMe_Core_Model_Quote_Address_Total_BoletoDiscount extends PagarMe_Core
      */
     private function hasDiscountOnBoleto()
     {
-        return (Mage::getStoreConfig('payment/pagarme_settings/boleto_discount_mode')
+        return (Mage::getStoreConfig('payment/pagarme_configurations/boleto_discount_mode')
             == PagarMe_Core_Model_System_Config_Source_BoletoDiscountMode::FIXED_VALUE) ||
-            (Mage::getStoreConfig('payment/pagarme_settings/boleto_discount_mode')
+            (Mage::getStoreConfig('payment/pagarme_configurations/boleto_discount_mode')
             == PagarMe_Core_Model_System_Config_Source_BoletoDiscountMode::PERCENTAGE);
     }
 

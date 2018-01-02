@@ -12,7 +12,7 @@ class PaymentMethodSettingsProvider
     {
         $config = \Mage::getModel('core/config')
             ->saveConfig(
-                'payment/pagarme_settings/checkout_payment_methods',
+                'payment/pagarme_configurations/modal_payment_methods',
                 $paymentMethods
             );
 
@@ -23,7 +23,7 @@ class PaymentMethodSettingsProvider
     {
         return \Mage::getModel('core/config')
             ->getConfig(
-                'payment/pagarme_settings/checkout_payment_methods'
+                'payment/pagarme_configurations/modal_payment_methods'
             );
     }
 }

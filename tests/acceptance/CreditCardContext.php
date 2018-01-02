@@ -12,12 +12,15 @@ class CreditCardContext extends RawMinkContext
     use PagarMe\Magento\Test\Helper\PagarMeSwitch;
     use PagarMe\Magento\Test\Helper\CustomerDataProvider;
     use PagarMe\Magento\Test\Helper\ProductDataProvider;
+    use PagarMe\Magento\Test\Helper\SessionWait;
 
     /**
      * @BeforeScenario
      */
     public function setUp()
     {
+        $config = Mage::getModel('core/config');
+
         $this->magentoUrl = getenv('MAGENTO_URL');
         $this->session = $this->getSession();
         $this->product = $this->getProduct();
@@ -28,14 +31,6 @@ class CreditCardContext extends RawMinkContext
         $stock->save();
 
         $this->enablePagarmeTransparent();
-    }
-
-    public function waitForElement($element, $timeout)
-    {
-        $this->session->wait(
-            $timeout,
-            "document.querySelector('${element}').style.display != 'none'"
-        );
     }
 
     /**
@@ -70,7 +65,7 @@ class CreditCardContext extends RawMinkContext
         $page->clickLink($this->product->getName());
 
         $page->pressButton(
-            Mage::helper('pagarme_checkout')->__('Add to Cart')
+            Mage::helper('pagarme_modal')->__('Add to Cart')
         );
 
     }
@@ -83,7 +78,7 @@ class CreditCardContext extends RawMinkContext
         $page = $this->session->getPage();
 
         $page->pressButton(
-            Mage::helper('pagarme_checkout')->__('Proceed to Checkout')
+            Mage::helper('pagarme_modal')->__('Proceed to Checkout')
         );
 
     }
@@ -96,12 +91,12 @@ class CreditCardContext extends RawMinkContext
         $page = $this->session->getPage();
 
         $this->getSession()->getPage()->fillField(
-            Mage::helper('pagarme_checkout')->__('Email Address'),
+            Mage::helper('pagarme_modal')->__('Email Address'),
             $this->customer->getEmail()
         );
 
         $this->getSession()->getPage()->fillField(
-            Mage::helper('pagarme_checkout')->__('Password'),
+            Mage::helper('pagarme_modal')->__('Password'),
             $this->customer->getPassword()
         );
 
@@ -114,8 +109,6 @@ class CreditCardContext extends RawMinkContext
     public function confirmBillingAndShippingAddressInformation()
     {
         $page = $this->session->getPage();
-
-        $this->session->wait(30000);
 
         $page->find('css', '#billing-buttons-container button')->press();
 

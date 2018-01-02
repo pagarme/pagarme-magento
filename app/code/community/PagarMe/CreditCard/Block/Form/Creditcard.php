@@ -13,7 +13,9 @@ class PagarMe_Creditcard_Block_Form_CreditCard extends Mage_Payment_Block_Form_C
 
     public function getEncryptionKey()
     {
-        return Mage::getStoreConfig('payment/pagarme_settings/general_encryption_key');
+        return Mage::getStoreConfig(
+            'payment/pagarme_configurations/general_encryption_key'
+        );
     }
 
     public function getCheckoutConfig()

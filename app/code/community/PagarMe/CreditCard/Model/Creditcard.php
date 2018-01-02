@@ -24,7 +24,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         }
 
         return (bool) Mage::getStoreConfig(
-            'payment/pagarme_settings/transparent_active'
+            'payment/pagarme_configurations/transparent_active'
         );
     }
 
@@ -36,7 +36,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     public function getTitle()
     {
         return Mage::getStoreConfig(
-            'payment/pagarme_settings/creditcard_title'
+            'payment/pagarme_configurations/creditcard_title'
         );
     }
 
@@ -61,7 +61,6 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     {
         $infoInstance = $this->getInfoInstance();
         $cardHash = $infoInstance->getAdditionalInformation('card_hash');
-
         try {
             $card = Mage::getModel('pagarme_core/sdk_adapter')
                 ->getPagarMeSdk()
@@ -91,22 +90,22 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         $telephone = $billingAddress->getTelephone();
 
         $customer = $helper->prepareCustomerData([
-            'pagarme_checkout_customer_document_number' => $quote->getCustomerTaxvat(),
-            'pagarme_checkout_customer_document_type' => $helper->getDocumentType($quote),
-            'pagarme_checkout_customer_name' => $helper->getCustomerNameFromQuote($quote),
-            'pagarme_checkout_customer_email' => $quote->getCustomerEmail(),
-            'pagarme_checkout_customer_born_at' => $quote->getDob(),
-            'pagarme_checkout_customer_address_street_1' => $billingAddress->getStreet(1),
-            'pagarme_checkout_customer_address_street_2' => $billingAddress->getStreet(2),
-            'pagarme_checkout_customer_address_street_3' => $billingAddress->getStreet(3),
-            'pagarme_checkout_customer_address_street_4' => $billingAddress->getStreet(4),
-            'pagarme_checkout_customer_address_city' => $billingAddress->getCity(),
-            'pagarme_checkout_customer_address_state' => $billingAddress->getRegion(),
-            'pagarme_checkout_customer_address_zipcode' => $billingAddress->getPostcode(),
-            'pagarme_checkout_customer_address_country' => $billingAddress->getCountry(),
-            'pagarme_checkout_customer_phone_ddd' => $helper->getDddFromPhoneNumber($telephone),
-            'pagarme_checkout_customer_phone_number' => $helper->getPhoneWithoutDdd($telephone),
-            'pagarme_checkout_customer_gender' => $quote->getGender()
+            'pagarme_modal_customer_document_number' => $quote->getCustomerTaxvat(),
+            'pagarme_modal_customer_document_type' => $helper->getDocumentType($quote),
+            'pagarme_modal_customer_name' => $helper->getCustomerNameFromQuote($quote),
+            'pagarme_modal_customer_email' => $quote->getCustomerEmail(),
+            'pagarme_modal_customer_born_at' => $quote->getDob(),
+            'pagarme_modal_customer_address_street_1' => $billingAddress->getStreet(1),
+            'pagarme_modal_customer_address_street_2' => $billingAddress->getStreet(2),
+            'pagarme_modal_customer_address_street_3' => $billingAddress->getStreet(3),
+            'pagarme_modal_customer_address_street_4' => $billingAddress->getStreet(4),
+            'pagarme_modal_customer_address_city' => $billingAddress->getCity(),
+            'pagarme_modal_customer_address_state' => $billingAddress->getRegion(),
+            'pagarme_modal_customer_address_zipcode' => $billingAddress->getPostcode(),
+            'pagarme_modal_customer_address_country' => $billingAddress->getCountry(),
+            'pagarme_modal_customer_phone_ddd' => $helper->getDddFromPhoneNumber($telephone),
+            'pagarme_modal_customer_phone_number' => $helper->getPhoneWithoutDdd($telephone),
+            'pagarme_modal_customer_gender' => $quote->getGender()
         ]);
 
         $customerPagarMe = $helper->buildCustomer($customer);

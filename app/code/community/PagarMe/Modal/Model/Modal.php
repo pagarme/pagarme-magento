@@ -1,11 +1,11 @@
 <?php
 
-class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
+class PagarMe_Modal_Model_Modal extends Mage_Payment_Model_Method_Abstract
 {
     /**
      * @var string
      */
-    protected $_code = 'pagarme_checkout';
+    protected $_code = 'pagarme_modal';
     /**
      * @var bool
      */
@@ -33,14 +33,14 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
     /**
      * @var string
      */
-    protected $_formBlockType = 'pagarme_checkout/form_checkout';
+    protected $_formBlockType = 'pagarme_modal/form_modal';
     /**
      * @var string
      */
-    protected $_infoBlockType = 'pagarme_checkout/info_checkout';
+    protected $_infoBlockType = 'pagarme_modal/info_modal';
 
-    const PAGARME_CHECKOUT_CREDIT_CARD = 'pagarme_checkout_credit_card';
-    const PAGARME_CHECKOUT_BOLETO = 'pagarme_checkout_boleto';
+    const PAGARME_MODAL_CREDIT_CARD = 'pagarme_modal_credit_card';
+    const PAGARME_MODAL_BOLETO = 'pagarme_modal_boleto';
 
     /**
      * @param type $quote
@@ -54,7 +54,7 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
         }
 
         return (bool) Mage::getStoreConfig(
-            'payment/pagarme_settings/checkout_active'
+            'payment/pagarme_configurations/modal_active'
         );
     }
 
@@ -66,7 +66,7 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
     public function getTitle()
     {
         return Mage::getStoreConfig(
-            'payment/pagarme_settings/checkout_title'
+            'payment/pagarme_configurations/modal_title'
         );
     }
 
@@ -78,12 +78,12 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
     public function assignData($data)
     {
         $paymentMethod = $this->_code
-            .'_'.$data['pagarme_checkout_payment_method'];
+            .'_'.$data['pagarme_modal_payment_method'];
 
         $additionalInfoData = [
             'pagarme_payment_method' => $paymentMethod,
-            'token' => $data['pagarme_checkout_token'],
-            'interest_rate' => $data['pagarme_checkout_interest_rate']
+            'token' => $data['pagarme_modal_token'],
+            'interest_rate' => $data['pagarme_modal_interest_rate']
         ];
 
         $this->getInfoInstance()
@@ -112,7 +112,7 @@ class PagarMe_Checkout_Model_Checkout extends Mage_Payment_Model_Method_Abstract
 
         if (empty($token)) {
             throw new \Exception(
-                Mage::helper('pagarme_checkout')->__(
+                Mage::helper('pagarme_modal')->__(
                     'Error, please review your payment info'
                 ),
                 1

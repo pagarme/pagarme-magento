@@ -121,7 +121,7 @@ class ConfigureContext extends RawMinkContext
         $page->find('named', array('link', 'Payment Methods'))
             ->click();
 
-        $page->find('css', '#payment_pagarme_settings-head')->click();
+        $page->find('css', '#payment_pagarme_configurations-head')->click();
 
         $this->spin(function () use ($page) {
             return $page->findById('config_edit_form') != null;
@@ -140,7 +140,7 @@ class ConfigureContext extends RawMinkContext
             'named',
             array(
                 'id',
-                'payment_pagarme_settings_general_api_key'
+                'payment_pagarme_configurations_general_api_key'
             )
         )->setValue($this->apiKey);
     }
@@ -157,7 +157,7 @@ class ConfigureContext extends RawMinkContext
             'named',
             array(
                 'id',
-                'payment_pagarme_settings_general_encryption_key'
+                'payment_pagarme_configurations_general_encryption_key'
             )
         )->setValue($this->encryptionKey);
     }
@@ -223,7 +223,7 @@ class ConfigureContext extends RawMinkContext
         $this->getSession()->wait(5000);
         $select = $page->find(
             'css',
-            '#payment_pagarme_settings_checkout_active'
+            '#payment_pagarme_configurations_modal_active'
         );
         $select->selectOption('Yes');
     }
@@ -245,7 +245,7 @@ class ConfigureContext extends RawMinkContext
     {
         $captureCustomerData = $this->getSession()->getPage()->find(
             'css',
-            '#payment_pagarme_settings_checkout_capture_customer_data'
+            '#payment_pagarme_configurations_modal_capture_customer_data'
         );
 
         $captureCustomerData->selectOption('true');
@@ -257,7 +257,7 @@ class ConfigureContext extends RawMinkContext
     public function changeTheBoletoHelperText()
     {
         $this->getSession()->getPage()->fillField(
-            'payment_pagarme_settings_checkout_boleto_helper_text',
+            'payment_pagarme_configurations_modal_boleto_helper_text',
             'Some info text'
         );
     }
@@ -268,7 +268,7 @@ class ConfigureContext extends RawMinkContext
     public function changeTheCreditCardHelperText()
     {
         $this->getSession()->getPage()->fillField(
-            'payment_pagarme_settings_checkout_credit_card_helper_text',
+            'payment_pagarme_configurations_modal_credit_card_helper_text',
             'Some info text'
         );
     }
@@ -279,7 +279,7 @@ class ConfigureContext extends RawMinkContext
     public function changeTheUiColor()
     {
         $this->getSession()->getPage()->fillField(
-            'payment_pagarme_settings_checkout_ui_color',
+            'payment_pagarme_configurations_modal_ui_color',
             '#ff00ff'
         );
     }
@@ -290,7 +290,7 @@ class ConfigureContext extends RawMinkContext
     public function changeTheHeaderText()
     {
         $this->getSession()->getPage()->fillField(
-            'payment_pagarme_settings_checkout_header_text',
+            'payment_pagarme_configurations_modal_header_text',
             'Some info text'
         );
     }
@@ -311,7 +311,7 @@ class ConfigureContext extends RawMinkContext
     public function iSetInterestRateTo($interestRate)
     {
         $this->getSession()->getPage()->fillField(
-            'payment_pagarme_settings_creditcard_interest_rate',
+            'payment_pagarme_configurations_creditcard_interest_rate',
             $interestRate
         );
     }
@@ -322,7 +322,7 @@ class ConfigureContext extends RawMinkContext
     public function changeThePaymentButtonText()
     {
         $this->getSession()->getPage()->fillField(
-            'payment_pagarme_settings_checkout_payment_button_text',
+            'payment_pagarme_configurations_modal_payment_button_text',
             'Pagar!'
         );
     }
@@ -333,7 +333,7 @@ class ConfigureContext extends RawMinkContext
     public function changeThePaymentMethodTitle()
     {
         $this->getSession()->getPage()->fillField(
-            'payment_pagarme_settings_checkout_title',
+            'payment_pagarme_configurations_modal_title',
             'Meu meio de pagamento'
         );
     }
@@ -344,7 +344,7 @@ class ConfigureContext extends RawMinkContext
     public function iSetMaxInstalmentsTo($maxInstallmets)
     {
         $this->getSession()->getPage()->fillField(
-            'payment_pagarme_settings_creditcard_max_installments',
+            'payment_pagarme_configurations_creditcard_max_installments',
             $maxInstallmets
         );
     }
@@ -355,7 +355,7 @@ class ConfigureContext extends RawMinkContext
     public function changeTheCheckoutButtonText()
     {
         $this->getSession()->getPage()->fillField(
-            'payment_pagarme_settings_checkout_button_text',
+            'payment_pagarme_configurations_modal_button_text',
             'Pagar!'
         );
     }
@@ -366,7 +366,7 @@ class ConfigureContext extends RawMinkContext
     public function iSetFreeInstalmentsTo($freeInstallments)
     {
         $this->getSession()->getPage()->fillField(
-            'payment_pagarme_settings_creditcard_free_installments',
+            'payment_pagarme_configurations_creditcard_free_installments',
             $freeInstallments
         );
     }
@@ -381,7 +381,7 @@ class ConfigureContext extends RawMinkContext
         $this->getSession()->wait(5000);
         $select = $page->find(
             'css',
-            '#payment_pagarme_settings_creditcard_allowed_credit_card_brands'
+            '#payment_pagarme_configurations_creditcard_allowed_credit_card_brands'
         );
 
         $allCreditCardBrands = [
@@ -396,7 +396,7 @@ class ConfigureContext extends RawMinkContext
         ];
 
         $savedCreditCardsBrands = explode(',', \Mage::getStoreConfig(
-            'payment/pagarme_settings/creditcard_allowed_credit_card_brands'
+            'payment/pagarme_configurations/creditcard_allowed_credit_card_brands'
         ));
 
         $this->creditCardListToAllow = array_diff(
@@ -424,7 +424,7 @@ class ConfigureContext extends RawMinkContext
         $this->getSession()->wait(5000);
         $select = $page->find(
             'css',
-            '#payment_pagarme_settings_creditcard_allowed_credit_card_brands'
+            '#payment_pagarme_configurations_creditcard_allowed_credit_card_brands'
         );
 
         $multiple = false;
@@ -446,7 +446,7 @@ class ConfigureContext extends RawMinkContext
         $this->flushCachedStoreConfig();
 
         $creditCardsSavedAsString = \Mage::getStoreConfig(
-            'payment/pagarme_settings/creditcard_allowed_credit_card_brands'
+            'payment/pagarme_configurations/creditcard_allowed_credit_card_brands'
         );
 
         $creditCardsSavedAsArray = explode(',', $creditCardsSavedAsString);
@@ -468,7 +468,7 @@ class ConfigureContext extends RawMinkContext
     public function iSetBoletoDiscountTo($discount)
     {
         $this->getSession()->getPage()->fillField(
-            'payment_pagarme_settings_boleto_discount',
+            'payment_pagarme_configurations_boleto_discount',
             $discount
         );
     }
@@ -480,7 +480,7 @@ class ConfigureContext extends RawMinkContext
     {
         $select = $this->getSession()->getPage()->find(
             'css',
-            '#payment_pagarme_settings_boleto_discount_mode'
+            '#payment_pagarme_configurations_boleto_discount_mode'
         );
 
         $select->selectOption(

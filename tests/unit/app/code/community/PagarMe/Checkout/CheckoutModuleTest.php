@@ -1,8 +1,8 @@
 <?php
 
-class CheckoutModuleTest extends PHPUnit_Framework_TestCase
+class ModalModuleTest extends PHPUnit_Framework_TestCase
 {
-    const MODULE_NAME = 'PagarMe_Checkout';
+    const MODULE_NAME = 'PagarMe_Modal';
 
     public function setUp()
     {

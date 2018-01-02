@@ -16,7 +16,7 @@
 
     <?php
 
-        $helper = Mage::app()->getHelper('pagarme_checkout');
+        $helper = Mage::app()->getHelper('pagarme_modal');
         $transaction = $helper->getTransaction();
 
         if (!is_null($transaction)) :
@@ -40,7 +40,7 @@
             <td class="a-right" colspan="<?php echo $_colspan; ?>">
                 <strong>Installments</strong>
             </td>
-            <td id="pagarme-checkout-installments">
+            <td id="pagarme-modal-installments">
                 <?= $transaction->getInstallments() ?: 1  ?>
             </td>
         </tr>

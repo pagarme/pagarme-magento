@@ -30,7 +30,7 @@ class PagarMe_CreditCard_Helper_Data extends Mage_Core_Helper_Abstract
             'customerAddressState' => $billingAddress->getRegion(),
 
             'customerData' => Mage::getStoreConfig(
-                'payment/pagarme_settings/checkout_capture_customer_data'
+                'payment/pagarme_configurations/modal_capture_customer_data'
             )
         ];
 

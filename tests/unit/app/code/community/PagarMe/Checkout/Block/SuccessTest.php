@@ -1,19 +1,19 @@
 <?php
 
-class PagarMe_Checkout_Block_SuccessTest extends PHPUnit_Framework_TestCase
+class PagarMe_Modal_Block_SuccessTest extends PHPUnit_Framework_TestCase
 {
     private $successBlock;
 
     public function setUp()
     {
-        $this->successBlock = new PagarMe_Checkout_Block_Success();
+        $this->successBlock = new PagarMe_Modal_Block_Success();
     }
 
     public function paymentMethodsData()
     {
         return [
             [
-                PagarMe_Checkout_Model_Checkout::PAGARME_CHECKOUT_BOLETO,
+                PagarMe_Modal_Model_Modal::PAGARME_MODAL_BOLETO,
                 true
             ],
             [

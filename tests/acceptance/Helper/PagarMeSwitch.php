@@ -7,7 +7,7 @@ trait PagarMeSwitch
     protected function enablePagarmeCheckout()
     {
         $this->changePagarmeSetting(
-            'payment/pagarme_settings/checkout_active',
+            'payment/pagarme_configurations/modal_active',
             true
         );
     }
@@ -15,7 +15,7 @@ trait PagarMeSwitch
     protected function disablePagarmeCheckout()
     {
         $this->changePagarmeSetting(
-            'payment/pagarme_settings/checkout_active',
+            'payment/pagarme_configurations/modal_active',
             false
         );
     }
@@ -23,7 +23,7 @@ trait PagarMeSwitch
     protected function enablePagarmeTransparent()
     {
         $this->changePagarmeSetting(
-            'payment/pagarme_settings/transparent_active',
+            'payment/pagarme_configurations/transparent_active',
             true
         );
     }
@@ -31,7 +31,7 @@ trait PagarMeSwitch
     protected function disablePagarmeTransparent()
     {
         $this->changePagarmeSetting(
-            'payment/pagarme_settings/transparent_active',
+            'payment/pagarme_configurations/transparent_active',
             false
         );
     }

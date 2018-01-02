@@ -1,6 +1,6 @@
 <?php
 
-class PagarMe_Checkout_Block_Info_Checkout extends Mage_Payment_Block_Info
+class PagarMe_Modal_Block_Info_Modal extends Mage_Payment_Block_Info
 {
     /**
      * @var \PagarMe\Sdk\Transaction\AbstractTransaction
@@ -16,7 +16,7 @@ class PagarMe_Checkout_Block_Info_Checkout extends Mage_Payment_Block_Info
 
         if (Mage::app()->getStore()->isAdmin()) {
             $this->setTemplate(
-                'pagarme/checkout/order_info/payment_details.phtml'
+                'pagarme/modal/order_info/payment_details.phtml'
             );
         }
     }

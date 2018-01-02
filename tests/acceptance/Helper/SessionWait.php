@@ -1,12 +1,11 @@
 <?php
-
 namespace PagarMe\Magento\Test\Helper;
 
-trait Interaction
+trait SessionWait
 {
     public function waitForElement($element, $timeout)
     {
-        $this->getSession()->wait(
+        $this->session->wait(
             $timeout,
             "document.querySelector('${element}').style.display != 'none'"
         );

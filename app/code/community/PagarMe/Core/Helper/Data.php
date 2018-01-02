@@ -15,44 +15,44 @@ class PagarMe_Core_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return (object) [
             'document_number' => Zend_Filter::filterStatic(
-                $data['pagarme_checkout_customer_document_number'],
+                $data['pagarme_modal_customer_document_number'],
                 'Digits'
             ),
-            'document_type' => $data['pagarme_checkout_customer_document_type'],
-            'name' => $data['pagarme_checkout_customer_name'],
-            'email' => $data['pagarme_checkout_customer_email'],
-            'born_at' => $data['pagarme_checkout_customer_born_at'],
+            'document_type' => $data['pagarme_modal_customer_document_type'],
+            'name' => $data['pagarme_modal_customer_name'],
+            'email' => $data['pagarme_modal_customer_email'],
+            'born_at' => $data['pagarme_modal_customer_born_at'],
             'addresses' => [
                 (object) [
                     'street' => $data[
-                        'pagarme_checkout_customer_address_street_1'
+                        'pagarme_modal_customer_address_street_1'
                     ],
                     'street_number' => $data[
-                        'pagarme_checkout_customer_address_street_2'
+                        'pagarme_modal_customer_address_street_2'
                     ],
                     'complementary' => $data[
-                        'pagarme_checkout_customer_address_street_3'
+                        'pagarme_modal_customer_address_street_3'
                     ],
                     'neighborhood' => $data[
-                        'pagarme_checkout_customer_address_street_4'
+                        'pagarme_modal_customer_address_street_4'
                     ],
-                    'city' => $data['pagarme_checkout_customer_address_city'],
-                    'state' => $data['pagarme_checkout_customer_address_state'],
+                    'city' => $data['pagarme_modal_customer_address_city'],
+                    'state' => $data['pagarme_modal_customer_address_state'],
                     'zipcode' => $data[
-                        'pagarme_checkout_customer_address_zipcode'
+                        'pagarme_modal_customer_address_zipcode'
                     ],
                     'country' => $data[
-                        'pagarme_checkout_customer_address_country'
+                        'pagarme_modal_customer_address_country'
                     ]
                 ]
             ],
             'phones'          => [
                 (object) [
-                    'ddd' => $data['pagarme_checkout_customer_phone_ddd'],
-                    'number' => $data['pagarme_checkout_customer_phone_number'],
+                    'ddd' => $data['pagarme_modal_customer_phone_ddd'],
+                    'number' => $data['pagarme_modal_customer_phone_number'],
                 ],
             ],
-            'gender' => $data['pagarme_checkout_customer_gender'],
+            'gender' => $data['pagarme_modal_customer_gender'],
             'date_created' => null
         ];
     }

@@ -1,6 +1,6 @@
 <?php
 
-class PagarMe_Checkout_Block_Sales_RateAmount extends Mage_Core_Block_Abstract
+class PagarMe_Modal_Block_Sales_RateAmount extends Mage_Core_Block_Abstract
 {
     /**
      * @return float
@@ -25,15 +25,15 @@ class PagarMe_Checkout_Block_Sales_RateAmount extends Mage_Core_Block_Abstract
 
         if (!is_null($rateAmount) && $rateAmount > 0) {
             $total = new Varien_Object([
-                'code' => 'pagarme_checkout_rate_amount',
-                'field' => 'pagarme_checkout_rate_amount',
+                'code' => 'pagarme_modal_rate_amount',
+                'field' => 'pagarme_modal_rate_amount',
                 'value' => $rateAmount,
                 'label' => 'Interest Fee',
             ]);
 
             $this->getParentBlock()->addTotalBefore($total, 'grand_total');
         }
-        
+
         return $this;
     }
 }
