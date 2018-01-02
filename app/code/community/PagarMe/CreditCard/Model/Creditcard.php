@@ -213,7 +213,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
 
         return $this;
     }
-    
+
     public function authorize(Varien_Object $payment, $amount)
     {
         try {
