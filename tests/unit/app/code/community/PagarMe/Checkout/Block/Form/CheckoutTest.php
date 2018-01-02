@@ -5,6 +5,22 @@ class PagarMe_Checkout_Block_Form_CheckoutTest extends PHPUnit_Framework_TestCas
     private $brands = 'mastercard,visa,elo,aura';
 
     /**
+     * @before
+     */
+    public function setUp()
+    {
+        Mage::init();
+        Mage::app()
+            ->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
+        
+        $config = Mage::getModel('core/config');
+        $config->saveConfig(
+            'payment/pagarme_configurations/boleto_discount_mode',
+            1 
+        );
+    }
+
+    /**
      * @test
      */
     public function mustReturnCheckoutConfig()
