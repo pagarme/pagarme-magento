@@ -24,7 +24,7 @@ trait PagarMeSettings
             'modal_payment_button_text' => '',
             'creditcard_interest_rate' => '0',
             'creditcard_free_installments' => '1',
-            'creditcard_max_installments' => '1',
+            'creditcard_max_installments' => '12',
             'creditcard_allowed_credit_card_brands' => 'visa,mastercard,amex,hipercard,aura,jcb,diners,elo',
             'modal_boleto_helper_text' => '',
             'modal_credit_card_helper_text' => '',

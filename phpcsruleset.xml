@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="pagarme-magento">
+  <description>Pagar.me Standard for Magento extensions.</description>
+
+  <!-- Excluding all file patterns except from the extension itself. -->
+  <exclude-pattern>*.phtml</exclude-pattern>
+  <exclude-pattern>*/tests/*</exclude-pattern>
+  <exclude-pattern>*/build/*</exclude-pattern>
+  <exclude-pattern>*/vendor/*</exclude-pattern>
+  <exclude-pattern>*/coverage/*</exclude-pattern>
+  <exclude-pattern>*.js</exclude-pattern>
+  <exclude-pattern>*.css</exclude-pattern>
+  <exclude-pattern>*.xml</exclude-pattern>
+
+  <!-- Include all sniffs from PSR2 except conflicts with Magento 1.* code style. -->
+  <rule ref="PSR2">
+    <exclude name="Squiz.Classes.ValidClassName.NotCamelCaps"/>
+    <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
+    <exclude name="PSR2.Methods.MethodDeclaration.Underscore"/>
+    <exclude name="PSR2.Classes.PropertyDeclaration.Underscore"/>
+  </rule>
+
+  <!-- Only allow the array short syntax [] -->
+  <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+  <!-- Warns about any empty block statement -->
+  <rule ref="Generic.CodeAnalysis.EmptyStatement"/>
+  <!-- Warns about unused function parameter -->
+  <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter"/>
+  <!-- Warns about unnecessary usage of overriding methods from abstract classes -->
+  <rule ref="Generic.CodeAnalysis.UselessOverridingMethod"/>
+  <!-- Specifications for docblocks -->
+  <rule ref="Generic.Commenting.DocComment">
+    <exclude name="Generic.Commenting.DocComment.MissingShort"/>
+  </rule>
+  <!-- Warns about FIXME declarations -->
+  <rule ref="Generic.Commenting.Fixme"/>
+  <!-- Warns about TODO declarations -->
+  <rule ref="Generic.Commenting.Todo"/>
+  <!-- Warns about inline structures -->
+  <rule ref="Generic.ControlStructures.InlineControlStructure"/>
+  <!-- Warns about line length (limit: 80 columns) -->
+  <rule ref="Generic.Files.LineLength">
+    <properties>
+      <property name="lineLimit" value="80"/>
+    </properties>
+  </rule>
+  <!-- Basic warnings about cyclomatic complexity -->
+  <rule ref="Generic.Metrics.CyclomaticComplexity">
+    <properties>
+      <property name="complexity" value="10"/>
+    </properties>
+  </rule>
+  <!-- Warns about maximum nesting level -->
+  <rule ref="Generic.Metrics.NestingLevel">
+    <properties>
+      <property name="absoluteNestingLevel" value="3"/>
+      <property name="nestingLevel" value="2"/>
+    </properties>
+  </rule>
+  <!-- Warns about the usage of deprecated functions -->
+  <rule ref="Generic.PHP.DeprecatedFunctions"/>
+  <!-- Warns or blocks the usage of some given functions -->
+  <rule ref="Generic.PHP.ForbiddenFunctions">
+    <properties>
+      <property name="forbiddenFunctions" type="array" value="var_dump=>null,die=>null,print=>null,echo=>null,exit=>null"/>
+    </properties>
+  </rule>
+  <!-- Blocks the usage of tabs for indentation -->
+  <rule ref="Generic.WhiteSpace.DisallowTabIndent"/>
+
+  <!-- Checks for docblock comments on functions -->
+  <rule ref="PEAR.Commenting.FunctionComment">
+    <exclude name="PEAR.Commenting.FunctionComment.Missing"/>
+    <exclude name="PEAR.Commenting.FunctionComment.MissingParamComment"/>
+    <exclude name="PEAR.Commenting.FunctionComment.SpacingAfterParamType"/>
+  </rule>
+  <!-- Validates that all parameters with default values are declared as last arguments -->
+  <rule ref="PEAR.Functions.ValidDefaultValue"/>
+
+  <!-- Validates the docblock alignment -->
+  <rule ref="Squiz.Commenting.DocCommentAlignment"/>
+  <!-- Validates all docblock comments in a file -->
+  <rule ref="Squiz.Commenting.FileComment">
+    <exclude name="Squiz.Commenting.FileComment.Missing"/>
+    <exclude name="Generic.Commenting.DocComment.Empty"/>
+  </rule>
+  <!-- Check docblocks for missing @throws tags -->
+  <rule ref="Squiz.Commenting.FunctionCommentThrowTag"/>
+  <!-- Blocks the usage of elseif -->
+  <rule ref="Squiz.ControlStructures.ElseIfDeclaration"/>
+  <!-- Forces usage of && or || over AND or OR -->
+  <rule ref="Squiz.Operators.ValidLogicalOperators"/>
+  <!-- Blocks commented code -->
+  <rule ref="Squiz.PHP.CommentedOutCode">
+    <properties>
+      <property name="maxPercentage" value="0"/>
+    </properties>
+  </rule>
+  <rule ref="Squiz.PHP.CommentedOutCode.Found">
+    <message>Commented code should be deleted :S</message>
+    <severity>5</severity>
+  </rule>
+
+</ruleset>
