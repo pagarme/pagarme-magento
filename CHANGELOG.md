@@ -10,6 +10,14 @@ e esse projeto adere ao [Semantic Versioning](http://semver.org/spec/v2
 ## [Unreleased]
 
 - Compras parceladas com juros no checkout transparente
+
+## [3.4.1] - 2018-01-29
+## [FIXED]
+
+- bug #250 Transações somente capturadas
+
+## [3.4.0] - 2018-01-29
+## [ADDED]
 - Compras com boleto
 
 ## [3.3.0] - 2018-01-19
