@@ -5,7 +5,6 @@ class PagarMe_Boleto_Model_Boleto extends Mage_Payment_Model_Method_Abstract
 {
     protected $_code = 'pagarme_boleto';
     protected $_formBlockType = 'pagarme_boleto/form_boleto';
-    protected $_infoBlockType = 'pagarme_boleto/info_boleto';
     protected $_isGateway = true;
     protected $_canAuthorize = true;
     protected $_canCapture = true;
@@ -106,7 +105,6 @@ class PagarMe_Boleto_Model_Boleto extends Mage_Payment_Model_Method_Abstract
      */
     public function assignData($data)
     {
-
         $additionalInfoData = [
             'pagarme_payment_method' => self::PAGARME_BOLETO
         ];
@@ -208,12 +206,5 @@ class PagarMe_Boleto_Model_Boleto extends Mage_Payment_Model_Method_Abstract
             $infoInstance->getAdditionalInformation(),
             $data
         );
-    }
-
-    public function capture(Varien_Object $payment, $amount)
-    {
-        $this->transaction = $this->sdk
-            ->transaction()
-            ->capture($this->transaction);
     }
 }
