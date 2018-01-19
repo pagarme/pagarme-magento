@@ -358,10 +358,10 @@ class CheckoutContext extends RawMinkContext
         $page = $this->session->getPage();
 
         \PHPUnit_Framework_TestCase::assertContains(
-            'Para imprimir o boleto',
+            Mage::helper('pagarme_boleto')->__('Click the followed link to print your boleto'),
             $page->find(
                 'css',
-                '.pagarme_info_boleto'
+                '.pagarme_boleto_info_boleto'
             )->getText()
         );
 
@@ -369,7 +369,7 @@ class CheckoutContext extends RawMinkContext
             'https://pagar.me',
             $page ->find(
                 'css',
-                '.pagarme_info_boleto a'
+                '.pagarme_boleto_info_boleto a'
             )->getAttribute('href')
         );
     }

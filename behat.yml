@@ -20,6 +20,11 @@ default:
         - %paths.base%/tests/acceptance/features/credit_card.feature
       contexts:
         - CreditCardContext
+    boleto:
+      paths:
+        - %paths.base%/tests/acceptance/features/boleto.feature
+      contexts:
+        - BoletoContext
     checkout:
       paths:
         - %paths.base%/tests/acceptance/features/checkout.feature
