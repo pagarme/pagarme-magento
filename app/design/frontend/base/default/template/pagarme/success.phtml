@@ -1,8 +1,0 @@
-<?php
-
-if ($this->isBoletoPayment()) {
-    echo  sprintf(
-        '<p class="pagarme_info_boleto">Para imprimir o boleto <a target="_blank" href="%s">clique aqui</a></p>',
-        $this->getBoletoUrl()
-    );
-}

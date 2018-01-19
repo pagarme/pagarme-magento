@@ -11,7 +11,7 @@
     </default>
     <checkout_onepage_success>
         <reference name="content">
-            <block type="pagarme_modal/success" name="pagarme_modal.success" template="pagarme/success.phtml"/>
+          <block type="pagarme_modal/success" name="pagarme_modal.success" template="pagarme/boleto/success.phtml"/>
         </reference>
     </checkout_onepage_success>
     <sales_order_view>

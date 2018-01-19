@@ -38,10 +38,15 @@ class PagarMe_Modal_Block_Success extends Mage_Checkout_Block_Onepage_Success
         $order = $this->getOrder();
 
         $additionalInfo = $order->getPayment()->getAdditionalInformation();
+        $paymentMethod = null;
+        if(array_key_exists('pagarme_payment_method', $additionalInfo)) {
+            $paymentMethod = $additionalInfo['pagarme_payment_method'];
+        }
+        if ($paymentMethod === PagarMe_Modal_Model_Modal::PAGARME_MODAL_BOLETO) {
+            return true;
+        }
 
-        return array_key_exists('pagarme_payment_method', $additionalInfo) &&
-            $additionalInfo['pagarme_payment_method'] ===
-                PagarMe_Modal_Model_Modal::PAGARME_MODAL_BOLETO;
+        return false;
     }
 
     /**
