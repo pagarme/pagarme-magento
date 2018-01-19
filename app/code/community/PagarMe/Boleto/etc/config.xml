@@ -2,7 +2,7 @@
 <config>
     <modules>
         <PagarMe_Boleto>
-            <version>3.2.0</version>
+            <version>1.0.0</version>
         </PagarMe_Boleto>
     </modules>
     <global>
