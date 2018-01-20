@@ -5,7 +5,7 @@ use \PagarMe\Sdk\PagarMe as PagarMeSdk;
 use PagarMe_CreditCard_Model_Exception_InvalidInstallments as InvalidInstallmentsException;
 use PagarMe_CreditCard_Model_Exception_GenerateCard as GenerateCardException;
 use PagarMe_CreditCard_Model_Exception_TransactionsInstallmentsDivergent as TransactionsInstallmentsDivergent;
-
+use PagarMe_CreditCard_Model_Exception_CantCaptureTransaction as CantCaptureTransaction;
 class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abstract
 {
 
@@ -35,6 +35,9 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     protected $pagarmeCoreHelper;
 
     const PAGARME_MAX_INSTALLMENTS = 12;
+
+    const AUTHORIZED_TRANSACTION = 'authorized';
+    const PAID_TRANSACTION = 'paid';
 
     public function __construct($attributes, PagarMeSdk $sdk = null)
     {
@@ -183,6 +186,24 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     }
 
     /**
+     * Return if a given transaction was paid
+     *
+     * @return bool
+     */
+    public function transactionIsPaid()
+    {
+        if (is_null($this->transaction)) {
+            return false;
+        }
+
+        if ($this->transaction->getStatus() == self::PAID_TRANSACTION) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @param \PagarMe\Sdk\Card\Card $card
      * @param \PagarMe\Sdk\Customer\Customer $customer
      * @param int $installments
@@ -239,7 +260,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                 $card,
                 $customerPagarMe,
                 $installments,
-                true
+                false
             );
             $this->checkInstallments($installments);
 
@@ -262,6 +283,8 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         } catch (TransactionsInstallmentsDivergent $exception) {
             Mage::logException($exception);
             Mage::throwException($exception);
+        } catch (CantCaptureTransaction $exception) {
+            Mage::logException($exception);
         } catch (\Exception $exception) {
             Mage::logException('Exception autorizing:');
             Mage::logException($exception);
@@ -284,6 +307,10 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         $this->transaction = $this->sdk
             ->transaction()
             ->capture($this->transaction);
+
+        if (!$this->transactionIsPaid()) {
+            throw new CantCaptureTransaction('Transaction can not be capture');
+        }
     }
 
     private function throwBillingException()

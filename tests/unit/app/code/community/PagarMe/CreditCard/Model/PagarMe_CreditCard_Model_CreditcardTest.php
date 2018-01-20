@@ -6,6 +6,7 @@
 
 use PagarMe\Sdk\Card\Card;
 use PagarMe\Sdk\Transaction\CreditCardTransaction;
+use PagarMe_CreditCard_Model_Creditcard as ModelCreditCard;
 
 class PagarMeCreditCardModelCreditcardTest extends PHPUnit_Framework_TestCase
 {
@@ -71,7 +72,8 @@ class PagarMeCreditCardModelCreditcardTest extends PHPUnit_Framework_TestCase
                 'card',
                 'createFromHash',
                 'transaction',
-                'creditCardTransaction'
+                'creditCardTransaction',
+                'capture'
             ])
             ->getMock();
 
@@ -169,5 +171,58 @@ class PagarMeCreditCardModelCreditcardTest extends PHPUnit_Framework_TestCase
             false
         );
         $creditCardModel->checkInstallments();
+    }
+
+    /**
+     * @test
+     */
+    public function authorizedTransactionShouldBePaidAfterCapture()
+    {
+        $sdk = $this->getSdkMock();
+        $sdk->expects($this->any())
+            ->method('transaction')
+            ->willReturnSelf();
+
+        $authTransaction = new CreditCardTransaction(
+            ['status' => ModelCreditCard::AUTHORIZED_TRANSACTION]
+        );
+
+        $sdk->expects($this->any())
+            ->method('creditCardTransaction')
+            ->willReturn($authTransaction);
+
+        $paidTransaction = new CreditCardTransaction(
+            ['status' => ModelCreditCard::PAID_TRANSACTION]
+        );
+        $sdk->expects($this->any())
+            ->method('capture')
+            ->willReturn($paidTransaction);
+
+        $creditCardModel = Mage::getModel('pagarme_creditcard/creditcard');
+        $creditCardModel->setSdk($sdk);
+
+        $card = $this->getMockBuilder('PagarMe\Sdk\Card\Card')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $customer = $this->getMockBuilder(
+            'PagarMe\Sdk\Customer\Customer'
+        )
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $installments = 1;
+        $capture = false;
+
+        $creditCardModel->createTransaction(
+            $card,
+            $customer,
+            $installments,
+            $capture
+        );
+
+        $this->assertFalse($creditCardModel->transactionIsPaid());
+        $creditCardModel->capture();
+        $this->assertTrue($creditCardModel->transactionIsPaid());
     }
 }
