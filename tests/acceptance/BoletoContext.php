@@ -141,7 +141,7 @@ class BoletoContext extends RawMinkContext
      */
     public function thePurchaseMustBePaidWithSuccess()
     {
-        $this->session->wait(10000);
+        $this->session->wait(5000);
         $page = $this->session->getPage();
         $successMessage = $page->find('css', 'h1')
             ->getText();
