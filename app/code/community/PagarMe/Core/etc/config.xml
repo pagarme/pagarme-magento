@@ -2,7 +2,11 @@
 <config>
     <modules>
         <PagarMe_Core>
+<<<<<<< bc453ca7999de712c0d5d3fd616ceb147b239a26
             <version>3.3.0</version>
+=======
+            <version>3.4.0</version>
+>>>>>>> Updates modules version and fix de translate's module name
         </PagarMe_Core>
     </modules>
     <global>

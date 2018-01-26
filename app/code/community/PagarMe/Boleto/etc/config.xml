@@ -2,7 +2,7 @@
 <config>
     <modules>
         <PagarMe_Boleto>
-            <version>1.0.0</version>
+            <version>3.4.0</version>
         </PagarMe_Boleto>
     </modules>
     <global>
@@ -34,22 +34,22 @@
     <frontend>
       <translate>
         <modules>
-          <consultoras>
+          <pagarme_boleto>
             <files>
               <default>PagarMe_Boleto.csv</default>
             </files>
-          </consultoras>
+          </pagarme_boleto>
         </modules>
       </translate>
     </frontend>
     <admin>
       <translate>
         <modules>
-          <consultoras>
+          <pagarme_boleto>
             <files>
               <default>PagarMe_Boleto.csv</default>
             </files>
-          </consultoras>
+          </pagarme_boleto>
         </modules>
       </translate>
     </admin>
