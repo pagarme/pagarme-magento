@@ -22,14 +22,6 @@ class PagarMe_Boleto_Block_Success extends Mage_Checkout_Block_Onepage_Success
     }
 
     /**
-     * @codeCoverageIgnore
-     */
-    public function setOrder(Mage_Sales_Model_Order $order)
-    {
-        $this->order = $order;
-    }
-
-    /**
      * @return bool
      */
     public function isBoletoPayment()
