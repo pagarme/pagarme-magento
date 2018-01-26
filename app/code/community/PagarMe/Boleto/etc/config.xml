@@ -32,26 +32,26 @@
         </layout>
     </frontend>
     <frontend>
-      <translate>
-        <modules>
-          <pagarme_boleto>
-            <files>
-              <default>PagarMe_Boleto.csv</default>
-            </files>
-          </pagarme_boleto>
-        </modules>
-      </translate>
+        <translate>
+            <modules>
+                <pagarme_boleto>
+                    <files>
+                        <default>PagarMe_Boleto.csv</default>
+                    </files>
+                </pagarme_boleto>
+            </modules>
+        </translate>
     </frontend>
     <admin>
-      <translate>
-        <modules>
-          <pagarme_boleto>
-            <files>
-              <default>PagarMe_Boleto.csv</default>
-            </files>
-          </pagarme_boleto>
-        </modules>
-      </translate>
+        <translate>
+            <modules>
+                <pagarme_boleto>
+                    <files>
+                        <default>PagarMe_Boleto.csv</default>
+                    </files>
+                </pagarme_boleto>
+            </modules>
+        </translate>
     </admin>
     <default>
         <payment>
