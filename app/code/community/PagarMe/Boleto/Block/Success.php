@@ -36,7 +36,10 @@ class PagarMe_Boleto_Block_Success extends Mage_Checkout_Block_Onepage_Success
     {
         $order = $this->getOrder();
         $additionalInfo = $order->getPayment()->getAdditionalInformation();
-        $paymentMethod = (array_key_exists('pagarme_payment_method', $additionalInfo)) ? $additionalInfo['pagarme_payment_method'] : null; 
+        $paymentMethod = null;
+        if(array_key_exists('pagarme_payment_method', $additionalInfo)) {
+            $paymentMethod = $additionalInfo['pagarme_payment_method'];
+        }
         $isBoleto = $paymentMethod === PagarMe_Boleto_Model_Boleto::PAGARME_BOLETO;
         if ($isBoleto) {
             return true;
