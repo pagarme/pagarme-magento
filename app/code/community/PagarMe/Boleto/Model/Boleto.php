@@ -37,19 +37,6 @@ class PagarMe_Boleto_Model_Boleto extends Mage_Payment_Model_Method_Abstract
     }
 
     /**
-     * @param \PagarMe\Sdk\PagarMe $sdk
-     * @return \PagarMe_Boleto_Model_Boleto
-     *
-     * @codeCoverageIgnore
-     */
-    public function setSdk(PagarMeSdk $sdk)
-    {
-        $this->sdk = $sdk;
-
-        return $this;
-    }
-
-    /**
      * @param type $quote
      *
      * @return bool
