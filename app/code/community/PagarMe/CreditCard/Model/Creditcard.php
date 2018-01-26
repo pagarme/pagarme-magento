@@ -1,11 +1,12 @@
 <?php
-use \PagarMe\Sdk\Card\Card;
-use \PagarMe\Sdk\Customer\Customer;
 use \PagarMe\Sdk\PagarMe as PagarMeSdk;
+use \PagarMe\Sdk\Card\Card as PagarmeCard;
+use \PagarMe\Sdk\Customer\Customer as PagarmeCustomer;
 use PagarMe_CreditCard_Model_Exception_InvalidInstallments as InvalidInstallmentsException;
 use PagarMe_CreditCard_Model_Exception_GenerateCard as GenerateCardException;
 use PagarMe_CreditCard_Model_Exception_TransactionsInstallmentsDivergent as TransactionsInstallmentsDivergent;
 use PagarMe_CreditCard_Model_Exception_CantCaptureTransaction as CantCaptureTransaction;
+
 class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abstract
 {
 
@@ -36,8 +37,8 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
 
     const PAGARME_MAX_INSTALLMENTS = 12;
 
-    const AUTHORIZED_TRANSACTION = 'authorized';
-    const PAID_TRANSACTION = 'paid';
+    const AUTHORIZED = 'authorized';
+    const PAID = 'paid';
 
     public function __construct($attributes, PagarMeSdk $sdk = null)
     {
@@ -117,19 +118,17 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     public function isInstallmentsValid($installments)
     {
         if ($installments <= 0) {
-            throw new InvalidInstallmentsException(
-                Mage::helper('pagarme_creditcard')
-                    ->__(
-                        'Installments number should be greater than zero. Was: '
-                    ) . $installments
+            $message = $this->pagarmeCoreHelper->__(
+                'Installments number should be greater than zero. Was: '
             );
+            throw new InvalidInstallmentsException($message . $installments);
         }
 
         if ($installments > self::PAGARME_MAX_INSTALLMENTS) {
-            throw new InvalidInstallmentsException(
-                Mage::helper('pagarme_creditcard')
-                ->__('Installments number should be lower than Pagar.Me limit')
+            $message = $this->pagarmeCoreHelper->__(
+                'Installments number should be lower than Pagar.Me limit'
             );
+            throw new InvalidInstallmentsException($message);
         }
 
         if ($installments > $this->getMaxInstallmentStoreConfig()) {
@@ -138,16 +137,15 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                     ->__('Installments number should not be greater than %d'),
                 $this->getMaxInstallmentStoreConfig()
             );
-            throw new InvalidInstallmentsException(
-                $message
-            );
+            $message = $this->pagarmeCoreHelper->__($message);
+            throw new InvalidInstallmentsException($message);
         }
     }
 
     /**
      * @param string $cardHash
      *
-     * @return PagarMe\Sdk\Card\Card
+     * @return PagarmeCard
      * @throws GenerateCardException
      */
     public function generateCard($cardHash)
@@ -165,9 +163,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                 return is_null($carry) ? $item->message : $carry."\n".$item->message;
             });
 
-            throw new GenerateCardException(
-                $response
-            );
+            throw new GenerateCardException($response);
         }
     }
 
@@ -179,9 +175,10 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     public function checkInstallments($installments)
     {
         if ($this->transaction->getInstallments() != $installments) {
-            throw new TransactionsInstallmentsDivergent(
+            $message = $this->pagarmeCoreHelper->__(
                 'Installments is Diverging'
             );
+            throw new TransactionsInstallmentsDivergent($message);
         }
     }
 
@@ -196,7 +193,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
             return false;
         }
 
-        if ($this->transaction->getStatus() == self::PAID_TRANSACTION) {
+        if ($this->transaction->getStatus() == self::PAID) {
             return true;
         }
 
@@ -211,8 +208,8 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
      * @return self
      */
     public function createTransaction(
-        Card $card,
-        Customer $customer,
+        PagarmeCard $card,
+        PagarmeCustomer $customer,
         $installments = 1,
         $capture = false
     ) {
@@ -249,7 +246,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
             $card = $this->generateCard($cardHash);
 
             if ($billingAddress == false) {
-                $this->throwBillingException();
+                $this->throwBillingException($billingAddress);
                 return false;
             }
 
@@ -309,11 +306,14 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
             ->capture($this->transaction);
 
         if (!$this->transactionIsPaid()) {
-            throw new CantCaptureTransaction('Transaction can not be capture');
+            $message = $this->pagarmeCoreHelper->__(
+                'Transaction can not be capture'
+            );
+            throw new CantCaptureTransaction($message);
         }
     }
 
-    private function throwBillingException()
+    private function throwBillingException($billingAddress)
     {
         Mage::logException(
             sprintf(

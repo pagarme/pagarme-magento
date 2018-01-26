@@ -184,7 +184,7 @@ class PagarMeCreditCardModelCreditcardTest extends PHPUnit_Framework_TestCase
             ->willReturnSelf();
 
         $authTransaction = new CreditCardTransaction(
-            ['status' => ModelCreditCard::AUTHORIZED_TRANSACTION]
+            ['status' => ModelCreditCard::AUTHORIZED]
         );
 
         $sdk->expects($this->any())
@@ -192,7 +192,7 @@ class PagarMeCreditCardModelCreditcardTest extends PHPUnit_Framework_TestCase
             ->willReturn($authTransaction);
 
         $paidTransaction = new CreditCardTransaction(
-            ['status' => ModelCreditCard::PAID_TRANSACTION]
+            ['status' => ModelCreditCard::PAID]
         );
         $sdk->expects($this->any())
             ->method('capture')
@@ -205,9 +205,7 @@ class PagarMeCreditCardModelCreditcardTest extends PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $customer = $this->getMockBuilder(
-            'PagarMe\Sdk\Customer\Customer'
-        )
+        $customer = $this->getMockBuilder('PagarMe\Sdk\Customer\Customer')
             ->disableOriginalConstructor()
             ->getMock();
 

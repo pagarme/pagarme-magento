@@ -61,7 +61,7 @@
             <modules>
                 <pagarme_creditcard>
                     <files>
-                        <default>PagarMe_Creditcard.csv</default>
+                        <default>PagarMe_CreditCard.csv</default>
                     </files>
                 </pagarme_creditcard>
             </modules>

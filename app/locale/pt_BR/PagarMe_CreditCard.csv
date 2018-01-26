@@ -1,0 +1,5 @@
+"Installments number should be greater than zero","O número de parcelas deve ser maior que zero",
+"Installments number should be lower than Pagar.Me limit","O número de parcelas deve ser menor que o limite Pagar.me",
+"Installments number should not be greater than %d","O número de parcelas deve menor que %d",
+"Installments is Diverging","Valor de parcelas divergente",
+"Undefined Billing address: %s","Endereço de cobrança não informado"
