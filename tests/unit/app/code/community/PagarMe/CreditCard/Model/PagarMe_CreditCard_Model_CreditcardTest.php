@@ -16,11 +16,11 @@ class PagarMeCreditCardModelCreditcardTest extends PHPUnit_Framework_TestCase
     {
         $this->creditCardModel = $this->getMockBuilder(
             'PagarMe_CreditCard_Model_Creditcard'
-        )->setMethods(['getMaxInstallments'])
+        )->setMethods(['getMaxInstallment'])
         ->getMock();
 
-        $this->creditCardModel
-            ->method('getMaxInstallments')
+        $this->creditCardModel->expects($this->any())
+            ->method('getMaxInstallment')
             ->willReturn(6);
     }
 

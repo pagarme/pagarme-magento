@@ -106,6 +106,11 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         return $this;
     }
 
+    public function getMaxInstallment()
+    {
+        return $this->getMaxInstallmentStoreConfig();
+    }
+
     /**
      * Check if installments is between 1 and the defined max installments
      *
@@ -131,11 +136,11 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
             throw new InvalidInstallmentsException($message);
         }
 
-        if ($installments > $this->getMaxInstallmentStoreConfig()) {
+        if ($installments > $this->getMaxInstallment()) {
             $message = sprintf(
                 Mage::helper('pagarme_creditcard')
                     ->__('Installments number should not be greater than %d'),
-                $this->getMaxInstallmentStoreConfig()
+                $this->getMaxInstallment()
             );
             $message = $this->pagarmeCoreHelper->__($message);
             throw new InvalidInstallmentsException($message);
