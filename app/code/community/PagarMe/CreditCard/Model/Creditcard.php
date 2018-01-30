@@ -91,6 +91,18 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     }
 
     /**
+     * @codeCoverageIgnore
+     * @return string
+     */
+    public function getUrlForPostback()
+    {
+        $urlForPostback = Mage::getBaseUrl();
+        $urlForPostback .=  'pagarme_core/transaction_creditcard/postback';
+
+        return $urlForPostback;
+    }
+
+    /**
      * @param array $data
      *
      * @return $this
@@ -212,13 +224,15 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
      * @param \PagarMe\Sdk\Customer\Customer $customer
      * @param int $installments
      * @param bool $capture
+     * @param string $postbackUrl
      * @return self
      */
     public function createTransaction(
         PagarmeCard $card,
         PagarmeCustomer $customer,
         $installments = 1,
-        $capture = false
+        $capture = false,
+        $postbackUrl = null
     ) {
         $quote = Mage::getSingleton('checkout/session')->getQuote();
         $this->transaction = $this->sdk
@@ -229,7 +243,8 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                 $card,
                 $customer,
                 $installments,
-                $capture
+                $capture,
+                $postbackUrl
             );
 
         return $this;
@@ -259,16 +274,26 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
 
             $telephone = $billingAddress->getTelephone();
 
-            $customerPagarMe = $this->buildCustomerInformation($quote, $billingAddress, $telephone);
+            $customerPagarMe = $this->buildCustomerInformation(
+                $quote,
+                $billingAddress,
+                $telephone
+            );
+
+            $postbackUrl = $this->getUrlForPostback();
+
             $this->createTransaction(
                 $card,
                 $customerPagarMe,
                 $installments,
-                false
+                false,
+                $postbackUrl
             );
+
             $this->checkInstallments($installments);
 
             $order = $payment->getOrder();
+
             Mage::getModel('pagarme_core/transaction')
                 ->saveTransactionInformation(
                     $order,
