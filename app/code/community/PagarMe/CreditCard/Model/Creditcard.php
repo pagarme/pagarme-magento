@@ -286,7 +286,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                 $card,
                 $customerPagarMe,
                 $installments,
-                false,
+                true,
                 $postbackUrl
             );
 
@@ -300,8 +300,6 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                     $this->transaction,
                     $infoInstance
                 );
-
-            $this->capture($payment, $amount);
 
         } catch (GenerateCardException $exception) {
             Mage::log($exception->getMessage());
@@ -322,7 +320,6 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
             Mage::log('Exception autorizing:');
             Mage::logException($exception);
             $json = json_decode($exception->getMessage());
-            $json = json_decode($json);
 
             $response = array_reduce($json->errors, function ($carry, $item) {
                 return is_null($carry)
