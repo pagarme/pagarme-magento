@@ -220,6 +220,30 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     }
 
     /**
+     * @param Mage_Sales_Model_Order $order
+     * @return void
+     */
+    protected function createInvoice($order)
+    {
+        $invoice = Mage::getModel('sales/service_order', $order)
+            ->prepareInvoice();
+
+        $invoice->register()
+            ->pay();
+
+        $order->setState(
+            Mage_Sales_Model_Order::STATE_PROCESSING,
+            true,
+            "pago"
+        );
+
+        Mage::getModel('core/resource_transaction')
+            ->addObject($order)
+            ->addObject($invoice)
+            ->save();
+    }
+
+    /**
      * @param \PagarMe\Sdk\Card\Card $card
      * @param \PagarMe\Sdk\Customer\Customer $customer
      * @param int $installments
@@ -301,7 +325,8 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                     $infoInstance
                 );
 
-            $this->capture($payment, $amount);
+            $this->createInvoice($order);
+
 
         } catch (GenerateCardException $exception) {
             Mage::log($exception->getMessage());
