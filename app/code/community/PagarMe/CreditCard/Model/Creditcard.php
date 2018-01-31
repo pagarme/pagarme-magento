@@ -286,7 +286,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                 $card,
                 $customerPagarMe,
                 $installments,
-                false,
+                true,
                 $postbackUrl
             );
 
