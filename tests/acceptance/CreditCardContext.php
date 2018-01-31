@@ -89,7 +89,7 @@ class CreditCardContext extends RawMinkContext
         $this->iConfirmMyPaymentInformation();
         $this->placeOrder();
         $this->thePurchaseMustBePaidWithSuccess();
-        $this->waitForElement('.col-main a:first-of-type', 2000);
+        $this->session->wait(5000);
         $this->createdOrderId = $this->session->getPage()
             ->find('css', '.col-main a:first-of-type')
             ->getText();
@@ -217,7 +217,7 @@ class CreditCardContext extends RawMinkContext
     public function loginWithRegisteredUser()
     {
         $page = $this->session->getPage();
-        $this->waitForElement('#login-email',5000);
+        $this->session->wait(10000);
         $page->fillField(
             Mage::helper('pagarme_modal')->__('Email Address'),
             $this->customer->getEmail()
@@ -240,11 +240,10 @@ class CreditCardContext extends RawMinkContext
 
         $page->find('css', '#billing-buttons-container button')->press();
 
-        $this->waitForElement('#checkout-step-shipping_method', 5000);
+        $this->session->wait(10000);
 
         $page->find('css', '#shipping-method-buttons-container button')
             ->press();
-
     }
 
     /**
@@ -391,8 +390,10 @@ class CreditCardContext extends RawMinkContext
         $installments,
         $interestRate
     ) {
-        $this->session->wait(2000);
         $page = $this->session->getPage();
+
+        $this->session->wait(2000);
+
         $checkoutTotalAmount = $page->find(
             'css',
             'tr.last:not(.first) .price'

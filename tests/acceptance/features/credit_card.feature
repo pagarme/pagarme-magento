@@ -47,6 +47,7 @@ Feature: Credit Card
         And choose pay with transparent checkout using credit card
         And I choose 10
         And I confirm my payment information
+        And place order
         Then the purchase must be created with value based on both 10 and 10
 
     @order_view_interest
