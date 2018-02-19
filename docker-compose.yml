@@ -1,13 +1,21 @@
 version: '2'
 
 services:
+    codeception:
+        image: codeception/codeception
+        volumes:
+            - .:/project
+        depends_on:
+            - selenium
+
     selenium:
-        image: selenium/hub:2.45.0
+        image: selenium/hub
         ports:
             - "4444:4444"
+        env_file: .env
 
     firefox:
-        image: selenium/node-firefox-debug:2.45.0
+        image: selenium/node-chrome-debug
         privileged: true
         depends_on:
             - selenium
