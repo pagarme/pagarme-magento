@@ -14,7 +14,7 @@ class PagarMe_CreditCard_Block_Info_Creditcard extends Mage_Payment_Block_Info_C
             'pagarme/creditcard/order_info/payment_details.phtml'
         );
         $this->helper = Mage::helper('pagarme_creditcard');
-        $this->transaction = null;
+        $this->transaction = $this->getTransaction();
     }
 
     public function transactionInstallments()
@@ -39,27 +39,29 @@ class PagarMe_CreditCard_Block_Info_Creditcard extends Mage_Payment_Block_Info_C
      */
     public function getTransaction()
     {
-        if (is_null($this->transaction)) {
-            $order = $this->getInfo()->getOrder();
+        $pagarmeDbTransaction = $this->getPagePagarmeDbTransaction();
+        return $this
+            ->fetchPagarmeTransactionFromAPi(
+                $pagarmeDbTransaction->getTransactionId()
+            );
+    }
 
-            $pagarmeDbTransaction = \Mage::getModel('pagarme_core/service_order')
-                ->getTransactionByOrderId(
-                    $order->getId()
-                );
+    private function getPagePagarmeDbTransaction()
+    {
+        $order = $this->getInfo()->getOrder();
 
-            try {
-                $this->transaction = \Mage::getModel('pagarme_core/sdk_adapter')
-                    ->getPagarMeSdk()
-                    ->transaction()
-                    ->get($pagarmeDbTransaction->getTransactionId());
+        return \Mage::getModel('pagarme_core/service_order')
+            ->getTransactionByOrderId(
+                $order->getId()
+            );
+    }
 
-                return $this->transaction;
-            } catch (Exception $anyException) {
-                throw new \Exception('Transaction was not found.');
-            }
-        } else {
-            return $this->transaction;
-        }
+    private function fetchPagarmeTransactionFromAPi($transactionId)
+    {
+        return \Mage::getModel('pagarme_core/sdk_adapter')
+            ->getPagarMeSdk()
+            ->transaction()
+            ->get($transactionId);
     }
 }
 
