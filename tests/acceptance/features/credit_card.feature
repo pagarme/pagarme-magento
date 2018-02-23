@@ -69,3 +69,11 @@ Feature: Credit Card
         Examples:
         | installments | interest_rate |
         | 10           | 10            |
+
+    @admin_order_view_payment_details
+    Scenario: Check the interest in the order details page
+        Given a registered user
+        And a created order with installment value of "2" and interest of "0"
+        When I login to the admin
+        And I check the order payment details
+        Then the admin details should contain the payment method "Credit Card", installments value "2", customer name and card brand

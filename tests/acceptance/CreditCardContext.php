@@ -15,6 +15,7 @@ class CreditCardContext extends RawMinkContext
     use PagarMe\Magento\Test\Helper\SessionWait;
 
     use PagarMe\Magento\Test\CreditCard\AdminInterestRateCheck;
+    use PagarMe\Magento\Test\CreditCard\AdminPaymentDetailsCheck;
 
     private $createdOrderId;
 
@@ -83,7 +84,7 @@ class CreditCardContext extends RawMinkContext
             'payment/pagarme_configurations/creditcard_interest_rate',
             10
         );
-        $this->iChooseMaxInstallments(10);
+        $this->iChooseMaxInstallments($installments);
         $this->iConfirmMyPaymentInformation();
         $this->placeOrder();
         $this->thePurchaseMustBePaidWithSuccess();
