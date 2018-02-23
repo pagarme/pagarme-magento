@@ -26,3 +26,8 @@
 "Error, please review your payment info","Falha no pagamento, por favor revise seus dados"
 "Confirm your information","Confirme seus dados"
 "Undefined Billing address: %s","Endereço de cobrença indefinido: %s"
+"Payment Method","Método de pagamento"
+"Installments","Parcelas"
+"Pagar.me Transaction Id","Id da Transação no Pagar.me"
+"Customer name","Nome do cliente"
+"Card brand","Bandeira do cartão"

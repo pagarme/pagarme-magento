@@ -1,0 +1,52 @@
+
+<?php
+    $transaction = $this->getTransaction();
+    $helper = Mage::helper('pagarme_creditcard');
+?>
+
+<h3><?php echo $helper->__('Pagar.me Credit card');?></h3>
+
+<table id="pagarme_order_info_payment_details">
+    <tr>
+        <td>
+            <strong>
+                <?php echo $helper->__('Customer name');?>
+            </strong>
+        </td>
+        <td style="text-align: right">
+            <?= $this->transactionCustomerName(); ?>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <strong>
+                <?php echo $helper->__('Payment Method');?>
+            </strong>
+        </td>
+        <td style="text-align: right">
+            <?= $helper->__('Credit Card') ?>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <strong>
+                <?php echo $helper->__('Card brand');?>
+            </strong>
+        </td>
+        <td style="text-align: right">
+            <?= strtoupper($this->transactionCardBrand()) ?>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <strong>
+                <?php echo $helper->__('Installments');?>
+            </strong>
+        </td>
+        <td style="text-align: right">
+            <?= $this->transactionInstallments() ?>
+        </td>
+    </tr>
+</table>
+
+<br/>
