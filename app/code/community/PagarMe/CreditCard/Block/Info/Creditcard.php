@@ -6,9 +6,9 @@ class PagarMe_CreditCard_Block_Info_Creditcard extends Mage_Payment_Block_Info_C
     private $helper;
     private $transaction;
 
-    public function _construct()
+    public function __construct()
     {
-        parent::_construct();
+        parent::__construct();
 
         $this->setTemplate(
             'pagarme/creditcard/order_info/payment_details.phtml'
