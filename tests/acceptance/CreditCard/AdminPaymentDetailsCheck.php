@@ -24,7 +24,10 @@ trait AdminPaymentDetailsCheck
         $paymentMethod,
         $installments
     ) {
-        $this->session->wait(3000);
+        $this->waitForElement(
+            '#pagarme_order_info_payment_details',
+            3000
+        );
         $page = $this->session->getPage();
         $helper = \Mage::helper('pagarme_creditcard');
 
