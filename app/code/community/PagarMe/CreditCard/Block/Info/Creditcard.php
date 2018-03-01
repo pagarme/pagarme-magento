@@ -14,7 +14,6 @@ class PagarMe_CreditCard_Block_Info_Creditcard extends Mage_Payment_Block_Info_C
             'pagarme/creditcard/order_info/payment_details.phtml'
         );
         $this->helper = Mage::helper('pagarme_creditcard');
-        $this->transaction = $this->getTransaction();
     }
 
     public function transactionInstallments()
