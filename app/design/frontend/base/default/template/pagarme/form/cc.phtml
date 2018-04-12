@@ -106,7 +106,7 @@
             return false;
         }
 
-        PagarMe.encryption_key = pagarme_encryption_key;
+        PagarMe.encryption_key = "<?php echo $this->helper('pagarme')->getEncryptionKey() ?>";
         var pagarmeCreditCard = new PagarMe.creditCard();
 
         pagarmeCreditCard.cardHolderName       = pagarmeCardOwner;
