@@ -28,36 +28,51 @@ Mage::getModel('cms/page')
 Mage::getModel('pagarme_core/observer_autoloader')
     ->registerSplAutoloader(new Varien_Event_Observer());
 
-$ch = curl_init();
+function getCompanyTemporary()
+{
+    $ch = curl_init();
 
-curl_setopt(
-    $ch,
-    CURLOPT_URL,
-    "https://api.pagar.me/1/companies/temporary"
-);
+    curl_setopt(
+        $ch,
+        CURLOPT_URL,
+        "https://api.pagar.me/1/companies/temporary"
+    );
 
-date_default_timezone_set('America/Sao_Paulo');
+    date_default_timezone_set('America/Sao_Paulo');
 
-$params = sprintf(
-    'name=acceptance_test_company&email=%s@sdksuitetest.com&password=password',
-    date(
-        'YmdHis'
-    )
-);
+    $params = sprintf(
+        'name=acceptance_test_company&email=%s@sdksuitetest.com&password=password',
+        date(
+            'YmdHis'
+        )
+    );
 
-curl_setopt($ch, CURLOPT_POST, 1);
-curl_setopt(
-    $ch,
-    CURLOPT_POSTFIELDS,
-    $params
-);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt(
+        $ch,
+        CURLOPT_POSTFIELDS,
+        $params
+    );
 
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-$result = curl_exec($ch);
-$companyData = json_decode($result);
+    $result = curl_exec($ch);
+    $companyData = json_decode($result);
 
-curl_close($ch);
+    curl_close($ch);
 
-define('PAGARME_API_KEY', $companyData->api_key->test);
-define('PAGARME_ENCRYPTION_KEY', $companyData->encryption_key->test);
+    return $companyData;
+}
+
+$apiKey = getenv('API_KEY');
+$encriptionKey = getenv('ENCRYPTION_KEY');
+
+if (!$apiKey && !$encriptionKey) {
+    $companyData = getCompanyTemporary();
+
+    $apiKey = $companyData->api_key->test;
+    $encriptionKey = $companyData->encryption_key->test;
+}
+
+define('PAGARME_API_KEY', $apiKey);
+define('PAGARME_ENCRYPTION_KEY', $encriptionKey);

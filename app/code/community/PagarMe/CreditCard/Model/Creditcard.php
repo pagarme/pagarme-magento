@@ -91,6 +91,18 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     }
 
     /**
+     * @codeCoverageIgnore
+     * @return string
+     */
+    public function getUrlForPostback()
+    {
+        $urlForPostback = Mage::getBaseUrl();
+        $urlForPostback .=  'pagarme_core/transaction_creditcard/postback';
+
+        return $urlForPostback;
+    }
+
+    /**
      * @param array $data
      *
      * @return $this
@@ -208,17 +220,43 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     }
 
     /**
+     * @param Mage_Sales_Model_Order $order
+     * @return void
+     */
+    protected function createInvoice($order)
+    {
+        $invoice = Mage::getModel('sales/service_order', $order)
+            ->prepareInvoice();
+
+        $invoice->register()
+            ->pay();
+
+        $order->setState(
+            Mage_Sales_Model_Order::STATE_PROCESSING,
+            true,
+            "pago"
+        );
+
+        Mage::getModel('core/resource_transaction')
+            ->addObject($order)
+            ->addObject($invoice)
+            ->save();
+    }
+
+    /**
      * @param \PagarMe\Sdk\Card\Card $card
      * @param \PagarMe\Sdk\Customer\Customer $customer
      * @param int $installments
      * @param bool $capture
+     * @param string $postbackUrl
      * @return self
      */
     public function createTransaction(
         PagarmeCard $card,
         PagarmeCustomer $customer,
         $installments = 1,
-        $capture = false
+        $capture = false,
+        $postbackUrl = null
     ) {
         $quote = Mage::getSingleton('checkout/session')->getQuote();
         $this->transaction = $this->sdk
@@ -229,7 +267,8 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                 $card,
                 $customer,
                 $installments,
-                $capture
+                $capture,
+                $postbackUrl
             );
 
         return $this;
@@ -259,16 +298,26 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
 
             $telephone = $billingAddress->getTelephone();
 
-            $customerPagarMe = $this->buildCustomerInformation($quote, $billingAddress, $telephone);
+            $customerPagarMe = $this->buildCustomerInformation(
+                $quote,
+                $billingAddress,
+                $telephone
+            );
+
+            $postbackUrl = $this->getUrlForPostback();
+
             $this->createTransaction(
                 $card,
                 $customerPagarMe,
                 $installments,
-                false
+                true,
+                $postbackUrl
             );
+
             $this->checkInstallments($installments);
 
             $order = $payment->getOrder();
+
             Mage::getModel('pagarme_core/transaction')
                 ->saveTransactionInformation(
                     $order,
@@ -276,7 +325,8 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                     $infoInstance
                 );
 
-            $this->capture($payment, $amount);
+            $this->createInvoice($order);
+
 
         } catch (GenerateCardException $exception) {
             Mage::log($exception->getMessage());
