@@ -216,6 +216,7 @@ class CreditCardContext extends RawMinkContext
     public function loginWithRegisteredUser()
     {
         $page = $this->session->getPage();
+        $this->waitForElement('#login-email',5000);
         $page->fillField(
             Mage::helper('pagarme_modal')->__('Email Address'),
             $this->customer->getEmail()

@@ -50,28 +50,22 @@ Feature: Credit Card
         Then the purchase must be created with value based on both 10 and 10
 
     @order_view_interest
-    Scenario Outline: Check the interest in the order details page
+    Scenario: Check the interest in the order details page
         Given a registered user
-        And a created order with installment value of "<installments>" and interest of "<interest_rate>"
+        And a created order with installment value of "10" and interest of "10"
         When I check the order interest amount in its detail page
-        Then the interest value should consider the values "<installments>" and "<interest_rate>"
-        Examples:
-        | installments | interest_rate |
-        | 10           | 10            |
+        Then the interest value should consider the values "10" and "10"
 
     @admin_order_view_interest
-    Scenario Outline: Check the interest in the order details page
+    Scenario: Check the interest in the admin order details page
         Given a registered user
-        And a created order with installment value of "<installments>" and interest of "<interest_rate>"
+        And a created order with installment value of "10" and interest of "10"
         When I login to the admin
         And I check the order interest amount in its admin detail page
-        Then the admin interest value should consider the values "<installments>" and "<interest_rate>"
-        Examples:
-        | installments | interest_rate |
-        | 10           | 10            |
+        Then the admin interest value should consider the values "10" and "10"
 
     @admin_order_view_payment_details
-    Scenario: Check the interest in the order details page
+    Scenario: Check the interest and payment method in the admin order details page
         Given a registered user
         And a created order with installment value of "2" and interest of "0"
         When I login to the admin
