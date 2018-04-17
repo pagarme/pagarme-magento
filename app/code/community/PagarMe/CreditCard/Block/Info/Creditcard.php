@@ -9,7 +9,6 @@ class PagarMe_CreditCard_Block_Info_Creditcard extends Mage_Payment_Block_Info_C
     public function __construct()
     {
         parent::__construct();
-
         $this->setTemplate(
             'pagarme/creditcard/order_info/payment_details.phtml'
         );
@@ -18,17 +17,18 @@ class PagarMe_CreditCard_Block_Info_Creditcard extends Mage_Payment_Block_Info_C
 
     public function transactionInstallments()
     {
-        return $this->getTransaction()->getInstallments();
+        return $this->transaction->getInstallments();
     }
 
     public function transactionCustomerName()
     {
-        return $this->getTransaction()->getCustomer()->name;
+        $this->transaction = $this->getTransaction();
+        return $this->transaction->getCustomer()->getName();
     }
 
     public function transactionCardBrand()
     {
-        return $this->getTransaction()->getCard()->brand;
+        return $this->transaction->getCard()->getBrand();
     }
 
     /**
@@ -48,7 +48,6 @@ class PagarMe_CreditCard_Block_Info_Creditcard extends Mage_Payment_Block_Info_C
     private function getPagePagarmeDbTransaction()
     {
         $order = $this->getInfo()->getOrder();
-
         return \Mage::getModel('pagarme_core/service_order')
             ->getTransactionByOrderId(
                 $order->getId()
@@ -63,4 +62,3 @@ class PagarMe_CreditCard_Block_Info_Creditcard extends Mage_Payment_Block_Info_C
             ->get($transactionId);
     }
 }
-
