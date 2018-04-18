@@ -9,9 +9,15 @@ env:
     - COMPOSER_VERSION=1.4.1
     - COVERALLS_VERSION=v1.0.0
   matrix:
-    - MAGENTO_VERSION=1.9.1.0
-    - MAGENTO_VERSION=1.8.1.0
-    - MAGENTO_VERSION=1.7.0.2
+    - MAGENTO_VERSION=1.9.1.0 TEST_SUITE=credit_card
+    - MAGENTO_VERSION=1.9.1.0 TEST_SUITE=boleto
+    - MAGENTO_VERSION=1.9.1.0 TEST_SUITE=postback
+    - MAGENTO_VERSION=1.8.1.0 TEST_SUITE=credit_card
+    - MAGENTO_VERSION=1.8.1.0 TEST_SUITE=boleto
+    - MAGENTO_VERSION=1.8.1.0 TEST_SUITE=postback
+    - MAGENTO_VERSION=1.7.0.2 TEST_SUITE=credit_card
+    - MAGENTO_VERSION=1.7.0.2 TEST_SUITE=boleto
+    - MAGENTO_VERSION=1.7.0.2 TEST_SUITE=postback
 
 before_install:
   - sudo rm /usr/local/bin/docker-compose
