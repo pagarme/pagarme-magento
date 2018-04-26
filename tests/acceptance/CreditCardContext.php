@@ -16,6 +16,7 @@ class CreditCardContext extends RawMinkContext
 
     use PagarMe\Magento\Test\CreditCard\AdminInterestRateCheck;
     use PagarMe\Magento\Test\CreditCard\AdminPaymentDetailsCheck;
+    use PagarMe\Magento\Test\HookHandler\ScreenshotAfterFailedStep;
 
     private $createdOrderId;
 

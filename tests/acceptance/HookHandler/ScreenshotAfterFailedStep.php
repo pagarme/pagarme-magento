@@ -1,7 +1,7 @@
 <?php
 namespace PagarMe\Magento\Test\HookHandler;
 
-use Behat\Behat\Hook\Scope\StepScope;
+use Behat\Behat\Hook\Scope\AfterStepScope;
 use GuzzleHttp;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7;
@@ -10,10 +10,10 @@ trait ScreenshotAfterFailedStep
 {
     protected function getImgurClientID()
     {
-        return 'c7aabd17e35f545';
+        return getenv('IMGUR_CLIENT_ID');
     }
 
-    protected function getScreenshot(StepScope $scope)
+    protected function getScreenshot(AfterStepScope $scope)
     {
         $driver = $this->getSession()->getDriver();
         $image = base64_encode($driver->getScreenshot());
@@ -60,9 +60,8 @@ trait ScreenshotAfterFailedStep
 
     /**
      * @AfterStep
-     * @BeforeStep
      */
-    public function takeAScreenshot(StepScope $scope)
+    public function takeAScreenshot(AfterStepScope $scope)
     {
         $isPassed = $scope->getTestResult()->isPassed();
         if ($isPassed) {
@@ -71,7 +70,7 @@ trait ScreenshotAfterFailedStep
 
         $clientID = $this->getImgurClientID();
         if(empty($clientID)) {
-            throw \Exception('You need to inform your imgur client ID to take screenshots');
+            throw new \Exception('You need to inform your imgur client ID to take screenshots');
         }
 
         $image = $this->getScreenshot($scope);

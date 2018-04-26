@@ -25,6 +25,7 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
   - echo "MAGENTO_VERSION=$MAGENTO_VERSION" >> .env
+  - echo "IMGUR_CLIENT_ID=$IMGUR_CLIENT_ID" >> .env
 
 script:
   - script/test.sh
