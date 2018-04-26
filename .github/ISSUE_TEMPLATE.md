@@ -7,7 +7,7 @@
 [caso essa issue se trate de um bug, descreva como é o ambiente que ele ocorre, por exemplo:]
 
 * Magento Community 1.8.1.0
-* Módulo Pagar.me 0.1.7
+* Módulo Pagar.me 0.1.8
 * Servidor Linux
 * PHP 5.4
 * Apache 2.2

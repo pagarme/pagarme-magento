@@ -15,7 +15,7 @@
 <config>
     <modules>
         <Inovarti_Pagarme>
-            <version>0.1.7</version>
+            <version>0.1.8</version>
         </Inovarti_Pagarme>
     </modules>
     <global>
