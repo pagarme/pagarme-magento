@@ -32,6 +32,7 @@ done
 
 docker-compose exec magento /opt/docker/bin/composer install
 docker-compose exec magento php index.php
+docker-compose exec magento vendor/bin/n98-magerun dev:log --on --global
 
 for testScript in $(ls ./script/test-*.sh); do
     /bin/bash $testScript

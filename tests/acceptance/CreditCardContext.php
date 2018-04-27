@@ -255,7 +255,7 @@ class CreditCardContext extends RawMinkContext
 
         $this->waitForElement('#checkout-step-payment', 5000);
 
-        $this->waitForElement('#p_method_pagarme_creditcard', 3000);
+        $this->waitForElement('#p_method_pagarme_creditcard', 7000);
         $page->find('css', '#p_method_pagarme_creditcard')->click();
     }
 
