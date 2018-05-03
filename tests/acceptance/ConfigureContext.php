@@ -10,6 +10,7 @@ class ConfigureContext extends RawMinkContext
     use PagarMe\Magento\Test\Helper\PagarMeSettings;
     use PagarMe\Magento\Test\Helper\CustomerDataProvider;
     use PagarMe\Magento\Test\Helper\ProductDataProvider;
+    use PagarMe\Magento\Test\Helper\SessionWait;
 
     const ADMIN_PASSWORD = 'admin123';
 
@@ -121,6 +122,11 @@ class ConfigureContext extends RawMinkContext
         $page->find('named', array('link', 'Payment Methods'))
             ->click();
 
+        $this->waitForElementType(
+            '#payment_pagarme_configurations-head',
+            60,
+            $page
+        );
         $page->find('css', '#payment_pagarme_configurations-head')->click();
 
         $this->spin(function () use ($page) {

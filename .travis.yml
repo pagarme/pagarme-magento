@@ -5,7 +5,7 @@ services:
 
 env:
   global:
-    - DOCKER_COMPOSE_VERSION=1.9.0-rc3
+    - DOCKER_COMPOSE_VERSION=1.17.0
     - COMPOSER_VERSION=1.4.1
     - COVERALLS_VERSION=v1.0.0
   matrix:
@@ -19,6 +19,11 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
   - echo "MAGENTO_VERSION=$MAGENTO_VERSION" >> .env
+  - echo "IMGUR_CLIENT_ID=$IMGUR_CLIENT_ID" >> .env
 
 script:
   - script/test.sh
+
+after_failure:
+  - docker-compose exec magento cat var/log/system.log
+  - docker-compose exec magento cat var/log/exception.log

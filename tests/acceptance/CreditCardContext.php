@@ -16,6 +16,7 @@ class CreditCardContext extends RawMinkContext
 
     use PagarMe\Magento\Test\CreditCard\AdminInterestRateCheck;
     use PagarMe\Magento\Test\CreditCard\AdminPaymentDetailsCheck;
+    use PagarMe\Magento\Test\HookHandler\ScreenshotAfterFailedStep;
 
     private $createdOrderId;
 
@@ -88,7 +89,11 @@ class CreditCardContext extends RawMinkContext
         $this->iConfirmMyPaymentInformation();
         $this->placeOrder();
         $this->thePurchaseMustBePaidWithSuccess();
-        $this->waitForElement('.col-main a:first-of-type', 2000);
+        $this->waitForElementType(
+            '.col-main a:first-of-type',
+            2000,
+            $this->session->getPage()
+        );
         $this->createdOrderId = $this->session->getPage()
             ->find('css', '.col-main a:first-of-type')
             ->getText();
@@ -216,7 +221,7 @@ class CreditCardContext extends RawMinkContext
     public function loginWithRegisteredUser()
     {
         $page = $this->session->getPage();
-        $this->waitForElement('#login-email',5000);
+        $this->waitForElementType('#login-email', 60, $page);
         $page->fillField(
             Mage::helper('pagarme_modal')->__('Email Address'),
             $this->customer->getEmail()
@@ -247,16 +252,28 @@ class CreditCardContext extends RawMinkContext
     }
 
     /**
+     * @When I wait for payment block be visible
+     */
+    public function iWaitForPaymentBlockBeVisible()
+    {
+        echo $this->takeAScreenshot();
+        $this->session->wait(600);
+        echo $this->takeAScreenshot();
+    }
+
+    /**
      * @When choose pay with transparent checkout using credit card
      */
     public function choosePayWithTransparentCheckoutUsingCreditCard()
     {
         $page = $this->session->getPage();
 
-        $this->waitForElement('#checkout-step-payment', 5000);
-
-        $this->waitForElement('#p_method_pagarme_creditcard', 3000);
-        $page->find('css', '#p_method_pagarme_creditcard')->click();
+        $this->waitForElement('#p_method_pagarme_creditcard', 60);
+        echo $this->takeAScreenshot();
+        $page->find(
+            'css',
+            '#p_method_pagarme_creditcard'
+        )->click();
     }
 
     /**
@@ -390,8 +407,12 @@ class CreditCardContext extends RawMinkContext
         $installments,
         $interestRate
     ) {
-        $this->session->wait(2000);
         $page = $this->session->getPage();
+        $this->waitForElementType(
+            'tr.last:not(.first) .price',
+            60,
+            $page
+        );
         $checkoutTotalAmount = $page->find(
             'css',
             'tr.last:not(.first) .price'

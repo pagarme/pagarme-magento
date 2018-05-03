@@ -9,6 +9,7 @@ default:
         default_session:
           selenium2:
             wd_host: 'http://selenium:4444/wd/hub'
+
   suites:
     configure:
       paths:
@@ -20,6 +21,8 @@ default:
         - %paths.base%/tests/acceptance/features/credit_card.feature
       contexts:
         - CreditCardContext
+      filters:
+        tags: '~@skippedTest'
     boleto:
       paths:
         - %paths.base%/tests/acceptance/features/boleto.feature

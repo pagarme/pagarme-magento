@@ -155,10 +155,7 @@ class PagarMe_Core_Model_Postback extends Mage_Core_Model_Abstract
             $creditmemo->setPaymentRefundDisallowed(true)->register();
             $transaction->addObject($creditmemo);
         }
-
-        $transaction->addObject($order)
-            ->save();
-
+        $transaction->addObject($order)->save();
         return $order;
     }
 }

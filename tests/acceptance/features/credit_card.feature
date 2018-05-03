@@ -10,6 +10,7 @@ Feature: Credit Card
         And I go to checkout page
         And login with registered user
         And confirm billing and shipping address information
+        And I wait for payment block be visible
         And choose pay with transparent checkout using credit card
         And I confirm my payment information
         And place order
@@ -34,7 +35,6 @@ Feature: Credit Card
         | 3                 |
         | 1                 |
 
-    @only
     Scenario: Make a purchase by credit card with interest and installments
         Given a registered user
         When I set max installments to 10
@@ -48,15 +48,17 @@ Feature: Credit Card
         And I choose 10
         And I confirm my payment information
         Then the purchase must be created with value based on both 10 and 10
+        And place order
+        And the purchase must be paid with success
 
-    @order_view_interest
+    @skippedTest
     Scenario: Check the interest in the order details page
         Given a registered user
         And a created order with installment value of "10" and interest of "10"
         When I check the order interest amount in its detail page
         Then the interest value should consider the values "10" and "10"
 
-    @admin_order_view_interest
+    @skippedTest
     Scenario: Check the interest in the admin order details page
         Given a registered user
         And a created order with installment value of "10" and interest of "10"
@@ -64,7 +66,7 @@ Feature: Credit Card
         And I check the order interest amount in its admin detail page
         Then the admin interest value should consider the values "10" and "10"
 
-    @admin_order_view_payment_details
+    @skippedTest
     Scenario: Check the interest and payment method in the admin order details page
         Given a registered user
         And a created order with installment value of "2" and interest of "0"
