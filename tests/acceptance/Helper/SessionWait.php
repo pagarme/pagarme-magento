@@ -5,10 +5,14 @@ trait SessionWait
 {
     public function waitForElement($element, $timeout)
     {
-        $this->session->wait(
-            $timeout,
-            "document.querySelector('${element}').style.display != 'none'"
-        );
+        try {
+            $this->session->wait(
+                $timeout,
+                "document.querySelector('${element}').style.display != 'none'"
+            );
+        } catch(\Exception $exception) {
+            throw new \Exception("$element not found");
+        }
     }
 
     public function waitForElementXpath($element, $timeout, $page=null)
