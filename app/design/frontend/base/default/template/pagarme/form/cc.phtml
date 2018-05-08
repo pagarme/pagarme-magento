@@ -33,7 +33,7 @@
                 <option value=""><?php echo $this->__('--Please Select--') ?></option>
             <?php $_installments = $this->getInfoData('installments') ?>
             <?php foreach ($this->getInstallmentsAvailables() as $_installmentValue => $_installmentLabel): ?>
-                <option value="<?php echo $_installmentValue ?>"<?php /* if($_installmentValue==$_installments): ?> selected="selected"<?php endif */ ?>><?php echo $_installmentLabel ?></option>
+                <option value="<?php echo $_installmentValue ?>"><?php echo $_installmentLabel ?></option>
             <?php endforeach ?>
             </select>
             <input type="hidden" id="<?php echo $_code ?>_installment_description" name="payment[installment_description]" value="<?php echo $this->escapeHtml($this->getInfoData('installment_description')) ?>" />
@@ -102,6 +102,12 @@
         pagarmeCardExpirationYr    = (document.getElementById( '<?php echo $_code ?>_expiration_yr' ).value);
         pagarmeCardCid             = (document.getElementById( '<?php echo $_code ?>_cc_cid' ).value);
 
+        pagarmeCardBrand = PagarMe.Validator.getCardBrand(pagarmeCardNumber);
+
+        if(!isValidBrand(pagarmeCardBrand)) {
+            return false;
+        }
+
         if (!pagarmeCardNumber || !pagarmeCardInstallments || !pagarmeCardOwner || !pagarmeCardExpiration || !pagarmeCardExpirationYr || !pagarmeCardCid) {
             return false;
         }
@@ -143,6 +149,23 @@
         }
 
         return null
+    }
+
+    function isValidBrand(brand) {
+        var paymentButton = document.querySelector("#payment-continue") || document.querySelector("#onestepcheckout-place-order-button") || document.querySelector("#lbonepage-place-order-btn") || document.querySelector("button[onclick='payment.save()']");
+
+        enabledBrands  = JSON.parse('<?php echo json_encode($this->getCcAvailableTypes()); ?>');
+        brandTag = convertBrandToMagentoIdentifier(brand);
+
+        if(enabledBrands.hasOwnProperty(brandTag)) {
+           paymentButton.disabled = false;
+
+           return true
+        }
+
+        paymentButton.disabled = true;
+
+        return false
     }
 
     $(document).on('click','#onestepcheckout-place-order-button',function(){
