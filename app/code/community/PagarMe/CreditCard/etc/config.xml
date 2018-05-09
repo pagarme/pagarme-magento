@@ -2,7 +2,7 @@
 <config>
     <modules>
         <PagarMe_CreditCard>
-            <version>3.5.3</version>
+            <version>3.5.4</version>
         </PagarMe_CreditCard>
     </modules>
     <global>
@@ -74,7 +74,6 @@
                 <model>pagarme_creditcard/creditcard</model>
                 <title>Credit Card</title>
                 <payment_action>authorize</payment_action>
-                <order_status>pending</order_status>
                 <allow_specific>0</allow_specific>
                 <sort_order>1</sort_order>
             </pagarme_creditcard>

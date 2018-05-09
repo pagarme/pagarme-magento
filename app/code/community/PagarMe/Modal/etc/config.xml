@@ -2,7 +2,7 @@
 <config>
     <modules>
         <PagarMe_Modal>
-            <version>3.5.3</version>
+            <version>3.5.4</version>
         </PagarMe_Modal>
     </modules>
     <global>
