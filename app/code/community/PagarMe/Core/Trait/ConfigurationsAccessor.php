@@ -31,6 +31,13 @@ trait PagarMe_Core_Trait_ConfigurationsAccessor
         );
     }
 
+    public function getAsyncTransactionConfig()
+    {
+        return (bool)$this->getConfigurationWithName(
+            'pagarme_configurations/async_transaction'
+        );
+    }
+
     private function getFreeInstallmentStoreConfig()
     {
         return (int) $this->getConfigurationWithName(

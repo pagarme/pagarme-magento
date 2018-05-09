@@ -223,13 +223,14 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
      * @param Mage_Sales_Model_Order $order
      * @return void
      */
-    protected function createInvoice($order)
+    protected function createInvoice($order, $interest = 0)
     {
         $invoice = Mage::getModel('sales/service_order', $order)
             ->prepareInvoice();
 
-        $invoice->register()
-            ->pay();
+        $invoice->setGrandTotal($interest);
+        
+        $invoice->register()->pay();
 
         $order->setState(
             Mage_Sales_Model_Order::STATE_PROCESSING,
@@ -256,7 +257,8 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         PagarmeCustomer $customer,
         $installments = 1,
         $capture = false,
-        $postbackUrl = null
+        $postbackUrl = null,
+        $async = []
     ) {
         $quote = Mage::getSingleton('checkout/session')->getQuote();
         $this->transaction = $this->sdk
@@ -268,7 +270,8 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                 $customer,
                 $installments,
                 $capture,
-                $postbackUrl
+                $postbackUrl,
+                $async
             );
 
         return $this;
@@ -277,6 +280,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     public function authorize(Varien_Object $payment, $amount)
     {
         try {
+            $asyncTransaction = $this->getAsyncTransactionConfig();
             $infoInstance = $this->getInfoInstance();
             $cardHash = $infoInstance->getAdditionalInformation('card_hash');
             $installments = (int)$infoInstance->getAdditionalInformation(
@@ -311,7 +315,8 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                 $customerPagarMe,
                 $installments,
                 true,
-                $postbackUrl
+                $postbackUrl,
+                ['async' => $asyncTransaction]
             );
 
             $this->checkInstallments($installments);
@@ -325,7 +330,10 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                     $infoInstance
                 );
 
-            $this->createInvoice($order);
+            if(!$asyncTransaction)
+            { 
+                $this->createInvoice($order, $quote->getGrandTotal());
+            }
 
         } catch (GenerateCardException $exception) {
             Mage::log($exception->getMessage());
