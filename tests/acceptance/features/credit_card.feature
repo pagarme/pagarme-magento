@@ -50,7 +50,7 @@ Feature: Credit Card
         And place order
         Then the purchase must be created with value based on both 10 and 10
 
-    @order_view_interest
+    @order_view_interest @skipTest
     Scenario: Check the interest in the order details page
         Given a registered user
         And set a max installment as "10" and interest rate as "10"
@@ -68,7 +68,7 @@ Feature: Credit Card
         And I check the order interest amount in its detail page
         And the interest value should consider the values "10" and "10"
 
-    @admin_order_view_interest
+    @admin_order_view_interest @skipTest
     Scenario: Check the interest in the admin order details page
         Given a registered user
         And set a max installment as "10" and interest rate as "10"
@@ -87,7 +87,7 @@ Feature: Credit Card
         And I check the order interest amount in its admin detail page
         And the admin interest value should consider the values "10" and "10"
 
-    @admin_order_view_payment_details
+    @admin_order_view_payment_details @skipTest
     Scenario: Check the interest and payment method in the admin order details page
         Given a registered user
         And set a max installment as "10" and interest rate as "10"

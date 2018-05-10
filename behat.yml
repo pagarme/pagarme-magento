@@ -20,6 +20,8 @@ default:
         - %paths.base%/tests/acceptance/features/credit_card.feature
       contexts:
         - CreditCardContext
+      filters:
+        tags: ~@skipTest
     boleto:
       paths:
         - %paths.base%/tests/acceptance/features/boleto.feature
