@@ -64,6 +64,25 @@ class CreditCardContext extends RawMinkContext
     }
 
     /**
+     * @Given set a max installment as :installments and interest rate as :interestRate
+     */
+    public function setAMaxInstallmentAsAndInterestRateAs(
+        $installments,
+        $interestRate
+    ) {
+        $config = Mage::getModel('core/config');
+        $config->saveConfig(
+            'payment/pagarme_configurations/creditcard_max_installments',
+                $installments
+        );
+        $config->saveConfig(
+            'payment/pagarme_configurations/creditcard_interest_rate',
+            $interestRate
+        );
+
+    }
+
+    /**
      * @Given a created order with installment value of :installments and interest of :interestRate
      */
     public function aCreatedOrderWithInstallmentValueOfAndInterestOf(
@@ -308,6 +327,16 @@ class CreditCardContext extends RawMinkContext
                 Mage::helper('pagarme_creditcard')
                     ->__('Place Order')
             );
+    }
+
+    /**
+     * @Then I get the created order id 
+     */
+    public function iGetTheCreatedOrderId()
+    {
+        $this->createdOrderId = $this->session->getPage()
+            ->find('css', '.col-main a:first-of-type')
+            ->getText();
     }
 
     /**

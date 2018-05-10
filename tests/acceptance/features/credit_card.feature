@@ -53,22 +53,55 @@ Feature: Credit Card
     @order_view_interest
     Scenario: Check the interest in the order details page
         Given a registered user
-        And a created order with installment value of "10" and interest of "10"
-        When I check the order interest amount in its detail page
-        Then the interest value should consider the values "10" and "10"
+        And set a max installment as "10" and interest rate as "10"
+        When I access the store page
+        And add any product to basket
+        And I go to checkout page
+        And login with registered user
+        And confirm billing and shipping address information
+        And choose pay with transparent checkout using credit card
+        And I choose 10
+        And I confirm my payment information
+        And place order
+        Then the purchase must be paid with success
+        And I get the created order id
+        And I check the order interest amount in its detail page
+        And the interest value should consider the values "10" and "10"
 
     @admin_order_view_interest
     Scenario: Check the interest in the admin order details page
         Given a registered user
-        And a created order with installment value of "10" and interest of "10"
-        When I login to the admin
+        And set a max installment as "10" and interest rate as "10"
+        When I access the store page
+        And add any product to basket
+        And I go to checkout page
+        And login with registered user
+        And confirm billing and shipping address information
+        And choose pay with transparent checkout using credit card
+        And I choose 10
+        And I confirm my payment information
+        And place order
+        Then the purchase must be paid with success
+        And I get the created order id
+        And I login to the admin
         And I check the order interest amount in its admin detail page
-        Then the admin interest value should consider the values "10" and "10"
+        And the admin interest value should consider the values "10" and "10"
 
     @admin_order_view_payment_details
     Scenario: Check the interest and payment method in the admin order details page
         Given a registered user
-        And a created order with installment value of "2" and interest of "0"
-        When I login to the admin
+        And set a max installment as "10" and interest rate as "10"
+        When I access the store page
+        And add any product to basket
+        And I go to checkout page
+        And login with registered user
+        And confirm billing and shipping address information
+        And choose pay with transparent checkout using credit card
+        And I choose 2
+        And I confirm my payment information
+        And place order
+        Then the purchase must be paid with success
+        And I get the created order id
+        And I login to the admin
         And I check the order payment details
-        Then the admin details should contain the payment method "Credit Card", installments value "2", customer name and card brand
+        And the admin details should contain the payment method "Credit Card", installments value "2", customer name and card brand
