@@ -5,4 +5,9 @@
             <block type="pagarme_creditcard/sales_RateAmount" name="pagarme_creditcard.rateamount"/>
         </reference>
     </adminhtml_sales_order_view>
+    <adminhtml_sales_order_invoice_view>
+        <reference name="invoice_totals">
+            <block type="pagarme_creditcard/sales_InvoiceRateAmount" name="pagarme_creditcard.invoicerateamount"/>
+        </reference>
+    </adminhtml_sales_order_invoice_view>
 </layout>
