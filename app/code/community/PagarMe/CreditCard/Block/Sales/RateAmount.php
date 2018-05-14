@@ -24,7 +24,7 @@ class PagarMe_CreditCard_Block_Sales_RateAmount extends Mage_Core_Block_Abstract
     /**
      * @return float
      */
-    private function getRateAmount()
+    protected function getRateAmount()
     {
         $order = $this->getReferencedOrder();
 
@@ -35,12 +35,12 @@ class PagarMe_CreditCard_Block_Sales_RateAmount extends Mage_Core_Block_Abstract
         }
     }
 
-    private function getReferencedOrder()
+    protected function getReferencedOrder()
     {
         return $this->getParentBlock()->getSource();
     }
 
-    private function shouldShowTotal()
+    protected function shouldShowTotal()
     {
         $paymentIsPagarMeCreditcard = $this->getReferencedOrder()->getPayment()->getMethod() ==
             PagarMe_CreditCard_Model_Creditcard::PAGARME_CREDITCARD;
