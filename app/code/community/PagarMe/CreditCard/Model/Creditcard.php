@@ -227,9 +227,9 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     {
         $invoice = Mage::getModel('sales/service_order', $order)
             ->prepareInvoice();
-
-        $invoice->setGrandTotal($interest);
         
+        $invoice->setBaseGrandTotal($interest);
+        $invoice->setGrandTotal($interest);
         $invoice->register()->pay();
 
         $order->setState(
