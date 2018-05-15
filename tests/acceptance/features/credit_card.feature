@@ -105,3 +105,9 @@ Feature: Credit Card
         And I login to the admin
         And I check the order payment details
         And the admin details should contain the payment method "Credit Card", installments value "2", customer name and card brand
+  
+    Scenario: Check if in an existing order's invoice has the interest value
+        Given a existing order
+        When I login to the admin 
+        And I check the invoice interest amount in its admin detail page
+        Then the interest value should be "11.22" in the invoice details

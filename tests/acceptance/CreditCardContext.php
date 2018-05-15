@@ -19,6 +19,7 @@ class CreditCardContext extends RawMinkContext
     use PagarMe\Magento\Test\HookHandler\ScreenshotAfterFailedStep;
 
     private $createdOrderId;
+    private $orderId;
 
     /**
      * @BeforeScenario
@@ -433,6 +434,56 @@ class CreditCardContext extends RawMinkContext
         );
     }
 
+   /**
+     * @Given a existing order
+     */
+    public function aExistingOrder()
+    {
+        $resource = Mage::getSingleton('core/resource');
+
+        $readConnection = $resource->getConnection('core_read');
+
+        $query = 'SELECT order_id FROM pagarme_transaction WHERE rate_amount > 0 AND payment_method = \'credit_card\'';
+
+        $this->orderId = (int)$readConnection->fetchOne($query);
+
+        \PHPUnit_Framework_TestCase::assertInternalType('int', $this->orderId);
+    }
+
+    /**
+     * @When I check the invoice interest amount in its admin detail page
+     */
+    public function iCheckTheInvoiceInterestAmountInItsAdminDetailPage()
+    {
+        $orderObject = Mage::getModel('sales/order')->load($this->orderId);
+
+        $invoiceIds = $orderObject->getInvoiceCollection()->getAllIds();
+
+        Mage::getConfig()->saveConfig('admin/security/use_form_key', 0);
+
+        $url = $this->magentoUrl . 'index.php/admin/sales_order_invoice/view/invoice_id/'.$invoiceIds[0].'/order_id/'. $this->orderId;
+
+        $this->session->visit($url);
+        
+        Mage::getConfig()->saveConfig('admin/security/use_form_key', 1);
+    }
+
+    /**
+     * @Then the interest value should be :interest in the invoice details
+     */
+    public function theInterestValueShouldBeInTheInvoiceDetails($interest)
+    {
+        $this->session->wait(3000);
+
+        $invoiceInterest = $this->session->evaluateScript(
+                "return document.querySelector(
+                    '.order-totals td:last-child > .price'
+                ).innerHTML;"
+            );
+
+        \PHPUnit_Framework_TestCase::assertEquals('R$'.$interest, $invoiceInterest);
+    }
+
     /**
      * @AfterScenario
      */
@@ -440,4 +491,5 @@ class CreditCardContext extends RawMinkContext
     {
         Mage::getSingleton('customer/session')->logout();
     }
+
 }
