@@ -261,7 +261,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         $installments = 1,
         $capture = false,
         $postbackUrl = null,
-        $async = []
+        $extraAttributes = []
     ) {
         $quote = Mage::getSingleton('checkout/session')->getQuote();
         $this->transaction = $this->sdk
@@ -274,7 +274,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                 $installments,
                 $capture,
                 $postbackUrl,
-                $async
+                $extraAttributes
             );
 
         return $this;
