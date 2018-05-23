@@ -4,6 +4,7 @@ use PagarMe_Core_Model_CurrentOrder as CurrentOrder;
 
 class PagarMe_Core_Model_Transaction extends Mage_Core_Model_Abstract
 {
+    const REFERENCE_KEY_MIN_LENGTH = 20;
 
     use PagarMe_Core_Trait_ConfigurationsAccessor;
 
@@ -13,6 +14,16 @@ class PagarMe_Core_Model_Transaction extends Mage_Core_Model_Abstract
     public function _construct()
     {
         return $this->_init('pagarme_core/transaction');
+    }
+
+    /**
+     * Creates a hash to be used as reference key
+     *
+     * @return string
+     */
+    public function getReferenceKey()
+    {
+        return md5(uniqid(rand()));
     }
 
     /**
@@ -54,6 +65,7 @@ class PagarMe_Core_Model_Transaction extends Mage_Core_Model_Abstract
 
         $this 
             ->setTransactionId($transaction->getId())
+            ->setReferenceKey($transaction->getReferenceKey())
             ->setOrderId($order->getId())
             ->setInstallments($installments)
             ->setInterestRate($interestRate)

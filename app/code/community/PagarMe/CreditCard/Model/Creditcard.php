@@ -36,6 +36,11 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     protected $pagarmeCoreHelper;
     protected $pagarmeCreditCardHelper;
 
+    /**
+     * @var PagarMe_Core_Model_Transaction
+     */
+    protected $transactionModel;
+
     const PAGARME_MAX_INSTALLMENTS = 12;
 
     const AUTHORIZED = 'authorized';
@@ -50,6 +55,8 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
 
         $this->pagarmeCoreHelper = Mage::helper('pagarme_core');
         $this->pagarmeCreditCardHelper = Mage::helper('pagarme_creditcard');
+        $this->transactionModel = Mage::getModel('pagarme_core/transaction');
+
         parent::__construct($attributes);
     }
 
@@ -261,9 +268,17 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         $installments = 1,
         $capture = false,
         $postbackUrl = null,
+        $metadata = [],
         $extraAttributes = []
     ) {
         $quote = Mage::getSingleton('checkout/session')->getQuote();
+        $referenceKey = $this->transactionModel->getReferenceKey();
+
+        $extraAttributes = array_merge(
+            $extraAttributes,
+            ['reference_key' => $referenceKey]
+        );
+
         $this->transaction = $this->sdk
             ->transaction()
             ->creditCardTransaction(
@@ -274,6 +289,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                 $installments,
                 $capture,
                 $postbackUrl,
+                $metadata,
                 $extraAttributes
             );
 
@@ -291,7 +307,6 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
             );
 
             $quote = Mage::getSingleton('checkout/session')->getQuote();
-
 
             $billingAddress = $quote->getBillingAddress();
 
@@ -319,7 +334,8 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                 $installments,
                 true,
                 $postbackUrl,
-                ['async' => $asyncTransaction]
+                [],
+                ['async' => (bool)$asyncTransaction]
             );
 
             $this->checkInstallments($installments);
@@ -334,7 +350,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                 );
 
             if(!$asyncTransaction)
-            { 
+            {
                 $this->createInvoice($order);
             }
 
