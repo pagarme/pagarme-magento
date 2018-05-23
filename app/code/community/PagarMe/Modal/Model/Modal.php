@@ -127,6 +127,21 @@ class PagarMe_Modal_Model_Modal extends Mage_Payment_Model_Method_Abstract
 
         $order = $payment->getOrder();
 
+        //for now, ´saveTransactionInformation´ must come before the catpture,
+        //because after the capture, you can't fetch the transaction via API by
+        //the token. And the 'saveTransactionInformation' method uses the token
+        //to fetch the tx.
+        $paymentData = Mage::app()
+            ->getRequest()
+            ->getPost('payment');
+        Mage::getModel('pagarme_core/transaction')
+            ->saveTransactionInformation(
+                $order,
+                $transaction,
+                $infoInstance,
+                $paymentData
+            );
+
         try {
             $transaction = $pagarMeSdk->transaction()->capture(
                 $transaction,
@@ -150,13 +165,6 @@ class PagarMe_Modal_Model_Modal extends Mage_Payment_Model_Method_Abstract
         $infoInstance->setAdditionalInformation(
             $this->extractAdditionalInfo($infoInstance, $transaction, $order)
         );
-
-        Mage::getModel('pagarme_core/transaction')
-            ->saveTransactionInformation(
-                $order,
-                $transaction,
-                $infoInstance
-            );
 
         return $this;
     }

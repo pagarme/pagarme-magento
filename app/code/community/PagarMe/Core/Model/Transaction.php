@@ -27,7 +27,8 @@ class PagarMe_Core_Model_Transaction extends Mage_Core_Model_Abstract
     public function saveTransactionInformation(
         Mage_Sales_Model_Order $order,
         PagarMe\Sdk\Transaction\AbstractTransaction $transaction,
-        $infoInstance
+        $infoInstance,
+        $paymentData = null
     ) {
         $installments = 1;
         $rateAmount = 0;
@@ -47,7 +48,8 @@ class PagarMe_Core_Model_Transaction extends Mage_Core_Model_Abstract
                 ->rateAmountInBRL(
                     $installments,
                     $this->getFreeInstallmentStoreConfig(),
-                    $interestRate
+                    $interestRate,
+                    $paymentData
                 );
         }
 
