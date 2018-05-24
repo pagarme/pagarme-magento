@@ -233,6 +233,8 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         $invoice->setInterestAmount($order->getInterestAmount());
         $invoice->register()->pay();
 
+        $invoice->setTransactionId($this->transaction->getId());
+        
         $order->setState(
             Mage_Sales_Model_Order::STATE_PROCESSING,
             true,
@@ -417,5 +419,52 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
             ->buildCustomer($customer);
 
         return $customerPagarMe;
+    }
+
+    /**
+     * @param Varien_Object $payment
+     * @param $amount
+     * @return $this
+     */
+    public function refund(Varien_Object $payment, $amount)
+    {
+        $invoice = $payment->getOrder()
+            ->getInvoiceCollection()
+            ->getFirstItem();
+
+        if(!$invoice->canRefund()){
+            Mage::throwException(
+                Mage::helper('pagarme_core')
+                    ->__('Invoice can\'t be refunded.')
+            );
+        }                            
+
+        $amount = ((float)$invoice->getGrandTotal()) * 100;
+
+        try{
+
+            $this->transaction = $this->sdk
+                ->transaction()
+                ->get($invoice->getTransactionId());
+
+
+            $this->sdk
+                ->transaction()
+                ->creditCardRefund(
+                    $this->transaction,
+                    $amount
+                );
+
+        } catch (\Exception $exception) {
+            Mage::log('Exception refund:');
+            Mage::logException($exception);
+            $json = json_decode($exception->getMessage());
+            $response = array_reduce($json->errors, function ($carry, $item) {
+                return is_null($carry)
+                    ? $item->message : $carry."\n".$item->message;
+            });
+            Mage::throwException($response);
+        }
+        return $this;
     }
 }

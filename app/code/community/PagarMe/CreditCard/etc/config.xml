@@ -7,6 +7,13 @@
     </modules>
     <global>
         <sales>
+            <order_creditmemo>
+                <totals>
+                    <pagarme_creditcard_totals>
+                        <class>pagarme_creditcard/creditmemoTotals</class>
+                    </pagarme_creditcard_totals>
+                </totals>
+            </order_creditmemo>
             <quote>
                 <totals>
                     <pagarme_creditcard_interest>

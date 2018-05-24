@@ -10,4 +10,15 @@
             <block type="pagarme_creditcard/sales_InvoiceRateAmount" name="pagarme_creditcard.invoicerateamount"/>
         </reference>
     </adminhtml_sales_order_invoice_view>
+    
+    <adminhtml_sales_order_creditmemo_new>
+        <reference name="creditmemo_totals">
+            <block type="pagarme_creditcard/sales_RefundTransaction" name="pagarme_creditcard.refundtransaction"/>
+        </reference>
+    </adminhtml_sales_order_creditmemo_new>
+    <adminhtml_sales_order_creditmemo_view>
+        <reference name="creditmemo_totals">
+            <block type="pagarme_creditcard/sales_RefundTransaction" name="pagarme_creditcard.refundtransaction"/>
+        </reference>
+    </adminhtml_sales_order_creditmemo_view>
 </layout>

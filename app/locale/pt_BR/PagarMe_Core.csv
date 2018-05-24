@@ -31,3 +31,5 @@
 "Pagar.me Transaction Id","Id da Transação no Pagar.me"
 "Customer name","Nome do cliente"
 "Card brand","Bandeira do cartão"
+"Invoice can\'t be refunded","Invoice não pode ser extornada"
+"There\'s no referenced order","Não existe uma order referenciada"
