@@ -49,6 +49,7 @@ class PagarMe_Core_Model_Transaction extends Mage_Core_Model_Abstract
                     $this->getFreeInstallmentStoreConfig(),
                     $interestRate
                 );
+            $order->setInterestAmount($rateAmount);
         }
 
         $this 

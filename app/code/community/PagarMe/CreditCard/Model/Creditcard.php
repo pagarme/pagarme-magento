@@ -223,13 +223,14 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
      * @param Mage_Sales_Model_Order $order
      * @return void
      */
-    protected function createInvoice($order, $interest = 0)
+    protected function createInvoice($order)
     {
         $invoice = Mage::getModel('sales/service_order', $order)
             ->prepareInvoice();
         
-        $invoice->setBaseGrandTotal($interest);
-        $invoice->setGrandTotal($interest);
+        $invoice->setBaseGrandTotal($order->getGrandTotal());
+        $invoice->setGrandTotal($order->getGrandTotal());
+        $invoice->setInterestAmount($order->getInterestAmount());
         $invoice->register()->pay();
 
         $order->setState(
@@ -332,7 +333,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
 
             if(!$asyncTransaction)
             { 
-                $this->createInvoice($order, $quote->getGrandTotal());
+                $this->createInvoice($order);
             }
 
         } catch (GenerateCardException $exception) {
