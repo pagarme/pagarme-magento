@@ -1,6 +1,8 @@
 <?php
 
 use PagarMe_Core_Model_CurrentOrder as CurrentOrder;
+use PagarMe\Sdk\Transaction\AbstractTransaction;
+use PagarMe\Sdk\Transaction\CreditCardTransaction;
 
 class PagarMe_Core_Model_Transaction extends Mage_Core_Model_Abstract
 {
@@ -37,16 +39,24 @@ class PagarMe_Core_Model_Transaction extends Mage_Core_Model_Abstract
      */
     public function saveTransactionInformation(
         Mage_Sales_Model_Order $order,
-        PagarMe\Sdk\Transaction\AbstractTransaction $transaction,
-        $infoInstance
+        $infoInstance,
+        $referenceKey,
+        AbstractTransaction $transaction = null
     ) {
-        $installments = 1;
-        $rateAmount = 0;
-        $interestRate = 0;
-        $totalAmount = Mage::helper('pagarme_core')
-            ->parseAmountToFloat($transaction->getAmount());
+        $this
+            ->setReferenceKey($referenceKey)
+            ->setOrderId($order->getId());
 
-        if ($transaction instanceof PagarMe\Sdk\Transaction\CreditCardTransaction) {
+
+        if(
+            !is_null($transaction) &&
+            $transaction instanceof CreditCardTransaction
+        ) {
+            $rateAmount = 0;
+            $interestRate = 0;
+            $totalAmount = Mage::helper('pagarme_core')
+                ->parseAmountToFloat($transaction->getAmount());
+
             $installments = $transaction->getInstallments();
 
             $quote = Mage::getModel('sales/quote')
@@ -61,17 +71,16 @@ class PagarMe_Core_Model_Transaction extends Mage_Core_Model_Abstract
                     $interestRate
                 );
             $order->setInterestAmount($rateAmount);
+
+            $this
+                ->setTransactionId($transaction->getId())
+                ->setInstallments($installments)
+                ->setInterestRate($interestRate)
+                ->setPaymentMethod($transaction::PAYMENT_METHOD)
+                ->setFutureValue($totalAmount)
+                ->setRateAmount($rateAmount);
         }
 
-        $this 
-            ->setTransactionId($transaction->getId())
-            ->setReferenceKey($transaction->getReferenceKey())
-            ->setOrderId($order->getId())
-            ->setInstallments($installments)
-            ->setInterestRate($interestRate)
-            ->setPaymentMethod($transaction::PAYMENT_METHOD)
-            ->setFutureValue($totalAmount)
-            ->setRateAmount($rateAmount)
-            ->save();
+        $this->save();
     }
 }

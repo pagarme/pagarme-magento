@@ -240,9 +240,8 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         $invoice->setGrandTotal($order->getGrandTotal());
         $invoice->setInterestAmount($order->getInterestAmount());
         $invoice->register()->pay();
-
         $invoice->setTransactionId($this->transaction->getId());
-        
+
         $order->setState(
             Mage_Sales_Model_Order::STATE_PROCESSING,
             true,
@@ -281,10 +280,6 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         $extraAttributes = []
     ) {
         $quote = Mage::getSingleton('checkout/session')->getQuote();
-
-        $extraAttributes = array_merge(
-            $extraAttributes
-        );
 
         $this->transaction = $this->sdk
             ->transaction()
@@ -353,8 +348,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
 
             $this->checkInstallments($installments);
 
-            if(!$asyncTransaction)
-            {
+            if(!$asyncTransaction) {
                 $this->createInvoice($order);
             }
         } catch (GenerateCardException $exception) {
@@ -395,8 +389,9 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         $this->transactionModel
             ->saveTransactionInformation(
                 $order,
-                $this->transaction,
-                $infoInstance
+                $infoInstance,
+                $referenceKey,
+                $this->transaction
             );
 
         return $this;
@@ -470,7 +465,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                 Mage::helper('pagarme_core')
                     ->__('Invoice can\'t be refunded.')
             );
-        }                            
+        }
 
         $amount = ((float)$invoice->getGrandTotal()) * 100;
 
