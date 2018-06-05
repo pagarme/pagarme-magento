@@ -256,6 +256,14 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     }
 
     /**
+     * @return string
+     */
+    public function getReferenceKey()
+    {
+        return $this->transactionModel->getReferenceKey();
+    }
+
+    /**
      * @param \PagarMe\Sdk\Card\Card $card
      * @param \PagarMe\Sdk\Customer\Customer $customer
      * @param int $installments
@@ -273,11 +281,9 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         $extraAttributes = []
     ) {
         $quote = Mage::getSingleton('checkout/session')->getQuote();
-        $referenceKey = $this->transactionModel->getReferenceKey();
 
         $extraAttributes = array_merge(
             $extraAttributes,
-            ['reference_key' => $referenceKey]
         );
 
         $this->transaction = $this->sdk
@@ -311,6 +317,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
 
             $billingAddress = $quote->getBillingAddress();
 
+        try {
             $this->isInstallmentsValid($installments);
             $card = $this->generateCard($cardHash);
 
@@ -329,6 +336,10 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
 
             $postbackUrl = $this->getUrlForPostback();
 
+            $extraAttributes = [
+                'async' => (bool)$asyncTransaction,
+                'reference_key' => $referenceKey
+            ];
             $this->createTransaction(
                 $card,
                 $customerPagarMe,
@@ -336,7 +347,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                 true,
                 $postbackUrl,
                 [],
-                ['async' => (bool)$asyncTransaction]
+                $extraAttributes
             );
 
             $this->checkInstallments($installments);
