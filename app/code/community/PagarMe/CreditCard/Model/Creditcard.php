@@ -2,6 +2,7 @@
 use \PagarMe\Sdk\PagarMe as PagarMeSdk;
 use \PagarMe\Sdk\Card\Card as PagarmeCard;
 use \PagarMe\Sdk\Customer\Customer as PagarmeCustomer;
+use \PagarMe\Sdk\ClientException;
 use PagarMe_CreditCard_Model_Exception_InvalidInstallments as InvalidInstallmentsException;
 use PagarMe_CreditCard_Model_Exception_GenerateCard as GenerateCardException;
 use PagarMe_CreditCard_Model_Exception_TransactionsInstallmentsDivergent as TransactionsInstallmentsDivergent;
@@ -342,18 +343,11 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
 
             $order = $payment->getOrder();
 
-            Mage::getModel('pagarme_core/transaction')
-                ->saveTransactionInformation(
-                    $order,
-                    $this->transaction,
-                    $infoInstance
-                );
 
             if(!$asyncTransaction)
             {
                 $this->createInvoice($order);
             }
-
         } catch (GenerateCardException $exception) {
             Mage::log($exception->getMessage());
             Mage::logException($exception);
@@ -369,6 +363,13 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         } catch (CantCaptureTransaction $exception) {
             Mage::log($exception->getMessage());
             Mage::logException($exception);
+        } catch(ClientException $clientException) {
+            Mage::log('Client exception');
+            if (substr($clientException->getMessage(), 0, 13) === 'cURL error 28') {
+                Mage::log('PagarMe API: Operation timed out');
+                $order->setData('pending_payment');
+                $order->setStatus('peding_payment');
+            }
         } catch (\Exception $exception) {
             Mage::log('Exception autorizing:');
             Mage::logException($exception);
@@ -381,6 +382,13 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
 
             Mage::throwException($response);
         }
+
+        $this->transactionModel
+            ->saveTransactionInformation(
+                $order,
+                $this->transaction,
+                $infoInstance
+            );
 
         return $this;
     }
