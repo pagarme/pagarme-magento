@@ -9,9 +9,10 @@ class PagarMe_Core_Model_Sdk_Adapter extends Mage_Core_Model_Abstract
 
     /**
      * Timeout in seconds
+     *
      * @var int
      */
-    const SDK_TIMEOUT = 20;
+    const SDK_TIMEOUT = 15;
 
     public function _construct()
     {
