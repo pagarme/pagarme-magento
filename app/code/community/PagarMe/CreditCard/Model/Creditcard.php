@@ -283,7 +283,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         $quote = Mage::getSingleton('checkout/session')->getQuote();
 
         $extraAttributes = array_merge(
-            $extraAttributes,
+            $extraAttributes
         );
 
         $this->transaction = $this->sdk
@@ -305,17 +305,18 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
 
     public function authorize(Varien_Object $payment, $amount)
     {
-        try {
-            $asyncTransaction = $this->getAsyncTransactionConfig();
-            $infoInstance = $this->getInfoInstance();
-            $cardHash = $infoInstance->getAdditionalInformation('card_hash');
-            $installments = (int)$infoInstance->getAdditionalInformation(
-                'installments'
-            );
+        $asyncTransaction = $this->getAsyncTransactionConfig();
+        $infoInstance = $this->getInfoInstance();
+        $order = $payment->getOrder();
+        $referenceKey = $this->getReferenceKey();
+        $cardHash = $infoInstance->getAdditionalInformation('card_hash');
+        $installments = (int)$infoInstance->getAdditionalInformation(
+            'installments'
+        );
 
-            $quote = Mage::getSingleton('checkout/session')->getQuote();
+        $quote = Mage::getSingleton('checkout/session')->getQuote();
 
-            $billingAddress = $quote->getBillingAddress();
+        $billingAddress = $quote->getBillingAddress();
 
         try {
             $this->isInstallmentsValid($installments);
@@ -351,9 +352,6 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
             );
 
             $this->checkInstallments($installments);
-
-            $order = $payment->getOrder();
-
 
             if(!$asyncTransaction)
             {
