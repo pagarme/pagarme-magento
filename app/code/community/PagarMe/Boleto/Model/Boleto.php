@@ -101,6 +101,15 @@ class PagarMe_Boleto_Model_Boleto extends Mage_Payment_Model_Method_Abstract
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getReferenceKey()
+    {
+        return Mage::getModel('pagarme_core/transaction')
+            ->getReferenceKey();
+    }
     
     public function authorize(Varien_Object $payment, $amount)
     {
@@ -109,6 +118,7 @@ class PagarMe_Boleto_Model_Boleto extends Mage_Payment_Model_Method_Abstract
             $infoInstance = $this->getInfoInstance();
             $quote = Mage::getSingleton('checkout/session')->getQuote();
             $billingAddress = $quote->getBillingAddress();
+            $referenceKey = $this->getReferenceKey();
             if ($billingAddress == false) {
                 Mage::log(
                     sprintf(
@@ -140,6 +150,10 @@ class PagarMe_Boleto_Model_Boleto extends Mage_Payment_Model_Method_Abstract
             $customerPagarMe = $this->pagarmeCoreHelper
                 ->buildCustomer($customer);
             $order = $payment->getOrder();
+            $extraAttributes = [
+                'async' => false,
+                'reference_key' => $referenceKey
+            ];
             $this->transaction = $this->sdk
                 ->transaction()
                 ->boletoTransaction(
@@ -148,18 +162,18 @@ class PagarMe_Boleto_Model_Boleto extends Mage_Payment_Model_Method_Abstract
                         $customerPagarMe,
                         Mage::getBaseUrl() . 'pagarme_core/transaction_boleto/postback',
                         ['order_id' => $order->getIncrementId()],
-                        ['async' => false]
+                        $extraAttributes
                     );
 
             $infoInstance->setAdditionalInformation(
                 $this->extractAdditionalInfo($infoInstance, $this->transaction, $order)
             );
-            
             Mage::getModel('pagarme_core/transaction')
                 ->saveTransactionInformation(
                     $order,
-                    $this->transaction,
-                    $infoInstance
+                    $infoInstance,
+                    $referenceKey,
+                    $this->transaction
                 );
         } catch (\Exception $exception) {
             $json = json_decode($exception->getMessage());
