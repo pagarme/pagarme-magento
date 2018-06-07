@@ -94,6 +94,15 @@ class PagarMe_Modal_Model_Modal extends Mage_Payment_Model_Method_Abstract
     }
 
     /**
+     * @return string
+     */
+    public function getReferenceKey()
+    {
+        return \Mage::getModel('pagarme_core/transaction')
+            ->getReferenceKey();
+    }
+
+    /**
      * Authorize payment
      *
      * @param Varien_Object $payment
@@ -150,12 +159,13 @@ class PagarMe_Modal_Model_Modal extends Mage_Payment_Model_Method_Abstract
         $infoInstance->setAdditionalInformation(
             $this->extractAdditionalInfo($infoInstance, $transaction, $order)
         );
-
+        $referenceKey = $this->getReferenceKey();
         Mage::getModel('pagarme_core/transaction')
             ->saveTransactionInformation(
                 $order,
-                $transaction,
-                $infoInstance
+                $infoInstance,
+                $referenceKey,
+                $transaction
             );
 
         return $this;
