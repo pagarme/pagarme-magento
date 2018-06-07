@@ -47,37 +47,38 @@ class PagarMe_Core_Model_Transaction extends Mage_Core_Model_Abstract
             ->setReferenceKey($referenceKey)
             ->setOrderId($order->getId());
 
+        if(!is_null($transaction)) {
+            $totalAmount = Mage::helper('pagarme_core')
+                ->parseAmountToFloat($transaction->getAmount());
+
+            $this
+                ->setTransactionId($transaction->getId())
+                ->setPaymentMethod($transaction::PAYMENT_METHOD)
+                ->setFutureValue($totalAmount);
+        }
 
         if(
             !is_null($transaction) &&
             $transaction instanceof CreditCardTransaction
         ) {
-            $rateAmount = 0;
-            $interestRate = 0;
-            $totalAmount = Mage::helper('pagarme_core')
-                ->parseAmountToFloat($transaction->getAmount());
-
             $installments = $transaction->getInstallments();
-
             $quote = Mage::getModel('sales/quote')
                 ->load($order->getQuoteId());
+
             $pagarMeSdk = Mage::getModel('pagarme_core/sdk_adapter');
+
             $currentOrder = new CurrentOrder($quote, $pagarMeSdk);
             $interestRate = $this->getInterestRateStoreConfig();
-            $rateAmount = $currentOrder
-                ->rateAmountInBRL(
+            $rateAmount = $currentOrder->rateAmountInBRL(
                     $installments,
                     $this->getFreeInstallmentStoreConfig(),
                     $interestRate
-                );
+            );
             $order->setInterestAmount($rateAmount);
 
             $this
-                ->setTransactionId($transaction->getId())
                 ->setInstallments($installments)
                 ->setInterestRate($interestRate)
-                ->setPaymentMethod($transaction::PAYMENT_METHOD)
-                ->setFutureValue($totalAmount)
                 ->setRateAmount($rateAmount);
         }
 
