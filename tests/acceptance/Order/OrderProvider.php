@@ -1,17 +1,11 @@
 <?php
 
-namespace PagarMe\Magento\Test\Helper;
+namespace PagarMe\Magento\Test\Order;
 
 use PagarMe\Sdk\Transaction\CreditCardTransaction;
 use PagarMe\Sdk\Transaction\BoletoTransaction;
 
-/**
- * Trait PostbackDataProvider
- * @package PagarMe\Magento\Test\Helper
- * @deprecated
- * @see \PagarMe\Magento\Test\Order
- */
-trait PostbackDataProvider
+class OrderProvider
 {
     public function getOrderPaidByBoleto(
         $customer,
@@ -88,7 +82,7 @@ trait PostbackDataProvider
 
         $quote = \Mage::getModel('sales/quote')
             ->setStoreId(
-               \Mage::app()->getStore()->getStoreId()
+                \Mage::app()->getStore()->getStoreId()
             )
             ->assignCustomer($customer);
 
@@ -176,8 +170,11 @@ trait PostbackDataProvider
         ];
     }
 
-    private function createCommonDataForToken($amount, $customer, $customerAddress)
-    {
+    private function createCommonDataForToken(
+        $amount,
+        $customer,
+        $customerAddress
+    ) {
         $helper = \Mage::helper('pagarme_core');
 
         $encryptionKey = \Mage::getStoreConfig(
@@ -199,8 +196,12 @@ trait PostbackDataProvider
                 ],
                 'phone' => [
                     'ddi' => '55',
-                    'ddd' => $helper->getDddFromPhoneNumber($customerAddress->getTelephone()),
-                    'number' => $helper->getPhoneWithoutDdd($customerAddress->getTelephone())
+                    'ddd' => $helper->getDddFromPhoneNumber(
+                        $customerAddress->getTelephone()
+                    ),
+                    'number' => $helper->getPhoneWithoutDdd(
+                        $customerAddress->getTelephone()
+                    )
                 ]
             ],
             'metadata' => ['idProduto' => '13933139'],
