@@ -434,7 +434,7 @@ class CreditCardContext extends RawMinkContext
         );
     }
 
-   /**
+    /**
      * @Given a existing order
      */
     public function aExistingOrder()
@@ -482,6 +482,54 @@ class CreditCardContext extends RawMinkContext
             );
 
         \PHPUnit_Framework_TestCase::assertEquals('R$'.$interest, $invoiceInterest);
+    }
+
+    /**
+     * @Given a created order asynchronously
+     */
+    public function aCreatedOrderAsynchronously()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @When I go to its details page
+     */
+    public function iGoToItsDetailsPage()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @When click on the invoice button
+     */
+    public function clickOnTheInvoiceButton()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then the order should be captured on Pagar.me
+     */
+    public function theOrderShouldBeCapturedOnPagarMe()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @When I visit the order's invoice list page
+     */
+    public function iVisitTheOrdersInvoiceListPage()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then a new invoice should be created with status :arg1
+     */
+    public function aNewInvoiceShouldBeCreatedWithStatus($arg1)
+    {
+        throw new PendingException();
     }
 
     /**
