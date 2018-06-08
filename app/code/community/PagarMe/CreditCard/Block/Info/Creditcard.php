@@ -61,4 +61,17 @@ class PagarMe_CreditCard_Block_Info_Creditcard extends Mage_Payment_Block_Info_C
             ->transaction()
             ->get($transactionId);
     }
+
+    /**
+     * Render the block only if there's a transaction object
+     *
+     * @return string
+     */
+    public function renderView()
+    {
+        if ($this->transaction) {
+            return parent::renderView();
+        }
+        return '';
+    }
 }
