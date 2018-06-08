@@ -183,11 +183,11 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                 ->createFromHash($cardHash);
             return $card;
         } catch (\Exception $exception) {
-            $error = json_decode($exception->getMessage());
-            $error = json_decode($error);
+            $json = json_decode($exception->getMessage());
 
-            $response = array_reduce($error->errors, function ($carry, $item) {
-                return is_null($carry) ? $item->message : $carry."\n".$item->message;
+            $response = array_reduce($json->errors, function ($carry, $item) {
+                return is_null($carry)
+                    ? $item->message : $carry."\n".$item->message;
             });
 
             throw new GenerateCardException($response);
@@ -354,7 +354,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         } catch (GenerateCardException $exception) {
             Mage::log($exception->getMessage());
             Mage::logException($exception);
-            Mage::throwException($exception);
+            Mage::throwException($exception->getMessage());
         } catch (InvalidInstallmentsException $exception) {
             Mage::log($exception->getMessage());
             Mage::logException($exception);
