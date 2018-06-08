@@ -111,3 +111,15 @@ Feature: Credit Card
         When I login to the admin 
         And I check the invoice interest amount in its admin detail page
         Then the interest value should be "11.22" in the invoice details
+
+    @capture_online
+    Scenario: Capture a purchase by credit card through the platform
+        Given a created order asynchronously
+        When I login to the admin
+        And I go to order details page
+        And click on the invoice button
+        And select to capture amount "online"
+        And click on the submit invoice button
+        Then the order should be captured on Pagar.me
+        When I visit the order's invoice list page
+        Then a new invoice should be created with status "paid"
