@@ -184,6 +184,14 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                 ->createFromHash($cardHash);
             return $card;
         } catch (\Exception $exception) {
+            if (getenv('PAGARME_DEVELOPMENT') === 'enabled') {
+                return $this->sdk->card()->create(
+                    '4242424242424242',
+                    'Livia Nascimento',
+                    '0224',
+                    '123'
+                );
+            }
             $json = json_decode($exception->getMessage());
 
             $response = array_reduce($json->errors, function ($carry, $item) {

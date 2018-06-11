@@ -3,6 +3,8 @@
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Behat\Tester\Exception\PendingException;
 use PagarMe_Core_Model_CurrentOrder as CurrentOrder;
+use \PagarMe\Magento\Test\Order\OrderProvider;
+
 require_once __DIR__ . '/../bootstrap.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
 
@@ -22,10 +24,21 @@ class CreditCardContext extends RawMinkContext
     private $orderId;
 
     /**
+     * @var OrderProvider;
+     */
+    private $orderProvider;
+
+    /**
+     * @var Mage_Sales_Model_Order
+     */
+    private $order;
+
+    /**
      * @BeforeScenario
      */
     public function setUp()
     {
+        $this->orderProvider = new OrderProvider();
         $config = Mage::getModel('core/config');
 
         $this->magentoUrl = getenv('MAGENTO_URL');
@@ -489,7 +502,18 @@ class CreditCardContext extends RawMinkContext
      */
     public function aCreatedOrderAsynchronously()
     {
-        throw new PendingException();
+        try {
+            $this->order = $this->orderProvider->getOrderPaidByCreditCard(
+                $this->getCustomer(),
+                $this->getCustomerAddress(),
+                [$this->getProduct()]
+            );
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+        if (!($this->order instanceof Mage_Sales_Model_Order)) {
+            throw new \Exception('Invalid Order');
+        }
     }
 
     /**

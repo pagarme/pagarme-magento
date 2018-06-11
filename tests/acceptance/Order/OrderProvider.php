@@ -56,9 +56,9 @@ class OrderProvider
         }
 
         $dataQuote = [
-            'method' => 'pagarme_modal',
-            'pagarme_modal_payment_method' => $paymentMethod,
-            'pagarme_modal_token' => $token
+            'method' => 'pagarme_creditcard',
+            'installments' => 1,
+            'card_hash' => 'dummy_card_hash'
         ];
 
         $quote->getPayment()->importData($dataQuote);
