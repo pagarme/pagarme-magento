@@ -1,12 +1,30 @@
 <?php
-
 namespace PagarMe\Magento\Test\Order;
 
 use PagarMe\Sdk\Transaction\CreditCardTransaction;
 use PagarMe\Sdk\Transaction\BoletoTransaction;
 
+/**
+ * Can create orders programmatically
+ *
+ * @package PagarMe\Magento\Test\Order
+ */
 class OrderProvider
 {
+    /**
+     * @param int $orderId
+     * @return string
+     */
+    public function getDetailsPageUrlFromOrderId($orderId)
+    {
+        $magentoUrl = getenv('MAGENTO_URL') . 'index.php';
+        return sprintf(
+            '%s/admin/sales_order/view/order_id/%s',
+            $magentoUrl,
+            $orderId
+        );
+    }
+
     public function getOrderPaidByBoleto(
         $customer,
         $customerAddress,
