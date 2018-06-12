@@ -34,13 +34,16 @@ class CreditCardContext extends RawMinkContext
     private $order;
 
     /**
+     * @var \Behat\Mink\Session
+     */
+    private $session;
+
+    /**
      * @BeforeScenario
      */
     public function setUp()
     {
         $this->orderProvider = new OrderProvider();
-        $config = Mage::getModel('core/config');
-
         $this->magentoUrl = getenv('MAGENTO_URL');
         $this->session = $this->getSession();
         $this->product = $this->getProduct();
