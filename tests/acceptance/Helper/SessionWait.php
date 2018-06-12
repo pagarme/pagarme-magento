@@ -3,6 +3,26 @@ namespace PagarMe\Magento\Test\Helper;
 
 trait SessionWait
 {
+    /**
+     * @param callable $lambda
+     * @param int $wait
+     *
+     * @return bool
+     */
+    public function spin($lambda, $wait)
+    {
+        for ($i = 0; $i < $wait; $i++) {
+            try {
+                if ($lambda($this)) {
+                    return true;
+                }
+            } catch (\Exception $e) {
+            }
+
+            sleep(1);
+        }
+    }
+
     public function waitForElement($element, $timeout)
     {
         try {
