@@ -502,6 +502,11 @@ class CreditCardContext extends RawMinkContext
      */
     public function aCreatedOrderAsynchronously()
     {
+        $config = Mage::getModel('core/config');
+        $config->saveConfig(
+            'payment/pagarme_configurations/async_transaction',
+            1
+        );
         try {
             $this->order = $this->orderProvider->getOrderPaidByCreditCard(
                 $this->getCustomer(),
@@ -517,11 +522,14 @@ class CreditCardContext extends RawMinkContext
     }
 
     /**
-     * @When I go to its details page
+     * @When I go to order details page
      */
     public function iGoToItsDetailsPage()
     {
-        throw new PendingException();
+        $orderUrl = $this->orderProvider->getDetailsPageUrlFromOrderId(
+            $this->order->getId()
+        );
+        $this->session->visit($orderUrl);
     }
 
     /**
@@ -529,7 +537,41 @@ class CreditCardContext extends RawMinkContext
      */
     public function clickOnTheInvoiceButton()
     {
-        throw new PendingException();
+        $page = $this->session->getPage();
+        $this->spin(function () use ($page) {
+            return $page->findButton('Invoice') != null;
+        }, 3000);
+
+        $page->pressButton('Invoice');
+    }
+
+    /**
+     * @When select to capture amount :option
+     */
+    public function selectToCaptureAmount($option)
+    {
+        $page = $this->session->getPage();
+        $this->spin(function () use ($page) {
+            return $page->findField('invoice[capture_case]') != null;
+        }, 3000);
+
+        $page->selectFieldOption(
+            'invoice[capture_case]',
+            $option
+        );
+    }
+
+    /**
+     * @When click on the submit invoice button
+     */
+    public function clickOnTheSubmitInvoiceButton()
+    {
+        $page = $this->session->getPage();
+        $this->spin(function () use ($page) {
+            return $page->findButton('Submit Invoice') != null;
+        }, 3000);
+
+        $page->pressButton('Submit Invoice');
     }
 
     /**
@@ -537,7 +579,13 @@ class CreditCardContext extends RawMinkContext
      */
     public function theOrderShouldBeCapturedOnPagarMe()
     {
-        throw new PendingException();
+        $this->session->wait(10000);
+        $page = $this->session->getPage();
+        $text = $page->getText();
+        PHPUnit_Framework_Assert::assertEquals(
+            'The invoice has been created.',
+            $text
+        );
     }
 
     /**
