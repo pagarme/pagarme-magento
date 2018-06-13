@@ -301,8 +301,10 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     public function authorize(Varien_Object $payment, $amount)
     {
         $asyncTransaction = $this->getAsyncTransactionConfig();
+        $captureTransaction = $this->getPaymentActionConfig();
         $infoInstance = $this->getInfoInstance();
         $order = $payment->getOrder();
+        $order->setCapture($captureTransaction);
         $referenceKey = $this->getReferenceKey();
         $cardHash = $infoInstance->getAdditionalInformation('card_hash');
         $installments = (int)$infoInstance->getAdditionalInformation(
@@ -340,7 +342,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                 $card,
                 $customerPagarMe,
                 $installments,
-                true,
+                $captureTransaction,
                 $postbackUrl,
                 [],
                 $extraAttributes
@@ -348,7 +350,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
 
             $this->checkInstallments($installments);
 
-            if(!$asyncTransaction) {
+            if(!$asyncTransaction && $captureTransaction) {
                 $this->createInvoice($order);
             }
         } catch (GenerateCardException $exception) {
