@@ -33,8 +33,15 @@ trait PagarMe_Core_Trait_ConfigurationsAccessor
 
     public function getAsyncTransactionConfig()
     {
-        return (bool)$this->getConfigurationWithName(
+        return $this->getConfigurationWithName(
             'pagarme_configurations/async_transaction'
+        );
+    }
+
+    public function getPaymentActionConfig()
+    {
+        return $this->getConfigurationWithName(
+            'pagarme_configurations/payment_action'
         );
     }
 

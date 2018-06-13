@@ -22,6 +22,16 @@
                 </totals>
             </quote>
         </sales>
+        <events>
+            <sales_order_place_after>
+                <observers>
+                    <order_status> 
+                        <class>pagarme_creditcard/observers_orderObserver</class>
+                        <method>changeStatus</method>
+                    </order_status> 
+                </observers>
+            </sales_order_place_after>
+        </events>
         <models>
             <pagarme_creditcard>
                 <class>PagarMe_CreditCard_Model</class>
@@ -84,6 +94,9 @@
                 <allow_specific>0</allow_specific>
                 <sort_order>1</sort_order>
             </pagarme_creditcard>
+            <pagarme_configurations>
+                <payment_action>1</payment_action>
+            </pagarme_configurations>
         </payment>
     </default>
 </config>
