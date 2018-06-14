@@ -9,7 +9,7 @@ class PagarMe_CreditCard_Model_Observers_OrderObserver
     public function changeStatus(Varien_Event_Observer $observer)
     {
         $order = $observer->getEvent()->getOrder();
-        if (!$order->getCapture()) {
+        if ($order->getCapture() === 'authorize_only') {
             $order->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT, true)->save();
         }
     }
