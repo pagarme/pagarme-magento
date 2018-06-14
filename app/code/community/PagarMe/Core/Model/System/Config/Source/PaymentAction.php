@@ -11,12 +11,12 @@ class PagarMe_Core_Model_System_Config_Source_PaymentAction
     {
         return [
             [
-                'value' => Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE,
-                'label' => Mage::helper('pagarme_core')->__('Authorize Only')
+                'value' => 'authorize_capture',
+                'label' => 'Authorize and Capture'
             ],
             [
-                'value' => Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE_CAPTURE,
-                'label' => Mage::helper('pagarme_core')->__('Authorize and Capture')
+                'value' => 'authorize_only',
+                'label' => 'Authorize Only'
             ]
         ];
     }
