@@ -11,11 +11,11 @@ class PagarMe_Core_Model_System_Config_Source_PaymentAction
     {
         return [
             [
-                'value' => '1',
+                'value' => 'authorize_capture',
                 'label' => 'Authorize and Capture'
             ],
             [
-                'value' => '0',
+                'value' => 'authorize_only',
                 'label' => 'Authorize Only'
             ]
         ];

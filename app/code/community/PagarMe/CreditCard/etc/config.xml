@@ -95,7 +95,7 @@
                 <sort_order>1</sort_order>
             </pagarme_creditcard>
             <pagarme_configurations>
-                <payment_action>1</payment_action>
+                <payment_action>authorize_capture</payment_action>
             </pagarme_configurations>
         </payment>
     </default>
