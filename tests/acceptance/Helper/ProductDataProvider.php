@@ -41,6 +41,7 @@ trait ProductDataProvider
             ->setShortDescription('This is a short description')
             ->setCategoryIds(array(1));
 
+        $product->save();
         return $product;
     }
 
