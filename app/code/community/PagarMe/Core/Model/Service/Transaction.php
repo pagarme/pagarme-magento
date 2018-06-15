@@ -33,6 +33,18 @@ class PagarMe_Core_Model_Service_Transaction
     }
 
     /**
+     * @param int $transactionId
+     * @return \PagarMe\Sdk\Transaction\AbstractTransaction
+     */
+    public function getTransactionById($transactionId)
+    {
+        return $this
+            ->getPagarMeSdk()
+            ->transaction()
+            ->get($transactionId);
+    }
+
+    /**
      * @param \PagarMe\Sdk\Transaction\AbstractTransaction $transaction
      *
      * @return \PagarMe\Sdk\Transaction\AbstractTransaction
