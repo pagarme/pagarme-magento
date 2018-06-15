@@ -425,17 +425,33 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         return $this;
     }
 
+    /**
+     * @param Varien_Object $payment
+     * @param float $amount
+     * @return void
+     * @throws PagarMe_CreditCard_Model_Exception_CantCaptureTransaction
+     * @throws \Exception
+     */
     public function capture(Varien_Object $payment, $amount)
     {
-        $this->transaction = $this->sdk
-            ->transaction()
-            ->capture($this->transaction);
+        $order = $payment->getOrder();
+        $transactionId = Mage::getModel(
+            'pagarme_core/service_order'
+        )->getTransactionIdByOrder($order);
 
-        if (!$this->transactionIsPaid()) {
-            $message = $this->pagarmeCoreHelper->__(
-                'Transaction can not be capture'
+        $transactionModel = Mage::getModel(
+            'pagarme_core/service_transaction'
+        );
+
+        try {
+            $this->transaction = $transactionModel->getTransactionById(
+                $transactionId
             );
-            throw new CantCaptureTransaction($message);
+            $this->transaction = $transactionModel->capture($this->transaction);
+
+            return $this;
+        } catch(\Exception $exception) {
+            throw $exception;
         }
     }
 
