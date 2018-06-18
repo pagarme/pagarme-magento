@@ -38,6 +38,8 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     protected $pagarmeCoreHelper;
     protected $pagarmeCreditCardHelper;
 
+    protected $quote;
+
     /**
      * @var PagarMe_Core_Model_Transaction
      */
@@ -288,13 +290,11 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         $metadata = [],
         $extraAttributes = []
     ) {
-        $quote = Mage::getSingleton('checkout/session')->getQuote();
-
         $this->transaction = $this->sdk
             ->transaction()
             ->creditCardTransaction(
                 $this->pagarmeCoreHelper
-                    ->parseAmountToInteger($quote->getGrandTotal()),
+                    ->parseAmountToInteger($this->quote->getGrandTotal()),
                 $card,
                 $customer,
                 $installments,
@@ -338,9 +338,8 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
             'installments'
         );
 
-        $quote = Mage::getSingleton('checkout/session')->getQuote();
-
-        $billingAddress = $quote->getBillingAddress();
+        $this->quote = $order->getQuote();
+        $billingAddress = $this->quote->getBillingAddress();
 
         try {
             $this->isInstallmentsValid($installments);
@@ -354,7 +353,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
             $telephone = $billingAddress->getTelephone();
 
             $customerPagarMe = $this->buildCustomerInformation(
-                $quote,
+                $this->quote,
                 $billingAddress,
                 $telephone
             );
