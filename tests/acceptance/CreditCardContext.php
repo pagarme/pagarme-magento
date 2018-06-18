@@ -501,14 +501,14 @@ class CreditCardContext extends RawMinkContext
     }
 
     /**
-     * @Given a created order asynchronously
+     * @Given a created order authorized only
      */
-    public function aCreatedOrderAsynchronously()
+    public function aCreatedOrderAuthorizedOnly()
     {
         $config = Mage::getModel('core/config');
         $config->saveConfig(
-            'payment/pagarme_configurations/async_transaction',
-            1
+            'pagarme_configurations/payment_action',
+            'authorize_only'
         );
         try {
             $this->order = $this->orderProvider->getOrderPaidByCreditCard(
@@ -582,37 +582,19 @@ class CreditCardContext extends RawMinkContext
      */
     public function theOrderShouldBeCapturedOnPagarMe()
     {
-        $this->session->wait(10000);
         $page = $this->session->getPage();
-        $text = $page->getText();
+
+        $this->spin(function() use ($page){
+            return $page->find('css', '.success-msg ul li span');
+        }, 60);
+
+        $message = $page
+            ->find('css', '.success-msg ul li span')
+            ->getText();
+
         PHPUnit_Framework_Assert::assertEquals(
             'The invoice has been created.',
-            $text
+            $message
         );
     }
-
-    /**
-     * @When I visit the order's invoice list page
-     */
-    public function iVisitTheOrdersInvoiceListPage()
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Then a new invoice should be created with status :arg1
-     */
-    public function aNewInvoiceShouldBeCreatedWithStatus($arg1)
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @AfterScenario
-     */
-    public function afterEveryScenario()
-    {
-        Mage::getSingleton('customer/session')->logout();
-    }
-
 }
