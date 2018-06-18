@@ -102,7 +102,7 @@ class OrderProvider
             ->setStoreId(
                 \Mage::app()->getStore()->getStoreId()
             )
-            ->assignCustomer($customer);
+            ->setCustomer($customer);
 
         $quote->getBillingAddress()
             ->importCustomerAddress($customerAddress);
