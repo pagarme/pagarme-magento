@@ -585,16 +585,22 @@ class CreditCardContext extends RawMinkContext
         $page = $this->session->getPage();
 
         $this->spin(function() use ($page){
-            return $page->find('css', '.success-msg ul li span');
-        }, 60);
+            return $page->find(
+                'css',
+                '.messages li ul li span'
+            );
+        }, 15);
 
-        $message = $page
-            ->find('css', '.success-msg ul li span')
-            ->getText();
-
-        PHPUnit_Framework_Assert::assertEquals(
-            'The invoice has been created.',
-            $message
-        );
+        try {
+            $message = $page
+                ->find('css', '.messages li ul li span')
+                ->getText();
+            PHPUnit_Framework_Assert::assertEquals(
+                'The invoice has been created.',
+                $message
+            );
+        } catch (Exception $exception) {
+            throw $exception;
+        }
     }
 }
