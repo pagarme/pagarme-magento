@@ -507,7 +507,7 @@ class CreditCardContext extends RawMinkContext
     {
         $config = Mage::getModel('core/config');
         $config->saveConfig(
-            'pagarme_configurations/payment_action',
+            'payment/pagarme_configurations/payment_action',
             'authorize_only'
         );
         try {
