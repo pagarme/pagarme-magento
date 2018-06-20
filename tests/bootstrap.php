@@ -64,15 +64,18 @@ function getCompanyTemporary()
     return $companyData;
 }
 
-$apiKey = getenv('API_KEY');
-$encriptionKey = getenv('ENCRYPTION_KEY');
+$apiKey = Mage::getStoreConfig('payment/pagarme_configurations/general_api_key');
+$encryptionKey = Mage::getStoreConfig('payment/pagarme_configurations/general_encryption_key');
 
-if (!$apiKey && !$encriptionKey) {
+if(is_null($apiKey) || is_null($encryptionKey)) {
+  $apiKey = getenv('API_KEY');
+  $encryptionKey = getenv('ENCRYPTION_KEY');
+}
+if (!$apiKey && !$encryptionKey) {
     $companyData = getCompanyTemporary();
 
     $apiKey = $companyData->api_key->test;
-    $encriptionKey = $companyData->encryption_key->test;
+    $encryptionKey = $companyData->encryption_key->test;
 }
-
 define('PAGARME_API_KEY', $apiKey);
-define('PAGARME_ENCRYPTION_KEY', $encriptionKey);
+define('PAGARME_ENCRYPTION_KEY', $encryptionKey);
