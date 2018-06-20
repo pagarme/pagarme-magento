@@ -38,6 +38,9 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     protected $pagarmeCoreHelper;
     protected $pagarmeCreditCardHelper;
 
+    /**
+     * @var Mage_Sales_Model_Quote
+     */
     protected $quote;
 
     /**
@@ -75,6 +78,11 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         $this->sdk = $sdk;
 
         return $this;
+    }
+
+    public function setQuote(Mage_Sales_Model_Quote $quote)
+    {
+        $this->quote = $quote;
     }
 
     /**
@@ -186,13 +194,17 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                 ->createFromHash($cardHash);
             return $card;
         } catch (\Exception $exception) {
+            $card = null;
             if (getenv('PAGARME_DEVELOPMENT') === 'enabled') {
-                return $this->sdk->card()->create(
+                $card = $this->sdk->card()->create(
                     '4242424242424242',
                     'Livia Nascimento',
                     '0224',
                     '123'
                 );
+            }
+            if($card instanceof \PagarMe\Sdk\Card\Card) {
+                return $card;
             }
             $json = json_decode($exception->getMessage());
 
