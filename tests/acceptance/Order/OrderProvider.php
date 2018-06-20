@@ -59,20 +59,6 @@ class OrderProvider
     ) {
         $quote = $this->createQuote($customer, $customerAddress, $products);
 
-        if ($paymentMethod == BoletoTransaction::PAYMENT_METHOD) {
-            $token = $this->createTokenBoletoTransaction(
-                $quote->getGrandTotal(),
-                $customer,
-                $customerAddress
-            );
-        } elseif ($paymentMethod == CreditCardTransaction::PAYMENT_METHOD) {
-            $token = $this->createTokenCreditCardTransaction(
-                $quote->getGrandTotal(),
-                $customer,
-                $customerAddress
-            );
-        }
-
         $dataQuote = [
             'method' => 'pagarme_creditcard',
             'installments' => 1,
@@ -96,7 +82,7 @@ class OrderProvider
         $products
     ) {
         \Mage::app()
-            ->setCurrentStore(1);
+            ->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
 
         $quote = \Mage::getModel('sales/quote')
             ->setStoreId(
