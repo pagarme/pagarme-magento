@@ -180,6 +180,21 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         }
     }
 
+    private function getTestCard()
+    {
+        $card = null;
+        if (getenv('PAGARME_DEVELOPMENT') === 'enabled') {
+            $card = $this->sdk->card()->create(
+                '4242424242424242',
+                'Livia Nascimento',
+                '0224',
+                '123'
+            );
+        }
+
+        return $card;
+    }
+
     /**
      * @param string $cardHash
      *
@@ -194,15 +209,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                 ->createFromHash($cardHash);
             return $card;
         } catch (\Exception $exception) {
-            $card = null;
-            if (getenv('PAGARME_DEVELOPMENT') === 'enabled') {
-                $card = $this->sdk->card()->create(
-                    '4242424242424242',
-                    'Livia Nascimento',
-                    '0224',
-                    '123'
-                );
-            }
+            $card = $this->getTestCard();
             if($card instanceof \PagarMe\Sdk\Card\Card) {
                 return $card;
             }
