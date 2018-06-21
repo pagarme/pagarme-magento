@@ -348,6 +348,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                 $extraAttributes
             );
 
+            $order->setPagarmeTransaction($this->transaction);
             $this->checkInstallments($installments);
 
             if(!$asyncTransaction && $captureTransaction === 'authorize_capture') {
