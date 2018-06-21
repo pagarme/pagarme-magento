@@ -1,6 +1,7 @@
 <?php
 use \PagarMe\Sdk\PagarMe as PagarMeSdk;
 use \PagarMe\Sdk\Card\Card as PagarmeCard;
+use \PagarMe\Sdk\Transaction\CreditCardTransaction;
 use \PagarMe\Sdk\Customer\Customer as PagarmeCustomer;
 use \PagarMe\Sdk\ClientException;
 use PagarMe_CreditCard_Model_Exception_InvalidInstallments as InvalidInstallmentsException;
@@ -298,6 +299,19 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         return $this;
     }
 
+    public function handlePaymentStatus(
+        CreditCardTransaction $transaction,
+        Varien_Object $payment
+    )
+    {
+        switch ($transaction->getStatus()) {
+            case 'pending_review':
+                $payment->setIsTransactionPending(true);
+                break;
+        }
+        return $payment;
+    }
+
     public function authorize(Varien_Object $payment, $amount)
     {
         $asyncTransaction = $this->getAsyncTransactionConfig();
@@ -308,7 +322,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         }
         $infoInstance = $this->getInfoInstance();
         $order = $payment->getOrder();
-        $order->setCapture($captureTransaction);
+        $order->setCapture($paymentActionConfig);
         $referenceKey = $this->getReferenceKey();
         $cardHash = $infoInstance->getAdditionalInformation('card_hash');
         $installments = (int)$infoInstance->getAdditionalInformation(
@@ -355,9 +369,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
             $order->setPagarmeTransaction($this->transaction);
             $this->checkInstallments($installments);
 
-            if(!$asyncTransaction && $paymentActionConfig === 'authorize_capture') {
-                $this->createInvoice($order);
-            }
+            $payment = $this->handlePaymentStatus($this->transaction, $payment);
         } catch (GenerateCardException $exception) {
             Mage::log($exception->getMessage());
             Mage::logException($exception);

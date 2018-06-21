@@ -10,8 +10,16 @@ class PagarMe_CreditCard_Model_Observers_OrderObserver
     {
         $order = $observer->getEvent()->getOrder();
         if ($order->getCapture() === 'authorize_only') {
-            $order->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT, true)->save();
-        } elseif ($order->getCapture() === 'authorize_capture') {
+            $order->setState(
+                Mage_Sales_Model_Order::STATE_PENDING_PAYMENT,
+                true
+            )->save();
+        }
+
+        if (
+            $order->getCapture() === 'authorize_capture' &&
+            $order->getPagarmeTransaction()->isPaid()
+        ) {
           $this->createInvoice($order);
         }
     }
