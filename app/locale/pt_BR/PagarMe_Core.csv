@@ -33,3 +33,4 @@
 "Card brand","Bandeira do cartão"
 "Invoice can\'t be refunded","Invoice não pode ser extornada"
 "There\'s no referenced order","Não existe uma order referenciada"
+"Refused by gateway.","Recusado pelo gateway."

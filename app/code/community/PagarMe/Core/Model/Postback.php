@@ -5,6 +5,7 @@ class PagarMe_Core_Model_Postback extends Mage_Core_Model_Abstract
     const POSTBACK_STATUS_PAID = 'paid';
     const POSTBACK_STATUS_REFUNDED = 'refunded';
     const POSTBACK_STATUS_AUTHORIZED = 'authorized';
+    const POSTBACK_STATUS_REFUSED = 'refused';
 
     /**
      * @var PagarMe_Core_Model_Service_Order
@@ -33,6 +34,10 @@ class PagarMe_Core_Model_Postback extends Mage_Core_Model_Abstract
         }
 
         if ($currentStatus == self::POSTBACK_STATUS_AUTHORIZED) {
+            return true;
+        }
+
+        if ($currentStatus == self::POSTBACK_STATUS_REFUSED) {
             return true;
         }
 
@@ -99,7 +104,7 @@ class PagarMe_Core_Model_Postback extends Mage_Core_Model_Abstract
 
         if (!$this->canProceedWithPostback($order, $currentStatus)) {
             throw new Exception(
-                Mage::helper('pagarme_core')->__('Can\'t proccess postback.')
+                Mage::helper('pagarme_core')->__('Can\'t proccess postback '.$currentStatus.'.')
             );
         }
 
@@ -112,6 +117,9 @@ class PagarMe_Core_Model_Postback extends Mage_Core_Model_Abstract
                 break;
             case self::POSTBACK_STATUS_AUTHORIZED:
                 $this->setOrderAsAuthorized($order);
+                break;
+            case self::POSTBACK_STATUS_REFUSED:
+                $this->setOrderAsRefused($order);
                 break;
         }
 
@@ -183,6 +191,26 @@ class PagarMe_Core_Model_Postback extends Mage_Core_Model_Abstract
             $transaction->addObject($creditmemo);
         }
         $transaction->addObject($order)->save();
+        return $order;
+    }
+
+    /**
+     * @param Mage_Sales_Model_Order $order
+     * @return void
+     */
+    public function setOrderAsRefused($order)
+    {
+        $transaction = Mage::getModel('core/resource_transaction');
+
+        $order->setState(
+            Mage_Sales_Model_Order::STATE_CANCELED,
+            true,
+            Mage::helper('pagarme_core')->
+                __('Refused by gateway.')
+        );
+
+        $transaction->addObject($order)->save();
+        
         return $order;
     }
 }

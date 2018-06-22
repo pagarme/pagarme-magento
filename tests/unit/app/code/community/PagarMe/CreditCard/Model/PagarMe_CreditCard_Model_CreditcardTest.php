@@ -241,30 +241,4 @@ class PagarMeCreditCardModelCreditcardTest extends PHPUnit_Framework_TestCase
         $creditCardModel->capture();
         $this->assertTrue($creditCardModel->transactionIsPaid());
     }
-
-    /**
-     * @test
-     */
-    public function paymentMustBeSettedToPending()
-    {
-        $payment = $this->getMockBuilder(
-            'Mage_Sales_Model_Order_Payment'
-        )->getMock();
-
-        $pendingReviewTransaction = new CreditCardTransaction([
-            'status' => 'pending_review'
-        ]);
-        $sdk = $this->getSdkMock();
-        $creditCardModel = Mage::getModel('pagarme_creditcard/creditcard');
-        $creditCardModel->setSdk($sdk);
-
-        $payment = $creditCardModel->handlePaymentStatus(
-            $pendingReviewTransaction,
-            $payment
-        );
-
-        var_dump($payment);
-
-        $this->assertTrue($payment->getIsTransactionPending());
-    }
 }
