@@ -4,6 +4,7 @@ class PagarMe_Core_Model_Postback extends Mage_Core_Model_Abstract
 {
     const POSTBACK_STATUS_PAID = 'paid';
     const POSTBACK_STATUS_REFUNDED = 'refunded';
+    const POSTBACK_STATUS_AUTHORIZED = 'authorized';
 
     /**
      * @var PagarMe_Core_Model_Service_Order
@@ -28,6 +29,10 @@ class PagarMe_Core_Model_Postback extends Mage_Core_Model_Abstract
         }
 
         if ($currentStatus == self::POSTBACK_STATUS_REFUNDED) {
+            return true;
+        }
+
+        if ($currentStatus == self::POSTBACK_STATUS_AUTHORIZED) {
             return true;
         }
 
@@ -105,6 +110,9 @@ class PagarMe_Core_Model_Postback extends Mage_Core_Model_Abstract
             case self::POSTBACK_STATUS_REFUNDED:
                 $this->setOrderAsRefunded($order);
                 break;
+            case self::POSTBACK_STATUS_AUTHORIZED:
+                $this->setOrderAsAuthorized($order);
+                break;
         }
 
         return $order;
@@ -127,6 +135,25 @@ class PagarMe_Core_Model_Postback extends Mage_Core_Model_Abstract
         $transactionSave = Mage::getModel('core/resource_transaction')
             ->addObject($order)
             ->addObject($invoice)
+            ->save();
+    }
+
+    /**
+     * @param Mage_Sales_Model_Order $order
+     * @return void
+     */
+    public function setOrderAsAuthorized($order)
+    {
+        $order->setState(
+            Mage_Sales_Model_Order::STATE_PROCESSING, 
+            true, 
+            Mage::helper('sales')->__(
+                'Authorized amount of %s.', 
+                substr('R$'.$order->getGrandTotal(), 0, -2))
+        );
+
+        $transactionSave = Mage::getModel('core/resource_transaction')
+            ->addObject($order)
             ->save();
     }
 
