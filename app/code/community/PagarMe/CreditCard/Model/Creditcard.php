@@ -415,7 +415,11 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         } catch(ClientException $clientException) {
             Mage::log('Client exception');
             if (substr($clientException->getMessage(), 0, 13) === 'cURL error 28') {
-                Mage::log('PagarMe API: Operation timed out');
+                $timeoutMessage = sprintf(
+                    'PagarMe API: Operation timed out for order %s',
+                    $order->getId()
+                );
+                Mage::log($timeoutMessage);
                 $payment->setIsTransactionPending(true);
             }
         } catch (\Exception $exception) {

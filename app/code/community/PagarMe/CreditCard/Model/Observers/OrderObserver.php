@@ -19,7 +19,7 @@ class PagarMe_CreditCard_Model_Observers_OrderObserver
             $order->getCapture() === 'authorize_capture' &&
             $pagarmeTransaction->isPaid()
         ) {
-          $this->createInvoice($order);
+            $this->createInvoice($order);
         }
     }
 
