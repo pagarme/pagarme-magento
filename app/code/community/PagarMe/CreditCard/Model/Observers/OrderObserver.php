@@ -1,5 +1,7 @@
 <?php
 
+use \PagarMe\Sdk\Transaction\AbstractTransaction;
+
 class PagarMe_CreditCard_Model_Observers_OrderObserver
 {
 
@@ -9,9 +11,13 @@ class PagarMe_CreditCard_Model_Observers_OrderObserver
     public function changeStatus(Varien_Event_Observer $observer)
     {
         $order = $observer->getEvent()->getOrder();
+        $pagarmeTransaction = $order->getPagarmeTransaction();
+        if (!$pagarmeTransaction instanceof AbstractTransaction) {
+            return;
+        }
         if (
             $order->getCapture() === 'authorize_capture' &&
-            $order->getPagarmeTransaction()->isPaid()
+            $pagarmeTransaction->isPaid()
         ) {
           $this->createInvoice($order);
         }
