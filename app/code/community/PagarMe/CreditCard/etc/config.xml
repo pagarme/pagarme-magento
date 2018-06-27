@@ -2,7 +2,7 @@
 <config>
     <modules>
         <PagarMe_CreditCard>
-            <version>3.9.0</version>
+            <version>3.10.0</version>
         </PagarMe_CreditCard>
     </modules>
     <global>
