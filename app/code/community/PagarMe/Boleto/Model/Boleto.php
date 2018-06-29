@@ -176,8 +176,9 @@ class PagarMe_Boleto_Model_Boleto extends Mage_Payment_Model_Method_Abstract
                     $this->transaction
                 );
         } catch (\Exception $exception) {
+            Mage::logException($exception);
             $json = json_decode($exception->getMessage());
-            $json = json_decode($json);
+
             $response = array_reduce($json->errors, function ($carry, $item) {
                 return is_null($carry)
                     ? $item->message : $carry."\n".$item->message;
