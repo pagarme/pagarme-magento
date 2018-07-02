@@ -77,12 +77,22 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </creditcard_max_installments>
+                        <creditcard_installments_min_value translate="label">
+                            <label>Installments minimum value</label>
+                            <comment>Installments value should be greater than this value</comment>
+                            <frontend_type>text</frontend_type>
+                            <frontend_class>validate-number</frontend_class>
+                            <sort_order>13</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </creditcard_installments_min_value>
                         <creditcard_interest_rate translate="label">
                             <label>Interest Rate (% per month)</label>
                             <comment>Example 1.99</comment>
                             <frontend_type>text</frontend_type>
                             <frontend_class>validate-number</frontend_class>
-                            <sort_order>13</sort_order>
+                            <sort_order>14</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -91,7 +101,7 @@
                             <label>Free Installments</label>
                             <frontend_type>text</frontend_type>
                             <frontend_class>validate-number</frontend_class>
-                            <sort_order>14</sort_order>
+                            <sort_order>15</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -100,7 +110,7 @@
                             <label>Allowed Credit Card Brands</label>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>pagarme_core/system_config_source_creditCardBrands</source_model>
-                            <sort_order>15</sort_order>
+                            <sort_order>16</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>

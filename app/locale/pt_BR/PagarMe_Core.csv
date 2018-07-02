@@ -7,7 +7,8 @@
 "Use Pagar.me checkout to capture customer data","Capturar dados do cliente no Checkout Pagar.me"
 "Interest Rate (% per month)","Taxa de juros (% ao mês)"
 "Free Installments","Parcelas sem juros"
-"Max Installments","Número máximo de parcelas"
+"Max Installments","Número máximo de parcelas",
+"Installments minimum value","Valor mínimo por parcela",
 "Allowed Credit Card Brands","Bandeiras de cartão de crédito habilitadas"
 "Optional message for Boleto payment","Mensagem opcional para pagamento via boleto"
 "Optional message for Credit Card payment","Mensagem opcional para pagamento via cartão de crédito"

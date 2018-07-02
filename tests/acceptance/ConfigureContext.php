@@ -350,6 +350,17 @@ class ConfigureContext extends RawMinkContext
     }
 
     /**
+     * @When I set installments minimum value to :installmentsMinValue
+     */
+    public function iSetInstallmentsMinimumValueTo($installmentsMinValue)
+    {
+        $this->getSession()->getPage()->fillField(
+            'payment_pagarme_configurations_creditcard_installments_min_value',
+            $installmentsMinValue
+        );
+    }
+
+    /**
      * @When change the checkout button text
      */
     public function changeTheCheckoutButtonText()

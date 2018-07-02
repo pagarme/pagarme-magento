@@ -26,6 +26,7 @@ Feature: Configuration Form
         And I set interest rate to "10"
         And I set free instalments to "2"
         And I set max instalments to "12"
+        And I set installments minimum value to "10"
         And I set boleto discount to "20.72"
         And I set boleto discount mode to "percentage"
         Then the configuration must be saved with success
