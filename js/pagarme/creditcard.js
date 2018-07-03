@@ -58,12 +58,12 @@ document.onreadystatechange = () => {
         card_expiration_date: document.getElementById('pagarme_creditcard_creditcard_expiration_date').value,
         card_cvv: document.getElementById('pagarme_creditcard_creditcard_cvv').value,
       }
-
-      return pagarme.client.connect({ encryption_key: 'ek_test_83vwMx5RoDNqC3rDi8jXNB3hIws0EO' })
+      const encryptionKey = document.getElementById('pagarme_encryption_key').value
+      return pagarme.client.connect({ encryption_key: encryptionKey })
         .then(client => client.security.encrypt(card))
-        .then((card_hash) => {
-          document.getElementById('pagarme_card_hash').value = card_hash
-        })
+    .then((card_hash) => {
+        document.getElementById('pagarme_card_hash').value = card_hash
+    })
     }
 
     const clearHash = () => {

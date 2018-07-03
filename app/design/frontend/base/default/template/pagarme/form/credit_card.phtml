@@ -3,7 +3,8 @@
     $helper = Mage::helper('pagarme_creditcard');
 ?>
 <ul class="form-list" id="payment_form_<?= $_code ?>" style="display: none">
-  <input type="hidden" value="" name="payment[card_hash]" id="pagarme_card_hash" class="required_entry" />
+    <input type="hidden" value="" name="payment[card_hash]" id="pagarme_card_hash" class="required_entry" />
+    <input type="hidden" id="pagarme_encryption_key" value="<?= trim($this->getEncryptionKeyStoreConfig()); ?>">
     <li>
         <label for="<?= $_code ?>_creditcard_number" class="required">
             <em>*</em><?= $helper->__('Credit Card Number') ?>
@@ -97,10 +98,6 @@
         </div>
     </li>
 </ul>
-<script>
-    var pagarmeCreditcard = {}
-    pagarmeCreditcard.encryptionKey = "<?= $this->getEncryptionKeyStoreConfig(); ?>"
-</script>
 <div>
     <?= $this->getMethod()->getConfigData('message');?>
 </div>
