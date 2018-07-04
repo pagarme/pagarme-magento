@@ -28,6 +28,8 @@ before_install:
   - echo "IMGUR_CLIENT_ID=$IMGUR_CLIENT_ID" >> .env
 
 script:
+  - chmod +x ./forgotten_keys.sh
+  - ./forgotten_keys.sh
   - script/test.sh
 
 after_failure:
