@@ -15,5 +15,26 @@
         "behat/mink-selenium2-driver": "^1.3",
         "behat/mink-extension": "~2.2",
         "n98/magerun": "@stable"
+    },
+    "archive":{
+        "exclude":[
+            ".coveralls.yml",
+            ".behat.yml",
+            ".travis.yml",
+            "Dockerfile",
+            "forgotten_keys.sh",
+            "LICENSE",
+            "magentosmtp",
+            "phpcsruleset.xml",
+            "phpunit.xml",
+            "start2",
+            "README.md",
+            "CHANGELOG.md",
+            "PULLREQUEST-TEMPLATE.md",
+            "ISSUE-TEMPLATE.md",
+            "CONTRUBUTING.md",
+            "docker-compose.yml",
+            ".env"
+        ]
     }
 }
