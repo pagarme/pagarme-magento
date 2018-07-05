@@ -7,13 +7,14 @@ const generateHash = () => {
     card_expiration_date: document.getElementById('pagarme_creditcard_creditcard_expiration_date').value,
     card_cvv: document.getElementById('pagarme_creditcard_creditcard_cvv').value,
   }
-
+  const encryptionKey = document.getElementById('pagarme_encryption_key').value
   return pagarme.client.connect({
-    encryption_key: pagarmeCreditcard.encryptionKey
+    encryption_key: encryptionKey
   })
     .then(client => client.security.encrypt(card))
     .then((card_hash) => {
       document.getElementById('pagarme_card_hash').value = card_hash
+      console.log(card_hash)
     })
 }
 
@@ -34,9 +35,10 @@ const eventBefore = (newFunction, event, prototypeElement) => {
       .get('prototype_event_registry')
       .get(event);
     const newObserver = () => {
-      newFunction()
-      originalObservers.each((wrapper) => {
-        wrapper.handler()
+      newFunction().then(() => {
+          originalObservers.each((wrapper) => {
+          wrapper.handler()
+        })
       })
     }
 
@@ -52,7 +54,7 @@ document.onreadystatechange = () => {
   eventBefore(() => {
     if (pagarmeCreditcardSelected()) {
       clearHash()
-      generateHash()
+      return generateHash()
     }
   }, 'click', placeOrderButton)
 }
