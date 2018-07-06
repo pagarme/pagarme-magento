@@ -48,6 +48,11 @@ class PagarMe_CreditCard_Block_Info_Creditcard extends Mage_Payment_Block_Info_C
     private function getPagePagarmeDbTransaction()
     {
         $order = $this->getInfo()->getOrder();
+        
+        if (is_null($order)) { 
+            throw new Exception('Order doesn\'t exist');
+        }
+
         return \Mage::getModel('pagarme_core/service_order')
             ->getTransactionByOrderId(
                 $order->getId()
@@ -69,9 +74,12 @@ class PagarMe_CreditCard_Block_Info_Creditcard extends Mage_Payment_Block_Info_C
      */
     public function renderView()
     {
-        if ($this->transaction) {
+        try {
+            $this->getTransaction();
+
             return parent::renderView();
+        } catch (Exception $e) {
+            return '';
         }
-        return '';
     }
 }
