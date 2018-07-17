@@ -15,6 +15,12 @@
             <action method="addJs" ifconfig="payment/pagarme_configurations/transparent_active"><script>pagarme/creditcard-osc.js</script></action>
         </reference>
     </onestepcheckout_index_index>
+    <firecheckout_index_index>
+        <reference name="head">
+            <action method="addJs" ifconfig="payment/pagarme_configurations/transparent_active"><script>pagarme/cardhash.js</script></action>
+            <action method="addJs" ifconfig="payment/pagarme_configurations/transparent_active"><script>pagarme/creditcard.js</script></action>
+        </reference>
+    </firecheckout_index_index>
     <checkout_onepage_index>
         <reference name="head">
             <action method="addJs" ifconfig="payment/pagarme_configurations/transparent_active"><script>pagarme/cardhash.js</script></action>
