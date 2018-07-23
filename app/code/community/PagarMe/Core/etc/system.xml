@@ -77,7 +77,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </creditcard_max_installments>
-                        <creditcard_interest_rate translate="label">
+                        <creditcard_interest_rate translate="label comment">
                             <label>Interest Rate (% per month)</label>
                             <comment>Example 1.99</comment>
                             <frontend_type>text</frontend_type>
@@ -233,7 +233,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </modal_credit_card_helper_text>
-                        <modal_ui_color translate="label">
+                        <modal_ui_color translate="label comment">
                             <label>Payment primary color</label>
                             <comment>Hexadecimal color - Example: #00ff00</comment>
                             <frontend_type>text</frontend_type>
