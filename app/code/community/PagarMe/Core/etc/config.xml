@@ -69,22 +69,22 @@
         </routers>
         <translate>
             <modules>
-                <pagarme_core>
+                <PagarMe_Core>
                     <files>
                         <default>PagarMe_Core.csv</default>
                     </files>
-                </pagarme_core>
+                </PagarMe_Core>
             </modules>
         </translate>
     </frontend>
     <adminhtml>
         <translate>
             <modules>
-                <pagarme_core>
+                <PagarMe_Core>
                     <files>
                         <default>PagarMe_Core.csv</default>
                     </files>
-                </pagarme_core>
+                </PagarMe_Core>
             </modules>
         </translate>
     </adminhtml>

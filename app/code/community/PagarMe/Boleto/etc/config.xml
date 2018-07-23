@@ -34,22 +34,22 @@
     <frontend>
         <translate>
             <modules>
-                <pagarme_boleto>
+                <PagarMe_Boleto>
                     <files>
                         <default>PagarMe_Boleto.csv</default>
                     </files>
-                </pagarme_boleto>
+                </PagarMe_Boleto>
             </modules>
         </translate>
     </frontend>
     <admin>
         <translate>
             <modules>
-                <pagarme_boleto>
+                <PagarMe_Boleto>
                     <files>
                         <default>PagarMe_Boleto.csv</default>
                     </files>
-                </pagarme_boleto>
+                </PagarMe_Boleto>
             </modules>
         </translate>
     </admin>

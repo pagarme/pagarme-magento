@@ -58,11 +58,11 @@
         </layout>
         <translate>
             <modules>
-                <pagarme_creditcard>
+                <PagarMe_CreditCard>
                     <files>
                         <default>PagarMe_Creditcard.csv</default>
                     </files>
-                </pagarme_creditcard>
+                </PagarMe_CreditCard>
             </modules>
         </translate>
     </adminhtml>
@@ -76,11 +76,11 @@
         </layout>
         <translate>
             <modules>
-                <pagarme_creditcard>
+                <PagarMe_CreditCard>
                     <files>
                         <default>PagarMe_CreditCard.csv</default>
                     </files>
-                </pagarme_creditcard>
+                </PagarMe_CreditCard>
             </modules>
         </translate>
     </frontend>

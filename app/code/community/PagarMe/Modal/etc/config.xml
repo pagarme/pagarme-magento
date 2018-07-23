@@ -48,11 +48,11 @@
         </layout>
         <translate>
             <modules>
-                <pagarme_core>
+                <PagarMe_Modal>
                     <files>
                         <default>PagarMe_Modal.csv</default>
                     </files>
-                </pagarme_core>
+                </PagarMe_Modal>
             </modules>
         </translate>
     </adminhtml>
@@ -66,11 +66,11 @@
         </layout>
         <translate>
             <modules>
-                <pagarme_core>
+                <PagarMe_Modal>
                     <files>
                         <default>PagarMe_Modal.csv</default>
                     </files>
-                </pagarme_core>
+                </PagarMe_Modal>
             </modules>
         </translate>
     </frontend>
