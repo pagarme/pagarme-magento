@@ -31,6 +31,11 @@ class PagarMe_CreditCard_Block_Info_Creditcard extends Mage_Payment_Block_Info_C
         return $this->transaction->getCard()->getBrand();
     }
 
+    public function transactionId()
+    {
+        return $this->transaction->getId();
+    }
+
     /**
      * @codeCoverageIgnore
      *
