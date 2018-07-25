@@ -35,13 +35,25 @@ class PagarMe_Core_Model_Service_Order
     }
 
     /**
-     * @codeCoverageIgnore
-     *
+     * @deprecated
+     * @see self::getInfosRelatedByOrderId
+     * @codeCoverageIgnore*
      * @param int $orderId
-     *
      * @return PagarMe_Core_Model_Transaction
      */
     public function getTransactionByOrderId($orderId)
+    {
+        return $this->getInfosRelatedByOrderId($orderId);
+    }
+
+    /**
+     * Retrieve pagarmes' info related to an order by its id
+     *
+     * @codeCoverageIgnore*
+     * @param int $orderId
+     * @return PagarMe_Core_Model_Transaction
+     */
+    public function getInfosRelatedByOrderId($orderId)
     {
         return Mage::getModel('pagarme_core/transaction')
             ->load($orderId, 'order_id');

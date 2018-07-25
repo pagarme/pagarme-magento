@@ -1,16 +1,17 @@
 <?php
+use PagarMe\Sdk\Transaction\AbstractTransaction;
 
 trait PagarMe_Core_Block_Info_Trait
 {
     /**
-     * @var \PagarMe\Sdk\Transaction\AbstractTransaction
+     * @var AbstractTransaction
      */
     private $transaction;
 
     /**
      * @codeCoverageIgnore
      *
-     * @return PagarMe\Sdk\Transaction\AbstractTransaction
+     * @return AbstractTransaction
      * @throws \Exception
      */
     public function getTransaction()
@@ -19,11 +20,10 @@ trait PagarMe_Core_Block_Info_Trait
             return $this->transaction;
         }
 
-        $pagarmeDbTransaction = $this->getTransactionIdFromDb();
-        $this->transaction = $this
-            ->fetchPagarmeTransactionFromAPi(
-                $pagarmeDbTransaction->getTransactionId()
-            );
+        $transactionId = $this->getTransactionIdFromDb();
+        $this->transaction = $this->fetchPagarmeTransactionFromAPi(
+            $transactionId
+        );
 
         return $this->transaction;
     }
@@ -38,21 +38,19 @@ trait PagarMe_Core_Block_Info_Trait
     {
         $order = $this->getInfo()->getOrder();
 
-        if (is_null($order)) {
-            throw new \Exception('Order doesn\'t exist');
-        }
-
-        return \Mage::getModel('pagarme_core/service_order')
-            ->getTransactionByOrderId(
+        $pagarmeInfosRelated = \Mage::getModel('pagarme_core/service_order')
+            ->getInfosRelatedByOrderId(
                 $order->getId()
             );
+
+        return $pagarmeInfosRelated->getTransactionId();
     }
 
     /**
      * Fetch transaction's information from API
      *
      * @param int $transactionId
-     * @return \PagarMe\Sdk\Transaction\AbstractTransaction
+     * @return AbstractTransaction
      */
     private function fetchPagarmeTransactionFromAPi($transactionId)
     {
