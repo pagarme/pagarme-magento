@@ -37,9 +37,8 @@ class PagarMe_CreditCard_Block_Info_Creditcard extends Mage_Payment_Block_Info_C
     }
 
     /**
-     * @codeCoverageIgnore
-     *
-     * @return PagarMe\Sdk\Transaction\CcTransaction
+     * @deprecated
+     * @see \PagarMe_Core_Block_Info_Trait::getTransaction()
      */
     public function getTransaction()
     {
@@ -50,6 +49,10 @@ class PagarMe_CreditCard_Block_Info_Creditcard extends Mage_Payment_Block_Info_C
             );
     }
 
+    /**
+     * @deprecated
+     * @see \PagarMe_Core_Block_Info_Trait::getTransactionIdFromDb()
+     */
     private function getPagePagarmeDbTransaction()
     {
         $order = $this->getInfo()->getOrder();
@@ -64,6 +67,10 @@ class PagarMe_CreditCard_Block_Info_Creditcard extends Mage_Payment_Block_Info_C
             );
     }
 
+    /**
+     * @deprecated
+     * @see \PagarMe_Core_Block_Info_Trait::fetchPagarmeTransactionFromAPi()
+     */
     private function fetchPagarmeTransactionFromAPi($transactionId)
     {
         return \Mage::getModel('pagarme_core/sdk_adapter')
