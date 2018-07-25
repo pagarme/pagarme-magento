@@ -15,22 +15,34 @@ class PagarMe_CreditCard_Block_Info_Creditcard extends Mage_Payment_Block_Info_C
         $this->helper = Mage::helper('pagarme_creditcard');
     }
 
+    /**
+     * @return string
+     */
     public function transactionInstallments()
     {
         return $this->transaction->getInstallments();
     }
 
+    /**
+     * @return string
+     */
     public function transactionCustomerName()
     {
         $this->transaction = $this->getTransaction();
         return $this->transaction->getCustomer()->getName();
     }
 
+    /**
+     * @return string
+     */
     public function transactionCardBrand()
     {
         return $this->transaction->getCard()->getBrand();
     }
 
+    /**
+     * @return int
+     */
     public function transactionId()
     {
         return $this->transaction->getId();
