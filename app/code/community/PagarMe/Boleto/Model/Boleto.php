@@ -5,6 +5,7 @@ class PagarMe_Boleto_Model_Boleto extends Mage_Payment_Model_Method_Abstract
 {
     protected $_code = 'pagarme_boleto';
     protected $_formBlockType = 'pagarme_boleto/form_boleto';
+    protected $_infoBlockType = 'pagarme_boleto/info_boleto';
     protected $_isGateway = true;
     protected $_canAuthorize = true;
     protected $_canCapture = true;
