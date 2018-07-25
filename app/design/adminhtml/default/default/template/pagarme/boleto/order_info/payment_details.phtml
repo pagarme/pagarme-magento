@@ -1,0 +1,26 @@
+<?php
+/**
+ * @see PagarMe_Boleto_Block_Info_Boleto
+ */
+$helper = Mage::helper('pagarme_boleto');
+?>
+
+<h3><?php echo $helper->__($this->getMethod()->getTitle()); ?></h3>
+<table id="pagarme_order_info_payment_details">
+    <tr>
+        <td>
+            <?php echo $helper->__('Boleto Url'); ?>
+        </td>
+        <td style="text-align: right" class="value">
+            <?php echo $this->getBoletoUrl(); ?>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <strong>
+                <?php echo $helper->__('Pagar.me Transaction Id');?>
+            </strong>
+        </td>
+        <td style="text-align:right;"><?= $this->transactionId(); ?></td>
+    </tr>
+</table>
