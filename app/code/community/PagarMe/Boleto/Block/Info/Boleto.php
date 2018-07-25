@@ -3,10 +3,8 @@
 use PagarMe\Sdk\Transaction\BoletoTransaction;
 class PagarMe_Boleto_Block_Info_Boleto extends Mage_Payment_Block_Info
 {
-    /**
-     * @var BoletoTransaction
-     */
-    private $transaction;
+    use PagarMe_Core_Block_Info_Trait;
+
     private $helper;
 
     public function __construct()
@@ -20,11 +18,11 @@ class PagarMe_Boleto_Block_Info_Boleto extends Mage_Payment_Block_Info
 
     public function transactionId()
     {
-        return '1';
+        return $this->getTransaction()->getId();
     }
 
     public function getBoletoUrl()
     {
-        return 'http://pagar.me';
+        return $this->getTransaction()->getBoletoUrl();
     }
 }

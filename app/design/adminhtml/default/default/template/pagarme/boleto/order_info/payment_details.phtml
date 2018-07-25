@@ -4,19 +4,23 @@
  */
 $helper = Mage::helper('pagarme_boleto');
 ?>
-
-<h3><?php echo $helper->__($this->getMethod()->getTitle()); ?></h3>
+<h3><?php echo $helper->__('Pagar.me Boleto'); ?></h3>
 <table id="pagarme_order_info_payment_details">
     <tr>
-        <td>
-            <?php echo $helper->__('Boleto Url'); ?>
+        <td class="label">
+            <strong><?php echo $helper->__('Boleto Url'); ?></strong>
         </td>
         <td style="text-align: right" class="value">
-            <?php echo $this->getBoletoUrl(); ?>
+            <a
+                href="<?php echo $this->getBoletoUrl(); ?>"
+                target="_blank"
+            >
+                Ver boleto
+            </a>
         </td>
     </tr>
     <tr>
-        <td>
+        <td class="label">
             <strong>
                 <?php echo $helper->__('Pagar.me Transaction Id');?>
             </strong>
