@@ -1,6 +1,5 @@
 <?php
 
-use PagarMe\Sdk\Transaction\BoletoTransaction;
 class PagarMe_Boleto_Block_Info_Boleto extends Mage_Payment_Block_Info
 {
     use PagarMe_Core_Block_Info_Trait;
