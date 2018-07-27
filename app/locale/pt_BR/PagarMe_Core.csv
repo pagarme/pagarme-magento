@@ -43,3 +43,7 @@
 "Authorize Only","Somente autorizar"
 "Example 1.99","Exemplo 1.99"
 "Hexadecimal color - Example: #00ff00","Cor (hexadecimal) - Exemplo: #00ff00"
+"Pagar.me Transaction Id","Id da transação no Pagar.me"
+"Boleto Url","Endereço do boleto (URL)"
+"Pagar.me Boleto","Boleto Pagar.me"
+"Show boleto","Ver boleto"
