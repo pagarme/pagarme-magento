@@ -132,9 +132,8 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
             'card_hash' => $data['card_hash'],
             'installments' => $data['installments']
         ];
-
-        $this->getInfoInstance()
-            ->setAdditionalInformation($additionalInfoData);
+        $info = $this->getInfoInstance();
+        $info->setAdditionalInformation($additionalInfoData);
 
         return $this;
     }
@@ -293,6 +292,24 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     }
 
     /**
+     * Add to payment card informations provided from API
+     *
+     * @param \Mage_Sales_Model_Order_Payment $payment
+     * @param \PagarMe\Sdk\Card\Card $card
+     *
+     * @return \Mage_Sales_Model_Order_Payment
+     */
+    public function insertCardInfosOnPayment($payment, $card)
+    {
+        $payment
+            ->setCcType($card->getBrand())
+            ->setCcOwner($card->getHolderName())
+            ->setCcLast4($card->getLastDigits());
+
+        return $payment;
+    }
+
+    /**
      * @param \PagarMe\Sdk\Card\Card $card
      * @param \PagarMe\Sdk\Customer\Customer $customer
      * @param int $installments
@@ -338,6 +355,27 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                 break;
         }
         return $payment;
+    }
+
+    /**
+     * Defines additional information from transaction
+     *
+     * @param Mage_Sales_Model_Order_Payment $infoInstance $infoInstance
+     * @param CreditCardTransaction $transaction
+     *
+     * @return array
+     */
+    private function getPaymentAdditionalInformation(
+        $infoInstance,
+        $transaction
+    )
+    {
+        return array_merge(
+            $infoInstance->getAdditionalInformation(),
+            [
+                'pagarme_transaction_id' => $transaction->getId(),
+            ]
+        );
     }
 
     public function authorize(Varien_Object $payment, $amount)
@@ -397,6 +435,17 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
             $this->checkInstallments($installments);
 
             $payment = $this->handlePaymentStatus($this->transaction, $payment);
+            $payment = $this->insertCardInfosOnPayment(
+                $payment,
+                $this->transaction->getCard()
+            );
+
+            $paymentAdditionalInfo = $this->getPaymentAdditionalInformation(
+                $infoInstance,
+                $this->transaction
+            );
+            $infoInstance->setAdditionalInformation($paymentAdditionalInfo);
+
         } catch (GenerateCardException $exception) {
             Mage::log($exception->getMessage());
             Mage::logException($exception);
