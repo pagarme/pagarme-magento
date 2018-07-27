@@ -4,6 +4,10 @@ class PagarMe_CreditCard_Block_Info_Creditcard extends Mage_Payment_Block_Info_C
 {
 
     private $helper;
+
+    /**
+     * @var \PagarMe\Sdk\Transaction\CreditCardTransaction
+     */
     private $transaction;
 
     public function __construct()
