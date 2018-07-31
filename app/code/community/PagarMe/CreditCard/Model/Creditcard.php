@@ -3,7 +3,7 @@ use \PagarMe\Sdk\PagarMe as PagarMeSdk;
 use \PagarMe\Sdk\Card\Card as PagarmeCard;
 use \PagarMe\Sdk\Transaction\CreditCardTransaction;
 use \PagarMe\Sdk\Customer\Customer as PagarmeCustomer;
-use \PagarMe\Sdk\ClientException;
+use \PagarMe\Sdk\PagarMeException;
 use PagarMe_CreditCard_Model_Exception_InvalidInstallments as InvalidInstallmentsException;
 use PagarMe_CreditCard_Model_Exception_GenerateCard as GenerateCardException;
 use PagarMe_CreditCard_Model_Exception_TransactionsInstallmentsDivergent as TransactionsInstallmentsDivergent;
@@ -292,6 +292,20 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     }
 
     /**
+     * @param \PagarMe\Sdk\PagarMeException $exception
+     * @return string
+     */
+    private function formatPagarmeExceptions($exception)
+    {
+        $json = json_decode($exception->getMessage());
+
+        return array_reduce($json->errors, function ($carry, $item) {
+            return is_null($carry)
+                ? $item->message : $carry."\n".$item->message;
+        });
+    }
+
+    /**
      * Add to payment card informations provided from API
      *
      * @param \Mage_Sales_Model_Order_Payment $payment
@@ -461,27 +475,24 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         } catch (CantCaptureTransaction $exception) {
             Mage::log($exception->getMessage());
             Mage::logException($exception);
-        } catch(ClientException $clientException) {
-            Mage::log('Client exception');
-            if (substr($clientException->getMessage(), 0, 13) === 'cURL error 28') {
+        } catch(PagarMeException $pagarMeException) {
+            if (substr($pagarMeException->getMessage(), 0, 13) === 'cURL error 28') {
                 $timeoutMessage = sprintf(
                     'PagarMe API: Operation timed out for order %s',
                     $order->getId()
                 );
                 Mage::log($timeoutMessage);
                 $payment->setIsTransactionPending(true);
+            } else {
+                Mage::throwException(
+                    $this->formatPagarmeExceptions($pagarMeException)
+                );
             }
         } catch (\Exception $exception) {
             Mage::log('Exception autorizing:');
             Mage::logException($exception);
-            $json = json_decode($exception->getMessage());
 
-            $response = array_reduce($json->errors, function ($carry, $item) {
-                return is_null($carry)
-                    ? $item->message : $carry."\n".$item->message;
-            });
-
-            Mage::throwException($response);
+            Mage::throwException($exception);
         }
 
         $this->transactionModel
