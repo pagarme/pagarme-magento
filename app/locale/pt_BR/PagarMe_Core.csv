@@ -49,3 +49,5 @@
 "Show boleto","Ver boleto"
 "Refused by gateway. Transaction unauthorized","Recusado pelo gateway. Transação não autorizada"
 "Refused by gateway. Suspected fraud","Recusado pelo gateway. Suspeita de fraude"
+"Development environment configurations","Configurações de ambiente dedesenvolvimento"
+"Used only if developer mode is enabled. It'll customize postback url during transactions creation","Usado somente se o modo de desenvolvimento estiver ativo. Altera o parametro postback_url durante a criação de transações"

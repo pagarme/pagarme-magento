@@ -33,6 +33,22 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </general_encryption_key>
+                        <heading_development_env translate="label">
+                            <label>Development environment configurations</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                        </heading_development_env>
+                        <dev_custom_postback_url translate="comment">
+                            <label>Postback URL</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>5</sort_order>
+                            <comment>Used only if developer mode is enabled. It'll customize postback url during transactions creation</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </dev_custom_postback_url>
                         <heading_credit_card translate="label">
                             <label>Credit Card Configurations</label>
                             <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
