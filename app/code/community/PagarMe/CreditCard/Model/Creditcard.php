@@ -298,6 +298,9 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     private function formatPagarmeExceptions($exception)
     {
         $json = json_decode($exception->getMessage());
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return $exception->getMessage();
+        }
 
         return array_reduce($json->errors, function ($carry, $item) {
             return is_null($carry)
