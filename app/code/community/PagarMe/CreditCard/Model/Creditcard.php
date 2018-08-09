@@ -368,6 +368,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         switch ($transaction->getStatus()) {
             case 'pending_review':
             case 'processing':
+            case 'refused':
                 $payment->setIsTransactionPending(true);
                 break;
         }
