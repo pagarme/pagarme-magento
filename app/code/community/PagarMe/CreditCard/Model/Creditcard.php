@@ -210,7 +210,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
             return $card;
         } catch (\Exception $exception) {
             $card = $this->getTestCard();
-            if($card instanceof \PagarMe\Sdk\Card\Card) {
+            if ($card instanceof \PagarMe\Sdk\Card\Card) {
                 return $card;
             }
             $json = json_decode($exception->getMessage());
