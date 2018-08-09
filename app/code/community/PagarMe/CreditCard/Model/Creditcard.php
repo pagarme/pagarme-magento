@@ -1,6 +1,7 @@
 <?php
 use \PagarMe\Sdk\PagarMe as PagarMeSdk;
 use \PagarMe\Sdk\Card\Card as PagarmeCard;
+use \PagarMe\Sdk\Transaction\AbstractTransaction;
 use \PagarMe\Sdk\Transaction\CreditCardTransaction;
 use \PagarMe\Sdk\Customer\Customer as PagarmeCustomer;
 use \PagarMe\Sdk\PagarMeException;
@@ -366,9 +367,9 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     )
     {
         switch ($transaction->getStatus()) {
+            case AbstractTransaction::PROCESSING:
+            case AbstractTransaction::REFUSED:
             case 'pending_review':
-            case 'processing':
-            case 'refused':
                 $payment->setIsTransactionPending(true);
                 break;
         }
