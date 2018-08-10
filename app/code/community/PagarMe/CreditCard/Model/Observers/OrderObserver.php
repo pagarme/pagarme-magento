@@ -62,14 +62,14 @@ class PagarMe_CreditCard_Model_Observers_OrderObserver
     }
 
     /**
-     * Returns bool if the payment_action is authorize and capture
+     * Returns true if the payment_action is authorize and capture
      *
      * @param \Mage_Sales_Model_Order $order
      * @return bool
      */
     private function isAuthorizeAndCapture($order)
     {
-        return $order->getCapture() == 'authorize_capture';
+        return $order->getCapture() === 'authorize_capture';
     }
 
     /**
@@ -91,7 +91,7 @@ class PagarMe_CreditCard_Model_Observers_OrderObserver
         }
 
         if ($transactionRefusedReason === 'antifraud') {
-            $refusedMessage .= ' Supected fraud';
+            $refusedMessage .= ' Suspected fraud';
         }
 
         $createCommentHistory = true;
