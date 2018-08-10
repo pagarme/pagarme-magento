@@ -84,10 +84,15 @@ class PagarMe_CreditCard_Model_Observers_OrderObserver
             ->getPagarmeTransaction()
             ->getRefuseReason();
 
-        $refusedMessage = sprintf(
-            'Refused by gateway. Reason: %s',
-            $transactionRefusedReason
-        );
+        $refusedMessage = 'Refused by gateway.';
+
+        if ($transactionRefusedReason === 'acquirer') {
+            $refusedMessage .= ' Transaction unauthorized';
+        }
+
+        if ($transactionRefusedReason === 'antifraud') {
+            $refusedMessage .= ' Supected fraud';
+        }
 
         $createCommentHistory = true;
 
