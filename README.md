@@ -62,6 +62,19 @@ Execute o comando `docker-compose exec magento vendor/bin/behat` para iniciar os
 2. Conecte-se no servidor.
 *  Utilize `localhost` para o host e `secret` para senha
 
+### Testando postbacks em ambiente de desenvolvimento
+
+**Requisitos**
+
+- [Ngrok](https://ngrok.com/)
+
+1. Instale e inicie o ngrok com `ngrok http 80` 
+2. Acesse o painel administrativo da loja
+3. Vá `Sistema > Configuração > Métodos de Pagamento > Pagar.me`
+4. Preencha o campo `Postback URL` com a url gerada pelo ngrok
+5. Crie uma transação
+6. Uma vez criada uma transação basta executar alguma operação que invoque um postback: estorno, pagamento de boleto, etc.
+
 ### Acessando a loja virtual através do navegador
 
 1. Altere seu arquivo `/etc/hosts` adicionando a entrada `127.0.0.1 magento`
