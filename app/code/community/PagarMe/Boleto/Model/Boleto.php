@@ -1,7 +1,7 @@
 <?php
 use \PagarMe\Sdk\PagarMe as PagarMeSdk;
 
-class PagarMe_Boleto_Model_Boleto extends Mage_Payment_Model_Method_Abstract
+class PagarMe_Boleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMethod
 {
     protected $_code = 'pagarme_boleto';
     protected $_formBlockType = 'pagarme_boleto/form_boleto';
@@ -66,6 +66,14 @@ class PagarMe_Boleto_Model_Boleto extends Mage_Payment_Model_Method_Abstract
     }
 
     /**
+     * @return string
+     */
+    public function getPostbackCode()
+    {
+        return 'transaction_boleto';
+    }
+
+    /**
      * @param \PagarMe\Sdk\Customer\Customer $customer
      * @return self
      */
@@ -120,6 +128,8 @@ class PagarMe_Boleto_Model_Boleto extends Mage_Payment_Model_Method_Abstract
             $quote = Mage::getSingleton('checkout/session')->getQuote();
             $billingAddress = $quote->getBillingAddress();
             $referenceKey = $this->getReferenceKey();
+            $postbackUrl = $this->getUrlForPostback();
+
             if ($billingAddress == false) {
                 Mage::log(
                     sprintf(
@@ -161,7 +171,7 @@ class PagarMe_Boleto_Model_Boleto extends Mage_Payment_Model_Method_Abstract
                     $this->pagarmeCoreHelper
                     ->parseAmountToInteger($quote->getGrandTotal()),
                         $customerPagarMe,
-                        Mage::getBaseUrl() . 'pagarme_core/transaction_boleto/postback',
+                        $postbackUrl,
                         ['order_id' => $order->getIncrementId()],
                         $extraAttributes
                     );

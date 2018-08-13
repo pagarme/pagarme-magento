@@ -10,7 +10,7 @@ use PagarMe_CreditCard_Model_Exception_GenerateCard as GenerateCardException;
 use PagarMe_CreditCard_Model_Exception_TransactionsInstallmentsDivergent as TransactionsInstallmentsDivergent;
 use PagarMe_CreditCard_Model_Exception_CantCaptureTransaction as CantCaptureTransaction;
 
-class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abstract
+class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPaymentMethod
 {
 
     use PagarMe_Core_Trait_ConfigurationsAccessor;
@@ -111,21 +111,11 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     }
 
     /**
-     * @codeCoverageIgnore
      * @return string
      */
-    public function getUrlForPostback()
+    protected function getPostbackCode()
     {
-        $postbackUrl = Mage::getBaseUrl();
-        $developmentPostbackUrl = $this->getDevelopmentPostbackUrl();
-
-        if ($this->isDeveloperModeEnabled() && $developmentPostbackUrl !== '') {
-            $postbackUrl = $developmentPostbackUrl;
-        }
-
-        $postbackUrl .=  'pagarme_core/transaction_creditcard/postback';
-
-        return $postbackUrl;
+        return 'transaction_creditcard';
     }
 
     /**
@@ -189,7 +179,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     private function getTestCard()
     {
         $card = null;
-        if (getenv('PAGARME_DEVELOPMENT') === 'enabled') {
+        if ($this->isDeveloperModeEnabled()) {
             $card = $this->sdk->card()->create(
                 '4242424242424242',
                 'Livia Nascimento',
