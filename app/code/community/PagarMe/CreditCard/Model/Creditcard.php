@@ -370,8 +370,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     public function handlePaymentStatus(
         CreditCardTransaction $transaction,
         Varien_Object $payment
-    )
-    {
+    ) {
         switch ($transaction->getStatus()) {
             case AbstractTransaction::PROCESSING:
             case AbstractTransaction::REFUSED:
@@ -393,8 +392,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
     private function getPaymentAdditionalInformation(
         $infoInstance,
         $transaction
-    )
-    {
+    ) {
         return array_merge(
             $infoInstance->getAdditionalInformation(),
             [
@@ -408,7 +406,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         $asyncTransaction = $this->getAsyncTransactionConfig();
         $paymentActionConfig = $this->getPaymentActionConfig();
         $captureTransaction = true;
-        if($paymentActionConfig === 'authorize_only') {
+        if ($paymentActionConfig === 'authorize_only') {
             $captureTransaction = false;
         }
         $infoInstance = $this->getInfoInstance();
@@ -470,7 +468,6 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                 $this->transaction
             );
             $infoInstance->setAdditionalInformation($paymentAdditionalInfo);
-
         } catch (GenerateCardException $exception) {
             Mage::log($exception->getMessage());
             Mage::logException($exception);
@@ -486,7 +483,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
         } catch (CantCaptureTransaction $exception) {
             Mage::log($exception->getMessage());
             Mage::logException($exception);
-        } catch(PagarMeException $pagarMeException) {
+        } catch (PagarMeException $pagarMeException) {
             if (substr($pagarMeException->getMessage(), 0, 13) === 'cURL error 28') {
                 $timeoutMessage = sprintf(
                     'PagarMe API: Operation timed out for order %s',
@@ -542,7 +539,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
             $this->transaction = $transactionModel->capture($this->transaction);
 
             return $this;
-        } catch(\Exception $exception) {
+        } catch (\Exception $exception) {
             throw $exception;
         }
     }
@@ -587,7 +584,8 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
 
     /**
      * @param Varien_Object $payment
-     * @param $amount
+     * @param float $amount
+     * @throws \Exception
      * @return $this
      */
     public function refund(Varien_Object $payment, $amount)
@@ -596,7 +594,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
             ->getInvoiceCollection()
             ->getFirstItem();
 
-        if(!$invoice->canRefund()){
+        if (!$invoice->canRefund()) {
             Mage::throwException(
                 Mage::helper('pagarme_core')
                     ->__('Invoice can\'t be refunded.')
@@ -605,8 +603,7 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
 
         $amount = ((float)$invoice->getGrandTotal()) * 100;
 
-        try{
-
+        try {
             $this->transaction = $this->sdk
                 ->transaction()
                 ->get($invoice->getTransactionId());
@@ -618,7 +615,6 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
                     $this->transaction,
                     $amount
                 );
-
         } catch (\Exception $exception) {
             Mage::log('Exception refund:');
             Mage::logException($exception);

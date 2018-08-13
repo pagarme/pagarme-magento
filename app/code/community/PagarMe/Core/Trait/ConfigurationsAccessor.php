@@ -104,5 +104,4 @@ trait PagarMe_Core_Trait_ConfigurationsAccessor
     {
         return Mage::getStoreConfig("payment/{$name}");
     }
-
 }
