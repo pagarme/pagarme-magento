@@ -116,10 +116,16 @@ class PagarMe_CreditCard_Model_Creditcard extends Mage_Payment_Model_Method_Abst
      */
     public function getUrlForPostback()
     {
-        $urlForPostback = Mage::getBaseUrl();
-        $urlForPostback .=  'pagarme_core/transaction_creditcard/postback';
+        $postbackUrl = Mage::getBaseUrl();
+        $developmentPostbackUrl = $this->getDevelopmentPostbackUrl();
 
-        return $urlForPostback;
+        if ($this->isDeveloperModeEnabled() && $developmentPostbackUrl !== '') {
+            $postbackUrl = $developmentPostbackUrl;
+        }
+
+        $postbackUrl .=  'pagarme_core/transaction_creditcard/postback';
+
+        return $postbackUrl;
     }
 
     /**

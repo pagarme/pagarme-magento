@@ -2,6 +2,47 @@
 
 trait PagarMe_Core_Trait_ConfigurationsAccessor
 {
+    /**
+     * Returns true only if magento is running with developer mode enabled
+     *
+     * @return bool
+     */
+    public function isDeveloperModeEnabled()
+    {
+        $developerModeEnabled = false;
+
+        if (Mage::getIsDeveloperMode()) {
+            $developerModeEnabled = true;
+        }
+
+        if (getenv('PAGARME_DEVELOPMENT') == 'enabled') {
+            $developerModeEnabled = true;
+        }
+
+        return $developerModeEnabled;
+    }
+
+    /**
+     * Returns postback url defined on Pagar.me's settings panel
+     *
+     * @return string
+     */
+    private function getDevelopmentPostbackUrl()
+    {
+        $devPostbackUrl = trim($this->getConfigurationWithName(
+            'pagarme_configurations/dev_custom_postback_url'
+        ));
+
+        if (!filter_var($devPostbackUrl, FILTER_VALIDATE_URL)) {
+            return '';
+        }
+
+        if (substr($devPostbackUrl, 1, 1) !== '/') {
+            $devPostbackUrl .= '/';
+        }
+
+        return $devPostbackUrl;
+    }
 
     private function isTransparentCheckoutActiveStoreConfig()
     {
