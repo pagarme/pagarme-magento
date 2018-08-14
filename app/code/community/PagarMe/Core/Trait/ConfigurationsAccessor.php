@@ -9,17 +9,14 @@ trait PagarMe_Core_Trait_ConfigurationsAccessor
      */
     public function isDeveloperModeEnabled()
     {
-        $developerModeEnabled = false;
-
-        if (Mage::getIsDeveloperMode()) {
-            $developerModeEnabled = true;
+        if (
+            Mage::getIsDeveloperMode() ||
+            getenv('PAGARME_DEVELOPMENT') === 'enabled'
+        ) {
+            return true;
         }
 
-        if (getenv('PAGARME_DEVELOPMENT') == 'enabled') {
-            $developerModeEnabled = true;
-        }
-
-        return $developerModeEnabled;
+        return false;
     }
 
     /**

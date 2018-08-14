@@ -50,6 +50,7 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
     protected $transactionModel;
 
     const PAGARME_MAX_INSTALLMENTS = 12;
+    const POSTBACK_ENDPOINT = 'transaction_creditcard';
 
     const AUTHORIZED = 'authorized';
     const PAID = 'paid';
@@ -115,7 +116,7 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
      */
     protected function getPostbackCode()
     {
-        return 'transaction_creditcard';
+        return self::POSTBACK_ENDPOINT;
     }
 
     /**

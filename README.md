@@ -67,6 +67,7 @@ Execute o comando `docker-compose exec magento vendor/bin/behat` para iniciar os
 **Requisitos**
 
 - [Ngrok](https://ngrok.com/)
+- Developer mode do magento habilitado ou a variável de ambiente `PAGARME_DEVELOPMENT=enabled`
 
 1. Instale e inicie o ngrok com `ngrok http 80` 
 2. Acesse o painel administrativo da loja

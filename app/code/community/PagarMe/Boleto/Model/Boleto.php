@@ -14,6 +14,7 @@ class PagarMe_Boleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMeth
     protected $_canManageRecurringProfiles = true;
  
     const PAGARME_BOLETO = 'pagarme_boleto';
+    const POSTBACK_ENDPOINT = 'transaction_boleto';
 
     /**
      * @var \PagarMe\Sdk\PagarMe
@@ -68,9 +69,9 @@ class PagarMe_Boleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMeth
     /**
      * @return string
      */
-    public function getPostbackCode()
+    protected function getPostbackCode()
     {
-        return 'transaction_boleto';
+        return self::POSTBACK_ENDPOINT;
     }
 
     /**
@@ -128,7 +129,6 @@ class PagarMe_Boleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMeth
             $quote = Mage::getSingleton('checkout/session')->getQuote();
             $billingAddress = $quote->getBillingAddress();
             $referenceKey = $this->getReferenceKey();
-            $postbackUrl = $this->getUrlForPostback();
 
             if ($billingAddress == false) {
                 Mage::log(
@@ -171,7 +171,7 @@ class PagarMe_Boleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMeth
                     $this->pagarmeCoreHelper
                     ->parseAmountToInteger($quote->getGrandTotal()),
                         $customerPagarMe,
-                        $postbackUrl,
+                        $this->getUrlForPostback(),
                         ['order_id' => $order->getIncrementId()],
                         $extraAttributes
                     );
