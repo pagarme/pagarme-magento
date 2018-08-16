@@ -1,10 +1,12 @@
 <?php
 
-abstract class PagarMe_Core_Transaction_AbstractPostbackController extends
- Mage_Core_Controller_Front_Action
+use PagarMe_Core_Model_PostbackHandler_Exception as PostbackHandlerException;
+
+abstract class PagarMe_Core_Transaction_AbstractPostbackController extends Mage_Core_Controller_Front_Action
 {
     /**
-     * @return type
+     * @return Zend_Controller_Response_Abstract
+     * @throws Zend_Controller_Response_Exception
      */
     public function postbackAction()
     {
@@ -29,10 +31,16 @@ abstract class PagarMe_Core_Transaction_AbstractPostbackController extends
                 );
             return $this->getResponse()
                 ->setBody('ok');
-        } catch (Exception $e) {
-            return $this->getResponse()
+        } catch (PostbackHandlerException $postbackException) {
+            return $this
+                ->getResponse()
+                ->setHttpResponseCode(200)
+                ->setBody($postbackException->getMessage());
+        } catch (Exception $exception) {
+            return $this
+                ->getResponse()
                 ->setHttpResponseCode(500)
-                ->setBody($e->getMessage());
+                ->setBody($exception->getMessage());
         }
     }
 
