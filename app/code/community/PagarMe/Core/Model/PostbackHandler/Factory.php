@@ -29,6 +29,14 @@ class PagarMe_Core_Model_PostbackHandler_Factory
             );
         }
 
+        if ($status === AbstractTransaction::AUTHORIZED) {
+            return new PagarMe_Core_Model_PostbackHandler_Authorized(
+                $order,
+                $transactionId,
+                $oldStatus
+            );
+        }
+
         throw new \Exception(sprintf(
             'There\'s no postback handler for this desired status: %s',
             $status
