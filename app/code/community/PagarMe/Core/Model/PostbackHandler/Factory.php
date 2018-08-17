@@ -8,6 +8,7 @@ class PagarMe_Core_Model_PostbackHandler_Factory
      * Instantiate a PostbackHandler based on desired status
      *
      * @param string $status
+     * @param string $oldStatus
      * @param Mage_Sales_Model_Order $order
      * @param int $transactionId
      *
@@ -16,13 +17,15 @@ class PagarMe_Core_Model_PostbackHandler_Factory
      */
     public static function createFromDesiredStatus(
         $status,
+        $oldStatus,
         $order,
         $transactionId
     ) {
         if ($status === AbstractTransaction::PAID) {
             return new PagarMe_Core_Model_PostbackHandler_Paid(
                 $order,
-                $transactionId
+                $transactionId,
+                $oldStatus
             );
         }
 

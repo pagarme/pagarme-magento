@@ -1,5 +1,8 @@
 <?php
 
+use \PagarMe\Sdk\Transaction\AbstractTransaction;
+use PagarMe_Core_Model_PostbackHandler_Authorized as AuthorizeHandler;
+
 class PagarMe_Core_Model_PostbackHandler_Paid extends PagarMe_Core_Model_PostbackHandler_Base
 {
     /**
@@ -24,6 +27,35 @@ class PagarMe_Core_Model_PostbackHandler_Paid extends PagarMe_Core_Model_Postbac
     }
 
     /**
+     * @return bool
+     */
+    private function isOrderInPaymentReview()
+    {
+        return
+            $this->order->getState() ===
+            Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW;
+    }
+
+    /**
+     * Runs only if the only if the order's old status is Pagarme::processing
+     * It is necessary to create a new invoice
+     *
+     * @return void
+     */
+    private function setOrderAsProcessing()
+    {
+        Mage::log($this->oldStatus);
+        if (
+            $this->isOrderInPaymentReview() &&
+            $this->oldStatus === AbstractTransaction::PROCESSING
+        ) {
+            $this->order->setState(
+                self::MAGENTO_DESIRED_STATUS
+            );
+        }
+    }
+
+    /**
      * Validate that the given order can be updated
      *
      * @throws PagarMe_Core_Model_PostbackHandler_Exception
@@ -45,6 +77,7 @@ class PagarMe_Core_Model_PostbackHandler_Paid extends PagarMe_Core_Model_Postbac
      */
     public function process()
     {
+        $this->setOrderAsProcessing();
         $this->canProcess();
         $invoice = $this
             ->getInvoiceService()

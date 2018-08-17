@@ -95,17 +95,19 @@ class PagarMe_Core_Model_Postback extends Mage_Core_Model_Abstract
     /**
      * @param int $transactionId
      * @param string $currentStatus
+     * @param string $oldStatus
      *
      * @return Mage_Sales_Model_Order
      * @throws Exception|PagarMe_Core_Model_PostbackHandler_Exception
      */
-    public function processPostback($transactionId, $currentStatus)
+    public function processPostback($transactionId, $currentStatus, $oldStatus)
     {
         $order = $this->getOrderService()
             ->getOrderByTransactionId($transactionId);
 
         $postbackHandler = PostbackHandlerFactory::createFromDesiredStatus(
             $currentStatus,
+            $oldStatus,
             $order,
             $transactionId
         );

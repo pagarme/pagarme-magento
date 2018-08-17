@@ -13,15 +13,25 @@ abstract class PagarMe_Core_Model_PostbackHandler_Base
     protected $transactionId;
 
     /**
+     * Could be any of PagarMe\Sdk\Transaction\AbstractTransaction statuses
+     *
+     * @var string $oldStatus
+     */
+    protected $oldStatus;
+
+    /**
      * @param \Mage_Sales_Model_Order $order
      * @param int $transactionId
+     * @param string $oldStatus
      */
     public function __construct(
         \Mage_Sales_Model_Order $order,
-        $transactionId
+        $transactionId,
+        $oldStatus = null
     ) {
         $this->order = $order;
         $this->transactionId = $transactionId;
+        $this->oldStatus = $oldStatus;
     }
 
     /**
