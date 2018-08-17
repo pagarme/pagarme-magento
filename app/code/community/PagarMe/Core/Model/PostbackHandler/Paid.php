@@ -44,7 +44,6 @@ class PagarMe_Core_Model_PostbackHandler_Paid extends PagarMe_Core_Model_Postbac
      */
     private function setOrderAsProcessing()
     {
-        Mage::log($this->oldStatus);
         if (
             $this->isOrderInPaymentReview() &&
             $this->oldStatus === AbstractTransaction::PROCESSING
@@ -82,6 +81,10 @@ class PagarMe_Core_Model_PostbackHandler_Paid extends PagarMe_Core_Model_Postbac
         $invoice = $this
             ->getInvoiceService()
             ->createInvoiceFromOrder($this->order);
+
+        $invoice->setBaseGrandTotal($this->order->getGrandTotal());
+        $invoice->setGrandTotal($this->order->getGrandTotal());
+        $invoice->setInterestAmount($this->order->getInterestAmount());
 
         $invoice->register()->pay();
 
