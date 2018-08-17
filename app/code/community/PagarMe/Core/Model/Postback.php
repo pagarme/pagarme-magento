@@ -193,6 +193,9 @@ class PagarMe_Core_Model_Postback extends Mage_Core_Model_Abstract
     }
 
     /**
+     * @deprecated
+     * @see \PagarMe_Core_Model_PostbackHandler_Refused::process()
+     *
      * @param Mage_Sales_Model_Order $order
      * @return void
      */

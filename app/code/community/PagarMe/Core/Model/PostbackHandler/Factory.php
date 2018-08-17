@@ -45,6 +45,14 @@ class PagarMe_Core_Model_PostbackHandler_Factory
             );
         }
 
+        if ($status === AbstractTransaction::REFUSED) {
+            return new PagarMe_Core_Model_PostbackHandler_Refused(
+                $order,
+                $transactionId,
+                $oldStatus
+            );
+        }
+
         throw new \Exception(sprintf(
             'There\'s no postback handler for this desired status: %s',
             $status
