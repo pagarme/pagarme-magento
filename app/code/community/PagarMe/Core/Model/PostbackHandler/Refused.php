@@ -32,5 +32,4 @@ class PagarMe_Core_Model_PostbackHandler_Refused extends PagarMe_Core_Model_Post
 
         return $this->order;
     }
-
 }

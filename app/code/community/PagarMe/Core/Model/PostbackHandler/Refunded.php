@@ -39,5 +39,4 @@ class PagarMe_Core_Model_PostbackHandler_Refunded extends PagarMe_Core_Model_Pos
 
         return $this->order;
     }
-
 }

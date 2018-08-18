@@ -8,14 +8,13 @@ abstract class PagarMe_Core_Model_PostbackHandler_Base
     protected $order;
 
     /**
-     * @var int transaction id on Pagar.me
+     * @var int $transactionId Pagar.me Transaction Id
      */
     protected $transactionId;
 
     /**
-     * Could be any of PagarMe\Sdk\Transaction\AbstractTransaction statuses
-     *
-     * @var string $oldStatus
+     * @var string $oldStatus Any of PagarMe\Sdk\Transaction\AbstractTransaction
+     * statuses
      */
     protected $oldStatus;
 
@@ -41,7 +40,7 @@ abstract class PagarMe_Core_Model_PostbackHandler_Base
      */
     abstract protected function getDesiredState();
 
-    final protected function getMessageForHandlerException()
+    final protected function buildMessageForHandlerException()
     {
         $message = sprintf(
             'Order [id:%s] [transactionId:%s]',
@@ -64,10 +63,6 @@ abstract class PagarMe_Core_Model_PostbackHandler_Base
      */
     final protected function isOrderOnDesiredState()
     {
-        if ($this->order->getState() === $this->getDesiredState()) {
-            return true;
-        }
-
-        return false;
+        return ($this->order->getState() === $this->getDesiredState());
     }
 }

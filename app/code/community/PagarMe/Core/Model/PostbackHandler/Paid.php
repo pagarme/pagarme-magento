@@ -55,29 +55,19 @@ class PagarMe_Core_Model_PostbackHandler_Paid extends PagarMe_Core_Model_Postbac
     }
 
     /**
-     * Validate that the given order can be updated
-     *
-     * @throws PagarMe_Core_Model_PostbackHandler_Exception
-     * @return void
-     */
-    protected function canProcess()
-    {
-        $message = $this->getMessageForHandlerException();
-
-        if (!$this->order->canInvoice()) {
-            $message .= ' can\'t be invoiced';
-            throw new PagarMe_Core_Model_PostbackHandler_Exception($message);
-        }
-    }
-
-    /**
      * @return \Mage_Sales_Model_Order
      * @throws PagarMe_Core_Model_PostbackHandler_Exception
      */
     public function process()
     {
         $this->setOrderAsProcessing();
-        $this->canProcess();
+
+        if (!$this->order->canInvoice()) {
+            $message = $this->buildMessageForHandlerException();
+            $message .= ' can\'t be invoiced';
+            throw new PagarMe_Core_Model_PostbackHandler_Exception($message);
+        }
+
         $invoice = $this
             ->getInvoiceService()
             ->createInvoiceFromOrder($this->order);
