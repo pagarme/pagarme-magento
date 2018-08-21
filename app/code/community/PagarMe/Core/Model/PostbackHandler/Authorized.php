@@ -3,9 +3,10 @@
 class PagarMe_Core_Model_PostbackHandler_Authorized extends PagarMe_Core_Model_PostbackHandler_Base
 {
     /**
-     * Given a paid postback the desired status on magento is processing
+     * Given a authorize postback the desired status on magento is
+     * pending_payment
      */
-    const MAGENTO_DESIRED_STATUS = Mage_Sales_Model_Order::STATE_PROCESSING;
+    const MAGENTO_DESIRED_STATUS = Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
 
     /**
      * Returns the desired state on magento
