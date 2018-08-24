@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c0e44beedc0ba222508c15cfff1a4b9a",
+    "hash": "d4c54286471c980e5b8f2cfeb9579aa9",
     "content-hash": "91d01235bf5031a9a6c937a797b953a5",
     "packages": [
         {
@@ -163,16 +163,16 @@
         },
         {
             "name": "pagarme/pagarme-php",
-            "version": "v3.7.8",
+            "version": "v3.7.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pagarme/pagarme-php.git",
-                "reference": "9bfbda3c57c75e82f243616dadeb5c5d6d2690ba"
+                "reference": "51e411bef2f2861c8caeaecafcdff8fadfc25f53"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pagarme/pagarme-php/zipball/9bfbda3c57c75e82f243616dadeb5c5d6d2690ba",
-                "reference": "9bfbda3c57c75e82f243616dadeb5c5d6d2690ba",
+                "url": "https://api.github.com/repos/pagarme/pagarme-php/zipball/51e411bef2f2861c8caeaecafcdff8fadfc25f53",
+                "reference": "51e411bef2f2861c8caeaecafcdff8fadfc25f53",
                 "shasum": ""
             },
             "require": {
@@ -182,8 +182,8 @@
             "require-dev": {
                 "behat/mink-extension": "^2.2",
                 "ext-mbstring": "*",
-                "pagarme/git-hooks": "dev-master",
-                "phpunit/phpunit": "^4.8"
+                "phpunit/phpunit": "^4.8",
+                "squizlabs/php_codesniffer": "^3.3"
             },
             "type": "lib",
             "autoload": {
@@ -205,7 +205,7 @@
                 "pagarme",
                 "payments brazil"
             ],
-            "time": "2018-06-05 20:20:20"
+            "time": "2018-08-13 12:21:58"
         },
         {
             "name": "react/promise",
