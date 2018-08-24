@@ -84,6 +84,7 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
     {
         $paymentActionConfig = $this->getPaymentActionConfig();
         $asyncTransactionConfig = (bool) $this->getAsyncTransactionConfig();
+        $payment = $this->getInfoInstance();
 
         $stateObject->setState(Mage_Sales_Model_Order::STATE_PROCESSING);
         $stateObject->setStatus(Mage_Sales_Model_Order::STATE_PROCESSING);
@@ -105,7 +106,6 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
             $paymentAction ===
             Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE
         ) {
-            $payment = $this->getInfoInstance();
             $this->authorize(
                 $payment,
                 $payment->getOrder()->getBaseTotalDue()
@@ -406,17 +406,58 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
         return $this;
     }
 
+    /**
+     * @param \PagarMe\Sdk\Transaction\CreditCardTransaction $transaction
+     * @param \Mage_Sales_Model_Order_Payment
+     *
+     * @return \Varien_Object
+     */
     public function handlePaymentStatus(
         CreditCardTransaction $transaction,
-        Varien_Object $payment
+        Mage_Sales_Model_Order_Payment $payment
     ) {
-        switch ($transaction->getStatus()) {
-            case AbstractTransaction::PROCESSING:
-            case AbstractTransaction::REFUSED:
-            case 'pending_review':
-                $payment->setIsTransactionPending(true);
-                break;
+        $order = $payment->getOrder();
+        $notifyCustomer = false;
+        $amount = Mage::helper('core')->currency(
+            $order->getGrandTotal(),
+            true,
+            false
+        );
+
+        if ($transaction->isProcessing()) {
+            $message = 'Processing on gateway. Waiting response';
+            $desiredStatus = Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
         }
+
+        if ($transaction->isPendingReview()) {
+            $message = 'Waiting transaction review on Pagar.me\'s Dashboard';
+            $desiredStatus = Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW;
+        }
+
+        if ($transaction->isRefused()) {
+            $message = 'Transaction refused by Antifraud';
+            $desiredStatus = Mage_Sales_Model_Order::STATE_CANCELED;
+        }
+
+        if ($transaction->isAuthorized()) {
+            $message = 'Authorized amount of %s';
+            $desiredStatus = Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
+            $notifyCustomer = true;
+        }
+
+        if ($transaction->isPaid()) {
+            $message = 'Captured amount of %s';
+            $desiredStatus = Mage_Sales_Model_Order::STATE_PROCESSING;
+            $notifyCustomer = true;
+        }
+
+        $order->setState(
+            $desiredStatus,
+            $desiredStatus,
+            $this->pagarmeCoreHelper->__($message, $amount),
+            $notifyCustomer
+        );
+
         return $payment;
     }
 
@@ -445,7 +486,7 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
         $asyncTransaction = $this->getAsyncTransactionConfig();
         $paymentActionConfig = $this->getPaymentActionConfig();
         $captureTransaction = true;
-        if ($paymentActionConfig === 'authorize_only') {
+        if ($paymentActionConfig === PaymentActionConfig::AUTH_ONLY) {
             $captureTransaction = false;
         }
         $infoInstance = $this->getInfoInstance();
