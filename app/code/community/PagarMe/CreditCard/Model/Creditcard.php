@@ -9,6 +9,7 @@ use PagarMe_CreditCard_Model_Exception_InvalidInstallments as InvalidInstallment
 use PagarMe_CreditCard_Model_Exception_GenerateCard as GenerateCardException;
 use PagarMe_CreditCard_Model_Exception_TransactionsInstallmentsDivergent as TransactionsInstallmentsDivergent;
 use PagarMe_CreditCard_Model_Exception_CantCaptureTransaction as CantCaptureTransaction;
+use PagarMe_Core_Model_System_Config_Source_PaymentAction as PaymentActionConfig;
 
 class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPaymentMethod
 {
@@ -26,6 +27,7 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
     protected $_canRefund = true;
     protected $_canUseForMultishipping = true;
     protected $_canManageRecurringProfiles = true;
+    protected $_isInitializeNeeded = true;
 
     /**
      * @var \PagarMe\Sdk\PagarMe
@@ -67,6 +69,52 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
         $this->transactionModel = Mage::getModel('pagarme_core/transaction');
 
         parent::__construct($attributes);
+    }
+
+    /**
+     * Method that will be executed instead of magento's default workflow
+     * (authorize or capture)
+     *
+     * @param string $paymentAction
+     * @param Varien_Object $stateObject
+     *
+     * @return Mage_Payment_Model_Method_Abstract
+     */
+    public function initialize($paymentAction, $stateObject)
+    {
+        $paymentActionConfig = $this->getPaymentActionConfig();
+        $asyncTransactionConfig = (bool) $this->getAsyncTransactionConfig();
+
+        $stateObject->setState(Mage_Sales_Model_Order::STATE_PROCESSING);
+        $stateObject->setStatus(Mage_Sales_Model_Order::STATE_PROCESSING);
+        $stateObject->setIsNotified(true);
+
+        if (
+            $paymentActionConfig === PaymentActionConfig::AUTH_ONLY ||
+            $asyncTransactionConfig === true
+        ) {
+            $stateObject->setState(
+                Mage_Sales_Model_Order::STATE_PENDING_PAYMENT
+            );
+            $stateObject->setStatus(
+                Mage_Sales_Model_Order::STATE_PENDING_PAYMENT
+            );
+        }
+
+        if (
+            $paymentAction ===
+            Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE
+        ) {
+            $payment = $this->getInfoInstance();
+            $this->authorize(
+                $payment,
+                $payment->getOrder()->getBaseTotalDue()
+            );
+            $payment->setAmountAuthorized(
+                $payment->getOrder()->getTotalDue()
+            );
+        }
+        return $this;
     }
 
     /**
