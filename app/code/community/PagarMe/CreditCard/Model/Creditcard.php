@@ -317,12 +317,6 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
         $invoice->register()->pay();
         $invoice->setTransactionId($this->transaction->getId());
 
-        $order->setState(
-            Mage_Sales_Model_Order::STATE_PROCESSING,
-            true,
-            "pago"
-        );
-
         Mage::getModel('core/resource_transaction')
             ->addObject($order)
             ->addObject($invoice)
@@ -406,6 +400,21 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
         return $this;
     }
 
+    private function buildRefusedReasonMessage()
+    {
+        $refusedReason = $this->transaction->getRefuseReason();
+        $refusedMessage = '';
+        if ($refusedReason === 'acquirer') {
+            $refusedMessage .= ' Transaction unauthorized';
+        }
+
+        if ($refusedReason === 'antifraud') {
+            $refusedMessage .= ' Suspected fraud';
+        }
+
+        return $refusedMessage;
+    }
+
     /**
      * @param \PagarMe\Sdk\Transaction\CreditCardTransaction $transaction
      * @param \Mage_Sales_Model_Order_Payment
@@ -413,7 +422,6 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
      * @return \Varien_Object
      */
     public function handlePaymentStatus(
-        CreditCardTransaction $transaction,
         Mage_Sales_Model_Order_Payment $payment
     ) {
         $order = $payment->getOrder();
@@ -424,28 +432,29 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
             false
         );
 
-        if ($transaction->isProcessing()) {
+        if ($this->transaction->isProcessing()) {
             $message = 'Processing on gateway. Waiting response';
             $desiredStatus = Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
         }
 
-        if ($transaction->isPendingReview()) {
+        if ($this->transaction->isPendingReview()) {
             $message = 'Waiting transaction review on Pagar.me\'s Dashboard';
             $desiredStatus = Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW;
         }
 
-        if ($transaction->isRefused()) {
-            $message = 'Transaction refused by Antifraud';
+        if ($this->transaction->isRefused()) {
+            $message = 'Transaction refused by Gateway';
+            $message .= $this->buildRefusedReasonMessage();
             $desiredStatus = Mage_Sales_Model_Order::STATE_CANCELED;
         }
 
-        if ($transaction->isAuthorized()) {
+        if ($this->transaction->isAuthorized()) {
             $message = 'Authorized amount of %s';
             $desiredStatus = Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
             $notifyCustomer = true;
         }
 
-        if ($transaction->isPaid()) {
+        if ($this->transaction->isPaid()) {
             $message = 'Captured amount of %s';
             $desiredStatus = Mage_Sales_Model_Order::STATE_PROCESSING;
             $notifyCustomer = true;
@@ -537,7 +546,11 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
             $order->setPagarmeTransaction($this->transaction);
             $this->checkInstallments($installments);
 
-            $payment = $this->handlePaymentStatus($this->transaction, $payment);
+            if ($this->transaction->isPaid()) {
+                $this->createInvoice($order);
+            }
+
+            $payment = $this->handlePaymentStatus($payment);
             $payment = $this->insertCardInfosOnPayment(
                 $payment,
                 $this->transaction->getCard()
