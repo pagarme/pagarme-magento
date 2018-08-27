@@ -22,16 +22,6 @@
                 </totals>
             </quote>
         </sales>
-        <events>
-            <sales_order_place_after>
-                <observers>
-                    <order_status> 
-                        <class>pagarme_creditcard/observers_orderObserver</class>
-                        <method>changeStatus</method>
-                    </order_status> 
-                </observers>
-            </sales_order_place_after>
-        </events>
         <models>
             <pagarme_creditcard>
                 <class>PagarMe_CreditCard_Model</class>
