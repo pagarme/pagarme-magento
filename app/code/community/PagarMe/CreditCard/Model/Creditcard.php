@@ -405,7 +405,7 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
         $refusedReason = $this->transaction->getRefuseReason();
         $refusedMessage = '';
         if ($refusedReason === 'acquirer') {
-            $refusedMessage .= ' Transaction unauthorized';
+            $refusedMessage .= ' Unauthorized';
         }
 
         if ($refusedReason === 'antifraud') {
