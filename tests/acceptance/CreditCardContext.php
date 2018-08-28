@@ -1,9 +1,8 @@
 <?php
 
 use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Behat\Tester\Exception\PendingException;
-use PagarMe_Core_Model_CurrentOrder as CurrentOrder;
 use \PagarMe\Magento\Test\Order\OrderProvider;
+use PagarMe_Core_Model_System_Config_Source_PaymentAction as PaymentActionConfig;
 
 require_once __DIR__ . '/../bootstrap.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
@@ -198,7 +197,54 @@ class CreditCardContext extends RawMinkContext
             'payment/pagarme_configurations/creditcard_interest_rate',
             $interestRate
         );
+    }
 
+    /**
+     * @Given the administrator set payment action to :paymentAction and set async configuration to :isAsync
+     */
+    public function theAdministratorSetPaymentActionToAndSetAsyncConfigurationTo(
+        $paymentAction,
+        $isAsync
+    ) {
+        $config = Mage::getModel('core/config');
+
+        $config->saveConfig(
+            'payment/pagarme_configurations/payment_action',
+            $paymentAction
+        );
+
+        $asyncValue = ($isAsync === 'yes') ? '1' : '0';
+
+        $config->saveConfig(
+            'payment/pagarme_configurations/async_transaction',
+            $asyncValue
+        );
+    }
+
+    /**
+     * @Then the order status should be :expectedOrderState
+     */
+    public function theOrderStatusShouldBe($expectedOrderState)
+    {
+        $order = Mage::getModel('sales/order')
+            ->loadByIncrementId($this->createdOrderId);
+
+        PHPUnit_Framework_Assert::assertEquals(
+            $expectedOrderState,
+            $order->getState()
+        );
+
+        $config = Mage::getModel('core/config');
+
+        $config->saveConfig(
+            'payment/pagarme_configurations/payment_action',
+            PaymentActionConfig::AUTH_CAPTURE
+        );
+
+        $config->saveConfig(
+            'payment/pagarme_configurations/async_transaction',
+            0
+        );
     }
 
     /**
@@ -379,6 +425,23 @@ class CreditCardContext extends RawMinkContext
             ),
             strtolower($successMessage)
         );
+    }
+
+    /**
+     * @Then I get the created order id from success page
+     */
+    public function iGetTheCreatedOrderIdFromSuccessPage()
+    {
+
+        $this->waitForElement('.col-main', 3000);
+        $page = $this->session->getPage();
+        $feedbackMessage = $page->find(
+            'css',
+            '.col-main > p'
+        )->getText();
+
+        $orderId = preg_replace('/\D/', '', $feedbackMessage);
+        $this->createdOrderId = $orderId;
     }
 
     /**

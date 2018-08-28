@@ -3,8 +3,10 @@ Feature: Credit Card
     I want to use the transparent checkout for credit card purchases with installments
     So that the clients on my store can buy their goods without knowing that the payment is resolved by Pagar.me
 
-    Scenario: Make a purchase by credit card
+
+    Scenario Outline: Make a purchase by credit card
         Given a registered user
+        And the administrator set payment action to "<payment_action>" and set async configuration to "<isAsync>"
         When I access the store page
         And add any product to basket
         And I go to checkout page
@@ -14,6 +16,14 @@ Feature: Credit Card
         And I confirm my payment information
         And place order
         Then the purchase must be paid with success
+        And I get the created order id from success page
+        And the order status should be "<expected_order_status>"
+        Examples:
+        | payment_action    | isAsync | expected_order_status    |
+        | authorize_capture | no      | processing               |
+        | authorize_only    | no      | pending_payment          |
+        | authorize_only    | yes     | pending_payment          |
+        | authorize_capture | yes     | pending_payment          |
 
     Scenario Outline: Change the max installments configuration
         Given a registered user
