@@ -242,46 +242,4 @@ class PagarMeCreditCardModelCreditcardTest extends PHPUnit_Framework_TestCase
         $creditCardModel->capture();
         $this->assertTrue($creditCardModel->transactionIsPaid());
     }
-
-    /**
-     * Returns status that should be used to set the payment object as Pending
-     *
-     * @return array
-     */
-    public function unpaidTransactions()
-    {
-        return [
-            [AbstractTransaction::REFUSED],
-            [AbstractTransaction::PROCESSING],
-            ['pending_review']
-        ];
-    }
-    /**
-     * @test
-     * @dataProvider unpaidTransactions
-     */
-    public function paymentShouldBePendingBasedOnItsUnpaidTransaction(
-        $unpaidStatus
-    )
-    {
-        $payment = Mage::getModel('sales/order_payment');
-
-        $transactionMock = $this->getMockBuilder('CreditCardTransaction')
-            ->disableOriginalConstructor()
-            ->setMethods(['getStatus', ])
-            ->getMock();
-
-        $transactionMock
-            ->method('getStatus')
-            ->willReturn($unpaidStatus);
-
-        $creditCardModel = Mage::getModel('pagarme_creditcard/creditcard');
-
-        $payment = $creditCardModel->handlePaymentStatus(
-            $transactionMock,
-            $payment
-        );
-
-        $this->assertTrue($payment->getIsTransactionPending());
-    }
 }

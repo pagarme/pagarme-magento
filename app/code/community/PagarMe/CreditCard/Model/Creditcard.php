@@ -421,7 +421,7 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
      *
      * @return \Varien_Object
      */
-    public function handlePaymentStatus(
+    private function handlePaymentStatus(
         Mage_Sales_Model_Order_Payment $payment
     ) {
         $order = $payment->getOrder();
