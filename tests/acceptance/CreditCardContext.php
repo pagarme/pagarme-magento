@@ -432,7 +432,6 @@ class CreditCardContext extends RawMinkContext
      */
     public function iGetTheCreatedOrderIdFromSuccessPage()
     {
-
         $this->waitForElement('.col-main', 3000);
         $page = $this->session->getPage();
         $feedbackMessage = $page->find(

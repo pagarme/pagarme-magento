@@ -56,6 +56,8 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
 
     const AUTHORIZED = 'authorized';
     const PAID = 'paid';
+    const REFUSE_REASON_ACQUIRER = 'acquirer';
+    const REFUSE_REASON_ANTIFRAUD = 'antifraud';
 
     public function __construct($attributes, PagarMeSdk $sdk = null)
     {
@@ -402,14 +404,12 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
 
     private function buildRefusedReasonMessage()
     {
-        $refusedReason = $this->transaction->getRefuseReason();
-        $refusedMessage = '';
-        if ($refusedReason === 'acquirer') {
-            $refusedMessage .= ' Unauthorized';
-        }
+        $refusedMessage = 'Unauthorized';
 
-        if ($refusedReason === 'antifraud') {
-            $refusedMessage .= ' Suspected fraud';
+        $refusedReason = $this->transaction->getRefuseReason();
+
+        if ($refusedReason === self::REFUSE_REASON_ANTIFRAUD) {
+            $refusedMessage = 'Suspected fraud';
         }
 
         return $refusedMessage;
@@ -433,7 +433,7 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
         );
 
         if ($this->transaction->isProcessing()) {
-            $message = 'Processing on gateway. Waiting response';
+            $message = 'Processing on Gateway. Waiting response';
             $desiredStatus = Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
         }
 
@@ -443,8 +443,10 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
         }
 
         if ($this->transaction->isRefused()) {
-            $message = 'Transaction refused by Gateway';
-            $message .= $this->buildRefusedReasonMessage();
+            $message = sprintf(
+                'Transaction refused by Gateway. %s',
+                $this->buildRefusedReasonMessage()
+            );
             $desiredStatus = Mage_Sales_Model_Order::STATE_CANCELED;
         }
 
