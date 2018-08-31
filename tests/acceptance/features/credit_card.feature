@@ -25,6 +25,20 @@ Feature: Credit Card
         | authorize_only    | yes     | pending_payment          |
         | authorize_capture | yes     | pending_payment          |
 
+    Scenario: Make a refused order by credit card
+        Given a registered user
+        When I access the store page
+        And add any product to basket
+        And I go to checkout page
+        And login with registered user
+        And confirm billing and shipping address information
+        And choose pay with transparent checkout using credit card
+        And I give a invalid payment information
+        And place order
+        Then the purchase must be paid with success
+        And I get the created order id from success page
+        And the order status should be "canceled"
+
     Scenario Outline: Change the max installments configuration
         Given a registered user
         When I set max installments to "<max_installments>"

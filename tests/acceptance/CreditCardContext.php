@@ -367,6 +367,31 @@ class CreditCardContext extends RawMinkContext
     }
 
     /**
+     * @When I give a invalid payment information
+     */
+    public function giveAInvalidPaymentInformation()
+    {
+        $page = $this->session->getPage();
+
+        $page->find('css', '#pagarme_creditcard_creditcard_number')
+            ->setValue('4111111111111111');
+
+        $page->find('css', '#pagarme_creditcard_creditcard_owner')
+            ->setValue('Luiz Maria da Silva');
+
+        $page->find('css', '#pagarme_creditcard_creditcard_expiration_date')
+            ->setValue('0715');
+
+        $page->find('css', '#pagarme_creditcard_creditcard_cvv')
+            ->setValue('123');
+
+        $this->session->getPage()->find(
+            'css',
+            '#payment-buttons-container button'
+        )->click();
+    }
+
+    /**
      * @When I choose :maxInstallments
      */
     public function iChooseMaxInstallments($maxInstallments)
