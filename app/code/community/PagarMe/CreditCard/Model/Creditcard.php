@@ -51,13 +51,16 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
      */
     protected $transactionModel;
 
+    /**
+     * @var \Varien_Object
+     */
+    private $stateObject;
+
     const PAGARME_MAX_INSTALLMENTS = 12;
     const POSTBACK_ENDPOINT = 'transaction_creditcard';
 
     const AUTHORIZED = 'authorized';
     const PAID = 'paid';
-    const REFUSE_REASON_ACQUIRER = 'acquirer';
-    const REFUSE_REASON_ANTIFRAUD = 'antifraud';
 
     public function __construct($attributes, PagarMeSdk $sdk = null)
     {
@@ -84,13 +87,15 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
      */
     public function initialize($paymentAction, $stateObject)
     {
+        $this->stateObject = $stateObject;
+
         $paymentActionConfig = $this->getPaymentActionConfig();
         $asyncTransactionConfig = (bool) $this->getAsyncTransactionConfig();
         $payment = $this->getInfoInstance();
 
-        $stateObject->setState(Mage_Sales_Model_Order::STATE_PROCESSING);
-        $stateObject->setStatus(Mage_Sales_Model_Order::STATE_PROCESSING);
-        $stateObject->setIsNotified(true);
+        $this->stateObject->setState(Mage_Sales_Model_Order::STATE_PROCESSING);
+        $this->stateObject->setStatus(Mage_Sales_Model_Order::STATE_PROCESSING);
+        $this->stateObject->setIsNotified(true);
 
         if (
             $paymentActionConfig === PaymentActionConfig::AUTH_ONLY ||
@@ -432,42 +437,63 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
             false
         );
 
-        if ($this->transaction->isProcessing()) {
-            $message = 'Processing on Gateway. Waiting response';
-            $desiredStatus = Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
-        }
+        switch($this->transaction->getStatus()) {
+            case AbstractTransaction::PROCESSING:
+                $message = 'Processing on Gateway. Waiting response';
+                $desiredStatus = Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
 
-        if ($this->transaction->isPendingReview()) {
-            $message = 'Waiting transaction review on Pagar.me\'s Dashboard';
-            $desiredStatus = Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW;
-        }
+                $order->setState(
+                    $desiredStatus,
+                    $desiredStatus,
+                    $this->pagarmeCoreHelper->__($message, $amount),
+                    $notifyCustomer
+                );
+                break;
+            case AbstractTransaction::REFUSED:
+                $canceledHandler = new PagarMe_Core_Model_OrderStatusHandler_Canceled(
+                    $order,
+                    $this->transaction
+                );
+                $order = $canceledHandler->handleStatus();
+                $this->stateObject->setState($order->getState());
+                $this->stateObject->setStatus($order->getStatus());
+                break;
+            case AbstractTransaction::PENDING_REVIEW:
+                $message = 'Waiting transaction review on Pagar.me\'s Dashboard';
+                $desiredStatus = Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW;
 
-        if ($this->transaction->isRefused()) {
-            $message = sprintf(
-                'Transaction refused by Gateway. %s',
-                $this->buildRefusedReasonMessage()
-            );
-            $desiredStatus = Mage_Sales_Model_Order::STATE_CANCELED;
-        }
+                $order->setState(
+                    $desiredStatus,
+                    $desiredStatus,
+                    $this->pagarmeCoreHelper->__($message, $amount),
+                    $notifyCustomer
+                );
+                break;
+            case AbstractTransaction::AUTHORIZED:
+                $message = 'Authorized amount of %s';
+                $desiredStatus = Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
+                $notifyCustomer = true;
 
-        if ($this->transaction->isAuthorized()) {
-            $message = 'Authorized amount of %s';
-            $desiredStatus = Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
-            $notifyCustomer = true;
-        }
+                $order->setState(
+                    $desiredStatus,
+                    $desiredStatus,
+                    $this->pagarmeCoreHelper->__($message, $amount),
+                    $notifyCustomer
+                );
+                break;
+            case AbstractTransaction::PAID:
+                $message = 'Captured amount of %s';
+                $desiredStatus = Mage_Sales_Model_Order::STATE_PROCESSING;
+                $notifyCustomer = true;
 
-        if ($this->transaction->isPaid()) {
-            $message = 'Captured amount of %s';
-            $desiredStatus = Mage_Sales_Model_Order::STATE_PROCESSING;
-            $notifyCustomer = true;
+                $order->setState(
+                    $desiredStatus,
+                    $desiredStatus,
+                    $this->pagarmeCoreHelper->__($message, $amount),
+                    $notifyCustomer
+                );
+                break;
         }
-
-        $order->setState(
-            $desiredStatus,
-            $desiredStatus,
-            $this->pagarmeCoreHelper->__($message, $amount),
-            $notifyCustomer
-        );
 
         return $payment;
     }
