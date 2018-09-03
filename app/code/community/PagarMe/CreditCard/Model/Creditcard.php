@@ -567,7 +567,7 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
                 $installments,
                 $captureTransaction,
                 $postbackUrl,
-                [],
+                ['order_id' => $order->getIncrementId()],
                 $extraAttributes
             );
 
