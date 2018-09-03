@@ -53,6 +53,16 @@
             </modules>
         </translate>
     </admin>
+    <crontab>
+        <jobs>
+            <cancel_boleto_unpaid_orders>
+                <schedule><cron_expr>1/1 * * * * </cron_expr></schedule>
+                <run>
+                    <model>pagarme_boleto/UnpaidBoleto::cancel</model>
+                </run>
+            </cancel_boleto_unpaid_orders>
+        </jobs>
+    </crontab>
     <default>
         <payment>
             <pagarme_boleto>
