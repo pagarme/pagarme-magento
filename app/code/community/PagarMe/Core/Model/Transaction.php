@@ -3,6 +3,7 @@
 use PagarMe_Core_Model_CurrentOrder as CurrentOrder;
 use PagarMe\Sdk\Transaction\AbstractTransaction;
 use PagarMe\Sdk\Transaction\CreditCardTransaction;
+use PagarMe\Sdk\Transaction\BoletoTransaction;
 
 class PagarMe_Core_Model_Transaction extends Mage_Core_Model_Abstract
 {
@@ -26,6 +27,36 @@ class PagarMe_Core_Model_Transaction extends Mage_Core_Model_Abstract
     public function getReferenceKey()
     {
         return md5(uniqid(rand()));
+    }
+
+    private function saveCreditCardInformation($order, $transaction)
+    {
+        $installments = $transaction->getInstallments();
+        $quote = Mage::getModel('sales/quote')
+            ->load($order->getQuoteId());
+
+        $pagarMeSdk = Mage::getModel('pagarme_core/sdk_adapter');
+
+        $currentOrder = new CurrentOrder($quote, $pagarMeSdk);
+        $interestRate = $this->getInterestRateStoreConfig();
+        $rateAmount = $currentOrder->rateAmountInBRL(
+            $installments,
+            $this->getFreeInstallmentStoreConfig(),
+            $interestRate
+        );
+        $order->setInterestAmount($rateAmount);
+
+        $this
+            ->setInstallments($installments)
+            ->setInterestRate($interestRate)
+            ->setRateAmount($rateAmount);
+    }
+
+    private function saveBoletoInformation($transaction)
+    {
+        $this->setBoletoExpirationDate(
+            $transaction->getBoletoExpirationDate()->getTimestamp()
+        );
     }
 
     /**
@@ -61,25 +92,14 @@ class PagarMe_Core_Model_Transaction extends Mage_Core_Model_Abstract
             !is_null($transaction) &&
             $transaction instanceof CreditCardTransaction
         ) {
-            $installments = $transaction->getInstallments();
-            $quote = Mage::getModel('sales/quote')
-                ->load($order->getQuoteId());
+            $this->saveCreditCardInformation($order, $transaction);
+        }
 
-            $pagarMeSdk = Mage::getModel('pagarme_core/sdk_adapter');
-
-            $currentOrder = new CurrentOrder($quote, $pagarMeSdk);
-            $interestRate = $this->getInterestRateStoreConfig();
-            $rateAmount = $currentOrder->rateAmountInBRL(
-                    $installments,
-                    $this->getFreeInstallmentStoreConfig(),
-                    $interestRate
-            );
-            $order->setInterestAmount($rateAmount);
-
-            $this
-                ->setInstallments($installments)
-                ->setInterestRate($interestRate)
-                ->setRateAmount($rateAmount);
+        if (
+            !is_null($transaction) &&
+            $transaction instanceof BoletoTransaction
+        ) {
+            $this->saveBoletoInformation($transaction);
         }
 
         $this->save();
