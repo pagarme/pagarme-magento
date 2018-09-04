@@ -450,7 +450,7 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
                 );
                 break;
             case AbstractTransaction::REFUSED:
-                $canceledHandler = new PagarMe_Core_Model_OrderStatusHandler_Canceled(
+                $canceledHandler = new PagarMe_Core_Model_OrderStatusHandler_RefusedTransaction(
                     $order,
                     $this->transaction
                 );

@@ -37,7 +37,8 @@ class PagarMe_Core_Model_PostbackHandler_Refused extends PagarMe_Core_Model_Post
 
         $canceledHandler = new PagarMe_Core_Model_OrderStatusHandler_Canceled(
             $this->order,
-            $transaction
+            $transaction,
+            $transaction->getRefuseReason()
         );
         $canceledHandler->handleStatus();
 

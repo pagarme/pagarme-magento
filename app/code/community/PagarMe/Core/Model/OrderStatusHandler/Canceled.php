@@ -5,14 +5,18 @@ use PagarMe_Core_Model_OrderStatusHandler_Base as BaseHandler;
 class PagarMe_Core_Model_OrderStatusHandler_Canceled extends BaseHandler
 {
     /**
-     * Returns refuse message sent by Pagar.me API
-     * @return string
+     * @var string cancel message to be displayed on order's history comments
      */
-    private function buildRefusedReasonMessage()
-    {
-        return sprintf(
-            'Refused by %s', $this->transaction->getRefuseReason()
-        );
+    private $cancelMessage;
+
+
+    public function __construct(
+        Mage_Sales_Model_Order $order,
+        \PagarMe\Sdk\Transaction\AbstractTransaction $transaction,
+        $cancelMessage
+    ) {
+        $this->cancelMessage = $cancelMessage;
+        parent::__construct($order, $transaction);
     }
 
     /**
@@ -23,11 +27,11 @@ class PagarMe_Core_Model_OrderStatusHandler_Canceled extends BaseHandler
     private function cancel()
     {
         if ($this->order->canCancel()) {
-            $refuseMessage = Mage::helper('pagarme_core')
-                ->__($this->buildRefusedReasonMessage());
+            $cancelMessage = Mage::helper('pagarme_core')
+                ->__($this->cancelMessage);
 
             $this->order->getPayment()->cancel();
-            $this->order->registerCancellation($refuseMessage);
+            $this->order->registerCancellation($cancelMessage);
 
             Mage::dispatchEvent(
                 'order_cancel_after',
@@ -48,6 +52,15 @@ class PagarMe_Core_Model_OrderStatusHandler_Canceled extends BaseHandler
         $this->cancel();
 
         $magentoTransaction->addObject($this->order)->save();
+
+        $logMessage = sprintf(
+            'order %s, transaction %s updated to %s',
+            $this->order->getId(),
+            $this->transaction->getId(),
+            Mage_Sales_Model_Order::STATE_CANCELED
+        );
+
+        Mage::log($logMessage);
 
         return $this->order;
     }
