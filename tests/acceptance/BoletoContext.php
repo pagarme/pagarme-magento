@@ -137,9 +137,9 @@ class BoletoContext extends RawMinkContext
             );
     }
     /**
-     * @Then the purchase must be paid with success
+     * @Then the purchase must be placed with success
      */
-    public function thePurchaseMustBePaidWithSuccess()
+    public function thePurchaseMustBePlacedWithSuccess()
     {
         $this->session->wait(5000);
         $page = $this->session->getPage();
@@ -166,7 +166,7 @@ class BoletoContext extends RawMinkContext
         Mage::getSingleton('customer/session')->logout();
     }
 
- 	/**
+    /**
      * @Then a link to boleto must be provided
      */
     public function aLinkToBoletoMustBeProvided()
@@ -185,6 +185,32 @@ class BoletoContext extends RawMinkContext
                 'css',
                 '.pagarme_boleto_info_boleto a'
             )->getAttribute('href')
+        );
+    }
+
+    /**
+     * @Then I get the created order id 
+     */
+    public function iGetTheCreatedOrderId()
+    {
+        $orderIdArea = $this->session->getPage()
+             ->find('css', '.col-main > p')
+             ->getText();
+
+        $this->createdOrderId = preg_replace('/\D/', '', $orderIdArea);
+    }
+
+    /**
+     * @Then the order status should be :expectedOrderState
+     */
+    public function theOrderStatusShouldBe($expectedOrderState)
+    {
+        $order = Mage::getModel('sales/order')
+            ->loadByIncrementId($this->createdOrderId);
+
+        PHPUnit_Framework_Assert::assertEquals(
+            $expectedOrderState,
+            $order->getState()
         );
     }
 }

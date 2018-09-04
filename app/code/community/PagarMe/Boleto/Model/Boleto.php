@@ -12,7 +12,8 @@ class PagarMe_Boleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMeth
     protected $_canRefund = true;
     protected $_canUseForMultishipping = true;
     protected $_canManageRecurringProfiles = true;
- 
+    protected $_isInitializeNeeded = true;
+
     const PAGARME_BOLETO = 'pagarme_boleto';
     const POSTBACK_ENDPOINT = 'transaction_boleto';
 
@@ -37,6 +38,38 @@ class PagarMe_Boleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMeth
         $this->pagarmeCoreHelper = Mage::helper('pagarme_core');
         parent::__construct($attributes);
     }
+
+    /**
+     * Method that will be executed instead of magento's authorize default
+     * workflow
+     *
+     * @param string $paymentAction
+     * @param Varien_Object $stateObject
+     *
+     * @return Mage_Payment_Model_Method_Abstract
+     */
+    public function initialize($paymentAction, $stateObject)
+    {
+        $this->stateObject = $stateObject;
+
+        $payment = $this->getInfoInstance();
+
+        $this->stateObject->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT);
+        $this->stateObject->setStatus(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT);
+        $this->stateObject->setIsNotified(true);
+
+        $this->authorize(
+            $payment,
+            $payment->getOrder()->getBaseTotalDue()
+        );
+
+        $payment->setAmountAuthorized(
+            $payment->getOrder()->getTotalDue()
+        );
+
+        return $this;
+    }
+
 
     /**
      * @param type $quote
@@ -113,6 +146,24 @@ class PagarMe_Boleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMeth
     }
 
     /**
+     * Given a boleto, set its related order as pending_payment
+     *
+     * @param int $amount
+     * @param Mage_Sales_Model_Order $order
+     */
+    private function setOrderAsPendingPayment($amount, $order)
+    {
+        $message = 'Boleto is waiting payment';
+        $notifyCustomer = true;
+        $order->setState(
+            Mage_Sales_Model_Order::STATE_PENDING_PAYMENT,
+            Mage_Sales_Model_Order::STATE_PENDING_PAYMENT,
+            $this->pagarmeCoreHelper->__($message, $amount),
+            $notifyCustomer
+        );
+    }
+
+    /**
      * @return string
      */
     public function getReferenceKey()
@@ -120,11 +171,18 @@ class PagarMe_Boleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMeth
         return Mage::getModel('pagarme_core/transaction')
             ->getReferenceKey();
     }
-    
+
+    /**
+     * @param Varien_Object $payment
+     * @param float $amount
+     *
+     * @return Mage_Payment_Model_Abstract
+     *
+     * @throws Mage_Core_Exception
+     */
     public function authorize(Varien_Object $payment, $amount)
     {
         try {
-           
             $infoInstance = $this->getInfoInstance();
             $quote = Mage::getSingleton('checkout/session')->getQuote();
             $billingAddress = $quote->getBillingAddress();
@@ -165,16 +223,21 @@ class PagarMe_Boleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMeth
                 'async' => false,
                 'reference_key' => $referenceKey
             ];
+
+            $amount = $this->pagarmeCoreHelper
+                ->parseAmountToInteger($quote->getGrandTotal());
+
             $this->transaction = $this->sdk
                 ->transaction()
                 ->boletoTransaction(
-                    $this->pagarmeCoreHelper
-                    ->parseAmountToInteger($quote->getGrandTotal()),
-                        $customerPagarMe,
-                        $this->getUrlForPostback(),
-                        ['order_id' => $order->getIncrementId()],
-                        $extraAttributes
-                    );
+                    $amount,
+                    $customerPagarMe,
+                    $this->getUrlForPostback(),
+                    ['order_id' => $order->getIncrementId()],
+                    $extraAttributes
+                );
+
+            $this->setOrderAsPendingPayment($amount, $order);
 
             $infoInstance->setAdditionalInformation(
                 $this->extractAdditionalInfo($infoInstance, $this->transaction, $order)
@@ -196,6 +259,7 @@ class PagarMe_Boleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMeth
             });
             Mage::throwException($response);
         }
+
         return $this;
     }
     

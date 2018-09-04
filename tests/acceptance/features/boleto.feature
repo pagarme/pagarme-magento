@@ -13,5 +13,7 @@ Feature: Boleto
         And choose pay with transparent checkout using boleto 
         And I confirm my payment information
         And place order
-        Then the purchase must be paid with success
+        Then the purchase must be placed with success
         And a link to boleto must be provided
+        And I get the created order id
+        And the order status should be "pending_payment"

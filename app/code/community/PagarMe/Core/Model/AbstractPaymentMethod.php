@@ -3,6 +3,8 @@
 abstract class PagarMe_Core_Model_AbstractPaymentMethod extends Mage_Payment_Model_Method_Abstract
 {
     use PagarMe_Core_Trait_ConfigurationsAccessor;
+
+    protected $_isInitializeNeeded = true;
     
     /**
      * Returns payment method code for postback route
