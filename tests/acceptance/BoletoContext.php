@@ -194,8 +194,8 @@ class BoletoContext extends RawMinkContext
     public function iGetTheCreatedOrderId()
     {
         $orderIdArea = $this->session->getPage()
-             ->find('css', '.col-main > p')
-             ->getText();
+            ->find('css', '.col-main > p')
+            ->getText();
 
         $this->createdOrderId = preg_replace('/\D/', '', $orderIdArea);
     }
@@ -212,5 +212,27 @@ class BoletoContext extends RawMinkContext
             $expectedOrderState,
             $order->getState()
         );
+    }
+
+    /**
+     * @Then simulate the boleto is expired
+     */
+    public function simulateTheBoletoIsExpired() {
+        $orderId = ltrim($this->createdOrderId, '1');
+
+        $connection = Mage::getSingleton('core/resource')->getConnection('core_write');
+
+        $query = "UPDATE pagarme_transaction SET boleto_expiration_date = '2018-08-02 03:00:00' WHERE order_id = " . $orderId;
+
+        $connection->query($query);
+    }
+
+    /**
+     * @Then cancel orders with expired boletos by cron job model
+     */
+    public function cancelOrdersWithExpiredBoletosByCronJobModel() {
+        $unpaidBoletos = new PagarMe_Boleto_Model_UnpaidBoleto();
+
+        $unpaidBoletos->cancel();
     }
 }
