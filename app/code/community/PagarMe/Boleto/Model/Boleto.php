@@ -70,7 +70,6 @@ class PagarMe_Boleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMeth
         return $this;
     }
 
-
     /**
      * @param type $quote
      *
@@ -146,7 +145,7 @@ class PagarMe_Boleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMeth
     }
 
     /**
-     * Given a boleto, set its related order as pending_payment
+     * Given a boleto, set its related order status as pending_payment
      *
      * @param int $amount
      * @param Mage_Sales_Model_Order $order

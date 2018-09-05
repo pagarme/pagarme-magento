@@ -51,5 +51,5 @@
 "Refused by antifraud","Recusada pelo antifraude"
 "Development environment configurations","Configurações de ambiente dedesenvolvimento"
 "Used only if developer mode is enabled. It'll customize postback url during transactions creation","Usado somente se o modo de desenvolvimento estiver ativo. Altera o parametro postback_url durante a criação de transações"
-"Canceled due unpaid boleto. Expiration date was %s","Cancelado devido à boleto não pago, a data de expiração era %s"
+"Canceled due unpaid boleto. Expiration date was %s","Cancelado devido à boleto não pago. Data de expiração era %s"
 "Boleto is waiting payment","Aguardando pagamento do boleto"

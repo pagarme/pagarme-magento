@@ -4,6 +4,9 @@ use PagarMe_Core_Model_OrderStatusHandler_Base as BaseHandler;
 
 class PagarMe_Core_Model_OrderStatusHandler_UnpaidBoleto extends BaseHandler
 {
+    /**
+     * @return string
+     */
     private function buildCancelMessage()
     {
         $message = sprintf(

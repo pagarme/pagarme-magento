@@ -29,6 +29,10 @@ class PagarMe_Core_Model_Transaction extends Mage_Core_Model_Abstract
         return md5(uniqid(rand()));
     }
 
+    /**
+     * @param Mage_Sales_Model_Order $order
+     * @param CreditCardTransaction $transaction
+     */
     private function saveCreditCardInformation($order, $transaction)
     {
         $installments = $transaction->getInstallments();
@@ -52,6 +56,9 @@ class PagarMe_Core_Model_Transaction extends Mage_Core_Model_Abstract
             ->setRateAmount($rateAmount);
     }
 
+    /**
+     * @param BoletoTransaction $transaction
+     */
     private function saveBoletoInformation($transaction)
     {
         $this->setBoletoExpirationDate(
