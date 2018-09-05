@@ -13,6 +13,7 @@ Módulo de integração Pagar.me para Magento 1.x
 
 - [Magento Community](https://magento.com/products/community-edition) 1.7.x, 1.8.x ou 1.9.x.
 - [PHP](http://php.net) >= 5.4.x
+- Cron
 
 ## Instalação 
 
@@ -30,6 +31,23 @@ Módulo de integração Pagar.me para Magento 1.x
 * `Número de linhas em um endereço de rua` com valor `4`
 *  `Exibir Tax/Vat` com valor `Habilitado`
 7. Salve as configurações
+
+### Configuração de cancelamento automático de boletos não pagos
+
+Pedidos que forem criados na plataforma com boleto como forma de pagamento, 
+deverão ser cancelados após o vencimento. O módulo possui um processo 
+automatizado que, identifica os boletos pendentes e, se em **4** dias após a 
+data de vencimento não houver o pagamento, o pedido é **cancelado**.
+
+Para que este processo funcione é preciso que as a _cron_ da plataforma seja 
+configurada no servidor:
+
+`*/5 * * * * sh /path/to/your/magento/site/root/cron.sh`
+
+A instrução acima irá executar o módulo de gerenciamento de tarefas agendadas
+ a cada 5 minutos.
+
+Mais detalhes sobre esta configuração no [link](https://amasty.com/blog/configure-magento-cron-job/)
 
 ## Para desenvolvedores - Avançado
 
