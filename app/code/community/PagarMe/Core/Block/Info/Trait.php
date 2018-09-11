@@ -38,6 +38,10 @@ trait PagarMe_Core_Block_Info_Trait
     {
         $order = $this->getInfo()->getOrder();
 
+        if (is_null($order)) {
+            throw new Exception('Order doesn\'t exist');
+        }
+
         $pagarmeInfosRelated = \Mage::getModel('pagarme_core/service_order')
             ->getInfosRelatedByOrderId(
                 $order->getId()
