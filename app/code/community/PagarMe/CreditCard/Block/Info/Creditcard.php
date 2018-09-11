@@ -2,6 +2,7 @@
 
 class PagarMe_CreditCard_Block_Info_Creditcard extends Mage_Payment_Block_Info_Cc
 {
+    use PagarMe_Core_Block_Info_Trait;
 
     private $helper;
 
@@ -53,49 +54,6 @@ class PagarMe_CreditCard_Block_Info_Creditcard extends Mage_Payment_Block_Info_C
     }
 
     /**
-     * @deprecated
-     * @see \PagarMe_Core_Block_Info_Trait::getTransaction()
-     */
-    public function getTransaction()
-    {
-        $pagarmeDbTransaction = $this->getPagePagarmeDbTransaction();
-        return $this
-            ->fetchPagarmeTransactionFromAPi(
-                $pagarmeDbTransaction->getTransactionId()
-            );
-    }
-
-    /**
-     * @deprecated
-     * @see \PagarMe_Core_Block_Info_Trait::getTransactionIdFromDb()
-     */
-    private function getPagePagarmeDbTransaction()
-    {
-        $order = $this->getInfo()->getOrder();
-        
-        if (is_null($order)) { 
-            throw new Exception('Order doesn\'t exist');
-        }
-
-        return \Mage::getModel('pagarme_core/service_order')
-            ->getTransactionByOrderId(
-                $order->getId()
-            );
-    }
-
-    /**
-     * @deprecated
-     * @see \PagarMe_Core_Block_Info_Trait::fetchPagarmeTransactionFromAPi()
-     */
-    private function fetchPagarmeTransactionFromAPi($transactionId)
-    {
-        return \Mage::getModel('pagarme_core/sdk_adapter')
-            ->getPagarMeSdk()
-            ->transaction()
-            ->get($transactionId);
-    }
-
-    /**
      * Render the block only if there's a transaction object
      *
      * @return string
@@ -104,10 +62,10 @@ class PagarMe_CreditCard_Block_Info_Creditcard extends Mage_Payment_Block_Info_C
     {
         try {
             $this->getTransaction();
-
-            return parent::renderView();
-        } catch (Exception $e) {
-            return '';
+        } catch (\Exception $exception) {
+            $this->setTemplate('pagarme/form/payment_method.phtml');
         }
+
+        return parent::renderView();
     }
 }
