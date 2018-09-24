@@ -1,8 +1,10 @@
 <?php
 
-class PagarMe_Core_Model_CurrentOrder
-{
+class PagarMe_Core_Model_CurrentOrder{
 
+    /**
+     * @var \Mage_Sales_Model_Quote
+     */
     private $quote;
     private $pagarMeSdk;
 

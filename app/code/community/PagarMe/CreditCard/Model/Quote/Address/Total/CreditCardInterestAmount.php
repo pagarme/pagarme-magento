@@ -25,8 +25,6 @@ class PagarMe_CreditCard_Model_Quote_Address_Total_CreditCardInterestAmount
             $this->paymentIsntInterestFree()
         ) {
             $paymentMethodParameters = Mage::app()->getRequest()->getPost()['payment'];
-            $address->setDiscountAmount(0);
-            $address->setBaseDiscountAmount(0);
             $this->interestValue = $this->interestAmountInReals(
                 Mage::getSingleton('checkout/session')->getQuote(),
                 $paymentMethodParameters
@@ -34,6 +32,9 @@ class PagarMe_CreditCard_Model_Quote_Address_Total_CreditCardInterestAmount
 
             $this->_addAmount($this->interestValue);
             $this->_addBaseAmount($this->interestValue);
+
+            $address->setGrandTotal($address->getGrandTotal() + $this->interestValue);
+            $address->setBaseGrandTotal($address->getBaseGrandTotal() + $this->interestValue);
         }
 
         return $this;
