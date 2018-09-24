@@ -4,11 +4,6 @@ use PagarMe\Sdk\Transaction\AbstractTransaction;
 trait PagarMe_Core_Block_Info_Trait
 {
     /**
-     * @var AbstractTransaction
-     */
-    private $transaction;
-
-    /**
      * @codeCoverageIgnore
      *
      * @return AbstractTransaction
