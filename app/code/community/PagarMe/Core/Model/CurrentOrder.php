@@ -1,6 +1,7 @@
 <?php
 
-class PagarMe_Core_Model_CurrentOrder{
+class PagarMe_Core_Model_CurrentOrder
+{
 
     /**
      * @var \Mage_Sales_Model_Quote
@@ -19,7 +20,7 @@ class PagarMe_Core_Model_CurrentOrder{
         $maxInstallments,
         $freeInstallments,
         $interestRate
-    ){
+    ) {
         $amount = $this->productsTotalValueInCents();
         return $this->pagarMeSdk->getPagarMeSdk()
             ->calculation()
@@ -32,10 +33,13 @@ class PagarMe_Core_Model_CurrentOrder{
     }
 
     /**
-     *  @deprecated
-     *  @see self::productsTotalValueInCents
+     * @deprecated
+     * @see self::productsTotalValueInCents
+     *
+     * @return int
      */
-    public function productsTotalValueInCents() {
+    public function productsTotalValueInCents()
+    {
         return $this->orderGrandTotalInCents();
     }
 
@@ -60,9 +64,20 @@ class PagarMe_Core_Model_CurrentOrder{
         return Mage::helper('pagarme_core')->parseAmountToFloat($total);
     }
 
-    //May result in slowing the payment method view in the checkout
-    public function rateAmountInBRL($installmentsValue, $freeInstallments, $interestRate)
-    {
+    /**
+     * May result in slowing the payment method view in the checkout
+     *
+     * @param int $installmentsValue
+     * @param int $freeInstallments
+     * @param float $interestRate
+     *
+     * @return float
+     */
+    public function rateAmountInBRL(
+        $installmentsValue,
+        $freeInstallments,
+        $interestRate
+    ) {
         $installments = $this->calculateInstallments(
             $installmentsValue,
             $freeInstallments,
@@ -71,6 +86,7 @@ class PagarMe_Core_Model_CurrentOrder{
 
         $installmentTotal = $installments[$installmentsValue]['total_amount'];
         return Mage::helper('pagarme_core')->parseAmountToFloat(
-            $installmentTotal - $this->productsTotalValueInCents());
+            $installmentTotal - $this->productsTotalValueInCents()
+        );
     }
 }

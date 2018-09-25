@@ -691,7 +691,6 @@ class CreditCardContext extends RawMinkContext
         }
     }
 
-
     /**
      * @Then the checkout order review interest amount should be :interestAmount
      */

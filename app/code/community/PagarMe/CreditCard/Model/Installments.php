@@ -2,13 +2,39 @@
 
 class PagarMe_CreditCard_Model_Installments
 {
+    /**
+     * @var \PagarMe\Sdk\PagarMe
+     */
     private $sdk;
 
+    /**
+     * @var integer
+     */
     private $amount;
+
+    /**
+     * @var float
+     */
     private $interestRate;
+
+    /**
+     * @var integer
+     */
     private $freeInstallments;
+
+    /**
+     * @var integer
+     */
     private $maxInstallments;
 
+    /**
+     * @param int $amount
+     * @param int $installments
+     * @param int $freeInstallments
+     * @param float $interestRate
+     * @param int $maxInstallments
+     * @param \PagarMe\Sdk\PagarMe $sdk
+     */
     public function __construct(
         $amount,
         $installments,
@@ -18,10 +44,6 @@ class PagarMe_CreditCard_Model_Installments
         $sdk = null
     ) {
         $this->sdk = $sdk;
-        if (is_null($sdk)) {
-            $this->sdk = Mage::getModel('pagarme_core/sdk_adapter')->getPagarmeSdk();
-        }
-
         $this->amount = $amount;
         $this->installments = $installments;
         $this->freeInstallments = $freeInstallments;
@@ -29,6 +51,9 @@ class PagarMe_CreditCard_Model_Installments
         $this->maxInstallments = $maxInstallments;
     }
 
+    /**
+     * @return array
+     */
     private function calculate()
     {
         return $this->sdk
@@ -41,11 +66,21 @@ class PagarMe_CreditCard_Model_Installments
             );
     }
 
-    public function getTotal() {
+    /**
+     * @return int
+     */
+    public function getTotal()
+    {
         return $this->getInstallmentTotalAmount($this->installments);
     }
 
-    public function getInstallmentTotalAmount($installment) {
+    /**
+     * @param int $installment
+     *
+     * @return int
+     */
+    public function getInstallmentTotalAmount($installment)
+    {
         $installments = $this->calculate();
 
         return $installments[$installment]['total_amount'];
