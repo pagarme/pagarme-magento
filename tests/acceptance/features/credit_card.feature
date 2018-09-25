@@ -72,7 +72,8 @@ Feature: Credit Card
         And I choose 10
         And I confirm my payment information
         And place order
-        Then the purchase must be created with value based on both 10 and 10
+        Then the checkout order review interest amount should be "16.22"
+        And the purchase must be created with value based on both 10 and 10
 
     @order_view_interest @skipTest
     Scenario: Check the interest in the order details page

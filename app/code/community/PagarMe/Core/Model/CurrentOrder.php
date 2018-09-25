@@ -31,12 +31,27 @@ class PagarMe_Core_Model_CurrentOrder{
             );
     }
 
-    //Subtotal should be the sum of all items in the cart
-    //there's also Basesubtotal = subtotal in the store's currency
-    public function productsTotalValueInCents()
+    /**
+     *  @deprecated
+     *  @see self::productsTotalValueInCents
+     */
+    public function productsTotalValueInCents() {
+        return $this->orderGrandTotalInCents();
+    }
+
+    /**
+     * GrandTotal represents the value of the shipping + cart items total
+     * considering the discount amount
+     *
+     * @return int
+     */
+    public function orderGrandTotalInCents()
     {
-        $total = $this->quote->getTotals()['subtotal']->getValue();
-        return Mage::helper('pagarme_core')->parseAmountToInteger($total);
+        $quote = Mage::helper('checkout')->getQuote();
+        $total = $quote->getData()['grand_total'];
+
+        return Mage::helper('pagarme_core')
+            ->parseAmountToInteger($total);
     }
 
     public function productsTotalValueInBRL()

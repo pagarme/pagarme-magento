@@ -17,6 +17,7 @@
             <quote>
                 <totals>
                     <pagarme_creditcard_interest>
+                        <after>grand_total</after>
                         <class>pagarme_creditcard/quote_address_total_creditCardInterestAmount</class>
                     </pagarme_creditcard_interest>
                 </totals>

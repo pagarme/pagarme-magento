@@ -1,6 +1,6 @@
 <?php
 
-use PagarMe_Core_Model_CurrentOrder as CurrentOrder;
+use PagarMe_CreditCard_Model_Installments as Installments;
 
 class PagarMe_CreditCard_Model_Quote_Address_Total_CreditCardInterestAmount
     extends Mage_Sales_Model_Quote_Address_Total_Abstract
@@ -26,7 +26,7 @@ class PagarMe_CreditCard_Model_Quote_Address_Total_CreditCardInterestAmount
         ) {
             $paymentMethodParameters = Mage::app()->getRequest()->getPost()['payment'];
             $this->interestValue = $this->interestAmountInReals(
-                Mage::getSingleton('checkout/session')->getQuote(),
+                $address,
                 $paymentMethodParameters
             );
 
@@ -59,24 +59,29 @@ class PagarMe_CreditCard_Model_Quote_Address_Total_CreditCardInterestAmount
         return $this;
     }
 
-    private function interestAmountInReals($quote, $paymentMethodParameters)
+    private function interestAmountInReals($address, $paymentMethodParameters)
     {
-        $pagarMeSdk = Mage::getModel('pagarme_core/sdk_adapter');
-        $currentQuote = new CurrentOrder($quote, $pagarMeSdk);
-        $calculedInstallments = $currentQuote->calculateInstallments(
-            $this->getMaxInstallmentStoreConfig(),
-            $this->getFreeInstallmentStoreConfig(),
-            $this->getInterestRateStoreConfig()
+        $pagarMeSdk = Mage::getModel('pagarme_core/sdk_adapter')
+            ->getPagarMeSdk();
+            
+        $helper = Mage::helper('pagarme_core');
+
+        $choosedInstallments = $paymentMethodParameters['installments'];
+        $totalAmountInCents = $helper->parseAmountToInteger(
+            $address->getBaseGrandTotal()
         );
 
-        $choosedInstallmentsValue = $paymentMethodParameters['installments'];
-        $installmentsInfo = $calculedInstallments[$choosedInstallmentsValue];
-        $valueWithInterestInCents = $installmentsInfo['total_amount'];
+        $installmentCalc = new Installments(
+            $totalAmountInCents,
+            $choosedInstallments,
+            $this->getFreeInstallmentStoreConfig(),
+            $this->getInterestRateStoreConfig(),
+            $this->getMaxInstallmentStoreConfig()
+        );
 
-        $helper = Mage::helper('pagarme_core');
-        $interestInCents = $valueWithInterestInCents - $currentQuote
-            ->productsTotalValueInCents();
-        return $helper->parseAmountToFloat($interestInCents);
+        $interestAmountInCents = $installmentCalc->getTotal() - $totalAmountInCents;
+
+        return $helper->parseAmountToFloat($interestAmountInCents);
     }
 
     private function paymentMethodUsedWasPagarme(
