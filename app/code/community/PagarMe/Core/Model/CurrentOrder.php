@@ -51,8 +51,7 @@ class PagarMe_Core_Model_CurrentOrder
      */
     public function orderGrandTotalInCents()
     {
-        $quote = Mage::helper('checkout')->getQuote();
-        $total = $quote->getData()['grand_total'];
+        $total = $this->quote->getData()['grand_total'];
 
         return Mage::helper('pagarme_core')
             ->parseAmountToInteger($total);

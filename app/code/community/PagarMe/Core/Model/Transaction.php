@@ -1,6 +1,6 @@
 <?php
 
-use PagarMe_Core_Model_CurrentOrder as CurrentOrder;
+use PagarMe_CreditCard_Model_Installments as Installments;
 use PagarMe\Sdk\Transaction\AbstractTransaction;
 use PagarMe\Sdk\Transaction\CreditCardTransaction;
 use PagarMe\Sdk\Transaction\BoletoTransaction;
@@ -32,22 +32,30 @@ class PagarMe_Core_Model_Transaction extends Mage_Core_Model_Abstract
     /**
      * @param Mage_Sales_Model_Order $order
      * @param CreditCardTransaction $transaction
+     *
+     * @return void
      */
     private function saveCreditCardInformation($order, $transaction)
     {
-        $installments = $transaction->getInstallments();
+        $pagarMeSdk = Mage::getModel('pagarme_core/sdk_adapter')
+            ->getPagarMeSdk();
+
         $quote = Mage::getModel('sales/quote')
             ->load($order->getQuoteId());
 
-        $pagarMeSdk = Mage::getModel('pagarme_core/sdk_adapter');
+        $helper = Mage::helper('pagarme_core');
 
-        $currentOrder = new CurrentOrder($quote, $pagarMeSdk);
+        $installments = $transaction->getInstallments();
         $interestRate = $this->getInterestRateStoreConfig();
-        $rateAmount = $currentOrder->rateAmountInBRL(
-            $installments,
-            $this->getFreeInstallmentStoreConfig(),
-            $interestRate
-        );
+
+        $subtotalWithDiscount = $quote->getData()['subtotal_with_discount'];
+        $shippingAmount = $quote->getShippingAddress()->getShippingAmount();
+
+        $amountWithoutInterestRate = $shippingAmount + $subtotalWithDiscount;
+        $amountWithInterestRate = $quote->getData()['grand_total'];
+
+        $rateAmount = $amountWithInterestRate - $amountWithoutInterestRate;
+
         $order->setInterestAmount($rateAmount);
 
         $this
@@ -58,6 +66,8 @@ class PagarMe_Core_Model_Transaction extends Mage_Core_Model_Abstract
 
     /**
      * @param BoletoTransaction $transaction
+     *
+     * @return void
      */
     private function saveBoletoInformation($transaction)
     {
@@ -68,8 +78,9 @@ class PagarMe_Core_Model_Transaction extends Mage_Core_Model_Abstract
 
     /**
      * @param Mage_Sales_Model_Order $order
-     * @param PagarMe\Sdk\Transaction\AbstractTransaction $transaction
      * @param Mage_Sales_Model_Order_Payment $infoInstance
+     * @param string $referenceKey
+     * @param AbstractTransaction $transaction
      *
      * @return void
      *
@@ -85,7 +96,7 @@ class PagarMe_Core_Model_Transaction extends Mage_Core_Model_Abstract
             ->setReferenceKey($referenceKey)
             ->setOrderId($order->getId());
 
-        if(!is_null($transaction)) {
+        if (!is_null($transaction)) {
             $totalAmount = Mage::helper('pagarme_core')
                 ->parseAmountToFloat($transaction->getAmount());
 
@@ -95,13 +106,15 @@ class PagarMe_Core_Model_Transaction extends Mage_Core_Model_Abstract
                 ->setFutureValue($totalAmount);
         }
 
-        if(
+        //@codingStandardsIgnoreLine
+        if (
             !is_null($transaction) &&
             $transaction instanceof CreditCardTransaction
         ) {
             $this->saveCreditCardInformation($order, $transaction);
         }
 
+        //@codingStandardsIgnoreLine
         if (
             !is_null($transaction) &&
             $transaction instanceof BoletoTransaction
