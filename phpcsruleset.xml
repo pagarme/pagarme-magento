@@ -76,7 +76,15 @@
   </rule>
   <!-- Validates that all parameters with default values are declared as last arguments -->
   <rule ref="PEAR.Functions.ValidDefaultValue"/>
-
+  <!-- Validates that multiline structures is indented correctly -->
+  <rule ref="PEAR.ControlStructures.MultiLineCondition">
+    <properties>
+        <property name="indent" value="4" />
+    </properties>
+  </rule>
+  <rule ref="PEAR.ControlStructures.MultiLineCondition">
+    <exclude name="PEAR.ControlStructures.MultiLineCondition.StartWithBoolean" />
+  </rule>
   <!-- Validates the docblock alignment -->
   <rule ref="Squiz.Commenting.DocCommentAlignment"/>
   <!-- Validates all docblock comments in a file -->
@@ -84,6 +92,7 @@
     <exclude name="Squiz.Commenting.FileComment.Missing"/>
     <exclude name="Generic.Commenting.DocComment.Empty"/>
   </rule>
+  <rule ref="Squiz.Commenting.VariableComment" />
   <!-- Check docblocks for missing @throws tags -->
   <rule ref="Squiz.Commenting.FunctionCommentThrowTag"/>
   <!-- Blocks the usage of elseif -->
