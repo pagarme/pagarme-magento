@@ -9,7 +9,8 @@ class PagarMe_Core_Model_PostbackHandler_Refused extends PagarMe_Core_Model_Post
     /**
      * Returns the desired state on magento
      * @deprecated
-     * @see PagarMe_Core_Model_OrderStatusHandler_Canceled
+     *
+     * @see    PagarMe_Core_Model_OrderStatusHandler_Canceled
      * @return string
      */
     protected function getDesiredState()
@@ -38,10 +39,25 @@ class PagarMe_Core_Model_PostbackHandler_Refused extends PagarMe_Core_Model_Post
         $canceledHandler = new PagarMe_Core_Model_OrderStatusHandler_Canceled(
             $this->order,
             $transaction,
-            $transaction->getRefuseReason()
+            $this->buildRefusedReasonMessage($transaction->getRefuseReason())
         );
         $canceledHandler->handleStatus();
 
         return $this->order;
+    }
+
+    /**
+     * Returns refuse message sent by Pagar.me API
+     *
+     * @param string $refuseReason
+     *
+     * @return string
+     */
+    private function buildRefusedReasonMessage($refuseReason)
+    {
+        return sprintf(
+            'Refused by %s',
+            $refuseReason
+        );
     }
 }

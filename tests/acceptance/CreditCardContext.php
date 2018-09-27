@@ -67,6 +67,30 @@ class CreditCardContext extends RawMinkContext
     }
 
     /**
+     * @AfterScenario
+     */
+    public function resetPaymentActionConfiguration() {
+        $config = Mage::getModel('core/config');
+
+        $config->saveConfig(
+            'payment/pagarme_configurations/payment_action',
+            PaymentActionConfig::AUTH_CAPTURE
+        );
+    }
+
+    /**
+     * @AfterScenario
+     */
+    public function resetAsyncConfiguration() {
+        $config = Mage::getModel('core/config');
+
+        $config->saveConfig(
+            'payment/pagarme_configurations/async_transaction',
+            0
+        );
+    }
+
+    /**
      * @Given a registered user
      */
     public function aRegisteredUser()
@@ -200,11 +224,10 @@ class CreditCardContext extends RawMinkContext
     }
 
     /**
-     * @Given the administrator set payment action to :paymentAction and set async configuration to :isAsync
+     * @Given the administrator set payment action to :paymentAction
      */
-    public function theAdministratorSetPaymentActionToAndSetAsyncConfigurationTo(
-        $paymentAction,
-        $isAsync
+    public function theAdministratorSetPaymentActionTo(
+        $paymentAction
     ) {
         $config = Mage::getModel('core/config');
 
@@ -212,8 +235,17 @@ class CreditCardContext extends RawMinkContext
             'payment/pagarme_configurations/payment_action',
             $paymentAction
         );
+    }
 
-        $asyncValue = ($isAsync === 'yes') ? '1' : '0';
+    /**
+     * @Given the administrator set the async configuration to :isAsync
+     */
+    public function theAdministratorSetTheAsyncConfigurationTo(
+        $isAsync
+    ) {
+        $asyncValue = ($isAsync === 'yes') ? 1 : 0;
+
+        $config = Mage::getModel('core/config');
 
         $config->saveConfig(
             'payment/pagarme_configurations/async_transaction',
@@ -232,18 +264,6 @@ class CreditCardContext extends RawMinkContext
         PHPUnit_Framework_Assert::assertEquals(
             $expectedOrderState,
             $order->getState()
-        );
-
-        $config = Mage::getModel('core/config');
-
-        $config->saveConfig(
-            'payment/pagarme_configurations/payment_action',
-            PaymentActionConfig::AUTH_CAPTURE
-        );
-
-        $config->saveConfig(
-            'payment/pagarme_configurations/async_transaction',
-            0
         );
     }
 
@@ -418,7 +438,7 @@ class CreditCardContext extends RawMinkContext
     }
 
     /**
-     * @Then I get the created order id 
+     * @Then I get the created order id
      */
     public function iGetTheCreatedOrderId()
     {
@@ -485,7 +505,7 @@ class CreditCardContext extends RawMinkContext
     }
 
     private function assertThereIsEveryOptionValueUntil(
-        $maxValue, 
+        $maxValue,
         $selectCssSelector
     ) {
         for ($value = 1; $value <= $maxValue; $value++) {
@@ -567,7 +587,7 @@ class CreditCardContext extends RawMinkContext
         $url = $this->magentoUrl . 'index.php/admin/sales_order_invoice/view/invoice_id/'.$invoiceIds[0].'/order_id/'. $this->orderId;
 
         $this->session->visit($url);
-        
+
         Mage::getConfig()->saveConfig('admin/security/use_form_key', 1);
     }
 
@@ -719,5 +739,23 @@ class CreditCardContext extends RawMinkContext
             $orderReviewElement->getText(),
             $interestAmountText
         );
+    }
+
+    /**
+     * @Then I must stay in the checkout page
+     */
+    public function IMustStayInTheCheckoutPage() {
+        try {
+            $this->session->wait(5000);
+            \PHPUnit_Framework_TestCase::assertEquals(
+                getenv('MAGENTO_URL') . 'index.php/checkout/onepage/index/',
+                $this->session->getCurrentUrl()
+            );
+        } catch (WebDriver\Exception\UnexpectedAlertOpen $e) {
+            \PHPUnit_Framework_TestCase::assertEquals(
+                getenv('MAGENTO_URL') . 'index.php/checkout/onepage/index/',
+                $this->session->getCurrentUrl()
+            );
+        }
     }
 }

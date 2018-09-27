@@ -18,3 +18,6 @@
 "Transaction refused by Gateway. Suspected fraud","Transação recusada pelo Gateway. Suspeita de fraude"
 "Authorized amount of %s","Valor autorizado: %s"
 "Captured amount of %s","Valor capturado: %s"
+"Please, review your payment data.", "Por favor, revise seus dados de pagamento."
+"An error ocurred with the payment authorization.", "Ocorreu um erro durante a autorização do pagamento."
+"You can review your payment information and try again.", "Você pode revisar suas informações de pagamento e tentar novamente."
