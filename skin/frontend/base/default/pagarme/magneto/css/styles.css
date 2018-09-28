@@ -1,0 +1,3 @@
+.pagarme-payment-icons li { background: url(../images/icons.png) no-repeat; margin: 0 !important; width: 51px; height: 32px; display: inline-block; }
+.pagarme-payment-icons li span { display: none; }
+.pagarme-payment-icons li.boleto.on { background-position: 0 -288px; }

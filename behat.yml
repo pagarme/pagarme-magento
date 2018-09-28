@@ -5,10 +5,45 @@ default:
   extensions:
     Behat\MinkExtension:
       base_url: http://pagarme-magento.dev/
-      browser_name: firefox
+      sessions:
+        default_session:
+          selenium2:
+            wd_host: 'http://selenium:4444/wd/hub'
   suites:
+    configure:
+      paths:
+        - %paths.base%/tests/acceptance/features/configure.feature
+      contexts:
+        - ConfigureContext
+    credit_card:
+      paths:
+        - %paths.base%/tests/acceptance/features/credit_card.feature
+      contexts:
+        - CreditCardContext
+      filters:
+        tags: ~@skipTest
+    boleto:
+      paths:
+        - %paths.base%/tests/acceptance/features/boleto.feature
+      contexts:
+        - BoletoContext
     checkout:
       paths:
         - %paths.base%/tests/acceptance/features/checkout.feature
       contexts:
         - CheckoutContext
+    postback:
+      paths:
+        - %paths.base%/tests/acceptance/features/postback.feature
+      contexts:
+        - PostbackContext
+    payment_method_availability:
+      paths:
+        - %paths.base%/tests/acceptance/features/payment_method_availability.feature
+      contexts:
+        - PaymentMethodAvailabilityContext
+    #one_step_checkout:
+    #  paths:
+    #    - %paths.base%/tests/acceptance/features/one_step_checkout.feature
+    #  contexts:
+    #    - OneStepCheckoutContext

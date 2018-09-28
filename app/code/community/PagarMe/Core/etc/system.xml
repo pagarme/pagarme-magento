@@ -1,0 +1,282 @@
+<?xml version="1.0"?>
+<config>
+    <sections>
+        <payment>
+            <groups>
+                <pagarme_configurations translate="label" module="pagarme_core">
+                    <label>Pagar.me - Settings</label>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <heading_general translate="label">
+                            <label>General Configurations</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                        </heading_general>
+                        <general_api_key translate="label">
+                            <label>API Key</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </general_api_key>
+                        <general_encryption_key translate="label">
+                            <label>Encryption Key</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </general_encryption_key>
+                        <heading_development_env translate="label">
+                            <label>Development environment configurations</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>4</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                        </heading_development_env>
+                        <dev_custom_postback_url translate="comment">
+                            <label>Postback URL</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>5</sort_order>
+                            <comment>Used only if developer mode is enabled. It'll customize postback url during transactions creation</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </dev_custom_postback_url>
+                        <heading_credit_card translate="label">
+                            <label>Credit Card Configurations</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                        </heading_credit_card>
+                        <payment_action translate="label">
+                            <label>Payment Action</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pagarme_core/system_config_source_paymentAction</source_model>
+                            <sort_order>9</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </payment_action>
+                        <async_transaction translate="label">
+                            <label>Async Transaction</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </async_transaction>
+                        <creditcard_title translate="label">
+                            <label>Payment method title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>11</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </creditcard_title>
+                        <creditcard_max_installments translate="label">
+                            <label>Max Installments</label>
+                            <comment>Min: 1, Max: 12</comment>
+                            <frontend_type>text</frontend_type>
+                            <frontend_class>validate-digits-range</frontend_class>
+                            <validate>digits-range-1-12</validate>
+                            <sort_order>12</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </creditcard_max_installments>
+                        <creditcard_interest_rate translate="label comment">
+                            <label>Interest Rate (% per month)</label>
+                            <comment>Example 1.99</comment>
+                            <frontend_type>text</frontend_type>
+                            <frontend_class>validate-number</frontend_class>
+                            <sort_order>13</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </creditcard_interest_rate>
+                        <creditcard_free_installments translate="label">
+                            <label>Free Installments</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_class>validate-number</frontend_class>
+                            <sort_order>14</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </creditcard_free_installments>
+                        <creditcard_allowed_credit_card_brands translate="label">
+                            <label>Allowed Credit Card Brands</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>pagarme_core/system_config_source_creditCardBrands</source_model>
+                            <sort_order>15</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </creditcard_allowed_credit_card_brands>
+
+                        <heading_boleto translate="label">
+                            <label>Boleto Configurations</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                        </heading_boleto>
+                        <boleto_title translate="label">
+                            <label>Payment method title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>21</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </boleto_title>
+                        <boleto_discount translate="label">
+                            <label>Boleto discount</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_class>validate-number</frontend_class>
+                            <sort_order>22</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </boleto_discount>
+                        <boleto_discount_mode translate="label">
+                            <label>Boleto discount mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pagarme_core/system_config_source_boletoDiscountMode</source_model>
+                            <sort_order>23</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </boleto_discount_mode>
+
+                        <heading_creditcard translate="label">
+                            <label>Checkout Transparente</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                        </heading_creditcard>
+
+                        <transparent_active translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>31</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </transparent_active>
+                        <transparent_payment_methods translate="label">
+                           <label>Payment Methods</label>
+                           <frontend_type>select</frontend_type>
+                           <source_model>pagarme_core/system_config_source_paymentMethods</source_model>
+                           <sort_order>32</sort_order>
+                           <show_in_default>1</show_in_default>
+                           <show_in_website>1</show_in_website>
+                           <show_in_store>1</show_in_store>
+                        </transparent_payment_methods>
+
+                        <heading_visual_config translate="label">
+                            <label>Checkout Modal</label>
+                            <frontend_model>adminhtml/system_config_form_field_heading</frontend_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                        </heading_visual_config>
+                        <modal_active translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>41</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </modal_active>
+                        <modal_payment_methods translate="label">
+                           <label>Payment Methods</label>
+                           <frontend_type>select</frontend_type>
+                           <source_model>pagarme_core/system_config_source_paymentMethods</source_model>
+                           <sort_order>42</sort_order>
+                           <show_in_default>1</show_in_default>
+                           <show_in_website>1</show_in_website>
+                           <show_in_store>1</show_in_store>
+                        </modal_payment_methods>
+                        <modal_capture_customer_data translate="label">
+                            <label>Use Pagar.me checkout to capture customer data</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pagarme_core/system_config_source_captureCustomerData</source_model>
+                            <sort_order>43</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </modal_capture_customer_data>
+                        <modal_title translate="label">
+                            <label>Payment method title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>301</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </modal_title>
+                        <modal_payment_button_text translate="label">
+                            <label>Checkout final button text</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>305</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </modal_payment_button_text>
+                        <modal_boleto_helper_text translate="label">
+                            <label>Optional message for Boleto payment</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>310</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </modal_boleto_helper_text>
+                        <modal_credit_card_helper_text translate="label">
+                            <label>Optional message for Credit Card payment</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>315</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </modal_credit_card_helper_text>
+                        <modal_ui_color translate="label comment">
+                            <label>Payment primary color</label>
+                            <comment>Hexadecimal color - Example: #00ff00</comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>320</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </modal_ui_color>
+                        <modal_header_text translate="label">
+                            <label>Checkout header text</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>325</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </modal_header_text>
+                        <modal_button_text translate="label">
+                            <label>Checkout button text</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>330</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </modal_button_text>
+                    </fields>
+                </pagarme_configurations>
+            </groups>
+        </payment>
+    </sections>
+</config>

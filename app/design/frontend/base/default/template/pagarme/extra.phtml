@@ -1,0 +1,50 @@
+<?php if ($this->getTotals()): ?>
+    <tfoot>
+    <?php $_colspan = (Mage::helper('onestepcheckout/config')->getIsCartEditable()?4:3); ?>
+    <?php echo $this->renderTotals(null, $_colspan); ?>
+    <?php echo $this->renderTotals('footer', $_colspan); ?>
+    <?php if ($this->needDisplayBaseGrandtotal()):?>
+        <tr>
+            <td class="a-right" colspan="<?php echo $_colspan; ?>">
+                <small><?php echo $this->helper('sales')->__('Your credit card will be charged for') ?></small>
+            </td>
+            <td class="a-right">
+                <small><?php echo $this->displayBaseGrandtotal() ?></small>
+            </td>
+        </tr>
+    <?php endif ?>
+
+    <?php
+
+        $helper = Mage::app()->getHelper('pagarme_modal');
+        $transaction = $helper->getTransaction();
+
+        if (!is_null($transaction)) :
+    ?>
+
+        <tr>
+            <th colspan="<?php echo $_colspan; ?>">
+                <strong><?php echo $helper->__('Additional Information');?></strong>
+            </th>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="a-right" colspan="<?php echo $_colspan; ?>">
+                <strong><?php echo $helper->__('Payment Method');?></strong>
+            </td>
+            <td>
+                <?= $helper->getPaymentMethodName() ?>
+            </td>
+        </tr>
+        <tr>
+            <td class="a-right" colspan="<?php echo $_colspan; ?>">
+                <strong><?php echo $helper->__('Installments');?></strong>
+            </td>
+            <td id="pagarme-modal-installments">
+                <?= $transaction->getInstallments() ?: 1  ?>
+            </td>
+        </tr>
+
+    <?php endif; ?>
+    </tfoot>
+<?php endif; ?>

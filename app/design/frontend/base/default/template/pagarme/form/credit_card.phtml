@@ -1,0 +1,103 @@
+<?php
+    $_code = $this->getMethodCode();
+    $helper = Mage::helper('pagarme_creditcard');
+?>
+<ul class="form-list" id="payment_form_<?= $_code ?>" style="display: none">
+    <input type="hidden" value="" name="payment[card_hash]" id="pagarme_card_hash" class="required_entry" />
+    <input type="hidden" id="pagarme_encryption_key" value="<?= trim($this->getEncryptionKeyStoreConfig()); ?>">
+    <li>
+        <label for="<?= $_code ?>_creditcard_number" class="required">
+            <em>*</em><?= $helper->__('Credit Card Number') ?>
+        </label>
+        <div class="input-box">
+            <input
+                type="text"
+                id="<?= $_code ?>_creditcard_number"
+                title="<?= $helper->__('Credit Card Number') ?>"
+                class="input-text required-entry validate-digits"
+                maxlength="19"
+                value=""
+            />
+        </div>
+    </li>
+    <li>
+        <label for="<?= $_code ?>_creditcard_owner" class="required">
+            <em>*</em><?= $helper->__('Credit Card Owner') ?>
+        </label>
+        <div class="input-box">
+            <input
+                type="text"
+                id="<?= $_code ?>_creditcard_owner"
+                placeholder="<?= $helper->__('Name in credit card') ?>"
+                title="<?= $helper->__('Credit Card Owner') ?>"
+                class="input-text required-entry"
+                value=""
+            />
+        </div>
+    </li>
+    <li>
+        <label for="<?= $_code ?>_creditcard_expiration_date" class="required">
+            <em>*</em><?= $helper->__('Credit Card Expiration Date') ?>
+        </label>
+        <div class="input-box">
+            <input
+                type="text"
+                id="<?= $_code ?>_creditcard_expiration_date"
+                title="<?= $helper->__('Credit Card Expiration Date') ?>"
+                placeholder="MMAA"
+                class="input-text required-entry validate-digits"
+                maxlength="4"
+                value=""
+            />
+        </div>
+    </li>
+    <li>
+        <label for="<?= $_code ?>_creditcard_cvv" class="required">
+            <em>*</em><?= $helper->__('Credit Card Verification Number') ?>
+        </label>
+        <div class="input-box">
+            <input
+                type="text"
+                id="<?= $_code ?>_creditcard_cvv"
+                title="<?= $helper->__('Credit Card Verification Number') ?>"
+                class="input-text required-entry validate-digits"
+                maxlength="4"
+                value=""
+            />
+        </div>
+    </li>
+    <li>
+        <label for="<?= $_code ?>_creditcard_installments" class="required">
+            <em>*</em><?= $helper->__('Installments') ?>
+        </label>
+        <div class="input-box">
+            <select
+                name="payment[installments]"
+                id="<?= $_code ?>_creditcard_installments"
+                title="<?= $helper->__('Installments') ?>"
+                class="input-text required-entry"
+            >
+            <?php foreach ($this->getInstallments() as $installmentNumber => $installmentInfo) : ?>
+            <option value="<?= $installmentNumber ?>">
+                <?php
+                    $moduleHelper = Mage::helper('pagarme_core');
+                    $floatPrice = $moduleHelper
+                        ->parseAmountToFloat(
+                            $installmentInfo['installment_amount']
+                        );
+                    echo sprintf(
+                        '%sx - (%s x R$%s)',
+                        $installmentNumber,
+                        $installmentNumber,
+                        $moduleHelper->formatFloatToCurrentLocale($floatPrice)
+                    );
+                ?>
+            </option>
+            <?php endforeach; ?>
+            </select>
+        </div>
+    </li>
+</ul>
+<div>
+    <?= $this->getMethod()->getConfigData('message');?>
+</div>

@@ -1,25 +1,13 @@
 version: '2'
 
 services:
-    php:
-        image: pagarme/php:5.4
-        volumes:
-            - .:/code
-        working_dir: /code
-
-    composer:
-        image: pagarme/composer
-        volumes:
-            - .:/code
-        working_dir: /code
-
     selenium:
-        image: selenium/hub
+        image: selenium/hub:3.10.0
         ports:
             - "4444:4444"
 
     firefox:
-        image: selenium/node-firefox-debug
+        image: selenium/node-firefox-debug:2.53.0
         privileged: true
         depends_on:
             - selenium
@@ -31,20 +19,27 @@ services:
             - HUB_PORT_4444_TCP_PORT=4444
 
     mysql:
-        image: mysql:5.6
+        image: mysql:5.5
         env_file: .env
 
     magento:
-        image: ricardotulio/magento:${MAGENTO_VERSION}
+        image: magneto:1
+        build:
+            dockerfile: ./Dockerfile
+            context: ./
         env_file: .env
         volumes:
-            - .:/docker-magento-modules/pagarme/
+            - .:/opt/docker/magento/module/
         working_dir: /var/www
         ports:
-            - "8080:80"
+            - "80:80"
         depends_on:
             - mysql
 
-volumes:
-    config:
-        driver: local
+    composer:
+        image: pagarme/composer
+        working_dir: /magneto
+        volumes:
+            - .:/magneto
+        command:
+            -  install

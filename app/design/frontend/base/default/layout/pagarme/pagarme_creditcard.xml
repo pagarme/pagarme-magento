@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<layout>
+    <default>
+        <reference name="head">
+            <block type="core/text" name="pagarme.cdn.js">
+                <action method="setText">
+                    <text><![CDATA[<script src="https://assets.pagar.me/pagarme-js/3.0/pagarme.min.js"></script>]]></text>
+                </action>
+            </block>
+        </reference>
+    </default>
+    <onestepcheckout_index_index>
+        <reference name="head">
+            <action method="addJs" ifconfig="payment/pagarme_configurations/transparent_active"><script>pagarme/cardhash.js</script></action>
+            <action method="addJs" ifconfig="payment/pagarme_configurations/transparent_active"><script>pagarme/creditcard-osc.js</script></action>
+        </reference>
+    </onestepcheckout_index_index>
+    <firecheckout_index_index>
+        <reference name="head">
+            <action method="addJs" ifconfig="payment/pagarme_configurations/transparent_active"><script>pagarme/cardhash.js</script></action>
+            <action method="addJs" ifconfig="payment/pagarme_configurations/transparent_active"><script>pagarme/creditcard.js</script></action>
+        </reference>
+    </firecheckout_index_index>
+    <checkout_onepage_index>
+        <reference name="head">
+            <action method="addJs" ifconfig="payment/pagarme_configurations/transparent_active"><script>pagarme/cardhash.js</script></action>
+            <action method="addJs" ifconfig="payment/pagarme_configurations/transparent_active"><script>pagarme/creditcard.js</script></action>
+        </reference>
+    </checkout_onepage_index>
+    <sales_order_view>
+        <reference name="order_totals">
+            <block type="pagarme_creditcard/sales_RateAmount" name="pagarme_creditcard.rateamount"/>
+        </reference>
+    </sales_order_view>
+    <sales_email_order_items>
+        <reference name="order_totals">
+            <block type="pagarme_creditcard/sales_RateAmount" name="pagarme_creditcard.rateamount"/>
+        </reference>
+    </sales_email_order_items>
+</layout>

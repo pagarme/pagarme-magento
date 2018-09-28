@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<config>
-    <modules>
-        <PagarMe_Checkout>
-            <version>2.0.0</version>
-        </PagarMe_Checkout>
-    </modules>
-</config>

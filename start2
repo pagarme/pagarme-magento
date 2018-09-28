@@ -1,0 +1,15 @@
+#!/bin/bash
+
+source /opt/docker/magentosmtp
+
+if [ "$INSTALL_SMTP_MODULE" = true ] || [ "$INSTALL_SMTP_MODULE" = "TRUE" ]; then
+    echo 'Installing sendmail'
+    apt-get update > dev/null 2>&1 &
+    apt-get -y install vim sendmail > dev/null 2>&1 &
+
+    echo 'Installing Magento smtp'
+    installMagentoSmtp
+fi
+
+source /opt/docker/scripts/start
+start

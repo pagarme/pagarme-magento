@@ -1,0 +1,9 @@
+<?php $_code = $this->getMethodCode() ?>
+<ul class="form-list pagarme-payment-icons">
+    <li class="boleto on">
+        <span><?php echo $this->__('Boleto') ?></span>
+    </li>
+</ul>
+<div>
+    <?= $this->getMethod()->getConfigData('message');?>
+</div>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <PagarMe_Boleto>
+            <active>true</active>
+            <codePool>community</codePool>
+            <depends>
+                <PagarMe_Core />
+            </depends>
+        </PagarMe_Boleto>
+    </modules>
+</config>

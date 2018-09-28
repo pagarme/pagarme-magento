@@ -1,43 +1,37 @@
-language: php
 sudo: required
-addons:
-  hosts:
-    - magento
-
-php:
-  - '5.4'
-  - '5.5'
-  - '5.6'
 
 services:
-  - mysql
+  - docker
+
+env:
+  global:
+    - DOCKER_COMPOSE_VERSION=1.17.0
+    - COMPOSER_VERSION=1.4.1
+    - COVERALLS_VERSION=v1.0.0
+  matrix:
+    - MAGENTO_VERSION=1.9.1.0 TEST_SUITE=credit_card
+    - MAGENTO_VERSION=1.9.1.0 TEST_SUITE=boleto
+    - MAGENTO_VERSION=1.9.1.0 TEST_SUITE=postback
+    - MAGENTO_VERSION=1.8.1.0 TEST_SUITE=credit_card
+    - MAGENTO_VERSION=1.8.1.0 TEST_SUITE=boleto
+    - MAGENTO_VERSION=1.8.1.0 TEST_SUITE=postback
+    - MAGENTO_VERSION=1.7.0.2 TEST_SUITE=credit_card
+    - MAGENTO_VERSION=1.7.0.2 TEST_SUITE=boleto
+    - MAGENTO_VERSION=1.7.0.2 TEST_SUITE=postback
 
 before_install:
-  - mysql -e 'CREATE DATABASE magento;'
-  - echo "USE mysql;\nUPDATE user SET password=PASSWORD('root') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root
-
-install:
-  - wget -O mage-install.sh http://sys.sonassi.com/mage-install.sh
-  - chmod +x mage-install.sh
-  - bash mage-install.sh -f -r 1.9.1.0 -l 127.0.0.1 -u root -p root -n magento -s -w http://127.0.0.1 -e admin@admin.com
-
-before_script:
-  - sudo apt-get update
-  - sudo apt-get install apache2 libapache2-mod-fastcgi
-  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-  - sudo a2enmod rewrite actions fastcgi alias
-  - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
-  - sudo cp -f build/travis-ci-apache /etc/apache2/sites-available/default
-  - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
-  - sudo service apache2 restart
-  - mkdir -p build/logs
-  - export BEHAT_PARAMS='{"extensions":{"Behat\\MinkExtension":{"goutte":{}}}}'
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  - echo "MAGENTO_VERSION=$MAGENTO_VERSION" >> .env
+  - echo "IMGUR_CLIENT_ID=$IMGUR_CLIENT_ID" >> .env
 
 script:
-  - composer install --dev --no-interaction
-  - vendor/bin/phpunit -c phpunit.xml
-  - vendor/bin/behat
+  - chmod +x ./forgotten_keys.sh
+  - ./forgotten_keys.sh
+  - script/test.sh
 
-after_success:
-  - travis_retry php vendor/bin/coveralls
+after_failure:
+  - docker-compose exec magento cat var/log/system.log
+  - docker-compose exec magento cat var/log/exception.log

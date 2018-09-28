@@ -1,0 +1,30 @@
+<?php
+    $helper = Mage::helper('pagarme_modal');
+
+    $transaction = \Mage::getModel('pagarme_core/service_order')
+        ->getTransactionByOrderId($this->getOrder()->getId());
+
+    $checkoutMethodWasModal = $this->getOrder()->getPayment()->getMethod() ===
+        PagarMe_Modal_Model_Modal::PAGARME_MODAL;
+    $paymentMethodWasCreditCard = $transaction->getPaymentMethod() === 'credit_card';
+    $paymentHasInterest = $transaction->getRateAmount() > 0;
+    $shouldShow = $checkoutMethodWasModal && $paymentMethodWasCreditCard && $paymentHasInterest;
+?>
+
+<?php if ($shouldShow): ?>
+    <tr id="pagarme_modal_order_info_rate_amount">
+        <td class="label">
+            <?=
+                $helper->__('Installments related Interest')
+            ?>
+        </td>
+        <td>
+            <?=
+                $this->displayPrices(
+                    $transaction->getRateAmount(),
+                    $transaction->getRateAmount()
+                )
+            ?>
+        </td>
+    </tr>
+<?php endif; ?>

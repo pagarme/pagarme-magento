@@ -1,0 +1,56 @@
+<?php
+    $transaction = $this->getTransaction();
+    $helper = Mage::helper('pagarme_modal');
+?>
+
+<h3><?php echo $helper->__('Modal Checkout');?></h3>
+
+<table id="pagarme_order_info_payment_details">
+    <tr>
+        <td>
+            <strong>
+                <?php echo $helper->__('Payment Method');?>
+            </strong>
+        </td>
+        <td>
+            <?= $helper->__($this->getPaymentMethod()) ?>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <strong>
+                <?php echo $helper->__('Installments');?>
+            </strong>
+        </td>
+        <td style="text-align:right;">
+           <?= $transaction->getInstallments() ?>
+        </td>
+    </tr>
+    <?php if ($transaction->getInterestRate() > 0): ?>
+        <tr>
+            <td>
+                <strong>
+                    <?php
+                        echo $helper
+                            ->__('Installments related Interest') . '(%am)';
+                    ?>
+                </strong>
+            </td>
+            <td style="text-align:right;">
+               <?= $transaction->getInterestRate() ?>
+            </td>
+        </tr>
+    <?php endif; ?>
+    <tr>
+        <td>
+            <strong>
+                <?php echo $helper->__('Pagar.me Transaction Id');?>
+            </strong>
+        </td>
+        <td style="text-align:right;">
+           <?= $transaction->getTransactionId() ?>
+        </td>
+    </tr>
+</table>
+
+<br/>

@@ -1,0 +1,15 @@
+#!/bin/bash
+#####################
+# Module Functions
+#####################
+
+function installMagentoSmtp {
+    wget -O /tmp/smtp.zip https://codeload.github.com/aschroder/Magento-SMTP-Pro-Email-Extension/zip/master
+
+    unzip -q /tmp/smtp.zip -d /tmp/smtp
+
+    cp -a /tmp/smtp/Magento-SMTP-Pro-Email-Extension-master/app /var/www/
+
+    echo "Magento SMTP!"
+}
+

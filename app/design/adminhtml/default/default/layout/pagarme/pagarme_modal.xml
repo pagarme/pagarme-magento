@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<layout>
+    <default>
+        <reference name="head">
+            <block type="core/text" name="pagarme.cdn.js.checkout" ifconfig="payment/pagarme_configurations/modal_active">
+                <action method="setText">
+                    <text><![CDATA[<script src="https://assets.pagar.me/checkout/checkout.js" type="text/javascript"></script>]]></text>
+                </action>
+            </block>
+        </reference>
+    </default>
+    <checkout_onepage_success>
+        <reference name="content">
+            <block type="pagarme_modal/success" name="pagarme_modal.success" template="pagarme/success.phtml"/>
+        </reference>
+    </checkout_onepage_success>
+    <adminhtml_sales_order_view>
+        <reference name="order_totals">
+            <block name="pagarme_modal_rate_amount" type="adminhtml/sales_order_totals_item" template="pagarme/modal/interest_rate/rate_amount.phtml"/>
+        </reference>
+    </adminhtml_sales_order_view>
+</layout>

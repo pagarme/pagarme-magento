@@ -1,0 +1,12 @@
+<?php
+
+$helper = Mage::helper('pagarme_modal');
+
+if ($this->isBoletoPayment()) {
+    echo  sprintf(
+        '<p class="pagarme_info_boleto">%s <a target="_blank" href="%s">%s</a></p>',
+        $helper->__('To print your boleto'),
+        $this->getBoletoUrl(),
+        $helper->__('click here')
+    );
+}

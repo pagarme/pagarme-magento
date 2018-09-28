@@ -1,0 +1,50 @@
+<?php
+/**
+ * @see PagarMe_CreditCard_Block_Info_Creditcard
+ */
+$helper = Mage::helper('pagarme_creditcard');
+?>
+<table id="pagarme_order_info_payment_details">
+    <tr id="pagarme_order_info_payment_customer_name">
+        <td class="label">
+            <strong>
+                <?php echo $helper->__('Customer name');?>
+            </strong>
+        </td>
+        <td style="text-align: right" class="value">
+            <?= $this->transactionCustomerName(); ?>
+        </td>
+    </tr>
+    <tr id="pagarme_order_info_payment_payment_method">
+        <td class="label">
+            <strong>
+                <?php echo $helper->__('Payment Method');?>
+            </strong>
+        </td>
+        <td style="text-align: right" class="value">
+            <?= $helper->__('Credit Card') ?>
+        </td>
+    </tr>
+    <tr id="pagarme_order_info_payment_card_brand">
+        <td class="label">
+            <strong>
+                <?php echo $helper->__('Card brand');?>
+            </strong>
+        </td>
+        <td style="text-align: right" class="value">
+            <?= strtoupper($this->transactionCardBrand()) ?>
+        </td>
+    </tr>
+    <tr id="pagarme_order_info_payment_installments">
+        <td class="label">
+            <strong>
+                <?php echo $helper->__('Installments');?>
+            </strong>
+        </td>
+        <td style="text-align: right" class="value">
+            <?= $this->transactionInstallments() ?>
+        </td>
+    </tr>
+</table>
+
+<br/>

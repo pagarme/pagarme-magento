@@ -15,3 +15,67 @@ spl_autoload_register(function ($className) {
     );
     @include $filePath . '.php';
 });
+
+Mage::init();
+Mage::app()
+    ->setCurrentStore(Mage_Core_Model_App::ADMIN_STORE_ID);
+
+Mage::getModel('cms/page')
+    ->load(2)
+    ->setData('content', '{{block type="catalog/product_list" name="home.catalog.product.list" alias="products_homepage" category_id="9" template="catalog/product/list.phtml"}}')
+    ->save();
+
+Mage::getModel('pagarme_core/observer_autoloader')
+    ->registerSplAutoloader(new Varien_Event_Observer());
+
+function getCompanyTemporary()
+{
+    $ch = curl_init();
+
+    curl_setopt(
+        $ch,
+        CURLOPT_URL,
+        "https://api.pagar.me/1/companies/temporary"
+    );
+
+    date_default_timezone_set('America/Sao_Paulo');
+
+    $params = sprintf(
+        'name=acceptance_test_company&email=%s@sdksuitetest.com&password=password',
+        date(
+            'YmdHis'
+        )
+    );
+
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt(
+        $ch,
+        CURLOPT_POSTFIELDS,
+        $params
+    );
+
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $result = curl_exec($ch);
+    $companyData = json_decode($result);
+
+    curl_close($ch);
+
+    return $companyData;
+}
+
+$apiKey = Mage::getStoreConfig('payment/pagarme_configurations/general_api_key');
+$encryptionKey = Mage::getStoreConfig('payment/pagarme_configurations/general_encryption_key');
+
+if(is_null($apiKey) || is_null($encryptionKey)) {
+  $apiKey = getenv('API_KEY');
+  $encryptionKey = getenv('ENCRYPTION_KEY');
+}
+if (!$apiKey && !$encryptionKey) {
+    $companyData = getCompanyTemporary();
+
+    $apiKey = $companyData->api_key->test;
+    $encryptionKey = $companyData->encryption_key->test;
+}
+define('PAGARME_API_KEY', $apiKey);
+define('PAGARME_ENCRYPTION_KEY', $encryptionKey);
