@@ -317,7 +317,7 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
     {
         $invoice = Mage::getModel('sales/service_order', $order)
             ->prepareInvoice();
-        
+
         $invoice->setBaseGrandTotal($order->getGrandTotal());
         $invoice->setGrandTotal($order->getGrandTotal());
         $invoice->setInterestAmount($order->getInterestAmount());
@@ -421,10 +421,30 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
     }
 
     /**
-     * @param \PagarMe\Sdk\Transaction\CreditCardTransaction $transaction
-     * @param \Mage_Sales_Model_Order_Payment
+     * @return string
+     */
+    private function buildCheckoutRefusedMessage()
+    {
+        $reviewMessage = $this->pagarmeCreditCardHelper->
+            __('Please, review your payment data.');
+        $paymentAuthorizationMessage = $this->pagarmeCreditCardHelper
+            ->__('An error ocurred with the payment authorization.');
+        $cardReview = $this->pagarmeCreditCardHelper->
+            __('You can review your payment information and try again.');
+
+        return sprintf(
+            "%s\n\n%s\n%s",
+            $reviewMessage,
+            $paymentAuthorizationMessage,
+            $cardReview
+        );
+    }
+
+    /**
+     * @param \Mage_Sales_Model_Order_Payment $payment
      *
      * @return \Varien_Object
+     * @throws Mage_Payment_Model_Info_Exception
      */
     private function handlePaymentStatus(
         Mage_Sales_Model_Order_Payment $payment
@@ -437,7 +457,7 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
             false
         );
 
-        switch($this->transaction->getStatus()) {
+        switch ($this->transaction->getStatus()) {
             case AbstractTransaction::PROCESSING:
                 $message = 'Processing on Gateway. Waiting response';
                 $desiredStatus = Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
@@ -450,13 +470,9 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
                 );
                 break;
             case AbstractTransaction::REFUSED:
-                $canceledHandler = new PagarMe_Core_Model_OrderStatusHandler_RefusedTransaction(
-                    $order,
-                    $this->transaction
+                throw new Mage_Payment_Model_Info_Exception(
+                    $this->buildCheckoutRefusedMessage()
                 );
-                $order = $canceledHandler->handleStatus();
-                $this->stateObject->setState($order->getState());
-                $this->stateObject->setStatus($order->getStatus());
                 break;
             case AbstractTransaction::PENDING_REVIEW:
                 $message = 'Waiting transaction review on Pagar.me\'s Dashboard';
@@ -617,8 +633,9 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
                     $this->formatPagarmeExceptions($pagarMeException)
                 );
             }
+        } catch (Mage_Payment_Model_Info_Exception $refusedException) {
+            Mage::throwException($refusedException->getMessage());
         } catch (\Exception $exception) {
-            Mage::log('Exception autorizing:');
             Mage::logException($exception);
 
             Mage::throwException($exception);

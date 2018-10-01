@@ -81,7 +81,8 @@ class PagarMe_Core_Model_PostbackHandler_Paid extends PagarMe_Core_Model_Postbac
         $this->order->setState(
             self::MAGENTO_DESIRED_STATUS,
             true,
-            "pago"
+            Mage::helper('pagarme_core')
+                ->__('Paid')
         );
 
         Mage::getModel('core/resource_transaction')

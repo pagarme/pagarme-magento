@@ -6,7 +6,8 @@ Feature: Credit Card
 
     Scenario Outline: Make a purchase by credit card
         Given a registered user
-        And the administrator set payment action to "<payment_action>" and set async configuration to "<isAsync>"
+        And the administrator set payment action to "<payment_action>"
+        And the administrator set the async configuration to "<isAsync>"
         When I access the store page
         And add any product to basket
         And I go to checkout page
@@ -25,8 +26,24 @@ Feature: Credit Card
         | authorize_only    | yes     | pending_payment          |
         | authorize_capture | yes     | pending_payment          |
 
-    Scenario: Make a refused order by credit card
+    @refused
+    Scenario: Make a sync refused order by credit card
         Given a registered user
+        And the administrator set the async configuration to "no"
+        When I access the store page
+        And add any product to basket
+        And I go to checkout page
+        And login with registered user
+        And confirm billing and shipping address information
+        And choose pay with transparent checkout using credit card
+        And I give a invalid payment information
+        And place order
+        Then I must stay in the checkout page
+
+    @refused
+    Scenario: Make an async refused order by credit card
+        Given a registered user
+        And the administrator set the async configuration to "yes"
         When I access the store page
         And add any product to basket
         And I go to checkout page
@@ -37,7 +54,7 @@ Feature: Credit Card
         And place order
         Then the purchase must be paid with success
         And I get the created order id from success page
-        And the order status should be "canceled"
+        And the order status should be "pending_payment"
 
     Scenario Outline: Change the max installments configuration
         Given a registered user
@@ -130,10 +147,10 @@ Feature: Credit Card
         And I login to the admin
         And I check the order payment details
         And the admin details should contain the payment method "Credit Card", installments value "2", customer name and card brand
-  
+
     Scenario: Check if in an existing order's invoice has the interest value
         Given a existing order
-        When I login to the admin 
+        When I login to the admin
         And I check the invoice interest amount in its admin detail page
         Then the interest value should be "11.22" in the invoice details
 

@@ -104,6 +104,17 @@ class PostbackContext extends MinkContext
         );
     }
 
+    /**
+     * @When a :paymentMethod order be refused
+     */
+    public function aOrderBeRefused($paymentMethod)
+    {
+        $this->processPostbackByPaymentMethod(
+            PagarMe_Core_Model_Postback::POSTBACK_STATUS_REFUSED,
+            $paymentMethod
+        );
+    }
+
     private function processPostbackByPaymentMethod($currentStatus, $paymentMethod)
     {
         $transactionId = Mage::getModel('pagarme_core/service_order')

@@ -14,7 +14,7 @@ Feature: Update order status
         And the "boleto" payment be refunded
         Then the order status must be updated to "closed"
 
-    Scenario: Receiving credit card order status update
+    Scenario: Receiving credit card order status update to paid
         Given a pending credit card order
         When a "creditcard" order be paid
         Then the order status must be updated to "processing"
@@ -24,3 +24,8 @@ Feature: Update order status
         When a "creditcard" order be paid
         And the "creditcard" payment be refunded
         Then the order status must be updated to "closed"
+
+    Scenario: Receiving credit card order status update to refused
+        Given a pending credit card order
+        When a "creditcard" order be refused
+        Then the order status must be updated to "canceled"
