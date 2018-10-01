@@ -533,7 +533,7 @@ class CreditCardContext extends RawMinkContext
         )->getText();
         \PHPUnit_Framework_TestCase::assertEquals(
             $checkoutTotalAmount,
-            'R$27.44'
+            'R$32.44'
         );
     }
 
@@ -689,5 +689,35 @@ class CreditCardContext extends RawMinkContext
         } catch (Exception $exception) {
             throw $exception;
         }
+    }
+
+    /**
+     * @Then the checkout order review interest amount should be :interestAmount
+     */
+    public function theCheckoutOrderReviewInterestAmountShouldBe(
+        $interestAmount
+    ) {
+        $page = $this->session->getPage();
+
+        $interestAmountText = sprintf(
+            'Installments related Interest R$%s',
+            $interestAmount
+        );
+
+        $orderReviewElement = $page->find('named', array(
+            'content',
+            $interestAmountText
+        ));
+
+        if(is_null($orderReviewElement)) {
+            throw new Exception(
+                'Interest amount text should be present on page.'
+            );
+        }
+
+        PHPUnit_Framework_Assert::assertEquals(
+            $orderReviewElement->getText(),
+            $interestAmountText
+        );
     }
 }

@@ -3,6 +3,9 @@
 class PagarMe_Core_Model_CurrentOrder
 {
 
+    /**
+     * @var \Mage_Sales_Model_Quote
+     */
     private $quote;
     private $pagarMeSdk;
 
@@ -17,7 +20,7 @@ class PagarMe_Core_Model_CurrentOrder
         $maxInstallments,
         $freeInstallments,
         $interestRate
-    ){
+    ) {
         $amount = $this->productsTotalValueInCents();
         return $this->pagarMeSdk->getPagarMeSdk()
             ->calculation()
@@ -29,12 +32,29 @@ class PagarMe_Core_Model_CurrentOrder
             );
     }
 
-    //Subtotal should be the sum of all items in the cart
-    //there's also Basesubtotal = subtotal in the store's currency
+    /**
+     * @deprecated
+     * @see self::productsTotalValueInCents
+     *
+     * @return int
+     */
     public function productsTotalValueInCents()
     {
-        $total = $this->quote->getTotals()['subtotal']->getValue();
-        return Mage::helper('pagarme_core')->parseAmountToInteger($total);
+        return $this->orderGrandTotalInCents();
+    }
+
+    /**
+     * GrandTotal represents the value of the shipping + cart items total
+     * considering the discount amount
+     *
+     * @return int
+     */
+    public function orderGrandTotalInCents()
+    {
+        $total = $this->quote->getData()['grand_total'];
+
+        return Mage::helper('pagarme_core')
+            ->parseAmountToInteger($total);
     }
 
     public function productsTotalValueInBRL()
@@ -43,9 +63,20 @@ class PagarMe_Core_Model_CurrentOrder
         return Mage::helper('pagarme_core')->parseAmountToFloat($total);
     }
 
-    //May result in slowing the payment method view in the checkout
-    public function rateAmountInBRL($installmentsValue, $freeInstallments, $interestRate)
-    {
+    /**
+     * May result in slowing the payment method view in the checkout
+     *
+     * @param int $installmentsValue
+     * @param int $freeInstallments
+     * @param float $interestRate
+     *
+     * @return float
+     */
+    public function rateAmountInBRL(
+        $installmentsValue,
+        $freeInstallments,
+        $interestRate
+    ) {
         $installments = $this->calculateInstallments(
             $installmentsValue,
             $freeInstallments,
@@ -54,6 +85,7 @@ class PagarMe_Core_Model_CurrentOrder
 
         $installmentTotal = $installments[$installmentsValue]['total_amount'];
         return Mage::helper('pagarme_core')->parseAmountToFloat(
-            $installmentTotal - $this->productsTotalValueInCents());
+            $installmentTotal - $this->productsTotalValueInCents()
+        );
     }
 }

@@ -4,11 +4,6 @@ use PagarMe\Sdk\Transaction\AbstractTransaction;
 trait PagarMe_Core_Block_Info_Trait
 {
     /**
-     * @var AbstractTransaction
-     */
-    private $transaction;
-
-    /**
      * @codeCoverageIgnore
      *
      * @return AbstractTransaction
@@ -39,7 +34,7 @@ trait PagarMe_Core_Block_Info_Trait
         $order = $this->getInfo()->getOrder();
 
         if (is_null($order)) {
-            throw new Exception('Order doesn\'t exist');
+            throw new \Exception('Order doesn\'t exist');
         }
 
         $pagarmeInfosRelated = \Mage::getModel('pagarme_core/service_order')
@@ -54,6 +49,7 @@ trait PagarMe_Core_Block_Info_Trait
      * Fetch transaction's information from API
      *
      * @param int $transactionId
+     *
      * @return AbstractTransaction
      */
     private function fetchPagarmeTransactionFromAPi($transactionId)

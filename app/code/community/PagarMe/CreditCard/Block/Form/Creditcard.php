@@ -17,7 +17,7 @@ class PagarMe_Creditcard_Block_Form_CreditCard extends Mage_Payment_Block_Form_C
 
     public function getInstallments()
     {
-        $quote = Mage::getModel('checkout/session')->getQuote();
+        $quote = Mage::helper('checkout')->getQuote();
         $pagarMeSdk = Mage::getModel('pagarme_core/sdk_adapter');
         $currentOrder = new CurrentOrder(
             $quote,
