@@ -26,7 +26,6 @@ Feature: Credit Card
         | authorize_only    | yes     | pending_payment          |
         | authorize_capture | yes     | pending_payment          |
 
-    @refused
     Scenario: Make a sync refused order by credit card
         Given a registered user
         And the administrator set the async configuration to "no"
@@ -40,7 +39,6 @@ Feature: Credit Card
         And place order
         Then I must stay in the checkout page
 
-    @refused
     Scenario: Make an async refused order by credit card
         Given a registered user
         And the administrator set the async configuration to "yes"
@@ -59,6 +57,7 @@ Feature: Credit Card
     Scenario Outline: Change the max installments configuration
         Given a registered user
         When I set max installments to "<max_installments>"
+        And I set the minimum installment amount to "<min_installment_amount>"
         And I access the store page
         And add any product to basket
         And I go to checkout page
@@ -66,16 +65,14 @@ Feature: Credit Card
         And confirm billing and shipping address information
         And choose pay with transparent checkout using credit card
         And I confirm my payment information
-        And I should see only installment options up to "<max_installments>"
+        And I should see only installment options up to "<desired_max_installment>"
         And place order
         Then the purchase must be paid with success
         Examples:
-        | max_installments  |
-        | 12                |
-        | 3                 |
-        | 1                 |
+        | max_installments  | min_installment_amount | desired_max_installment |
+        | 12                | 1                      | 12                      |
+        | 5                 | 4.99                   | 3                       |
 
-    @only
     Scenario: Make a purchase by credit card with interest and installments
         Given a registered user
         When I set max installments to 10

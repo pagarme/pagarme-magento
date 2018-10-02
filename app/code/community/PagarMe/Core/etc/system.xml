@@ -103,11 +103,21 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </creditcard_interest_rate>
+                        <creditcard_min_installment_value translate="label comment">
+                            <label>Minimum Installment Value</label>
+                            <comment>Example 5.00</comment>
+                            <frontend_type>text</frontend_type>
+                            <frontend_class>validate-number</frontend_class>
+                            <sort_order>14</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </creditcard_min_installment_value>
                         <creditcard_free_installments translate="label">
                             <label>Free Installments</label>
                             <frontend_type>text</frontend_type>
                             <frontend_class>validate-number</frontend_class>
-                            <sort_order>14</sort_order>
+                            <sort_order>15</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
@@ -116,7 +126,7 @@
                             <label>Allowed Credit Card Brands</label>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>pagarme_core/system_config_source_creditCardBrands</source_model>
-                            <sort_order>15</sort_order>
+                            <sort_order>16</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>

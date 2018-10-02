@@ -91,6 +91,25 @@ class CreditCardContext extends RawMinkContext
     }
 
     /**
+     * @AfterScenario
+     */
+    public function resetInstallmentsAndInterestConfiguration() {
+        $config = Mage::getModel('core/config');
+        $config->saveConfig(
+            'payment/pagarme_configurations/creditcard_max_installments',
+            12
+        );
+        $config->saveConfig(
+            'payment/pagarme_configurations/creditcard_interest_rate',
+            0
+        );
+        $config->saveConfig(
+            'payment/pagarme_configurations/creditcard_min_installment_value',
+            1
+        );
+    }
+
+    /**
      * @Given a registered user
      */
     public function aRegisteredUser()
@@ -207,6 +226,19 @@ class CreditCardContext extends RawMinkContext
         $config->saveConfig(
             'payment/pagarme_configurations/creditcard_max_installments',
             $maxInstallments
+        );
+    }
+
+    /**
+     * @When I set the minimum installment amount to :minInstallmentAmount
+     */
+    public function iSetMinInstallmentAmountTo($minInstallmentAmount)
+    {
+        $config = Mage::getModel('core/config');
+
+        $config->saveConfig(
+            'payment/pagarme_configurations/creditcard_min_installment_value',
+            $minInstallmentAmount
         );
     }
 

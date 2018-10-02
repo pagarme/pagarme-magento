@@ -16,8 +16,8 @@
         "behat/mink-extension": "~2.2",
         "n98/magerun": "@stable"
     },
-    "archive":{
-        "exclude":[
+    "archive": {
+        "exclude": [
             ".coveralls.yml",
             ".behat.yml",
             ".travis.yml",
@@ -34,7 +34,8 @@
             "ISSUE-TEMPLATE.md",
             "CONTRUBUTING.md",
             "docker-compose.yml",
-            ".env"
+            ".env",
+            "tests/"
         ]
     }
 }

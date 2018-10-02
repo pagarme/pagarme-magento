@@ -9,8 +9,7 @@ trait PagarMe_Core_Trait_ConfigurationsAccessor
      */
     public function isDeveloperModeEnabled()
     {
-        if (
-            Mage::getIsDeveloperMode() ||
+        if (Mage::getIsDeveloperMode() ||
             getenv('PAGARME_DEVELOPMENT') === 'enabled'
         ) {
             return true;
@@ -41,6 +40,9 @@ trait PagarMe_Core_Trait_ConfigurationsAccessor
         return $devPostbackUrl;
     }
 
+    /**
+     * @return bool
+     */
     private function isTransparentCheckoutActiveStoreConfig()
     {
         return (bool) $this->getConfigurationWithName(
@@ -48,6 +50,9 @@ trait PagarMe_Core_Trait_ConfigurationsAccessor
         );
     }
 
+    /**
+     * @return string
+     */
     private function getCreditcardTitleStoreConfig()
     {
         return $this->getConfigurationWithName(
@@ -55,6 +60,9 @@ trait PagarMe_Core_Trait_ConfigurationsAccessor
         );
     }
 
+    /**
+     * @return int
+     */
     private function getMaxInstallmentStoreConfig()
     {
         return (int) $this->getConfigurationWithName(
@@ -62,6 +70,19 @@ trait PagarMe_Core_Trait_ConfigurationsAccessor
         );
     }
 
+    /**
+     * @return float
+     */
+    private function getMinInstallmentValueStoreConfig()
+    {
+        return (float) $this->getConfigurationWithName(
+            'pagarme_configurations/creditcard_min_installment_value'
+        );
+    }
+
+    /**
+     * @return string
+     */
     public function getEncryptionKeyStoreConfig()
     {
         return $this->getConfigurationWithName(
@@ -69,6 +90,9 @@ trait PagarMe_Core_Trait_ConfigurationsAccessor
         );
     }
 
+    /**
+     * @return bool
+     */
     public function getAsyncTransactionConfig()
     {
         return $this->getConfigurationWithName(
@@ -76,6 +100,9 @@ trait PagarMe_Core_Trait_ConfigurationsAccessor
         );
     }
 
+    /**
+     * @return string
+     */
     public function getPaymentActionConfig()
     {
         return $this->getConfigurationWithName(
@@ -83,6 +110,9 @@ trait PagarMe_Core_Trait_ConfigurationsAccessor
         );
     }
 
+    /**
+     * @return int
+     */
     private function getFreeInstallmentStoreConfig()
     {
         return (int) $this->getConfigurationWithName(
@@ -90,6 +120,9 @@ trait PagarMe_Core_Trait_ConfigurationsAccessor
         );
     }
 
+    /**
+     * @return float
+     */
     private function getInterestRateStoreConfig()
     {
         return (float) $this->getConfigurationWithName(
@@ -97,6 +130,11 @@ trait PagarMe_Core_Trait_ConfigurationsAccessor
         );
     }
 
+    /**
+     * @param string $name
+     *
+     * @return mixed
+     */
     private function getConfigurationWithName($name)
     {
         return Mage::getStoreConfig("payment/{$name}");

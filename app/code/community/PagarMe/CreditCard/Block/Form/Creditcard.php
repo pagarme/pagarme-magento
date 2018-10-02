@@ -15,6 +15,9 @@ class PagarMe_Creditcard_Block_Form_CreditCard extends Mage_Payment_Block_Form_C
         $this->setTemplate(self::TEMPLATE);
     }
 
+    /**
+     * @return array
+     */
     public function getInstallments()
     {
         $quote = Mage::helper('checkout')->getQuote();
@@ -24,11 +27,40 @@ class PagarMe_Creditcard_Block_Form_CreditCard extends Mage_Payment_Block_Form_C
             $pagarMeSdk
         );
 
+        $maxInstallments = $this->getMaxInstallmentsByMinimumAmount(
+            $currentOrder->productsTotalValueInBRL()
+        );
+
         return $currentOrder->calculateInstallments(
-            $this->getMaxInstallmentStoreConfig(),
+            $maxInstallments,
             $this->getFreeInstallmentStoreConfig(),
             $this->getInterestRateStoreConfig()
         );
     }
-}
 
+    /**
+     * @param float $orderTotal
+     *
+     * @return int
+     */
+    public function getMaxInstallmentsByMinimumAmount($orderTotal)
+    {
+        $minInstallmentAmount = $this->getMinInstallmentValueStoreConfig();
+
+        $maxInstallmentsConfig = $this->getMaxInstallmentStoreConfig();
+
+        if ($minInstallmentAmount <= 0) {
+            return $this->getMaxInstallmentStoreConfig();
+        }
+
+        $installmentsNumber = floor($orderTotal / $minInstallmentAmount);
+
+        $maxInstallments = $installmentsNumber ? $installmentsNumber : 1;
+
+        if ($maxInstallments > $this->getMaxInstallmentStoreConfig()) {
+            return $this->getMaxInstallmentStoreConfig();
+        }
+
+        return $maxInstallments;
+    }
+}

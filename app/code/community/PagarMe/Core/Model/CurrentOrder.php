@@ -7,6 +7,10 @@ class PagarMe_Core_Model_CurrentOrder
      * @var \Mage_Sales_Model_Quote
      */
     private $quote;
+
+    /**
+     * @var PagarMe_Core_Model_Sdk_Adapter $sdk
+     */
     private $pagarMeSdk;
 
     public function __construct(
