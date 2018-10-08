@@ -10,6 +10,7 @@ Feature: Credit Card
         And the administrator set the async configuration to "<isAsync>"
         When I access the store page
         And add any product to basket
+        And update the product quantity to "4"
         And I go to checkout page
         And login with registered user
         And confirm billing and shipping address information
@@ -166,3 +167,12 @@ Feature: Credit Card
         And select to capture amount "online"
         And click on the submit invoice button
         Then the order should be captured on Pagar.me
+
+    Scenario: Capture partially a purchase by credit card through the platform
+        Given an order with more than one product
+        When I login to the admin
+        Then I must capture the invoice partially
+        When select to capture amount "online"
+        And click on the submit invoice button
+        Then the order should be captured on Pagar.me
+        And the order must be captured partially on Pagar.me

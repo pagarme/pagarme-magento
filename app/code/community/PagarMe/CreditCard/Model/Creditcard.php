@@ -24,6 +24,7 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
     protected $_isGateway = true;
     protected $_canAuthorize = true;
     protected $_canCapture = true;
+    protected $_canCapturePartial = true;
     protected $_canRefund = true;
     protected $_canUseForMultishipping = true;
     protected $_canManageRecurringProfiles = true;
@@ -657,13 +658,17 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
     /**
      * @param Varien_Object $payment
      * @param float $amount
+     *
      * @return void
-     * @throws PagarMe_CreditCard_Model_Exception_CantCaptureTransaction
+     *
      * @throws \Exception
      */
     public function capture(Varien_Object $payment, $amount)
     {
         $order = $payment->getOrder();
+        $integerAmount = Mage::helper('pagarme_core')
+            ->parseAmountToInteger($amount);
+
         $transactionId = Mage::getModel(
             'pagarme_core/service_order'
         )->getTransactionIdByOrder($order);
@@ -676,7 +681,13 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
             $this->transaction = $transactionModel->getTransactionById(
                 $transactionId
             );
-            $this->transaction = $transactionModel->capture($this->transaction);
+
+            $this->transaction = $this->sdk
+                ->transaction()
+                ->capture(
+                    $this->transaction,
+                    $integerAmount
+                );
 
             return $this;
         } catch (\Exception $exception) {

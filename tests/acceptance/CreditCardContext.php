@@ -337,6 +337,24 @@ class CreditCardContext extends RawMinkContext
     }
 
     /**
+     * @When update the product quantity to :quantity
+     */
+    public function updateTheProductQuantityTo($quantity)
+    {
+        $page = $this->session->getPage();
+
+        try {
+            $productQuantity = $page->find('css', '#shopping-cart-table input');
+            $productQuantity->setValue($quantity);
+            $page->find('css', '#shopping-cart-table .btn-update')->click();
+        } catch (Exception $e) {
+            $productQuantity = $page->find('css', 'td.product-cart-actions input');
+            $productQuantity->setValue($quantity);
+            $page->find('css', 'td.product-cart-actions button')->click();
+        }
+    }
+
+    /**
      * @When I access the my account page
      */
     public function iAccessTheMyAccountPage()
@@ -606,6 +624,26 @@ class CreditCardContext extends RawMinkContext
     }
 
     /**
+     * @Then I must capture the invoice partially
+     */
+    public function iMustCaptureTheInvoicePartially()
+    {
+        $orderObject = Mage::getModel('sales/order')->load($this->orderId);
+        Mage::getConfig()->saveConfig('admin/security/use_form_key', 0);
+        $url = $this->magentoUrl . 'index.php/admin/sales_order_invoice/new/order_id/' . $this->orderId;
+        $this->session->visit($url);
+        Mage::getConfig()->saveConfig('admin/security/use_form_key', 1);
+
+        $page = $this->session->getPage();
+        $quantityInput = $page->find('css', '.qty-input');
+
+        $quantityInput->setValue('3');
+        $page->find('css', '.update-button')->click();
+
+        $this->session->wait(2000);
+    }
+
+    /**
      * @When I check the invoice interest amount in its admin detail page
      */
     public function iCheckTheInvoiceInterestAmountInItsAdminDetailPage()
@@ -706,6 +744,22 @@ class CreditCardContext extends RawMinkContext
     }
 
     /**
+     * @Given an order with more than one product
+     */
+    public function anOrderWithMoreThanOneProduct()
+    {
+        $resource = Mage::getSingleton('core/resource');
+        $readConnection = $resource->getConnection('core_read');
+        $query = 'SELECT items.order_id FROM sales_flat_order_item as items
+            INNER JOIN sales_flat_order
+            ON items.order_id = sales_flat_order.entity_id
+            WHERE items.qty_ordered > 1
+            AND sales_flat_order.status = "pending_payment"';
+
+        $this->orderId = (int)$readConnection->fetchOne($query);
+    }
+
+    /**
      * @When I go to order details page
      */
     public function iGoToItsDetailsPage()
@@ -783,6 +837,30 @@ class CreditCardContext extends RawMinkContext
         } catch (Exception $exception) {
             throw $exception;
         }
+    }
+
+    /**
+     * @Then the order must be captured partially on Pagar.me
+     */
+    public function theOrderMustBeCapturedPartiallyOnPagarMe() {
+        $resource = Mage::getSingleton('core/resource');
+        $readConnection = $resource->getConnection('core_read');
+        $query = "SELECT transaction_id FROM pagarme_transaction WHERE order_id = $this->orderId";
+
+        $transactionId = (int)$readConnection->fetchOne($query);
+
+        $transactionModel = Mage::getModel(
+            'pagarme_core/service_transaction'
+        );
+
+        $transaction = $transactionModel->getTransactionById(
+            $transactionId
+        );
+
+        PHPUnit_Framework_Assert::assertGreaterThan(
+            $transaction->getPaidAmount(),
+            $transaction->getAmount()
+        );
     }
 
     /**
