@@ -18,16 +18,59 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
 
     const PAGARME_CREDITCARD = 'pagarme_creditcard';
 
+    /**
+     * @var string
+     */
     protected $_code = 'pagarme_creditcard';
+
+    /**
+     * @var string
+     */
     protected $_formBlockType = 'pagarme_creditcard/form_creditcard';
+
+    /**
+     * @var string
+     */
     protected $_infoBlockType = 'pagarme_creditcard/info_creditcard';
+
+    /**
+     * @var boolean
+     */
     protected $_isGateway = true;
+
+    /**
+     * @var boolean
+     */
     protected $_canAuthorize = true;
+
+    /**
+     * @var boolean
+     */
     protected $_canCapture = true;
+
+    /**
+     * @var boolean
+     */
     protected $_canCapturePartial = true;
+
+    /**
+     * @var boolean
+     */
     protected $_canRefund = true;
+
+    /**
+     * @var boolean
+     */
     protected $_canUseForMultishipping = true;
+
+    /**
+     * @var boolean
+     */
     protected $_canManageRecurringProfiles = true;
+
+    /**
+     * @var boolean
+     */
     protected $_isInitializeNeeded = true;
 
     /**
@@ -39,7 +82,15 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
      * @var PagarMe\Sdk\Transaction\CreditCardTransaction
      */
     protected $transaction;
+
+    /**
+     * @var PagarMe_Core_Helper_Data
+     */
     protected $pagarmeCoreHelper;
+
+    /**
+     * @var PagarMe_CreditCard_Helper_Data
+     */
     protected $pagarmeCreditCardHelper;
 
     /**
@@ -98,8 +149,7 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
         $this->stateObject->setStatus(Mage_Sales_Model_Order::STATE_PROCESSING);
         $this->stateObject->setIsNotified(true);
 
-        if (
-            $paymentActionConfig === PaymentActionConfig::AUTH_ONLY ||
+        if ($paymentActionConfig === PaymentActionConfig::AUTH_ONLY ||
             $asyncTransactionConfig === true
         ) {
             $stateObject->setState(
@@ -110,8 +160,7 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
             );
         }
 
-        if (
-            $paymentAction ===
+        if ($paymentAction ===
             Mage_Payment_Model_Method_Abstract::ACTION_AUTHORIZE
         ) {
             $this->authorize(
@@ -380,6 +429,9 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
      * @param int $installments
      * @param bool $capture
      * @param string $postbackUrl
+     * @param array $metadata
+     * @param array $extraAttributes
+     *
      * @return self
      */
     public function createTransaction(
@@ -408,6 +460,9 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
         return $this;
     }
 
+    /**
+     * @return string
+     */
     private function buildRefusedReasonMessage()
     {
         $refusedMessage = 'Unauthorized';
@@ -478,7 +533,10 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
                 );
                 break;
             case AbstractTransaction::PENDING_REVIEW:
-                $message = 'Waiting transaction review on Pagar.me\'s Dashboard';
+                $message = sprintf(
+                    "%s",
+                    'Waiting transaction review on Pagar.me\'s Dashboard'
+                );
                 $desiredStatus = Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW;
 
                 $order->setState(
