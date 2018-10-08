@@ -1,13 +1,25 @@
+"Installments","Parcelas"
 "Installments number should be greater than zero","O número de parcelas deve ser maior que zero",
 "Installments number should be lower than Pagar.Me limit","O número de parcelas deve ser menor que o limite Pagar.me",
 "Installments number should not be greater than %d","O número de parcelas deve menor que %d",
 "Installments is Diverging","Valor de parcelas divergente",
+"Installments related Interest","Juros do parcelamento"
 "Undefined Billing address: %s","Endereço de cobrança não informado"
+"Pagar.me Credit card","Cartão de crédito Pagar.me"
+"Credit Card","Cartão de Crédito"
 "Credit Card Owner","Portador do Cartão"
 "Name in credit card","Nome do portador"
 "Credit Card Expiration Date","Data de Expiração"
 "Credit Card Verification Number","Código de Verificação"
 "Credit Card Number","Número do Cartão"
-"Installments","Parcelas"
-"Installments related Interest","Juros do parcelamento"
-"Installments number should be greater than zero. Was: ","Número de parcelas deveria ser maior que zero. Foram: "
+"Customer name","Nome do comprador"
+"Card brand","Bandeira do cartão",
+"Processing on Gateway. Waiting response","Em processamento no gateway. Aguardando resposta"
+"Transacion waiting review on Pagar.me's Dashboard","Transação Aguardando revisão na Dashboard Pagar.me"
+"Transaction refused by acquirer. Unauthorized","Transação recusada pela adquirente. Não autorizada"
+"Transaction refused by gateway. Suspected fraud","Transação recusada pelo Gateway. Suspeita de fraude"
+"Authorized amount of %s","Valor autorizado: %s"
+"Captured amount of %s","Valor capturado: %s"
+"Payment refused.","Pagamento recusado."
+"Please, contact your bank for more informations.","Por favor, contate seu banco para mais informações."
+"Please, contact us for more informations.","Por favor, contate-nos para mais informações."

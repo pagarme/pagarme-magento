@@ -54,3 +54,5 @@
 "Canceled due unpaid boleto. Expiration date was %s","Cancelado devido à boleto não pago. Data de expiração era %s"
 "Boleto is waiting payment","Aguardando pagamento do boleto"
 "Paid","Pago"
+"Minimum Installment Value","Valor mínimo por parcela"
+"Example 5.99","Exemplo 5.00"

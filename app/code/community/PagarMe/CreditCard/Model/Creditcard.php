@@ -425,18 +425,20 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
      */
     private function buildCheckoutRefusedMessage()
     {
-        $reviewMessage = $this->pagarmeCreditCardHelper->
-            __('Please, review your payment data.');
-        $paymentAuthorizationMessage = $this->pagarmeCreditCardHelper
-            ->__('An error ocurred with the payment authorization.');
-        $cardReview = $this->pagarmeCreditCardHelper->
-            __('You can review your payment information and try again.');
+        $defaultMessage = $this->pagarmeCreditCardHelper
+            ->__('Payment refused.');
+        $contactMessage = $this->pagarmeCreditCardHelper
+            ->__('Please, contact your bank for more informations.');
+
+        if ($this->transaction->getRefuseReason() === 'antifraud') {
+            $contactMessage = $this->pagarmeCreditCardHelper
+                ->__('Please, contact us for more informations.');
+        }
 
         return sprintf(
-            "%s\n\n%s\n%s",
-            $reviewMessage,
-            $paymentAuthorizationMessage,
-            $cardReview
+            "%s\n%s",
+            $defaultMessage,
+            $contactMessage
         );
     }
 

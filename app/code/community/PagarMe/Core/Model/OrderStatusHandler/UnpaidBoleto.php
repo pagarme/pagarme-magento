@@ -14,7 +14,8 @@ class PagarMe_Core_Model_OrderStatusHandler_UnpaidBoleto extends BaseHandler
             $this->transaction->getBoletoExpirationDate()->format('d/m/Y')
         );
 
-        return $message;
+        return Mage::helper('pagarme_core')
+            ->__($message);
     }
 
     /**

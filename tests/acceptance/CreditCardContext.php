@@ -624,6 +624,24 @@ class CreditCardContext extends RawMinkContext
     }
 
     /**
+     * @When I check the creditmemo totals in its admin detail page
+     */
+    public function iCheckTheCreditmemoTotalsInItsAdminDetailPage()
+    {
+        $orderObject = Mage::getModel('sales/order')->load($this->orderId);
+
+        $invoiceIds = $orderObject->getInvoiceCollection()->getAllIds();
+
+        Mage::getConfig()->saveConfig('admin/security/use_form_key', 0);
+
+        $url = $this->magentoUrl . 'index.php/admin/sales_order_creditmemo/new/order_id/'.$this->orderId.'invoice_id/'.$invoiceIds[0];
+
+        $this->session->visit($url);
+
+        Mage::getConfig()->saveConfig('admin/security/use_form_key', 1);
+    }
+
+    /**
      * @Then the interest value should be :interest in the invoice details
      */
     public function theInterestValueShouldBeInTheInvoiceDetails($interest)
@@ -631,12 +649,36 @@ class CreditCardContext extends RawMinkContext
         $this->session->wait(3000);
 
         $invoiceInterest = $this->session->evaluateScript(
-                "return document.querySelector(
-                    '.order-totals td:last-child > .price'
-                ).innerHTML;"
-            );
+            "return document.querySelector(
+                '.order-totals tr:last-child > td:last-child > .price'
+            ).innerHTML;"
+        );
 
         \PHPUnit_Framework_TestCase::assertEquals('R$'.$interest, $invoiceInterest);
+    }
+
+    /**
+     * @Then the interest value and grand total must be correct
+     */
+    public function theInterestValueAndGrantTotalMustBeCorrect()
+    {
+        $this->session->wait(3000);
+
+        $creditMemoInterest = $this->session->evaluateScript(
+            "return document.querySelector(
+                '.order-totals tr:last-child > td:last-child > .price'
+            ).innerHTML;"
+        );
+
+        \PHPUnit_Framework_TestCase::assertEquals('R$16.22', $creditMemoInterest);
+
+        $grandTotal = $this->session->evaluateScript(
+            "return document.querySelector(
+                '.order-totals tfoot > tr > td:last-child .price'
+            ).innerHTML;"
+        );
+
+        \PHPUnit_Framework_TestCase::assertEquals('R$32.44', $grandTotal);
     }
 
     /**
