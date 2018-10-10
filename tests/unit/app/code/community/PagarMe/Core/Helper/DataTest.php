@@ -69,7 +69,7 @@ class PagarMe_Core_Helper_DataTest extends \PHPUnit_Framework_TestCase
      */
     public function mustParseFloatValuesToInteger($value)
     {
-        $subject = $this->helper->parseAmountToInteger($value);
+        $subject = $this->helper->parseAmountToCents($value);
 
         $this->assertInternalType('int', $subject);
     }
@@ -81,7 +81,7 @@ class PagarMe_Core_Helper_DataTest extends \PHPUnit_Framework_TestCase
      */
     public function mustParseIntegerValuesToToFloat($value)
     {
-        $subject = $this->helper->parseAmountToFloat($value);
+        $subject = $this->helper->parseAmountToCurrency($value);
 
         $this->assertInternalType('float', $subject);
     }

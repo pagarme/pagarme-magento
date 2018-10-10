@@ -73,7 +73,7 @@ class PagarMe_Core_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @return int
      */
-    public function parseAmountToInteger($amount)
+    public function parseAmountToCents($amount)
     {
         return intval($amount * 100);
     }
@@ -83,7 +83,7 @@ class PagarMe_Core_Helper_Data extends Mage_Core_Helper_Abstract
      *
      * @return float
      */
-    public function parseAmountToFloat($amount)
+    public function parseAmountToCurrency($amount)
     {
         return floatval($amount / 100);
     }

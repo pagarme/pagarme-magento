@@ -725,7 +725,7 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
     {
         $order = $payment->getOrder();
         $integerAmount = Mage::helper('pagarme_core')
-            ->parseAmountToInteger($amount);
+            ->parseAmountToCents($amount);
 
         $transactionId = Mage::getModel(
             'pagarme_core/service_order'

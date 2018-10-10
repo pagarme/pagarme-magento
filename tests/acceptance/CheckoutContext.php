@@ -476,7 +476,7 @@ class CheckoutContext extends RawMinkContext
             PagarMe_Core_Model_System_Config_Source_BoletoDiscountMode::FIXED_VALUE) {
             $expectedGrandTotal = $subtotal + $discount;
             $expectedDiscountValue = \Mage::helper('pagarme_core')
-                ->parseAmountToInteger($this->configuredDiscount) * -1;
+                ->parseAmountToCents($this->configuredDiscount) * -1;
         } else if ($this->configuredDiscountMode ==
             PagarMe_Core_Model_System_Config_Source_BoletoDiscountMode::PERCENTAGE) {
             $expectedGrandTotal = ceil($subtotal * (1 - ($this->configuredDiscount / 100)));

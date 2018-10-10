@@ -20,29 +20,29 @@ class PagarMe_Core_Model_Entity_PaymentMethodFactory
         $paymentMethod = $infoInstance->getAdditionalInformation(
             'pagarme_payment_method'
         );
-        
+
         if ($paymentMethod === PagarMe_Modal_Model_Modal::PAGARME_MODAL_CREDIT_CARD) {
             $transaction = new CreditCardTransaction([
                 'token' => $infoInstance->getAdditionalInformation('token'),
                 'amount' => Mage::helper('pagarme_core')
-                    ->parseAmountToInteger($amount),
+                    ->parseAmountToCents($amount),
                 'postback_url' => Mage::getUrl('pagarme/transaction_creditcard/postback'),
             ]);
-            
+
             return $transaction;
         }
-        
+
         if ($paymentMethod === PagarMe_Modal_Model_Modal::PAGARME_MODAL_BOLETO) {
             $transaction = new BoletoTransaction([
                 'token' => $infoInstance->getAdditionalInformation('token'),
                 'amount' => Mage::helper('pagarme_core')
-                    ->parseAmountToInteger($amount),
+                    ->parseAmountToCents($amount),
                 'postback_url' => Mage::getUrl('pagarme/transaction_boleto/postback'),
             ]);
-            
+
             return $transaction;
         }
-        
+
         throw new Exception('Unsupported payment method: '.$paymentMethod);
     }
 }

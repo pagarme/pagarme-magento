@@ -118,7 +118,7 @@ class PagarMe_Boleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMeth
             ->transaction()
             ->boletoTransaction(
                 $this->pagarmeCoreHelper
-                    ->parseAmountToInteger($quote->getGrandTotal()),
+                    ->parseAmountToCents($quote->getGrandTotal()),
                 $customer,
                 $postBackURL,
                 $payment->getOrder()
@@ -224,7 +224,7 @@ class PagarMe_Boleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMeth
             ];
 
             $amount = $this->pagarmeCoreHelper
-                ->parseAmountToInteger($quote->getGrandTotal());
+                ->parseAmountToCents($quote->getGrandTotal());
 
             $this->transaction = $this->sdk
                 ->transaction()
@@ -261,7 +261,7 @@ class PagarMe_Boleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMeth
 
         return $this;
     }
-    
+
     /**
      * @param Mage_Sales_Model_Order_Payment $infoInstance
      * @param \PagarMe\Sdk\Transaction\AbstractTransaction $transaction
@@ -277,7 +277,7 @@ class PagarMe_Boleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMeth
             'store_increment_id' => $order->getIncrementId(),
             'pagarme_boleto_url' => $transaction->getBoletoUrl(),
         ];
-        
+
         return array_merge(
             $infoInstance->getAdditionalInformation(),
             $data

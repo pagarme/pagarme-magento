@@ -58,13 +58,13 @@ class PagarMe_Core_Model_CurrentOrder
         $total = $this->quote->getData()['grand_total'];
 
         return Mage::helper('pagarme_core')
-            ->parseAmountToInteger($total);
+            ->parseAmountToCents($total);
     }
 
     public function productsTotalValueInBRL()
     {
         $total = $this->productsTotalValueInCents();
-        return Mage::helper('pagarme_core')->parseAmountToFloat($total);
+        return Mage::helper('pagarme_core')->parseAmountToCurrency($total);
     }
 
     /**
@@ -88,7 +88,7 @@ class PagarMe_Core_Model_CurrentOrder
         );
 
         $installmentTotal = $installments[$installmentsValue]['total_amount'];
-        return Mage::helper('pagarme_core')->parseAmountToFloat(
+        return Mage::helper('pagarme_core')->parseAmountToCurrency(
             $installmentTotal - $this->productsTotalValueInCents()
         );
     }

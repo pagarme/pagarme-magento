@@ -98,7 +98,7 @@ class PagarMe_Core_Model_Transaction extends Mage_Core_Model_Abstract
 
         if (!is_null($transaction)) {
             $totalAmount = Mage::helper('pagarme_core')
-                ->parseAmountToFloat($transaction->getAmount());
+                ->parseAmountToCurrency($transaction->getAmount());
 
             $this
                 ->setTransactionId($transaction->getId())

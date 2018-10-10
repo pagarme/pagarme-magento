@@ -82,7 +82,7 @@
                 <?php
                     $moduleHelper = Mage::helper('pagarme_core');
                     $floatPrice = $moduleHelper
-                        ->parseAmountToFloat(
+                        ->parseAmountToCurrency(
                             $installmentInfo['installment_amount']
                         );
                     echo sprintf(

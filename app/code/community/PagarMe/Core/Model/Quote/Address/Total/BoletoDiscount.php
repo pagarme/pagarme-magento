@@ -36,7 +36,7 @@ class PagarMe_Core_Model_Quote_Address_Total_BoletoDiscount extends PagarMe_Core
 
         $transaction = $this->getTransaction();
         $totalAmount = Mage::helper('pagarme_core')
-            ->parseAmountToFloat($transaction->getAmount());
+            ->parseAmountToCurrency($transaction->getAmount());
 
         $this->discount = $totalAmount - $subtotalAmount;
 

@@ -88,11 +88,11 @@ class PagarMe_CreditCard_Model_Quote_Address_Total_CreditCardInterestAmount exte
     {
         $pagarMeSdk = Mage::getModel('pagarme_core/sdk_adapter')
             ->getPagarMeSdk();
-            
+
         $helper = Mage::helper('pagarme_core');
 
         $choosedInstallments = $paymentMethodParameters['installments'];
-        $totalAmountInCents = $helper->parseAmountToInteger(
+        $totalAmountInCents = $helper->parseAmountToCents(
             $address->getBaseGrandTotal()
         );
 
@@ -108,7 +108,7 @@ class PagarMe_CreditCard_Model_Quote_Address_Total_CreditCardInterestAmount exte
         // @codingStandardsIgnoreLine
         $interestAmountInCents = $installmentCalc->getTotal() - $totalAmountInCents;
 
-        return $helper->parseAmountToFloat($interestAmountInCents);
+        return $helper->parseAmountToCurrency($interestAmountInCents);
     }
 
     /**

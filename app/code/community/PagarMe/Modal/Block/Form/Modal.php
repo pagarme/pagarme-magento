@@ -185,7 +185,7 @@ class PagarMe_Modal_Block_Form_Modal extends Mage_Payment_Block_Form
         );
 
         $config = [
-            'amount' => $helper->parseAmountToInteger($quote->getGrandTotal()),
+            'amount' => $helper->parseAmountToCents($quote->getGrandTotal()),
             'createToken' => 'true',
             'paymentMethods' => $this->getAvailablePaymentMethods(),
             'customerName' => $helper->getCustomerNameFromQuote($quote),
@@ -232,7 +232,7 @@ class PagarMe_Modal_Block_Form_Modal extends Mage_Payment_Block_Form
         ];
 
         if ($this->hasFixedDiscountOnBoleto()) {
-            $config['boletoDiscountAmount'] = $helper->parseAmountToInteger(
+            $config['boletoDiscountAmount'] = $helper->parseAmountToCents(
                 $this->getBoletoDiscount()
             );
         }

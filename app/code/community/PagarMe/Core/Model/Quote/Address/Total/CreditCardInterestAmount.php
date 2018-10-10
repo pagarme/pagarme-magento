@@ -41,7 +41,7 @@ class PagarMe_Core_Model_Quote_Address_Total_CreditCardInterestAmount
 
         $transaction = $this->getTransaction();
         $totalAmount = Mage::helper('pagarme_core')
-            ->parseAmountToFloat($transaction->getAmount());
+            ->parseAmountToCurrency($transaction->getAmount());
 
         $this->interestAmount = $totalAmount - $subtotalAmount;
 
