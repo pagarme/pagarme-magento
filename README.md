@@ -31,6 +31,8 @@ Módulo de integração Pagar.me para Magento 1.x
 * `Número de linhas em um endereço de rua` com valor `4`
 *  `Exibir Tax/Vat` com valor `Habilitado`
 7. Salve as configurações
+8. Vá em `Sistema > Configuração > Catálogo > Inventário > Opções de estoque`
+* Altere a opção `Reajustar Estoque Quando Pedidor for Cancelado` para `Sim`
 
 ### Configuração de cancelamento automático de boletos não pagos
 

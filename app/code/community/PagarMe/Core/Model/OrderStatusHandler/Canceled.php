@@ -53,19 +53,30 @@ class PagarMe_Core_Model_OrderStatusHandler_Canceled extends BaseHandler
             'core/resource_transaction'
         );
 
-        $this->cancel();
+        try {
+            $this->cancel();
+            $magentoTransaction->addObject($this->order)->save();
 
-        $magentoTransaction->addObject($this->order)->save();
+            $logMessage = sprintf(
+                'Order %s, transaction %s updated to %s',
+                $this->order->getId(),
+                $this->transaction->getId(),
+                Mage_Sales_Model_Order::STATE_CANCELED
+            );
+            
+            Mage::log($logMessage);
+        } catch (\Exception $exception) {
+            $logExceptionMessage = sprintf(
+                'Tried to update order %s, transaction %s updated to %s but failed. %s',
+                $this->order->getId(),
+                $this->transaction->getId(),
+                Mage_Sales_Model_Order::STATE_CANCELED,
+                $exception->getMessage()
+            );
 
-        $logMessage = sprintf(
-            'Order %s, transaction %s updated to %s',
-            $this->order->getId(),
-            $this->transaction->getId(),
-            Mage_Sales_Model_Order::STATE_CANCELED
-        );
-
-        Mage::log($logMessage);
-
+            Mage::logException($logExceptionMessage);
+        }
+        
         return $this->order;
     }
 }

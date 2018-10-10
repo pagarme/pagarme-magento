@@ -21,6 +21,15 @@
                 <class>PagarMe_Boleto_Helper</class>
             </pagarme_boleto>
         </helpers>
+        <sales>
+            <order>
+                <states>
+                    <pending_payment translate="label">
+                        <visible_on_front>1</visible_on_front>
+                    </pending_payment>
+                </states>
+            </order>
+        </sales>
     </global>
     <frontend>
         <layout>
