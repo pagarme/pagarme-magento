@@ -184,6 +184,10 @@ class PagarMe_Boleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMeth
         try {
             $infoInstance = $this->getInfoInstance();
             $quote = Mage::getSingleton('checkout/session')->getQuote();
+            if (Mage::getSingleton('admin/session')->isLoggedIn()) {
+                $session = Mage::getSingleton('adminhtml/session_quote');
+                $quote = $session->getQuote();
+            }
             $billingAddress = $quote->getBillingAddress();
             $referenceKey = $this->getReferenceKey();
 
