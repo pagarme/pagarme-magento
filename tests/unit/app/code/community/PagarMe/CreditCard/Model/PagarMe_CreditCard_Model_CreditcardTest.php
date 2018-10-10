@@ -169,25 +169,11 @@ class PagarMeCreditCardModelCreditcardTest extends PHPUnit_Framework_TestCase
         $creditCardModel = Mage::getModel('pagarme_creditcard/creditcard');
         $creditCardModel->setSdk($sdk);
         $creditCardModel->setQuote($this->getQuoteMock());
-
-        $card = $this->getMockBuilder('PagarMe\Sdk\Card\Card')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $customer = $this->getMockBuilder(
-            'PagarMe\Sdk\Customer\Customer'
-            )
-            ->disableOriginalConstructor()
-            ->getMock();
+        $creditCardModel->setTransaction($transaction);
 
         $expectedInstallments = 3;
-        $creditCardModel->createTransaction(
-            $card,
-            $customer,
-            $expectedInstallments,
-            false
-        );
-        $creditCardModel->checkInstallments();
+
+        $creditCardModel->checkInstallments($expectedInstallments);
     }
 
     /**
@@ -219,24 +205,7 @@ class PagarMeCreditCardModelCreditcardTest extends PHPUnit_Framework_TestCase
         $creditCardModel = Mage::getModel('pagarme_creditcard/creditcard');
         $creditCardModel->setSdk($sdk);
         $creditCardModel->setQuote($this->getQuoteMock());
-
-        $card = $this->getMockBuilder('PagarMe\Sdk\Card\Card')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $customer = $this->getMockBuilder('PagarMe\Sdk\Customer\Customer')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $installments = 1;
-        $capture = false;
-
-        $creditCardModel->createTransaction(
-            $card,
-            $customer,
-            $installments,
-            $capture
-        );
+        $creditCardModel->setTransaction($authTransaction);
 
         $this->assertFalse($creditCardModel->transactionIsPaid());
         $creditCardModel->capture();
