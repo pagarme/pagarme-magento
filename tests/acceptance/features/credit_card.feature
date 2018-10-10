@@ -3,7 +3,6 @@ Feature: Credit Card
     I want to use the transparent checkout for credit card purchases with installments
     So that the clients on my store can buy their goods without knowing that the payment is resolved by Pagar.me
 
-
     Scenario Outline: Make a purchase by credit card
         Given a registered user
         And the administrator set payment action to "<payment_action>"
@@ -169,10 +168,20 @@ Feature: Credit Card
         Then the order should be captured on Pagar.me
 
     Scenario: Capture partially a purchase by credit card through the platform
-        Given an order with more than one product
+        Given an "pending_payment" order with more than one product
         When I login to the admin
-        Then I must capture the invoice partially
-        When select to capture amount "online"
+        And I go to the new invoice page
+        And I set the product quantity to "3"
+        And select to capture amount "online"
         And click on the submit invoice button
-        Then the order should be captured on Pagar.me
-        And the order must be captured partially on Pagar.me
+        Then the order should be "captured" on Pagar.me
+        And the order must be "captured" partially on Pagar.me
+
+    Scenario: Refund partially a purchase by credit card through the platform
+        Given an "processing" order with more than one product
+        When I login to the admin
+        And I go to the invoice credit memo page
+        And I set the product quantity to "1"
+        And click on the refund button
+        Then the order should be "refunded" on Pagar.me
+        And the order must be "refunded" partially on Pagar.me

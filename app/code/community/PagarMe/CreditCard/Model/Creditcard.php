@@ -61,6 +61,11 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
     /**
      * @var boolean
      */
+    protected $_canRefundInvoicePartial = true;
+
+    /**
+     * @var boolean
+     */
     protected $_canUseForMultishipping = true;
 
     /**
@@ -792,13 +797,13 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
             );
         }
 
-        $amount = ((float)$invoice->getGrandTotal()) * 100;
+        $amount = Mage::helper('pagarme_core')
+            ->parseAmountToCents($amount);
 
         try {
             $this->transaction = $this->sdk
                 ->transaction()
                 ->get($invoice->getTransactionId());
-
 
             $this->sdk
                 ->transaction()

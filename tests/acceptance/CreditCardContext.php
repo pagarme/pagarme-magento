@@ -624,20 +624,43 @@ class CreditCardContext extends RawMinkContext
     }
 
     /**
-     * @Then I must capture the invoice partially
+     * @When I go to the new invoice page
      */
-    public function iMustCaptureTheInvoicePartially()
-    {
+    public function iGoToTheCaptureInvoicePage() {
         $orderObject = Mage::getModel('sales/order')->load($this->orderId);
+
         Mage::getConfig()->saveConfig('admin/security/use_form_key', 0);
+
         $url = $this->magentoUrl . 'index.php/admin/sales_order_invoice/new/order_id/' . $this->orderId;
         $this->session->visit($url);
-        Mage::getConfig()->saveConfig('admin/security/use_form_key', 1);
 
+        Mage::getConfig()->saveConfig('admin/security/use_form_key', 1);
+    }
+
+    /**
+     * @When I go to the invoice credit memo page
+     */
+    public function iGoToTheInvoiceCreditMemoPage() {
+        $orderObject = Mage::getModel('sales/order')->load($this->orderId);
+        $invoiceIds = $orderObject->getInvoiceCollection()->getAllIds();
+
+        Mage::getConfig()->saveConfig('admin/security/use_form_key', 0);
+
+        $url = $this->magentoUrl . 'index.php/admin/sales_order_creditmemo/new/order_id/' . $this->orderId . '/invoice_id/' . $invoiceIds[0];
+        $this->session->visit($url);
+
+        Mage::getConfig()->saveConfig('admin/security/use_form_key', 1);
+    }
+
+    /**
+     * @When I set the product quantity to :quantity
+     */
+    public function iMustCaptureTheInvoicePartially($quantity)
+    {
         $page = $this->session->getPage();
         $quantityInput = $page->find('css', '.qty-input');
 
-        $quantityInput->setValue('3');
+        $quantityInput->setValue($quantity);
         $page->find('css', '.update-button')->click();
 
         $this->session->wait(2000);
@@ -744,9 +767,9 @@ class CreditCardContext extends RawMinkContext
     }
 
     /**
-     * @Given an order with more than one product
+     * @Given an :orderStatus order with more than one product
      */
-    public function anOrderWithMoreThanOneProduct()
+    public function anOrderWithMoreThanOneProduct($orderStatus)
     {
         $resource = Mage::getSingleton('core/resource');
         $readConnection = $resource->getConnection('core_read');
@@ -754,7 +777,7 @@ class CreditCardContext extends RawMinkContext
             INNER JOIN sales_flat_order
             ON items.order_id = sales_flat_order.entity_id
             WHERE items.qty_ordered > 1
-            AND sales_flat_order.status = "pending_payment"';
+            AND sales_flat_order.status = "' . $orderStatus . '"';
 
         $this->orderId = (int)$readConnection->fetchOne($query);
     }
@@ -800,6 +823,19 @@ class CreditCardContext extends RawMinkContext
     }
 
     /**
+     * @When click on the refund button
+     */
+    public function clickOnTheRefundButton()
+    {
+        $page = $this->session->getPage();
+        $this->spin(function () use ($page) {
+            return $page->findButton('Refund') != null;
+        }, 3000);
+
+        $page->pressButton('Refund');
+    }
+
+    /**
      * @When click on the submit invoice button
      */
     public function clickOnTheSubmitInvoiceButton()
@@ -813,9 +849,9 @@ class CreditCardContext extends RawMinkContext
     }
 
     /**
-     * @Then the order should be captured on Pagar.me
+     * @Then the order should be :action on Pagar.me
      */
-    public function theOrderShouldBeCapturedOnPagarMe()
+    public function theOrderShouldBeOnPagarMe($action)
     {
         $page = $this->session->getPage();
 
@@ -826,12 +862,18 @@ class CreditCardContext extends RawMinkContext
             );
         }, 15);
 
+        $successMessage = 'The invoice has been created.';
+
+        if ($action === 'refunded') {
+            $successMessage = 'The credit memo has been created.';
+        }
+
         try {
             $message = $page
                 ->find('css', '.messages li ul li span')
                 ->getText();
             PHPUnit_Framework_Assert::assertEquals(
-                'The invoice has been created.',
+                $successMessage,
                 $message
             );
         } catch (Exception $exception) {
@@ -840,9 +882,9 @@ class CreditCardContext extends RawMinkContext
     }
 
     /**
-     * @Then the order must be captured partially on Pagar.me
+     * @Then the order must be :action partially on Pagar.me
      */
-    public function theOrderMustBeCapturedPartiallyOnPagarMe() {
+    public function theOrderMustBePartiallyOnPagarMe($action) {
         $resource = Mage::getSingleton('core/resource');
         $readConnection = $resource->getConnection('core_read');
         $query = "SELECT transaction_id FROM pagarme_transaction WHERE order_id = $this->orderId";
@@ -857,10 +899,20 @@ class CreditCardContext extends RawMinkContext
             $transactionId
         );
 
-        PHPUnit_Framework_Assert::assertGreaterThan(
-            $transaction->getPaidAmount(),
-            $transaction->getAmount()
-        );
+        switch ($action) {
+            case 'refunded':
+                PHPUnit_Framework_Assert::assertGreaterThan(
+                    $transaction->getRefundedAmount(),
+                    $transaction->getPaidAmount()
+                );
+                break;
+            case 'captured':
+                PHPUnit_Framework_Assert::assertGreaterThan(
+                    $transaction->getPaidAmount(),
+                    $transaction->getAmount()
+                );
+                break;
+        }
     }
 
     /**
