@@ -33,3 +33,17 @@ Feature: Boleto
         And simulate the boleto is expired
         And cancel orders with expired boletos by cron job model
         And the order status should be "canceled"
+
+    @create_order_from_admin
+    Scenario: Make a purchase by boleto from admin
+        Given a registered admin
+        When I acess the admin panel
+        And I access the orders list page
+        And I click on create new order button
+        And I select a registered customer
+        And I add a product
+        And I select boleto as payment method
+        And I click on submit order button
+        Then a new order should be created
+        And should transaction id should be present on the page
+        And the boleto url should be present on the page
