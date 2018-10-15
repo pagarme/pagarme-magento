@@ -36,14 +36,16 @@ Feature: Boleto
 
     @create_order_from_admin
     Scenario: Make a purchase by boleto from admin
-        Given a registered admin
-        When I acess the admin panel
+        Given a registered user
+        And a admin user
+        When I access the admin
         And I access the orders list page
         And I click on create new order button
         And I select a registered customer
         And I add a product
+        And I inform missing customer data
         And I select boleto as payment method
+        And I choose a shipping option
         And I click on submit order button
         Then a new order should be created
-        And should transaction id should be present on the page
-        And the boleto url should be present on the page
+        And transaction id should be present on the page

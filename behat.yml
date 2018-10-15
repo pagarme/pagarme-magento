@@ -27,6 +27,7 @@ default:
         - %paths.base%/tests/acceptance/features/boleto.feature
       contexts:
         - BoletoContext
+        - BoletoAdminContext
     checkout:
       paths:
         - %paths.base%/tests/acceptance/features/checkout.feature

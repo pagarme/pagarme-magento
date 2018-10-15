@@ -22,11 +22,6 @@ abstract class PagarMeMagentoContext extends RawMinkContext
     const ADMIN_PASSWORD = 'magentorocks1';
 
     /**
-     * Default configuration for Pagar.me module
-     */
-    const CUSTOMER_STREET_LINES = 4;
-
-    /**
      * @var Behat\Mink\Session
      */
     protected $session;
@@ -43,18 +38,6 @@ abstract class PagarMeMagentoContext extends RawMinkContext
     {
         $this->session = $this->getSession();
         $this->magentoUrl = getenv('MAGENTO_URL');
-    }
-
-    /**
-     * @BeforeScenario @create_order_from_admin
-     */
-    public function setUpStreetLines()
-    {
-        $config = \Mage::getModel('core/config');
-        $config->saveConfig(
-            'customer/address/street_lines',
-             self::CUSTOMER_STREET_LINES
-        );
     }
 
     /**
