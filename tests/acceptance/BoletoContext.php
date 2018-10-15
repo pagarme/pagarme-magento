@@ -3,16 +3,18 @@
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Behat\Tester\Exception\PendingException;
 
+use PagarMe\Magento\Test\PagarMeMagentoContext;
+
 require_once __DIR__ . '/../bootstrap.php';
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-class BoletoContext extends RawMinkContext
+class BoletoContext extends PagarMeMagentoContext
 {
     use PagarMe\Magento\Test\Helper\PagarMeSettings;
     use PagarMe\Magento\Test\Helper\PagarMeSwitch;
-    use PagarMe\Magento\Test\Helper\CustomerDataProvider;
     use PagarMe\Magento\Test\Helper\ProductDataProvider;
     use PagarMe\Magento\Test\Helper\SessionWait;
+
     /**
      * @BeforeScenario
      */
@@ -37,17 +39,7 @@ class BoletoContext extends RawMinkContext
             PAGARME_API_KEY 
         );
     }
-    /**
-     * @Given a registered user
-     */
-    public function aRegisteredUser()
-    {
-        $this->customer = $this->getCustomer();
-        $this->customer->save();
-        $this->customerAddress = $this->getCustomerAddress();
-        $this->customerAddress->setCustomerId($this->customer->getId());
-        $this->customerAddress->save();
-    }
+
     /**
      * @When I access the store page
      */

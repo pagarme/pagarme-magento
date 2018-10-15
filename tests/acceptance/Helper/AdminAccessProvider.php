@@ -4,22 +4,25 @@ namespace PagarMe\Magento\Test\Helper;
 
 trait AdminAccessProvider
 {
-    public function loginOnAdmin($adminUser)
+
+    /**
+     * @When I login to the admin
+     */
+    public function iLoginToTheAdmin()
     {
-        $session = $this->getSession();
-        $session->visit(getenv('MAGENTO_URL') . 'index.php/admin');
-        $page = $session->getPage();
+        $this->session
+            ->visit($this->magentoUrl . '/admin');
 
-        if ($page->find('css', '.link-logout')) {
-            return true;
-        }
-
-        $inputLogin = $page->find('named', array('id', 'username'));
-        $inputLogin->setValue($adminUser->getUsername());
-
-        $inputPassword = $page->find('named', array('id', 'login'));
-        $inputPassword->setValue($this->getAdminPassword());
-
+        $page = $this->session->getPage();
+        $this->waitForElement('#username', 2000);
+        $page->fillField(
+            \Mage::helper('pagarme_modal')->__('Password'),
+            'magentorocks1'
+        );
+        $page->fillField(
+            \Mage::helper('pagarme_modal')->__('User Name'),
+            'admin'
+        );
         $page->pressButton('Login');
     }
 
