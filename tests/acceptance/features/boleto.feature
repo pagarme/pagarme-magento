@@ -39,6 +39,7 @@ Feature: Boleto
         Given a registered user
         And a admin user
         When I access the admin
+        And I set the street line config to 4
         And I access the orders list page
         And I click on create new order button
         And I select a registered customer

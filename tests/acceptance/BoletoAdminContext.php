@@ -51,7 +51,6 @@ class BoletoAdminContext extends RawMinkContext
             self::CUSTOMER_STREET_LINES
         );
         Mage::getConfig()->saveConfig('admin/security/use_form_key', 0);
-
         $this->getSession()->wait(500);
         $this->getSession()->visit(
             $this->magentoUrl . 'admin/system_config/edit/section/customer'
