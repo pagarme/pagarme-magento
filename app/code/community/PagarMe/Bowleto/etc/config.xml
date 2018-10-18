@@ -1,25 +1,25 @@
 <?xml version="1.0"?>
 <config>
     <modules>
-        <PagarMe_Boleto>
+        <PagarMe_Bowleto>
             <version>3.15.0</version>
-        </PagarMe_Boleto>
+        </PagarMe_Bowleto>
     </modules>
     <global>
         <models>
-            <pagarme_boleto>
-                <class>PagarMe_Boleto_Model</class>
-            </pagarme_boleto>
+            <pagarme_bowleto>
+                <class>PagarMe_Bowleto_Model</class>
+            </pagarme_bowleto>
         </models>
         <blocks>
-            <pagarme_boleto>
-                <class>PagarMe_Boleto_Block</class>
-            </pagarme_boleto>
+            <pagarme_bowleto>
+                <class>PagarMe_Bowleto_Block</class>
+            </pagarme_bowleto>
         </blocks>
         <helpers>
-            <pagarme_boleto>
-                <class>PagarMe_Boleto_Helper</class>
-            </pagarme_boleto>
+            <pagarme_bowleto>
+                <class>PagarMe_Bowleto_Helper</class>
+            </pagarme_bowleto>
         </helpers>
         <sales>
             <order>
@@ -34,31 +34,31 @@
     <frontend>
         <layout>
             <updates>
-                <pagarme_boleto>
+                <pagarme_bowleto>
                     <file>pagarme/pagarme_boleto.xml</file>
-                </pagarme_boleto>
+                </pagarme_bowleto>
             </updates>
         </layout>
     </frontend>
     <frontend>
         <translate>
             <modules>
-                <PagarMe_Boleto>
+                <PagarMe_Bowleto>
                     <files>
                         <default>PagarMe_Boleto.csv</default>
                     </files>
-                </PagarMe_Boleto>
+                </PagarMe_Bowleto>
             </modules>
         </translate>
     </frontend>
     <admin>
         <translate>
             <modules>
-                <PagarMe_Boleto>
+                <PagarMe_Bowleto>
                     <files>
                         <default>PagarMe_Boleto.csv</default>
                     </files>
-                </PagarMe_Boleto>
+                </PagarMe_Bowleto>
             </modules>
         </translate>
     </admin>
@@ -67,21 +67,9 @@
             <cancel_boleto_unpaid_orders>
                 <schedule><cron_expr>1/1 * * * * </cron_expr></schedule>
                 <run>
-                    <model>pagarme_boleto/UnpaidBoleto::cancel</model>
+                    <model>pagarme_bowleto/UnpaidBoleto::cancel</model>
                 </run>
             </cancel_boleto_unpaid_orders>
         </jobs>
     </crontab>
-    <default>
-        <payment>
-            <pagarme_boleto>
-                <active>1</active>
-                <model>pagarme_boleto/boleto</model>
-                <title>Boleto</title>
-                <order_status>authorize</order_status>
-                <allow_specific>0</allow_specific>
-                <sort_order>1</sort_order>
-            </pagarme_boleto>
-        </payment>
-    </default>
 </config>

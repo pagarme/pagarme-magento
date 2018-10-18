@@ -1,11 +1,11 @@
 <?php
 use \PagarMe\Sdk\PagarMe as PagarMeSdk;
 
-class PagarMe_Boleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMethod
+class PagarMe_Bowleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMethod
 {
-    protected $_code = 'pagarme_boleto';
-    protected $_formBlockType = 'pagarme_boleto/form_boleto';
-    protected $_infoBlockType = 'pagarme_boleto/info_boleto';
+    protected $_code = 'pagarme_bowleto';
+    protected $_formBlockType = 'pagarme_bowleto/form_boleto';
+    protected $_infoBlockType = 'pagarme_bowleto/info_boleto';
     protected $_isGateway = true;
     protected $_canAuthorize = true;
     protected $_canCapture = true;
@@ -14,7 +14,7 @@ class PagarMe_Boleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMeth
     protected $_canManageRecurringProfiles = true;
     protected $_isInitializeNeeded = true;
 
-    const PAGARME_BOLETO = 'pagarme_boleto';
+    const PAGARME_BOLETO = 'pagarme_bowleto';
     const POSTBACK_ENDPOINT = 'transaction_boleto';
 
     /**
@@ -54,8 +54,12 @@ class PagarMe_Boleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMeth
 
         $payment = $this->getInfoInstance();
 
-        $this->stateObject->setState(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT);
-        $this->stateObject->setStatus(Mage_Sales_Model_Order::STATE_PENDING_PAYMENT);
+        $this->stateObject->setState(
+            Mage_Sales_Model_Order::STATE_PENDING_PAYMENT
+        );
+        $this->stateObject->setStatus(
+            Mage_Sales_Model_Order::STATE_PENDING_PAYMENT
+        );
         $this->stateObject->setIsNotified(true);
 
         $this->authorize(

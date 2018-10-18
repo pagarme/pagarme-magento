@@ -146,7 +146,7 @@ class BoletoAdminContext extends RawMinkContext
 
         $this->getSession()->wait(3500);
 
-        $this->page->find('css', '#p_method_pagarme_boleto')->click();
+        $this->page->find('css', '#p_method_pagarme_bowleto')->click();
     }
 
     /**

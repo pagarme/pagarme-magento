@@ -2,7 +2,7 @@
 
 use \PagarMe\Sdk\Transaction\BoletoTransaction;
 
-class PagarMe_Boleto_Model_UnpaidBoleto
+class PagarMe_Bowleto_Model_UnpaidBoleto
 {
     /**
      * Returns configured timezone on platform

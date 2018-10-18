@@ -106,14 +106,14 @@
                 <payment_methods>credit_card</payment_methods>
                 <payment_action>authorize</payment_action>
             </pagarme_creditcard>
-            <pagarme_boleto>
+            <pagarme_bowleto>
                 <active>1</active>
-                <model>pagarme_boleto/boleto</model>
+                <model>pagarme_bowleto/boleto</model>
                 <order_status>authorize</order_status>
                 <allowspecific>0</allowspecific>
                 <payment_methods>boleto</payment_methods>
                 <payment_action>authorize</payment_action>
-            </pagarme_boleto>
+            </pagarme_bowleto>
             <pagarme_configurations>
                 <modal_title>Pagarme Checkout</modal_title>
                 <modal_button_text>Realizar pagamento</modal_button_text>

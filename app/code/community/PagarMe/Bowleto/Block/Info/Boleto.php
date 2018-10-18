@@ -1,6 +1,6 @@
 <?php
 
-class PagarMe_Boleto_Block_Info_Boleto extends Mage_Payment_Block_Info
+class PagarMe_Bowleto_Block_Info_Boleto extends Mage_Payment_Block_Info
 {
     use PagarMe_Core_Block_Info_Trait;
 
@@ -12,7 +12,7 @@ class PagarMe_Boleto_Block_Info_Boleto extends Mage_Payment_Block_Info
         $this->setTemplate(
             'pagarme/boleto/order_info/payment_details.phtml'
         );
-        $this->helper = Mage::helper('pagarme_boleto');
+        $this->helper = Mage::helper('pagarme_bowleto');
     }
 
     /**

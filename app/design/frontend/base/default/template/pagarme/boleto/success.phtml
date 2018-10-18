@@ -1,13 +1,14 @@
 <?php
-
-if ($this->isBoletoPayment()):
-?>    
-<p class="pagarme_boleto_info_boleto">
-<?php echo Mage::helper('pagarme_boleto')->__('Click the followed link to print your boleto') ?> 
-    <a target="_blank" href="<?php echo $this->getBoletoUrl(); ?>">
-        <?php echo Mage::helper('pagarme_boleto')->__('click here') ?>
-    </a>
-</p>
-<?php 
-endif;
+/**
+ * @see PagarMe_Bowleto_Block_Success
+ */
 ?>
+
+<?php if ($this->isBoletoPayment()): ?>
+    <p class="pagarme_boleto_info_boleto">
+    <?php echo Mage::helper('pagarme_bowleto')->__('Click the followed link to print your boleto') ?> 
+        <a target="_blank" href="<?php echo $this->getBoletoUrl(); ?>">
+            <?php echo Mage::helper('pagarme_bowleto')->__('click here') ?>
+        </a>
+    </p>
+<?php endif; ?>

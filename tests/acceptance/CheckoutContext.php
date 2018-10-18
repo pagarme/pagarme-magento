@@ -357,7 +357,7 @@ class CheckoutContext extends RawMinkContext
         $page = $this->session->getPage();
         $helper = Mage::helper('pagarme_modal');
         \PHPUnit_Framework_TestCase::assertContains(
-            Mage::helper('pagarme_boleto')->__('Click the followed link to print your boleto'),
+            Mage::helper('pagarme_bowleto')->__('Click the followed link to print your boleto'),
             $page->find(
                 'css',
                 '.pagarme_boleto_info_boleto'
