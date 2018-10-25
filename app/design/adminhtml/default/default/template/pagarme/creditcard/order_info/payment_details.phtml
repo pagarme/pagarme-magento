@@ -1,6 +1,9 @@
 
 <?php
-    $helper = Mage::helper('pagarme_creditcard');
+/**
+ * @see PagarMe_CreditCard_Block_Info_Creditcard
+ */
+$helper = Mage::helper('pagarme_creditcard');
 ?>
 
 <h3><?php echo $helper->__('Pagar.me Credit card');?></h3>
@@ -9,11 +12,11 @@
     <tr id="pagarme_order_info_payment_customer_name">
         <td class="label">
             <strong>
-                <?php echo $helper->__('Customer name');?>
+                <?php echo $helper->__('Card holder name');?>
             </strong>
         </td>
         <td style="text-align: right" class="value">
-            <?= $this->transactionCustomerName(); ?>
+            <?= $this->transactionCardHolderName(); ?>
         </td>
     </tr>
     <tr id="pagarme_order_info_payment_payment_method">

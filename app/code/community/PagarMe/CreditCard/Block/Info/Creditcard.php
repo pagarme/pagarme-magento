@@ -4,6 +4,9 @@ class PagarMe_CreditCard_Block_Info_Creditcard extends Mage_Payment_Block_Info_C
 {
     use PagarMe_Core_Block_Info_Trait;
 
+    /**
+     * @var PagarMe_CreditCard_Helper
+     */
     private $helper;
 
     /**
@@ -35,6 +38,14 @@ class PagarMe_CreditCard_Block_Info_Creditcard extends Mage_Payment_Block_Info_C
     {
         $this->transaction = $this->getTransaction();
         return $this->transaction->getCustomer()->getName();
+    }
+
+    /**
+     * @return string
+     */
+    public function transactionCardHolderName()
+    {
+        return $this->transaction->getCard()->getHolderName();
     }
 
     /**
