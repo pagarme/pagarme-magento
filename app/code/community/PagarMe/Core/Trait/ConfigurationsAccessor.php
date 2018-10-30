@@ -131,6 +131,16 @@ trait PagarMe_Core_Trait_ConfigurationsAccessor
     }
 
     /**
+     * @return int
+     */
+    private function getDaysToBoletoExpire()
+    {
+        return (int) $this->getConfigurationWithName(
+            'pagarme_configurations/days_to_boleto_expire'
+        );
+    }
+
+    /**
      * @param string $name
      *
      * @return mixed

@@ -5,6 +5,9 @@ Feature: Boleto
 
     Scenario: Make a purchase by boleto 
         Given a registered user
+        And a admin user
+        When I access the admin
+        And I change the boleto expiration date delay to next sunday
         When I access the store page
         And add any product to basket
         And I go to checkout page
@@ -17,6 +20,7 @@ Feature: Boleto
         And a link to boleto must be provided
         And I get the created order id
         And the order status should be "pending_payment"
+        And the boleto expiration date must be a business day
 
     Scenario: Cancel order with unpaid boleto
         Given a registered user

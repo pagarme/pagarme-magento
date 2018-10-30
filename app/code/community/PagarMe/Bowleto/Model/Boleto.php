@@ -3,6 +3,8 @@ use \PagarMe\Sdk\PagarMe as PagarMeSdk;
 
 class PagarMe_Bowleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMethod
 {
+    use PagarMe_Core_Trait_ConfigurationsAccessor;
+
     protected $_code = 'pagarme_bowleto';
     protected $_formBlockType = 'pagarme_bowleto/form_boleto';
     protected $_infoBlockType = 'pagarme_bowleto/info_boleto';
@@ -26,7 +28,16 @@ class PagarMe_Bowleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMet
      * @var PagarMe\Sdk\Transaction\BoletoTransaction
      */
     protected $transaction;
+
+    /**
+     * @var PagarMe_Core_Helper_Data
+     */
     protected $pagarmeCoreHelper;
+
+    /**
+     * @var PagarMe_Core_Helper_BusinessCalendar
+     */
+    protected $businessCalendar;
 
     public function __construct($attributes, PagarMeSdk $sdk = null)
     {
@@ -36,6 +47,9 @@ class PagarMe_Bowleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMet
         }
 
         $this->pagarmeCoreHelper = Mage::helper('pagarme_core');
+
+        $this->businessCalendar = new PagarMe_Core_Helper_BusinessCalendar();
+
         parent::__construct($attributes);
     }
 
@@ -130,7 +144,7 @@ class PagarMe_Bowleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMet
 
         return $this;
     }
-    
+
     /**
      * @param array $data
      *
@@ -228,7 +242,8 @@ class PagarMe_Bowleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMet
             $order = $payment->getOrder();
             $extraAttributes = [
                 'async' => false,
-                'reference_key' => $referenceKey
+                'reference_key' => $referenceKey,
+                'boleto_expiration_date' => $this->getBoletoExpirationDate()
             ];
 
             $amount = $this->pagarmeCoreHelper
@@ -291,4 +306,41 @@ class PagarMe_Bowleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMet
             $data
         );
     }
+
+    /**
+     * @param DateTime $date
+     *
+     * @return string
+     */
+    private function getBoletoExpirationDate($date = null)
+    {
+        $boletoExpirationDate = !is_null($date) ?
+            $date :
+            $this->getInitialBoletoExpirationDate();
+
+        if ($this->businessCalendar->isBusinessDay($boletoExpirationDate)) {
+            return $boletoExpirationDate->format('Y-m-d');
+        }
+
+        $boletoExpirationDate->modify('+1 days');
+
+        return $this->getBoletoExpirationDate($boletoExpirationDate);
+    }
+
+    /**
+     * @return DateTime
+     */
+    private function getInitialBoletoExpirationDate()
+    {
+        $boletoExpirationDate = new DateTime(
+            'now',
+            new DateTimeZone('America/Sao_Paulo')
+        );
+
+        return $boletoExpirationDate->modify(
+            '+'.$this->getDaysToBoletoExpire().' days'
+        );
+    }
+
+
 }

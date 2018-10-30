@@ -165,6 +165,15 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </boleto_discount_mode>
+                        <days_to_boleto_expire translate="label">
+                            <label>Days to boleto expire</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_class>validate-number</frontend_class>
+                            <sort_order>24</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </days_to_boleto_expire>
 
                         <heading_creditcard translate="label">
                             <label>Checkout Transparente</label>

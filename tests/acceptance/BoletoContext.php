@@ -227,4 +227,42 @@ class BoletoContext extends PagarMeMagentoContext
 
         $unpaidBoletos->cancel();
     }
+
+    /**
+     * @When I change the boleto expiration date delay to next sunday
+     */
+    public function iChangeTheBoletoExpirationDateDelayToNextSunday() {
+        $config = Mage::getModel('core/config');
+
+        $today = new DateTime();
+        $nextSunday = new DateTime(date('Y-m-d', strtotime('next Sunday')));
+        $diffToSunday = $today->diff($nextSunday);
+        $daysToSunday = $diffToSunday->days + 1;
+
+        $config->saveConfig(
+            'payment/pagarme_configurations/days_to_boleto_expire',
+            $daysToSunday
+        );
+    }
+
+    /**
+     * @Then the boleto expiration date must be a business day
+     */
+    public function theBoletoExpirationDateMustBeABusinessDay() {
+        $orderId = substr($this->createdOrderId, 1);
+
+        $resource = Mage::getSingleton('core/resource');
+        $readConnection = $resource->getConnection('core_read');
+
+        $query = 'SELECT boleto_expiration_date FROM pagarme_transaction WHERE order_id = "'.(int)$orderId.'"';
+
+        $dbExpirationDate = (int)$readConnection->fetchOne($query);
+
+        $boletoExpirationDate = new DateTime($dbExpirationDate);
+
+        $businessCalendar = new PagarMe_Core_Helper_BusinessCalendar();
+        PHPUnit_Framework_Assert::assertTrue(
+            $businessCalendar->isBusinessDay($boletoExpirationDate)
+        );
+    }
 }

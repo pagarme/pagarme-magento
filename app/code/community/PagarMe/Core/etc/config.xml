@@ -124,6 +124,7 @@
                 <creditcard_title>Pagamento com cartão de crédito</creditcard_title>
                 <modal_capture_customer_data>true</modal_capture_customer_data>
                 <boleto_discount>0</boleto_discount>
+                <days_to_boleto_expire>5</days_to_boleto_expire>
                 <boleto_discount_mode>no_discount</boleto_discount_mode>
                 <boleto_title>Pagamento com boleto</boleto_title>
                 <modal_payment_methods>credit_card,boleto</modal_payment_methods>

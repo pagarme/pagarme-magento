@@ -38,6 +38,7 @@
 "Async Transaction","Transação assíncrona"
 "Boleto discount","Desconto para boletos"
 "Boleto discount mode", "Modelo de desconto para boletos"
+"Days to boleto expire", "Dias para expiração do boleto"
 "Payment Methods","Métodos de pagamento"
 "Authorize and Capture","Autorizar e capturar"
 "Authorize Only","Somente autorizar"
