@@ -25,7 +25,7 @@ class PagarMe_Bowleto_Model_UnpaidBoleto
             'now',
             new DateTimeZone($this->getCurrentTimezone())
         );
-        $expiredBoletos = $today->modify('-4 days');
+        $expiredBoletos = $today->modify('-7 days');
 
         $boletosFilter = Mage::getModel('pagarme_core/transaction')
             ->getCollection();
