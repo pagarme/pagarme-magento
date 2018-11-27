@@ -50,6 +50,11 @@ document.onreadystatechange = () => {
     }
 
     var addedEvent = false
+
+    get('#opc-review, #checkout-step-payment').addEventListener('click', function() {
+      addedEvent = false
+    })
+
     get('#opc-review, #checkout-review-submit').addEventListener('click', function (event) {
       if (event.path) {
         var buttons = this.getElementsByClassName('btn-checkout')
