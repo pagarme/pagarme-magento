@@ -68,8 +68,6 @@ document.onreadystatechange = () => {
               generateHash()
                 .then(() => buttonOnClick())
             })
-            generateHash()
-              .then(() => buttonOnClick())
 
             addedEvent = true
           }
@@ -87,8 +85,6 @@ document.onreadystatechange = () => {
           generateHash()
             .then(() => buttonOnClick())
         })
-        generateHash()
-          .then(() => buttonOnClick())
 
         addedEvent = true
       }
