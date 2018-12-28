@@ -86,18 +86,32 @@ class PagarMe_Bowleto_Model_UnpaidBoleto
 
     /**
      * Cancel orders from unpaid boleto
+     *
+     * @return void
      */
     public function cancel()
     {
         $expiredBoletos = $this->expiredBoletos();
 
         foreach ($expiredBoletos as $expiredBoleto) {
-            $order = $this->loadOrder($expiredBoleto->getOrderId());
-            $transaction = $this->loadBoletoTransaction(
-                $expiredBoleto->getTransactionId()
-            );
+            try {
+                $order = $this->loadOrder($expiredBoleto->getOrderId());
+                $transaction = $this->loadBoletoTransaction(
+                    $expiredBoleto->getTransactionId()
+                );
 
-            $this->cancelOrder($order, $transaction);
+                $this->cancelOrder($order, $transaction);
+            } catch (\Exception $exception) {
+                $logMessage = sprintf(
+                    'Error canceling unpaid boleto order, id: %s, message: %s',
+                    $expiredBoleto->getOrderId(),
+                    $exception->getMessage()
+                );
+
+                Mage::log($logMessage);
+
+                continue;
+            }
         }
     }
 }
