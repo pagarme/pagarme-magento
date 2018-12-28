@@ -6,25 +6,10 @@ _run:
     command: |
       echo "MAGENTO_VERSION=$MAGENTO_VERSION" >> .env
       echo "IMGUR_CLIENT_ID=$IMGUR_CLIENT_ID" >> .env
-      docker-compose up -d
-      magentoIsInstalled() {
-        isInstalled=$(docker-compose exec magento php -f install.php | grep "Magento is already installed" | wc -l)
-
-        if [ $isInstalled -eq 1 ] 
-        then
-          return 0
-        else
-          return 1
-        fi
-      }
-      while ! ( magentoIsInstalled )
-      do
-        echo [$(date +"%Y-%m-%d %H:%M:%S")] - "Waiting for magento to be installed..."
-        sleep 15
-      done
-  dump-autoload: &dump-autoload
+      make up-containers
+  composer-install: &composer-install
     name: 'Dump composer autoload'
-    command: 'docker-compose run composer dump-autoload'
+    command: 'make composer-install'
 
 jobs:
   checkout-code:
@@ -45,7 +30,7 @@ jobs:
           at: ~/project
       - run:
           name: 'Avoid forgotten keys'
-          command: 'chmod +x ./forgotten_keys.sh && ./forgotten_keys.sh'
+          command: 'make check-forgotten-keys'
 
   unit:
     machine:
@@ -54,10 +39,10 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run: *up-containers
-      - run: *dump-autoload
+      - run: *composer-install
       - run:
           name: 'Running unit tests'
-          command: 'docker-compose exec magento vendor/bin/phpunit'
+          command: 'make test-unit'
 
   end-to-end:
     description: Parameterized job to run end-to-end suites
@@ -77,16 +62,21 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run: *up-containers
+<<<<<<< HEAD
       - run: *dump-autoload
+=======
+      - run: *composer-install
+      - steps: << parameters.before-deps >>
+>>>>>>> 6abd960... wip config
       - run:
           name: Running << parameters.suite_name >> end to end suite test
-          command: docker-compose exec magento vendor/bin/behat -s << parameters.suite_name >> --stop-on-failure
+          command: make test-e2e-suite suite=<< parameters.suite_name >>
       - run:
           name: Show magento's system and error logs
           when: on_fail
           command: |
-            docker-compose exec magento cat var/log/system.log
-            docker-compose exec magento cat var/log/exception.log
+            make show-system-logs
+            make show-exception-logs
 
 workflows:
   version: 2
