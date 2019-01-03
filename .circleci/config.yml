@@ -47,14 +47,22 @@ jobs:
           command: 'make check-forgotten-keys'
 
   unit:
+    description: Parameterized job to run unit tests
+    parameters:
+      magento_version:
+        description: "Magento version to be used"
+        type: string
+        default: "1.8.1.0"
     machine:
       enabled: true
+    environment:
+      MAGENTO_VERSION: << parameters.magento_version >>
     steps:
       - attach_workspace:
           at: ~/project
       - run: *up-containers
       - run:
-          name: 'Running unit tests'
+          name: 'Running unit tests against magento << parameters.magento_version >>'
           command: 'make test-unit'
 
   end-to-end:
@@ -102,6 +110,20 @@ workflows:
           requires:
           - checkout-code
       - unit:
+          name: unit-mage-1.7
+          magento_version: "1.7.0.2"
+          requires:
+            - forgotten-keys
+            - install-dependencies
+      - unit:
+          name: unit-mage-1.8
+          magento_version: "1.8.1.0"
+          requires:
+            - forgotten-keys
+            - install-dependencies
+      - unit:
+          name: unit-mage-1.9
+          magento_version: "1.9.1.0"
           requires:
             - forgotten-keys
             - install-dependencies
@@ -110,22 +132,19 @@ workflows:
           suite_name: "configure"
           magento_version: "1.8.1.0"
           requires:
-            - forgotten-keys
-            - install-dependencies
+            - unit-mage-1.8
       - end-to-end:
           name: e2e-credit_card-mage-1.8
           suite_name: "credit_card"
           magento_version: "1.8.1.0"
           requires:
-            - forgotten-keys
-            - install-dependencies
+            - unit-mage-1.8
       - end-to-end:
           name: e2e-boleto-mage-1.8
           suite_name: "boleto"
           magento_version: "1.8.1.0"
           requires:
-            - forgotten-keys
-            - install-dependencies
+            - unit-mage-1.8
       - end-to-end:
           name: e2e-postback-mage-1.8
           suite_name: "postback"
@@ -133,29 +152,25 @@ workflows:
           before-deps:
             - run: make test-e2e-suite suite=configure
           requires:
-            - forgotten-keys
-            - install-dependencies
+            - unit-mage-1.8
       - end-to-end:
           name: e2e-configure-mage-1.7
           suite_name: "configure"
           magento_version: "1.7.0.2"
           requires:
-            - forgotten-keys
-            - install-dependencies
+            - unit-mage-1.7
       - end-to-end:
           name: e2e-credit_card-mage-1.7
           suite_name: "credit_card"
           magento_version: "1.7.0.2"
           requires:
-            - forgotten-keys
-            - install-dependencies
+            - unit-mage-1.7
       - end-to-end:
           name: e2e-boleto-mage-1.7
           suite_name: "boleto"
           magento_version: "1.7.0.2"
           requires:
-            - forgotten-keys
-            - install-dependencies
+            - unit-mage-1.7
       - end-to-end:
           name: e2e-postback-mage-1.7
           suite_name: "postback"
@@ -163,29 +178,25 @@ workflows:
           before-deps:
             - run: make test-e2e-suite suite=configure
           requires:
-            - forgotten-keys
-            - install-dependencies
+            - unit-mage-1.7
       - end-to-end:
           name: e2e-configure-mage-1.9
           suite_name: "configure"
           magento_version: "1.9.1.0"
           requires:
-            - forgotten-keys
-            - install-dependencies
+            - unit-mage-1.9
       - end-to-end:
           name: e2e-credit_card-mage-1.9
           suite_name: "credit_card"
           magento_version: "1.9.1.0"
           requires:
-            - forgotten-keys
-            - install-dependencies
+            - unit-mage-1.9
       - end-to-end:
           name: e2e-boleto-mage-1.9
           suite_name: "boleto"
           magento_version: "1.9.1.0"
           requires:
-            - forgotten-keys
-            - install-dependencies
+            - unit-mage-1.9
       - end-to-end:
           name: e2e-postback-mage-1.9
           suite_name: "postback"
@@ -193,5 +204,4 @@ workflows:
           before-deps:
             - run: make test-e2e-suite suite=configure
           requires:
-            - forgotten-keys
-            - install-dependencies
+            - unit-mage-1.9
