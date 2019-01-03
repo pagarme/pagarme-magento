@@ -50,3 +50,6 @@ tailf-system-logs:
 
 tailf-exception-logs:
 	docker-compose exec magento tail -f var/log/exception.log
+
+phpcs:
+	@docker-compose exec magento vendor/bin/phpcs --standard=phpcsruleset.xml $(target)
