@@ -147,24 +147,6 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </boleto_title>
-                        <boleto_discount translate="label">
-                            <label>Boleto discount</label>
-                            <frontend_type>text</frontend_type>
-                            <frontend_class>validate-number</frontend_class>
-                            <sort_order>22</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </boleto_discount>
-                        <boleto_discount_mode translate="label">
-                            <label>Boleto discount mode</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>pagarme_core/system_config_source_boletoDiscountMode</source_model>
-                            <sort_order>23</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>0</show_in_store>
-                        </boleto_discount_mode>
                         <days_to_boleto_expire translate="label">
                             <label>Days to boleto expire</label>
                             <frontend_type>text</frontend_type>
@@ -252,6 +234,24 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>0</show_in_store>
                         </modal_payment_button_text>
+                        <boleto_discount translate="label">
+                            <label>Boleto discount</label>
+                            <frontend_type>text</frontend_type>
+                            <frontend_class>validate-number</frontend_class>
+                            <sort_order>306</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </boleto_discount>
+                        <boleto_discount_mode translate="label">
+                            <label>Boleto discount mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>pagarme_core/system_config_source_boletoDiscountMode</source_model>
+                            <sort_order>307</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </boleto_discount_mode>
                         <modal_boleto_helper_text translate="label">
                             <label>Optional message for Boleto payment</label>
                             <frontend_type>text</frontend_type>
