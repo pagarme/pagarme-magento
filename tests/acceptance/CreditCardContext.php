@@ -950,7 +950,7 @@ class CreditCardContext extends RawMinkContext
      */
     public function IMustStayInTheCheckoutPage() {
         try {
-            $this->session->wait(5000);
+            $this->session->wait(5500);
             \PHPUnit_Framework_TestCase::assertEquals(
                 getenv('MAGENTO_URL') . 'index.php/checkout/onepage/index/',
                 $this->session->getCurrentUrl()
