@@ -54,6 +54,10 @@ jobs:
         description: "Magento version to be used"
         type: string
         default: "1.8.1.0"
+      before-deps:
+        description: "Steps that should be run before the test suite"
+        type: steps
+        default: []
     machine:
       enabled: true
     environment:
@@ -62,12 +66,8 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run: *up-containers
-<<<<<<< HEAD
-      - run: *dump-autoload
-=======
       - run: *composer-install
       - steps: << parameters.before-deps >>
->>>>>>> 6abd960... wip config
       - run:
           name: Running << parameters.suite_name >> end to end suite test
           command: make test-e2e-suite suite=<< parameters.suite_name >>
@@ -111,6 +111,8 @@ workflows:
           name: e2e-postback-mage-1.8
           suite_name: "postback"
           magento_version: "1.8.1.0"
+          before-deps:
+            - run: make test-e2e-suite suite=configure
           requires:
             - forgotten-keys
       - end-to-end:
@@ -135,6 +137,8 @@ workflows:
           name: e2e-postback-mage-1.7
           suite_name: "postback"
           magento_version: "1.7.0.2"
+          before-deps:
+            - run: make test-e2e-suite suite=configure
           requires:
             - forgotten-keys
       - end-to-end:
@@ -159,5 +163,7 @@ workflows:
           name: e2e-postback-mage-1.9
           suite_name: "postback"
           magento_version: "1.9.1.0"
+          before-deps:
+            - run: make test-e2e-suite suite=configure
           requires:
             - forgotten-keys
