@@ -57,30 +57,78 @@ Mais detalhes sobre esta configuração no [link](https://amasty.com/blog/config
 
 - [Docker](https://docs.docker.com)
 - [Docker Compose](https://docs.docker.com/compose/)
+- [GNU Make (Opcional)](https://www.gnu.org/software/make/)
 
 ### Instalando o Magento Community 1.x
 
-1. Execute o comando `docker-compose up -d` para iniciar os containers e a instalação do Magento
-2. Execute o comando `docker-compose logs -f magento` para acompanhar o processo de instalação.
-3. Execute o comando `docker run -it --rm -v $(pwd):/code -w /code pagarme/composer install` para a instalação das dependências do projeto através do [Composer](https://getcomposer.org/).
+1. Clonando o projeto
+```
+git clone git@github.com:pagarme/pagarme-magento.git
+```
+
+2. Preparando o ambiente (containers)
+
+**Obs:** Utilizamos o `make` para tornar a utilização mais amigável mas é possível obter os mesmos resultados executando comandos através dos containers utilizando o `docker-compose`. Para isso basta consultar o `Makefile` do projeto.
+
+```
+make
+```
+
+O comando acima irá:
+- Subir os containers docker
+- Instalar as dependências do projeto através do [Composer](https://getcomposer.org)
+- Habilitar os logs da plataforma (system e exception)
+- Habilitar a exibição de erros da plataforma
 
 ### Executando o PHPCS (Code sniffer)
 
-Execute o comando: `docker-compose exec magento vendor/bin/phpcs --standard=phpcsruleset.xml <dir|file>`
+```
+make phpcs target=NOME DO ARQUIVO OU DIRETORIO
+```
 
 ### Executando os testes unitários
 
-Execute o comando `docker-compose exec magento vendor/bin/phpunit` para iniciar os testes
+```make test-unit```
 
 ### Executando os testes de comportamento
 
-Execute o comando `docker-compose exec magento vendor/bin/behat` para iniciar os testes
+a) Todas as suites de teste
+```make test-e2e```
+
+b) Uma suite específica. Veja todas as disponíveis no [behat.yml](https://github.com/pagarme/pagarme-magento/blob/v2/behat.yml#L12) do projeto
+```make test-e2e-suite suite=NOME_DA_SUITE```
 
 ### Acompanhando a execução dos testes de comportamento
 
 1. Instale um cliente VNC. Sugerimos o [Vinagre](https://wiki.gnome.org/Apps/Vinagre)
 2. Conecte-se no servidor.
 *  Utilize `localhost` para o host e `secret` para senha
+
+### Comandos úteis para desenvolvimento
+
+Todos os comandos podem ser conferidos no arquivo [Makefile](https://github.com/pagarme/pagarme-magento/blob/v2/Makefile) do projeto
+
+1. "Matando" os containers
+```
+make down
+```
+
+2. Acompanhando (tail -f) os logs do magento
+```
+make tailf-system-logs
+ou
+make tailf-exception-logs
+```
+
+3. Recuperando api key (Pagar.me) configurada no módulo
+```
+make get-api-key
+```
+
+4. Alterando api key (Pagar.me)
+```
+make set-api-key api_key=SUA_API_KEY
+```
 
 ### Testando postbacks em ambiente de desenvolvimento
 
