@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 magentoIsInstalled() {
   isInstalled=$(docker-compose exec magento php -f install.php | grep "Magento is already installed" | wc -l)
 
