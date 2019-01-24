@@ -1,3 +1,7 @@
 .pagarme-payment-icons li { background: url(../images/icons.png) no-repeat; margin: 0 !important; width: 51px; height: 32px; display: inline-block; }
 .pagarme-payment-icons li span { display: none; }
 .pagarme-payment-icons li.boleto.on { background-position: 0 -288px; }
+.card-data { display: flex; flex-direction: row-reverse; align-items: center; width: 100%; }
+.card-data > * { flex: 1; }
+.card-wrapper { transform: scale(0.75); }
+div.card-data-column { flex-direction: column; }
