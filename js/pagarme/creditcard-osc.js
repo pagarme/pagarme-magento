@@ -37,6 +37,6 @@ document.onreadystatechange = () => {
       clearHash()
       return generateHash()
     }
-    return Promise.reject(new Error('Can\'t generate the cardHash'))
+    return Promise.resolve()
   }, 'click', placeOrderButton)
 }
