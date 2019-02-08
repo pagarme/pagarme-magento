@@ -35,7 +35,15 @@
             "CONTRUBUTING.md",
             "docker-compose.yml",
             ".env",
-            "tests/"
+            "tests/",
+            "Makefile",
+            "behat.yml",
+            "CONTRIBUTING.md",
+            ".gitignore",
+            ".circleci/",
+            "composer.json",
+            "composer.lock",
+            "script/"
         ]
     }
 }
