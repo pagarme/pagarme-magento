@@ -5,7 +5,7 @@
 Módulo de integração Pagar.me para Magento 1.x
 
 <br>
- 
+
 [![Build Status](https://travis-ci.org/pagarme/pagarme-magento.svg?branch=v2)](https://travis-ci.org/pagarme/pagarme-magento)
 [![Coverage Status](https://coveralls.io/repos/github/pagarme/pagarme-magento/badge.svg?branch=v2)](https://coveralls.io/github/pagarme/pagarme-magento?branch=master)
 
@@ -15,10 +15,10 @@ Módulo de integração Pagar.me para Magento 1.x
 - [PHP](http://php.net) >= 5.4.x
 - Cron
 
-## Instalação 
+## Instalação
 
-1. Solicite a última versão do nosso módulo através do e-mail: magento@pagar.me
-2. Descompacte o arquivo **zip** e copie as pastas `app` e `vendor` para a a pasta raiz da sua instalação do Magento
+1. Clique [aqui](https://github.com/pagarme/pagarme-magento/releases) e baixe o arquivo `.zip` de nossa versão mais recente. O arquivo possui o nome parecido com `pagarme-magento-<VERSÃO>.zip`
+2. Descompacte o arquivo **zip** e copie as pastas `app`, `js`, `skin` e `vendor` para a a pasta raiz da sua instalação do Magento
 3. Limpe o cache em `Sistema > Gerenciamento de Cache`
 
 ## Configuração
@@ -34,14 +34,16 @@ Módulo de integração Pagar.me para Magento 1.x
 8. Vá em `Sistema > Configuração > Catálogo > Inventário > Opções de estoque`
 * Altere a opção `Reajustar Estoque Quando Pedidor for Cancelado` para `Sim`
 
+Você pode acessar as demais instruções de configuração clicando [aqui](https://docs.pagar.me/v2/docs/instalando-modulo-magento)
+
 ### Configuração de cancelamento automático de boletos não pagos
 
-Pedidos que forem criados na plataforma com boleto como forma de pagamento, 
-deverão ser cancelados após o vencimento. O módulo possui um processo 
-automatizado que, identifica os boletos pendentes e, se em **4** dias após a 
+Pedidos que forem criados na plataforma com boleto como forma de pagamento,
+deverão ser cancelados após o vencimento. O módulo possui um processo
+automatizado que, identifica os boletos pendentes e, se em **4** dias após a
 data de vencimento não houver o pagamento, o pedido é **cancelado**.
 
-Para que este processo funcione é preciso que as a _cron_ da plataforma seja 
+Para que este processo funcione é preciso que as a _cron_ da plataforma seja
 configurada no servidor:
 
 `*/5 * * * * sh /path/to/your/magento/site/root/cron.sh`
@@ -137,7 +139,7 @@ make set-api-key api_key=SUA_API_KEY
 - [Ngrok](https://ngrok.com/)
 - Developer mode do magento habilitado ou a variável de ambiente `PAGARME_DEVELOPMENT=enabled`
 
-1. Instale e inicie o ngrok com `ngrok http 80` 
+1. Instale e inicie o ngrok com `ngrok http 80`
 2. Acesse o painel administrativo da loja
 3. Vá `Sistema > Configuração > Métodos de Pagamento > Pagar.me`
 4. Preencha o campo `Postback URL` com a url gerada pelo ngrok
@@ -148,4 +150,3 @@ make set-api-key api_key=SUA_API_KEY
 
 1. Altere seu arquivo `/etc/hosts` adicionando a entrada `127.0.0.1 magento`
 2. Acesse a loja no navegador utilizando o endereço `http://magento`
-
