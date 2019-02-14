@@ -14,6 +14,13 @@
                     </pagarme_creditcard_totals>
                 </totals>
             </order_creditmemo>
+            <order_invoice>
+                <totals>
+                    <pagarme_creditcard_totals>
+                        <class>pagarme_creditcard/invoiceTotals</class>
+                    </pagarme_creditcard_totals>
+                </totals>
+            </order_invoice>
             <quote>
                 <totals>
                     <pagarme_creditcard_interest>
