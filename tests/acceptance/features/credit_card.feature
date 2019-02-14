@@ -165,17 +165,17 @@ Feature: Credit Card
         And click on the invoice button
         And select to capture amount "online"
         And click on the submit invoice button
-        Then the order should be captured on Pagar.me
+        Then the order should be "captured" on Magento
 
     Scenario: Capture partially a purchase by credit card through the platform
         Given an "pending_payment" order with more than one product
         When I login to the admin
-        And I go to the new invoice page
+        And I go to the create new invoice page
         And I set the product quantity to "3"
         And select to capture amount "online"
         And click on the submit invoice button
-        Then the order should be "captured" on Pagar.me
-        And the order must be "captured" partially on Pagar.me
+        Then the order should be "captured" on Magento
+        And the order must be "captured" "partially" on Pagar.me
 
     Scenario: Refund partially a purchase by credit card through the platform
         Given an "processing" order with more than one product
@@ -183,5 +183,29 @@ Feature: Credit Card
         And I go to the invoice credit memo page
         And I set the product quantity to "1"
         And click on the refund button
-        Then the order should be "refunded" on Pagar.me
-        And the order must be "refunded" partially on Pagar.me
+        Then the order should be "refunded" on Magento
+        And the order must be "refunded" "partially" on Pagar.me
+
+    Scenario: Capture a order with interest rate through the platform
+        Given a registered user
+        And set a max installment as "10" and interest rate as "10"
+        And the administrator set payment action to "authorize_only"
+        And the administrator set the async configuration to "no"
+        When I access the store page
+        And add any product to basket
+        And update the product quantity to "3"
+        And I go to checkout page
+        And login with registered user
+        And confirm billing and shipping address information
+        And choose pay with transparent checkout using credit card
+        And I choose 5
+        And I confirm my payment information
+        And place order
+        Then the purchase must be paid with success
+        And I get the created order id from success page
+        When I login to the admin
+        And I go to the create new invoice page
+        And select to capture amount "online"
+        And click on the submit invoice button
+        Then the order should be "captured" on Magento
+        And the order must be "captured" "fully" on Pagar.me

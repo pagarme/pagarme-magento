@@ -624,14 +624,18 @@ class CreditCardContext extends RawMinkContext
     }
 
     /**
-     * @When I go to the new invoice page
+     * @When I go to the create new invoice page
      */
-    public function iGoToTheCaptureInvoicePage() {
-        $orderObject = Mage::getModel('sales/order')->load($this->orderId);
+    public function iGoToTheCreateNewInvoicePage() {
+        if (!isset($this->orderId)) {
+            $this->orderId = $this->createdOrderId;
+        }
+
+        $orderId = $this->getOrderId();
+        $orderObject = Mage::getModel('sales/order')->load($orderId);
 
         Mage::getConfig()->saveConfig('admin/security/use_form_key', 0);
-
-        $url = $this->magentoUrl . 'index.php/admin/sales_order_invoice/new/order_id/' . $this->orderId;
+        $url = $this->magentoUrl . 'index.php/admin/sales_order_invoice/new/order_id/' . $orderId;
         $this->session->visit($url);
 
         Mage::getConfig()->saveConfig('admin/security/use_form_key', 1);
@@ -849,9 +853,9 @@ class CreditCardContext extends RawMinkContext
     }
 
     /**
-     * @Then the order should be :action on Pagar.me
+     * @Then the order should be :action on Magento
      */
-    public function theOrderShouldBeOnPagarMe($action)
+    public function theOrderShouldBeOnMagento($action)
     {
         $page = $this->session->getPage();
 
@@ -882,12 +886,15 @@ class CreditCardContext extends RawMinkContext
     }
 
     /**
-     * @Then the order must be :action partially on Pagar.me
+     * @Then the order must be :action :method on Pagar.me
      */
-    public function theOrderMustBePartiallyOnPagarMe($action) {
+    public function theOrderMustBeOnPagarMe($action, $method) {
         $resource = Mage::getSingleton('core/resource');
+        $orderId = $this->getOrderId();
         $readConnection = $resource->getConnection('core_read');
-        $query = "SELECT transaction_id FROM pagarme_transaction WHERE order_id = $this->orderId";
+        $query = "SELECT transaction_id FROM pagarme_transaction WHERE order_id = $orderId";
+
+        $compareMethod = $method === 'partially' ? 'assertGreaterThan' : 'assertEquals';
 
         $transactionId = (int)$readConnection->fetchOne($query);
 
@@ -901,13 +908,13 @@ class CreditCardContext extends RawMinkContext
 
         switch ($action) {
             case 'refunded':
-                PHPUnit_Framework_Assert::assertGreaterThan(
+                PHPUnit_Framework_Assert::$compareMethod(
                     $transaction->getRefundedAmount(),
                     $transaction->getPaidAmount()
                 );
                 break;
             case 'captured':
-                PHPUnit_Framework_Assert::assertGreaterThan(
+                PHPUnit_Framework_Assert::$compareMethod(
                     $transaction->getPaidAmount(),
                     $transaction->getAmount()
                 );
@@ -961,5 +968,14 @@ class CreditCardContext extends RawMinkContext
                 $this->session->getCurrentUrl()
             );
         }
+    }
+
+    /**
+     * @return string
+     */
+    private function getOrderId() {
+        return strlen($this->orderId) > 2 ?
+            substr($this->orderId, 1) :
+            $this->orderId;
     }
 }
