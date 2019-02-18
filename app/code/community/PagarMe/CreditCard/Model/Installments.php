@@ -85,4 +85,12 @@ class PagarMe_CreditCard_Model_Installments
 
         return $installments[$installment]['total_amount'];
     }
+
+    /**
+     * @return int
+     */
+    public function getRateAmount()
+    {
+        return intval($this->getTotal() - $this->amount);
+    }
 }

@@ -186,7 +186,7 @@ Feature: Credit Card
         Then the order should be "refunded" on Magento
         And the order must be "refunded" "partially" on Pagar.me
 
-    Scenario: Capture a order with interest rate through the platform
+    Scenario: Capture fully a order with interest rate through the platform
         Given a registered user
         And set a max installment as "10" and interest rate as "10"
         And the administrator set payment action to "authorize_only"
