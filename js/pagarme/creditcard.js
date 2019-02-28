@@ -1,93 +1,69 @@
-document.onreadystatechange = () => {
-  if (document.readyState === 'complete') {
-    // https://tc39.github.io/ecma262/#sec-array.prototype.includes
-    if (!Array.prototype.includes) {
-      Object.defineProperty(Array.prototype, 'includes', {
-        value: function (searchElement, fromIndex) {
+function debounce(func, wait, immediate) {
+  var timeout;
+  return function() {
+    var context = this, args = arguments;
+    var later = function() {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    };
+    var callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(context, args);
+  };
+};
 
-          // 1. Let O be ? ToObject(this value).
-          if (this == null) {
-            throw new TypeError('"this" is null or not defined');
-          }
+const getCardNumber = () => get('#pagarme_creditcard_creditcard_number').value
 
-          var o = Object(this)
+const getCardExpirationDate = () => get('#pagarme_creditcard_creditcard_expiration_date').value
 
-          // 2. Let len be ? ToLength(? Get(O, "length")).
-          var len = o.length >>> 0
+const isFilled = (input) => {
+  return input.type !== 'select-one' ? input.value.length >= 3 : true
+}
 
-          // 3. If len is 0, return false.
-          if (len === 0) {
-            return false
-          }
-
-          // 4. Let n be ? ToInteger(fromIndex).
-          //    (If fromIndex is undefined, this step produces the value 0.)
-          var n = fromIndex | 0
-
-          // 5. If n ≥ 0, then
-          //  a. Let k be n.
-          // 6. Else n < 0,
-          //  a. Let k be len + n.
-          //  b. If k < 0, let k be 0.
-          var k = Math.max(n >= 0 ? n : len - Math.abs(n), 0)
-
-          // 7. Repeat, while k < len
-          while (k < len) {
-            // a. Let elementK be the result of ? Get(O, ! ToString(k)).
-            // b. If SameValueZero(searchElement, elementK) is true, return true.
-            // c. Increase k by 1.
-            // NOTE: === provides the correct "SameValueZero" comparison needed here.
-            if (o[k] === searchElement) {
-              return true
-            }
-            k++
-          }
-
-          // 8. Return false
-          return false
-        },
-      })
-    }
-
-    var addedEvent = false
-
-    get('#opc-review, #checkout-step-payment').addEventListener('click', function() {
-      addedEvent = false
-    })
-
-    get('#opc-review, #checkout-review-submit').addEventListener('click', function (event) {
-      if (event.path) {
-        var buttons = this.getElementsByClassName('btn-checkout')
-        const button = buttons[0]
-        const buttonOnClick = button.onclick
-
-        for (var i = 0; i < event.path.length; i++) {
-          if (event.path[i].tagName == 'BUTTON' && !addedEvent) {
-            event.path[i].onclick = null
-            event.path[i].addEventListener('click', function () {
-              generateHash()
-                .then(() => buttonOnClick())
-            })
-
-            addedEvent = true
-          }
-        }
-        return
-      }
-
-      if (event.target.tagName === 'BUTTON' && !addedEvent) {
-        var buttons = this.getElementsByClassName('btn-checkout')
-        const button = buttons[0]
-        const buttonOnClick = button.onclick
-
-        event.target.onclick = null
-        event.target.addEventListener('click', function () {
-          generateHash()
-            .then(() => buttonOnClick())
-        })
-
-        addedEvent = true
-      }
-    }, true)
+const getCardData = () => {
+  return {
+    card_number: getCardNumber().replace(/\s/g, ''),
+    card_holder_name: get('#pagarme_creditcard_creditcard_owner').value,
+    card_expiration_date: getCardExpirationDate().replace(/\s|\//g, ''),
+    card_cvv: get('#pagarme_creditcard_creditcard_cvv').value,
   }
 }
+
+const isValidCardExpirationDate = () => {
+  /**
+   * The regex validates the following formats:
+   * MMYY, MM/YY, MM / YY
+   */
+  const validDateRegex = new RegExp(/\d{2}\s?\/?\s?\d{2}/)
+
+  return validDateRegex.test(getCardExpirationDate())
+}
+
+const shouldGenerateCardHash = (card) => {
+  if (!pagarmeCreditcardSelected()){
+    return false
+  }
+
+  const pagarmeInputsNodeList = document.querySelectorAll('.card-data input')
+  const pagarmeCardInputs = Array.from(pagarmeInputsNodeList)
+
+  if (!pagarmeCardInputs.every(isFilled)) {
+    return false
+  }
+
+  const cardValidations = pagarme.validate({
+    card
+  })
+
+  const { card_number, card_holder_name, card_cvv, card_expiration_date } = cardValidations.card
+
+  return card_number && card_holder_name && card_cvv && isValidCardExpirationDate()
+}
+
+const tryGenerateCardHash = debounce(() => {
+  if (shouldGenerateCardHash(getCardData())) {
+    clearHash()
+    return generateHash(getCardData())
+  }
+}, 600)
