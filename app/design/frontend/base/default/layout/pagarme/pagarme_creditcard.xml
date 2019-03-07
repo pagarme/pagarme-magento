@@ -9,6 +9,7 @@
             </block>
         </reference>
         <reference name="head">
+            <action method="addJs" ifconfig="payment/pagarme_configurations/transparent_active"><script>pagarme/validateInputs.js</script></action>
             <action method="addJs" ifconfig="payment/pagarme_configurations/transparent_active"><script>pagarme/cardhash.js</script></action>
             <action method="addJs" ifconfig="payment/pagarme_configurations/transparent_active"><script>pagarme/creditcard.js</script></action>
         </reference>
