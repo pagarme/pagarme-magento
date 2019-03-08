@@ -3,7 +3,7 @@
     $helper = Mage::helper('pagarme_creditcard');
 ?>
 
-<div class="form-list" id="payment_form_<?= $_code ?>" style="display: none; width: 100%;">
+<div class="form-list" id="payment_form_<?= $_code ?>" style="display: none;">
     <input type="hidden" value="" name="payment[card_hash]" id="pagarme_card_hash" class="required_entry" />
     <input type="hidden" id="pagarme_encryption_key" value="<?= trim($this->getEncryptionKeyStoreConfig()); ?>">
     <div class="card-data">
@@ -142,7 +142,7 @@
     if (!card) {
       const paymentDiv = document.querySelector('#payment_form_pagarme_creditcard')
 
-      if (paymentDiv.getWidth() < 600) {
+      if (paymentDiv.parentElement.getWidth() < 600) {
         const cardDataDiv = document.querySelector('.card-data')
 
         cardDataDiv.addClassName('card-data-column')
