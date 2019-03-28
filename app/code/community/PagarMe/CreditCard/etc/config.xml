@@ -82,19 +82,4 @@
             </modules>
         </translate>
     </frontend>
-    <default>
-        <payment>
-            <pagarme_creditcard>
-                <active>1</active>
-                <model>pagarme_creditcard/creditcard</model>
-                <title>Credit Card</title>
-                <payment_action>authorize</payment_action>
-                <allow_specific>0</allow_specific>
-                <sort_order>1</sort_order>
-            </pagarme_creditcard>
-            <pagarme_configurations>
-                <payment_action>authorize_capture</payment_action>
-            </pagarme_configurations>
-        </payment>
-    </default>
 </config>

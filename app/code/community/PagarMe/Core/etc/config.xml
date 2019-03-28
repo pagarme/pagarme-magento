@@ -56,6 +56,11 @@
                 </connection>
             </pagarme_core_read>
         </resources>
+        <payment>
+            <groups>
+                <pagarmev2>Pagar.me V2</pagarmev2>
+            </groups>
+        </payment>
     </global>
     <frontend>
         <routers>
@@ -92,27 +97,33 @@
         <payment>
             <pagarme_modal>
                 <active>0</active>
+                <title>Pagar.me Checkout</title>
                 <model>pagarme_modal/modal</model>
                 <order_status>pending</order_status>
                 <allowspecific>0</allowspecific>
                 <payment_methods>credit_card,boleto</payment_methods>
                 <payment_action>authorize</payment_action>
+                <group>pagarmev2</group>
             </pagarme_modal>
             <pagarme_creditcard>
                 <active>1</active>
+                <title>Pagar.me Cartão de crédito</title>
                 <model>pagarme_creditcard/creditcard</model>
                 <order_status>pending_payment</order_status>
                 <allowspecific>0</allowspecific>
                 <payment_methods>credit_card</payment_methods>
                 <payment_action>authorize</payment_action>
+                <group>pagarmev2</group>
             </pagarme_creditcard>
             <pagarme_bowleto>
                 <active>1</active>
+                <title>Pagar.me Boleto</title>
                 <model>pagarme_bowleto/boleto</model>
                 <order_status>authorize</order_status>
                 <allowspecific>0</allowspecific>
                 <payment_methods>boleto</payment_methods>
                 <payment_action>authorize</payment_action>
+                <group>pagarmev2</group>
             </pagarme_bowleto>
             <pagarme_configurations>
                 <modal_title>Pagarme Checkout</modal_title>
