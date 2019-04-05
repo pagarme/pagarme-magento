@@ -515,7 +515,7 @@ class CheckoutContext extends RawMinkContext
         );
         \PHPUnit_Framework_TestCase::assertEquals(
             $checkoutButton,
-            NULL
+            null
         );
     }
 

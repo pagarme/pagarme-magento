@@ -640,7 +640,7 @@ class OneStepCheckoutContext extends RawMinkContext
         );
         \PHPUnit_Framework_TestCase::assertEquals(
             $checkoutButton,
-            NULL
+            null
         );
     }
 
