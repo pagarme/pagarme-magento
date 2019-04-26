@@ -43,7 +43,8 @@
             ".circleci/",
             "composer.json",
             "composer.lock",
-            "script/"
+            "script/",
+            ".github/"
         ]
     }
 }
