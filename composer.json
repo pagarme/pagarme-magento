@@ -1,4 +1,15 @@
 {
+    "name": "pagarme/pagarme-magento",
+    "description": "Official magento module to connect to Pagar.me payment provider",
+    "type": "magento-module",
+    "homepage": "https://github.com/pagarme/pagarme-magento",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Pagar.me",
+            "email": "suporte@pagar.me"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "PagarMe\\Magento\\Test\\": "tests/acceptance/"
