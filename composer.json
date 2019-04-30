@@ -27,6 +27,25 @@
         "behat/mink-extension": "~2.2",
         "n98/magerun": "@stable"
     },
+    "extra": {
+        "map": [
+            ["app/code/community/PagarMe/*", "app/code/community/PagarMe/"],
+            ["app/design/adminhtml/default/default/layout/pagarme/*", "app/design/adminhtml/default/default/layout/pagarme/"],
+            ["app/design/adminhtml/default/default/template/pagarme/*", "app/design/adminhtml/default/default/template/pagarme/"],
+            ["app/design/frontend/base/default/layout/pagarme/*", "app/design/frontend/base/default/layout/pagarme/"],
+            ["app/design/frontend/base/default/template/pagarme/*", "app/design/frontend/base/default/template/pagarme/"],
+            ["app/etc/modules/PagarMe_Bowleto.xml", "app/etc/modules/PagarMe_Bowleto.xml"],
+            ["app/etc/modules/PagarMe_Core.xml", "app/etc/modules/PagarMe_Core.xml"],
+            ["app/etc/modules/PagarMe_CreditCard.xml", "app/etc/modules/PagarMe_CreditCard.xml"],
+            ["app/etc/modules/PagarMe_Modal.xml", "app/etc/modules/PagarMe_Modal.xml"],
+            ["app/locale/pt_BR/PagarMe_Boleto.csv", "app/locale/pt_BR/PagarMe_Boleto.csv"],
+            ["app/locale/pt_BR/PagarMe_Core.csv", "app/locale/pt_BR/PagarMe_Core.csv"],
+            ["app/locale/pt_BR/PagarMe_CreditCard.csv", "app/locale/pt_BR/PagarMe_CreditCard.csv"],
+            ["app/locale/pt_BR/PagarMe_Modal.csv", "app/locale/pt_BR/PagarMe_Modal.csv"],
+            ["js/pagarme/*", "js/pagarme/"],
+            ["skin/frontend/base/default/pagarme/*", "skin/frontend/base/default/pagarme/"]
+        ]
+    },
     "archive": {
         "exclude": [
             ".coveralls.yml",
