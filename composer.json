@@ -1,6 +1,6 @@
 {
     "name": "pagarme/pagarme-magento",
-    "description": "Official magento module to connect to Pagar.me payment provider",
+    "description": "Official Magento 1 module to connect to Pagar.me payment provider",
     "type": "magento-module",
     "homepage": "https://github.com/pagarme/pagarme-magento",
     "license": "MIT",
@@ -16,7 +16,9 @@
         }
     },
     "require": {
-        "pagarme/pagarme-php": "^3.7"
+        "php": ">=5.4",
+        "pagarme/pagarme-php": "^3.7",
+        "guzzlehttp/guzzle": "^5.3"
     },
     "require-dev": {
         "phpunit/phpunit": "4.8",
