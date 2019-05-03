@@ -17,9 +17,17 @@ Módulo de integração Pagar.me para Magento 1.x
 
 ## Instalação
 
+### Manual
+
 1. Clique [aqui](https://github.com/pagarme/pagarme-magento/releases) e baixe o arquivo `.zip` de nossa versão mais recente. O arquivo possui o nome parecido com `pagarme-magento-<VERSÃO>.zip`
 2. Descompacte o arquivo **zip** e copie as pastas `app`, `js`, `skin` e `vendor` para a a pasta raiz da sua instalação do Magento
 3. Limpe o cache em `Sistema > Gerenciamento de Cache`
+
+### Composer
+
+```
+composer require pagarme/pagarme-magento:^3
+```
 
 ## Configuração
 
