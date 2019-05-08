@@ -26,6 +26,11 @@ trait PagarMeSwitch
             'payment/pagarme_configurations/transparent_active',
             true
         );
+
+        $this->changePagarmeSetting(
+            'payment/pagarme_configurations/transparent_payment_methods',
+            'pagarme_bowleto,pagarme_creditcard'
+        );
     }
 
     protected function disablePagarmeTransparent()
