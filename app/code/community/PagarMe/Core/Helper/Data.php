@@ -95,6 +95,7 @@ class PagarMe_Core_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getDddFromPhoneNumber($phone)
     {
+        preg_replace("/[^0-9]/", "", $phone);
         return substr(Zend_Filter::filterStatic($phone, 'Digits'), 0, 2);
     }
 
@@ -105,6 +106,7 @@ class PagarMe_Core_Helper_Data extends Mage_Core_Helper_Abstract
      */
     public function getPhoneWithoutDdd($phone)
     {
+        preg_replace("/[^0-9]/", "", $phone);
         return substr(Zend_Filter::filterStatic($phone, 'Digits'), 2);
     }
 

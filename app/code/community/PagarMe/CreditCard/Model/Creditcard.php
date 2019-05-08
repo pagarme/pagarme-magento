@@ -606,7 +606,7 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
                 return false;
             }
 
-            $telephone = $billingAddress->getTelephone();
+            $telephone = preg_replace("/[^0-9]/", "", $billingAddress->getTelephone());
 
             $customerPagarMe = $this->buildCustomerInformation(
                 $this->quote,
