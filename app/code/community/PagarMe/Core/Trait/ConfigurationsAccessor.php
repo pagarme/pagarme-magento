@@ -51,6 +51,21 @@ trait PagarMe_Core_Trait_ConfigurationsAccessor
     }
 
     /**
+     * Returns wich payment method is available on checkou transparent:
+     * credit card, boleto and/or credit card and boleto
+     *
+     * @see app/code/community/PagarMe/Core/etc/system.xml
+     *
+     * @return string
+     */
+    public function getActiveTransparentPaymentMethod()
+    {
+        return $this->getConfigurationWithName(
+            'pagarme_configurations/transparent_payment_methods'
+        );
+    }
+
+    /**
      * @return string
      */
     private function getCreditcardTitleStoreConfig()
