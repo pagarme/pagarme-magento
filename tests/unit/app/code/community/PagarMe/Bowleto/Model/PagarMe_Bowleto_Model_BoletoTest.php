@@ -58,7 +58,7 @@ class PagarMeboletoModelBoletoTest extends PHPUnit_Framework_TestCase
             ->method('getActiveTransparentPaymentMethod')
             ->willReturn('pagarme_bowleto');
 
-            $this->assertTrue($boletoModel->isAvailable());
+        $this->assertTrue($boletoModel->isAvailable());
     }
 
     /**

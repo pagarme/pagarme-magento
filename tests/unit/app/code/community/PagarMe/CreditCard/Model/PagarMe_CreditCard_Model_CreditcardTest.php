@@ -38,6 +38,9 @@ class PagarMeCreditCardModelCreditcardTest extends PHPUnit_Framework_TestCase
         Mage::getModel('core/config')->cleanCache();
     }
 
+    /**
+     * @param string $paymentMethod
+     */
     private function setPaymentMethodActive($paymentMethod)
     {
         Mage::getModel('core/config')
@@ -283,7 +286,7 @@ class PagarMeCreditCardModelCreditcardTest extends PHPUnit_Framework_TestCase
             ->method('getActiveTransparentPaymentMethod')
             ->willReturn('pagarme_creditcard');
 
-            $this->assertTrue($creditCardModel->isAvailable());
+        $this->assertTrue($creditCardModel->isAvailable());
     }
 
     /**
