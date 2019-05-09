@@ -211,20 +211,6 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
         $this->transaction = $transaction;
     }
 
-    /**
-     * @param type $quote
-     *
-     * @return bool
-     */
-    public function isAvailable($quote = null)
-    {
-        if (!parent::isAvailable($quote)) {
-            return false;
-        }
-
-        return $this->isTransparentCheckoutActiveStoreConfig();
-    }
-
    /**
     * Retrieve payment method title
     *

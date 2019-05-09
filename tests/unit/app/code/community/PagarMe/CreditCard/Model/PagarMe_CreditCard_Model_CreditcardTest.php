@@ -26,6 +26,33 @@ class PagarMeCreditCardModelCreditcardTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param boolean $status
+     */
+    private function setupTransparentCheckout($status)
+    {
+        $value = $status === true ? 1 : 0;
+
+        Mage::getModel('core/config')
+            ->saveConfig('payment/pagarme_configurations/transparent_active', $value);
+
+        Mage::getModel('core/config')->cleanCache();
+    }
+
+    /**
+     * @param string $paymentMethod
+     */
+    private function setPaymentMethodActive($paymentMethod)
+    {
+        Mage::getModel('core/config')
+            ->saveConfig(
+                'payment/pagarme_configurations/transparent_payment_methods',
+                $paymentMethod
+            );
+
+        Mage::getModel('core/config')->cleanCache();
+    }
+
+    /**
      * @test
      */
     public function mustBeAnInstanceOfPagarmeCreditCardModel()
@@ -210,5 +237,107 @@ class PagarMeCreditCardModelCreditcardTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($creditCardModel->transactionIsPaid());
         $creditCardModel->capture();
         $this->assertTrue($creditCardModel->transactionIsPaid());
+    }
+
+    /**
+     * @test
+     */
+    public function mustReturnFalseIfCheckoutTransparentIsInactive()
+    {
+        $creditCardModel = $this
+            ->getMockBuilder('PagarMe_CreditCard_Model_CreditCard')
+            ->setMethods([
+                'isTransparentCheckoutActive',
+                'getActiveTransparentPaymentMethod'
+            ])
+            ->getMock();
+
+        $creditCardModel
+            ->expects($this->any())
+            ->method('isTransparentCheckoutActive')
+            ->willReturn(false);
+
+        $this->assertFalse(
+            $creditCardModel->isAvailable(),
+            'Transparent checkout is inactive. Credit card should be unavailable'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function mustReturnTrueIfCreditCardIsEnabled()
+    {
+        $creditCardModel = $this
+            ->getMockBuilder('PagarMe_CreditCard_Model_CreditCard')
+            ->setMethods([
+                'isTransparentCheckoutActive',
+                'getActiveTransparentPaymentMethod'
+            ])
+            ->getMock();
+
+        $creditCardModel
+            ->expects($this->any())
+            ->method('isTransparentCheckoutActive')
+            ->willReturn(true);
+
+        $creditCardModel
+            ->expects($this->any())
+            ->method('getActiveTransparentPaymentMethod')
+            ->willReturn('pagarme_creditcard');
+
+        $this->assertTrue($creditCardModel->isAvailable());
+    }
+
+    /**
+     * @test
+     */
+    public function mustReturnFalseIfCreditCardIsDisabled()
+    {
+        $creditCardModel = $this
+            ->getMockBuilder('PagarMe_CreditCard_Model_CreditCard')
+            ->setMethods([
+                'isTransparentCheckoutActive',
+                'getActiveTransparentPaymentMethod'
+            ])
+            ->getMock();
+
+        $creditCardModel
+            ->expects($this->any())
+            ->method('isTransparentCheckoutActive')
+            ->willReturn(true);
+
+        $creditCardModel
+            ->expects($this->any())
+            ->method('getActiveTransparentPaymentMethod')
+            ->willReturn('pagarme_boleto');
+
+        $this->assertFalse($creditCardModel->isAvailable());
+    }
+
+    /**
+     * @test
+     */
+    public function mustReturnTrueIfCreditCardAndBoletoIsEnabled()
+    {
+        $creditCardModel = $this
+            ->getMockBuilder('PagarMe_CreditCard_Model_CreditCard')
+            ->setMethods([
+                'isTransparentCheckoutActive',
+                'getActiveTransparentPaymentMethod'
+            ])
+            ->getMock();
+
+        $creditCardModel
+            ->expects($this->any())
+            ->method('isTransparentCheckoutActive')
+            ->willReturn(true);
+
+        $creditCardModel
+            ->expects($this->any())
+            ->method('getActiveTransparentPaymentMethod')
+            ->willReturn('pagarme_boleto,pagarme_creditcard');
+
+        $this->assertTrue($creditCardModel->isAvailable());
     }
 }

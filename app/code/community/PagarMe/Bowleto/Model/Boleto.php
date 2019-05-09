@@ -88,22 +88,6 @@ class PagarMe_Bowleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMet
         return $this;
     }
 
-    /**
-     * @param type $quote
-     *
-     * @return bool
-     */
-    public function isAvailable($quote = null)
-    {
-        if (!parent::isAvailable($quote)) {
-            return false;
-        }
-
-        return (bool) Mage::getStoreConfig(
-            'payment/pagarme_configurations/transparent_active'
-        );
-    }
-
    /**
     * Retrieve payment method title
     *
