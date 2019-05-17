@@ -97,17 +97,17 @@
                                         $installmentInfo['total_amount']
                                 );
                                 if ((int)$installmentNumber <= $this->getFreeInstallmentsConfig()) {
-                                  echo sprintf(
-                                    '%sx R$ %s (sem juros)',
-                                    $installmentNumber,
-                                    number_format($floatInstallmentAmount, 2, ",", ".")
+                                    echo sprintf(
+                                        '%sx R$ %s (sem juros)',
+                                        $installmentNumber,
+                                        number_format($floatInstallmentAmount, 2, ",", ".")
                                   );
                                 } else {
-                                  echo sprintf(
-                                    '%sx R$ %s (total R$ %s)',
-                                    $installmentNumber,
-                                    number_format($floatInstallmentAmount, 2, ",", "."),
-                                    number_format($floatInstallmentTotalAmount, 2, ",", ".")
+                                    echo sprintf(
+                                        '%sx R$ %s (total R$ %s)',
+                                        $installmentNumber,
+                                        number_format($floatInstallmentAmount, 2, ",", "."),
+                                        number_format($floatInstallmentTotalAmount, 2, ",", ".")
                                   );
                                 }
                             ?>
@@ -168,10 +168,10 @@
         form,
         container: '.card-wrapper',
         formSelectors: {
-            numberInput: 'input[id="pagarme_creditcard_creditcard_number"',
-            expiryInput: 'input[id="pagarme_creditcard_creditcard_expiration_date"',
-            cvcInput: 'input[id="pagarme_creditcard_creditcard_cvv"',
-            nameInput: 'input[id="pagarme_creditcard_creditcard_owner"'
+            numberInput: 'input[id="pagarme_creditcard_creditcard_number"]',
+            expiryInput: 'input[id="pagarme_creditcard_creditcard_expiration_date"]',
+            cvcInput: 'input[id="pagarme_creditcard_creditcard_cvv"]',
+            nameInput: 'input[id="pagarme_creditcard_creditcard_owner"]',
         },
 
         formatting: true,
