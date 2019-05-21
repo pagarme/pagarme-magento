@@ -487,13 +487,6 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
             case AbstractTransaction::PROCESSING:
                 $message = 'Processing on Gateway. Waiting response';
                 $desiredStatus = Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
-
-                $order->setState(
-                    $desiredStatus,
-                    $desiredStatus,
-                    $this->pagarmeCoreHelper->__($message, $amount),
-                    $notifyCustomer
-                );
                 break;
             case AbstractTransaction::REFUSED:
                 throw new Mage_Payment_Model_Info_Exception(
@@ -506,39 +499,25 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
                     'Waiting transaction review on Pagar.me\'s Dashboard'
                 );
                 $desiredStatus = Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW;
-
-                $order->setState(
-                    $desiredStatus,
-                    $desiredStatus,
-                    $this->pagarmeCoreHelper->__($message, $amount),
-                    $notifyCustomer
-                );
                 break;
             case AbstractTransaction::AUTHORIZED:
                 $message = 'Authorized amount of %s';
                 $desiredStatus = Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
                 $notifyCustomer = true;
-
-                $order->setState(
-                    $desiredStatus,
-                    $desiredStatus,
-                    $this->pagarmeCoreHelper->__($message, $amount),
-                    $notifyCustomer
-                );
                 break;
             case AbstractTransaction::PAID:
                 $message = 'Captured amount of %s';
                 $desiredStatus = Mage_Sales_Model_Order::STATE_PROCESSING;
                 $notifyCustomer = true;
-
-                $order->setState(
-                    $desiredStatus,
-                    $desiredStatus,
-                    $this->pagarmeCoreHelper->__($message, $amount),
-                    $notifyCustomer
-                );
                 break;
         }
+
+        $order->setState(
+            $desiredStatus,
+            $desiredStatus,
+            $this->pagarmeCoreHelper->__($message, $amount),
+            $notifyCustomer
+        );
 
         return $payment;
     }
