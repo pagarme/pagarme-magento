@@ -500,6 +500,10 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
                 );
                 $desiredStatus = Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW;
                 break;
+            case AbstractTransaction::ANALYZING:
+                $message = 'Transaction waiting for antifraud analysis';
+                $desiredStatus = Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW;
+                break;
             case AbstractTransaction::AUTHORIZED:
                 $message = 'Authorized amount of %s';
                 $desiredStatus = Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
