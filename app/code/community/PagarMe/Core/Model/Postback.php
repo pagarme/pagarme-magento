@@ -8,6 +8,7 @@ class PagarMe_Core_Model_Postback extends Mage_Core_Model_Abstract
     const POSTBACK_STATUS_REFUNDED = 'refunded';
     const POSTBACK_STATUS_AUTHORIZED = 'authorized';
     const POSTBACK_STATUS_REFUSED = 'refused';
+    const POSTBACK_STATUS_ANALYZING = 'analyzing';
 
     /**
      * @var PagarMe_Core_Model_Service_Order
@@ -40,6 +41,10 @@ class PagarMe_Core_Model_Postback extends Mage_Core_Model_Abstract
         }
 
         if ($currentStatus == self::POSTBACK_STATUS_REFUSED) {
+            return true;
+        }
+
+        if ($currentStatus == self::POSTBACK_STATUS_ANALYZING) {
             return true;
         }
 
