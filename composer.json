@@ -17,7 +17,7 @@
     },
     "require": {
         "php": ">=5.4",
-        "pagarme/pagarme-php": "^3.7",
+        "pagarme/pagarme-php": "^3.8",
         "guzzlehttp/guzzle": "^5.3"
     },
     "require-dev": {

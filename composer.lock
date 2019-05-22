@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "26c14860d831597ab1a9b1b2f72f7e7e",
-    "content-hash": "ffb080e1905892ec90abb3f8944e8a61",
+    "hash": "7bab8ec2eef0f594b05aa599ea645259",
+    "content-hash": "39ef198e69c9c0e88cad9b67175c8148",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -163,16 +163,16 @@
         },
         {
             "name": "pagarme/pagarme-php",
-            "version": "v3.7.11",
+            "version": "v3.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pagarme/pagarme-php.git",
-                "reference": "99f11c7049ba0d33814f562b837771a2ae986594"
+                "reference": "97545f554828c195784d805370eda1326389ac16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pagarme/pagarme-php/zipball/99f11c7049ba0d33814f562b837771a2ae986594",
-                "reference": "99f11c7049ba0d33814f562b837771a2ae986594",
+                "url": "https://api.github.com/repos/pagarme/pagarme-php/zipball/97545f554828c195784d805370eda1326389ac16",
+                "reference": "97545f554828c195784d805370eda1326389ac16",
                 "shasum": ""
             },
             "require": {
@@ -205,7 +205,7 @@
                 "pagarme",
                 "payments brazil"
             ],
-            "time": "2019-04-23 14:00:44"
+            "time": "2019-05-24 14:35:39"
         },
         {
             "name": "react/promise",
