@@ -264,9 +264,9 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
     {
         if ($installments <= 0) {
             $message = $this->pagarmeCoreHelper->__(
-                'Please, select the number of installments'
+                'Please, select the number of installments.'
             );
-            throw new InvalidInstallmentsException($message . $installments);
+            throw new InvalidInstallmentsException($message);
         }
 
         if ($installments > self::PAGARME_MAX_INSTALLMENTS) {
