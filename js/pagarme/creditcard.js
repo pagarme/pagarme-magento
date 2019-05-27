@@ -56,9 +56,9 @@ const shouldGenerateCardHash = (card) => {
     card
   })
 
-  const { card_number, card_holder_name, card_cvv, card_expiration_date } = cardValidations.card
+  const { card_holder_name, card_cvv } = cardValidations.card
 
-  return card_number && card_holder_name && card_cvv && isValidCardExpirationDate()
+  return card_holder_name && card_cvv && isValidCardExpirationDate()
 }
 
 const tryGenerateCardHash = debounce(() => {

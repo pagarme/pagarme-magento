@@ -50,8 +50,8 @@ Feature: Credit Card
         And login with registered user
         And confirm billing and shipping address information
         And choose pay with transparent checkout using credit card
-        And I give a invalid payment information
         And I choose 1
+        And I give a invalid payment information
         And place order
         Then the purchase must be paid with success
         And I get the created order id from success page

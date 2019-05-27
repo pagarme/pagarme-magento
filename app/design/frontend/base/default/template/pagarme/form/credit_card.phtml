@@ -18,7 +18,7 @@
                         type="text"
                         id="<?= $_code ?>_creditcard_number"
                         title="<?= $helper->__('Credit Card Number') ?>"
-                        class="input-text required-entry validate-alphanum-with-spaces"
+                        class="input-text required-entry validate-alphanum-with-spaces validate-card-number-length"
                         maxlength="23"
                         value=""
                     />
@@ -34,7 +34,7 @@
                         id="<?= $_code ?>_creditcard_owner"
                         placeholder="<?= $helper->__('Name in credit card') ?>"
                         title="<?= $helper->__('Credit Card Owner') ?>"
-                        class="input-text required-entry validate-alphanum-with-spaces"
+                        class="input-text required-entry validate-alphanum-with-spaces validate-card-holder-length"
                         value=""
                     />
                 </div>
@@ -64,7 +64,7 @@
                         type="text"
                         id="<?= $_code ?>_creditcard_cvv"
                         title="<?= $helper->__('Credit Card Verification Number') ?>"
-                        class="input-text required-entry validate-digits"
+                        class="input-text required-entry validate-digits validate-cvv-length"
                         maxlength="4"
                         value=""
                     />
@@ -79,7 +79,7 @@
                         name="payment[installments]"
                         id="<?= $_code ?>_creditcard_installments"
                         title="<?= $helper->__('Installments') ?>"
-                        class="input-text required-entry"
+                        class="input-text required-entry validate-installments"
                     >
                     <option value="0">
                       <?= Mage::helper('pagarme_core')->__('Please, select the number of installments'); ?>
