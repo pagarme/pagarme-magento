@@ -48,9 +48,6 @@ class PagarMe_CreditCard_Model_Quote_Address_Total_CreditCardInterestAmount exte
                 $paymentMethodParameters
             );
 
-            $this->_addAmount($this->interestValue);
-            $this->_addBaseAmount($this->interestValue);
-
             $orderTotal = $address->getGrandTotal() + $this->interestValue;
             $address->setGrandTotal($orderTotal);
             $address->setBaseGrandTotal($orderTotal);
