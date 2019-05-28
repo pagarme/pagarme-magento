@@ -1,8 +1,8 @@
 "Installments","Parcelas"
-"Installments number should be greater than zero","O número de parcelas deve ser maior que zero",
-"Installments number should be lower than Pagar.Me limit","O número de parcelas deve ser menor que o limite Pagar.me",
-"Installments number should not be greater than %d","O número de parcelas deve menor que %d",
-"Installments is Diverging","Valor de parcelas divergente",
+"Installments number should be greater than zero","O número de parcelas deve ser maior que zero"
+"Installments number should be lower than Pagar.Me limit","O número de parcelas deve ser menor que o limite Pagar.me"
+"Installments number should not be greater than %d","O número de parcelas deve menor que %d"
+"Installments is Diverging","Valor de parcelas divergente"
 "Installments related Interest","Juros do parcelamento"
 "Undefined Billing address: %s","Endereço de cobrança não informado"
 "Pagar.me Credit card","Cartão de crédito Pagar.me"
@@ -22,5 +22,11 @@
 "Captured amount of %s","Valor capturado: %s"
 "Payment refused.","Pagamento recusado."
 "Please, contact your bank for more informations.","Por favor, contate seu banco para mais informações."
-"Please, contact us for more informations.","Por favor, contate-nos para mais informações.",
+"Please, contact us for more informations.","Por favor, contate-nos para mais informações."
 "Card holder name","Nome do portador do cartão"
+"Please, select the number of installments","Por favor, selecione o número de parcelas."
+"Please, enter a valid credit card number.","Por favor, digite um número de cartão de crédito válido."
+"Please, enter a valid name.","Por favor, digite um nome válido."
+"Please, enter a valid expiration date. For example 12 / 25.","Por favor, digite uma data de expiração válida. Por exemplo 12 / 25."
+"Please, enter a valid credit card verification number.","Por favor, digite um código de verificação válido."
+"Please, select the number of installments.","Por favor, selecione o número de parcelas."

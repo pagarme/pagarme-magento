@@ -5,7 +5,7 @@
 const validDateRegex = new RegExp(/\d{2}\s?\/?\s?\d{2}/)
 const hasNumber = new RegExp(/\d+/)
 
-Validation.add('validate-card-expiration-date', 'Please enter a valid expiration date. For example 12 / 25.', function(value) {
+Validation.add('validate-card-expiration-date', 'Please, enter a valid expiration date. For example 12 / 25.', function(value) {
   return validDateRegex.test(value)
 })
 
@@ -21,6 +21,6 @@ Validation.add('validate-cvv-length', 'Please, enter a valid credit card verific
   return value.length >= 3 && value.length <= 4
 })
 
-Validation.add('validate-installments', 'Please, select a valid installments number.', function(value) {
+Validation.add('validate-installments', 'Please, select the number of installments.', function(value) {
   return value >= 1 && value <= 12
 })

@@ -124,6 +124,12 @@
     <?= $this->getMethod()->getConfigData('message');?>
 </div>
 <script type="text/javascript">
+Translator.add('Please, enter a valid expiration date. For example 12 / 25.', "<?php echo $helper->__('Please, enter a valid expiration date. For example 12 / 25.'); ?>");
+Translator.add('Please, enter a valid name.', "<?php echo $helper->__('Please, enter a valid name.'); ?>");
+Translator.add('Please, enter a valid credit card number.', "<?php echo $helper->__('Please, enter a valid credit card number.'); ?>");
+Translator.add('Please, enter a valid credit card verification number.', "<?php echo $helper->__('Please, enter a valid credit card verification number.'); ?>");
+Translator.add('Please, select the number of installments.', "<?php echo $helper->__('Please, select the number of installments.'); ?>");
+
 (function(window, document) {
 
   let generateCardHashEvent;
