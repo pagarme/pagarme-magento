@@ -132,14 +132,8 @@ Translator.add('Please, select the number of installments.', "<?php echo $helper
 
 (function(window, document) {
 
-  let generateCardHashEvent;
-
-  if (!generateCardHashEvent) {
-    const pagarmeDiv = get('#payment_form_pagarme_creditcard')
-    pagarmeDiv.addEventListener('keyup', tryGenerateCardHash)
-
-    generateCardHashEvent = true;
-  }
+  let generateCardHashEvent = false
+  let card
 
   const findParentForm = node => {
     if (node.tagName === 'FORM') return node
@@ -147,9 +141,18 @@ Translator.add('Please, select the number of installments.', "<?php echo $helper
     return findParentForm(node.parentNode)
   }
 
+  const paymentDiv = document.querySelector('#payment_form_pagarme_creditcard')
+  const checkoutForm = findParentForm(paymentDiv)
+
+  if (!generateCardHashEvent) {
+    checkoutForm.addEventListener('input', tryGenerateCardHash)
+
+    generateCardHashEvent = true
+  }
+
   const loadCardScript = () => {
     let cardScript = document.createElement('script');
-    cardScript.setAttribute('src','https://s3.amazonaws.com/card.prd.pagarme.net/card.js');
+    cardScript.setAttribute('src', 'https://s3.amazonaws.com/card.prd.pagarme.net/card.js')
     cardScript.setAttribute('id', 'cardScript')
 
     document.body.appendChild(cardScript)
@@ -157,21 +160,15 @@ Translator.add('Please, select the number of installments.', "<?php echo $helper
     cardScript.addEventListener('load', createCard)
   }
 
-  let card
-
   const createCard = () => {
     if (!card) {
-      const paymentDiv = document.querySelector('#payment_form_pagarme_creditcard')
-
       if (paymentDiv.parentElement.getWidth() < 600) {
         const cardDataDiv = document.querySelector('.card-data')
-
         cardDataDiv.addClassName('card-data-column')
       }
 
-      const form = findParentForm(paymentDiv)
       card = new Card({
-        form,
+        form: checkoutForm,
         container: '.card-wrapper',
         formSelectors: {
             numberInput: 'input[id="pagarme_creditcard_creditcard_number"]',
