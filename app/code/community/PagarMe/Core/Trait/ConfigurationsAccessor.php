@@ -156,6 +156,16 @@ trait PagarMe_Core_Trait_ConfigurationsAccessor
     }
 
     /**
+     * @return string
+     */
+    private function getBoletoInstructions()
+    {
+        return $this->getConfigurationWithName(
+            'pagarme_configurations/boleto_instructions'
+        );
+    }
+
+    /**
      * @param string $name
      *
      * @return mixed
