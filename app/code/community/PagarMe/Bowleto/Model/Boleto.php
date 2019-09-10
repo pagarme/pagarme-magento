@@ -227,7 +227,8 @@ class PagarMe_Bowleto_Model_Boleto extends PagarMe_Core_Model_AbstractPaymentMet
             $extraAttributes = [
                 'async' => false,
                 'reference_key' => $referenceKey,
-                'boleto_expiration_date' => $this->getBoletoExpirationDate()
+                'boleto_expiration_date' => $this->getBoletoExpirationDate(),
+                'boleto_instructions' => $this->getBoletoInstructions(),
             ];
 
             $amount = $this->pagarmeCoreHelper
