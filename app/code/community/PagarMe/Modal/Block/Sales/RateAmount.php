@@ -44,7 +44,13 @@ class PagarMe_Modal_Block_Sales_RateAmount extends Mage_Core_Block_Abstract
 
     private function shouldShowTotal()
     {
-        $paymentIsPagarMeCreditcard = $this->getReferencedOrder()->getPayment()->getMethod() ==
+        $referencedOrder = $this->getReferencedOrder();
+
+        if (is_null($referencedOrder)) {
+            return false;
+        }
+
+        $paymentIsPagarMeCreditcard = $referencedOrder->getPayment()->getMethod() ==
             PagarMe_Modal_Model_Modal::PAGARME_MODAL;
 
         $rateAmount = $this->getRateAmount();
