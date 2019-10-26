@@ -27,6 +27,9 @@ test-e2e-suite: wait-for-magento
 composer-install:
 	@docker-compose run composer install
 
+build-release-artifact:
+	@./script/build-artifact.sh
+
 toggle-mage-logs:
 	@docker-compose exec magento vendor/bin/n98-magerun dev:log
 

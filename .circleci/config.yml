@@ -98,8 +98,55 @@ jobs:
             make show-system-logs
             make show-exception-logs
 
+  build-release-artifact:
+    machine:
+      enabled: true
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: "Build artifact to be released"
+          command: |
+            chmod +x ~/project/script/build-artifact.sh
+            make build-release-artifact
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+              - ./
+
+  publish-release-github:
+    docker:
+      - image: cibuilds/github:0.10
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: "Publish Release on Github"
+          command: |
+            ghr -t ${GITHUB_TOKEN} -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} -c ${CIRCLE_SHA1} -delete ${CIRCLE_TAG} ./build/
+
 workflows:
   version: 2
+  release:
+    jobs:
+      - checkout-code:
+          filters:
+            tags:
+              only: /^v.*$/
+      - build-release-artifact:
+          requires:
+          - checkout-code
+          filters:
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
+      - publish-release-github:
+          requires:
+            - build-release-artifact
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v\d+\.\d+\.\d+$/
   tests:
     jobs:
       - checkout-code
