@@ -70,11 +70,4 @@ class PagarMe_Creditcard_Block_Form_CreditCard extends Mage_Payment_Block_Form_C
     public function getFreeInstallmentsConfig() {
         return $this->getFreeInstallmentStoreConfig();
     }
-
-    /**
-     * @return float
-     */
-    public function getInterestRateStoreConfig() {
-      return $this->getFreeInstallmentStoreConfig();
-  }
 }
