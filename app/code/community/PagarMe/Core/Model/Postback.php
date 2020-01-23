@@ -129,15 +129,13 @@ class PagarMe_Core_Model_Postback extends Mage_Core_Model_Abstract
      */
     public function setOrderAsPaid($order)
     {
-        $invoice = $this->getInvoiceService()
-            ->createInvoiceFromOrder($order);
+        $invoice = $this->getInvoiceService()->createInvoiceFromOrder($order);
+        $invoice->register()->pay();
 
-        $invoice->register()
-            ->pay();
+        $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, 'pago', true);
+        $invoice->sendEmail();
 
-        $order->setState(Mage_Sales_Model_Order::STATE_PROCESSING, true, "pago");
-
-        $transactionSave = Mage::getModel('core/resource_transaction')
+        Mage::getModel('core/resource_transaction')
             ->addObject($order)
             ->addObject($invoice)
             ->save();
@@ -153,11 +151,12 @@ class PagarMe_Core_Model_Postback extends Mage_Core_Model_Abstract
     public function setOrderAsAuthorized($order)
     {
         $order->setState(
-            Mage_Sales_Model_Order::STATE_PROCESSING, 
-            true, 
+            Mage_Sales_Model_Order::STATE_PROCESSING,
+            true,
             Mage::helper('sales')->__(
-                'Authorized amount of %s.', 
-                substr('R$'.$order->getGrandTotal(), 0, -2))
+                'Authorized amount of %s.',
+                substr('R$'.$order->getGrandTotal(), 0, -2)
+            )
         );
 
         $transactionSave = Mage::getModel('core/resource_transaction')
