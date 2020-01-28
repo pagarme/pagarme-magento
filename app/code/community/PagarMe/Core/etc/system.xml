@@ -159,7 +159,7 @@
                         <boleto_instructions translate="label">
                             <label>Boleto instructions</label>
                             <frontend_type>textarea</frontend_type>
-                            <frontend_class>validate-no-html-tags validate-length maximum-length-255</frontend_class>
+                            <frontend_class>validate-length maximum-length-255</frontend_class>
                             <sort_order>25</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
