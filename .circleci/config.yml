@@ -131,12 +131,16 @@ workflows:
     jobs:
       - checkout-code:
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^v.*$/
       - build-release-artifact:
           requires:
           - checkout-code
           filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^v\d+\.\d+\.\d+$/
       - publish-release-github:
