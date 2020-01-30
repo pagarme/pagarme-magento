@@ -108,7 +108,7 @@ jobs:
           name: "Build artifact to be released"
           command: |
             chmod +x ~/project/script/build-artifact.sh
-            make build-release-artifact
+            make build-release-artifact RELEASE_TAG=${CIRCLE_TAG}
       - persist_to_workspace:
           root: ~/project
           paths:
