@@ -37,19 +37,22 @@ class PagarMe_Core_Model_PostbackHandler_Paid extends PagarMe_Core_Model_Postbac
     }
 
     /**
-     * Runs only if the only if the order's old status is Pagarme::processing
-     * It is necessary to create a new invoice
+     * Runs only if the order state is payment review.
+     * Move order state to Pending Payment, then create the invoice.
      *
      * @return void
      */
     private function setOrderAsProcessing()
     {
         if (
-            $this->isOrderInPaymentReview() &&
-            $this->oldStatus === AbstractTransaction::PROCESSING
+            $this->isOrderInPaymentReview()
         ) {
             $this->order->setState(
-                self::MAGENTO_DESIRED_STATUS
+                self::MAGENTO_DESIRED_STATUS,
+                true,
+                Mage::helper('pagarme_core')
+                    ->__('Paid'),
+                true
             );
         }
     }
@@ -60,6 +63,7 @@ class PagarMe_Core_Model_PostbackHandler_Paid extends PagarMe_Core_Model_Postbac
      */
     public function process()
     {
+        // Cannot create invoice for PaymentReview Orders
         $this->setOrderAsProcessing();
 
         if (!$this->order->canInvoice()) {
@@ -78,12 +82,15 @@ class PagarMe_Core_Model_PostbackHandler_Paid extends PagarMe_Core_Model_Postbac
 
         $invoice->register()->pay();
 
-        $this->order->setState(
-            self::MAGENTO_DESIRED_STATUS,
-            true,
-            Mage::helper('pagarme_core')
-                ->__('Paid')
-        );
+        if ($this->order->getState() !== $this->getDesiredState()) {
+            $this->order->setState(
+                self::MAGENTO_DESIRED_STATUS,
+                true,
+                Mage::helper('pagarme_core')
+                    ->__('Paid'),
+                true
+            );
+        }
 
         Mage::getModel('core/resource_transaction')
             ->addObject($this->order)
