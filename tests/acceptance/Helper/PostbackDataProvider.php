@@ -171,7 +171,7 @@ trait PostbackDataProvider
         return [
             'card_number' => '4111111111111111',
             'card_holder_name' => 'Ricardo Ledo',
-            'card_expiration_date' => '0220',
+            'card_expiration_date' => '0230',
             'card_cvv' => '231'
         ];
     }
