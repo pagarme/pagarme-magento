@@ -163,7 +163,7 @@ class PostbackContext extends MinkContext
 
         \PHPUnit_Framework_TestCase::assertEquals(
             $status,
-            $order->getStatus()
+            $order->getState()
         );
     }
 
