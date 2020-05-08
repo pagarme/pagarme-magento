@@ -494,10 +494,7 @@ class PagarMe_CreditCard_Model_Creditcard extends PagarMe_Core_Model_AbstractPay
                 );
                 break;
             case AbstractTransaction::PENDING_REVIEW:
-                $message = sprintf(
-                    "%s",
-                    'Waiting transaction review on Pagar.me\'s Dashboard'
-                );
+                $message = 'Waiting transaction review on Pagar.me Dashboard';
                 $desiredStatus = Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW;
                 break;
             case AbstractTransaction::ANALYZING:
