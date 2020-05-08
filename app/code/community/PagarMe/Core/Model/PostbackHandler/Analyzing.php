@@ -5,7 +5,7 @@ use \PagarMe\Sdk\Transaction\AbstractTransaction;
 class PagarMe_Core_Model_PostbackHandler_Analyzing extends PagarMe_Core_Model_PostbackHandler_Base
 {
     const MAGENTO_DESIRED_STATUS = Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW;
-   
+
     /**
      * Returns the desired state on magento
      *
@@ -22,7 +22,10 @@ class PagarMe_Core_Model_PostbackHandler_Analyzing extends PagarMe_Core_Model_Po
     public function process()
     {
         $this->order->setState(
-            self::MAGENTO_DESIRED_STATUS
+            self::MAGENTO_DESIRED_STATUS,
+            true,
+            Mage::helper('pagarme_core')
+                ->__('Transaction waiting for antifraud analysis')
         );
 
         Mage::getModel('core/resource_transaction')
