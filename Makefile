@@ -1,4 +1,4 @@
-default: up-containers composer-install tailf-magento-logs toggle-mage-logs enable-mage-errors
+default: up-containers composer-install toggle-mage-logs enable-mage-errors tailf-magento-logs
 
 wait-for-magento:
 	@./script/wait-for-magento.sh
