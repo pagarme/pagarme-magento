@@ -54,6 +54,20 @@ class PagarMe_Core_Model_OrderStatusHandler_Canceled extends BaseHandler
         );
 
         try {
+            if ($this->order->getState() === Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW) {
+                /**
+                 * Cannot cancel order's with Payment Review State.
+                 * So we move the order to Pending Payment before cancel it.
+                 */
+                $this->order->setState(
+                    Mage_Sales_Model_Order::STATE_PENDING_PAYMENT,
+                    false,
+                    Mage::helper('pagarme_core')
+                        ->__('Review finished. Cancelling the order.'),
+                    false
+                );
+            }
+
             $this->cancel();
             $magentoTransaction->addObject($this->order)->save();
 
