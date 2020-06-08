@@ -30,3 +30,6 @@
 "Please, enter a valid expiration date. For example 12 / 25.","Por favor, digite uma data de expiração válida. Por exemplo 12 / 25."
 "Please, enter a valid credit card verification number.","Por favor, digite um código de verificação válido."
 "Please, select the number of installments.","Por favor, selecione o número de parcelas."
+"Please use only letters (a-z or A-Z), numbers (0-9) or spaces only in this field.","Por favor, use apenas letras, números ou espaços nesse campo."
+"This is a required field.","Este é um campo obrigatório."
+"Please use numbers only in this field. Please avoid spaces or other characters such as dots or commas.","Por favor, use apenas números nesse campo."
