@@ -42,15 +42,15 @@ class PagarMe_Core_Model_Sdk_Adapter extends Mage_Core_Model_Abstract
     public function getUserAgent()
     {
         $userAgentValue = sprintf(
-            'Magento/%s PagarMe/%s PHP/%s',
-            Mage::getVersion(),
+            'pagarme-magento/%s magento/%s',            
             Mage::getConfig()->getNode()->modules->PagarMe_Core->version,
-            phpversion()
+            Mage::getVersion()
         );
 
         return [
             'User-Agent' => $userAgentValue,
-            'X-PagarMe-User-Agent' => $userAgentValue
+            'X-PagarMe-User-Agent' => $userAgentValue,
+            'X-PagarMe-Version' => '2017-07-17'
         ];
     }
 }
