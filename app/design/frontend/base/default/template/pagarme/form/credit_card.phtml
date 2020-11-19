@@ -130,8 +130,8 @@ Translator.add('Please, enter a valid credit card number.', "<?php echo $helper-
 Translator.add('Please, enter a valid credit card verification number.', "<?php echo $helper->__('Please, enter a valid credit card verification number.'); ?>");
 Translator.add('Please, select the number of installments.', "<?php echo $helper->__('Please, select the number of installments.'); ?>");
 Translator.add('Please use only letters (a-z or A-Z), numbers (0-9) or spaces only in this field.', "<?php echo $helper->__('Please use only letters (a-z or A-Z), numbers (0-9) or spaces only in this field.'); ?>");
-Translator.add('This is a required field.', "<?php echo $helper->__('This is a required field.') ?>")
-Translator.add('Please use numbers only in this field. Please avoid spaces or other characters such as dots or commas.', "<?php echo $helper->__('Please use numbers only in this field. Please avoid spaces or other characters such as dots or commas.') ?>")
+Translator.add('This is a required field.', "<?php echo $helper->__('This is a required field.') ?>");
+Translator.add('Please use numbers only in this field. Please avoid spaces or other characters such as dots or commas.', "<?php echo $helper->__('Please use numbers only in this field. Please avoid spaces or other characters such as dots or commas.') ?>");
 
 (function(window, document) {
 
@@ -144,7 +144,7 @@ Translator.add('Please use numbers only in this field. Please avoid spaces or ot
     return findParentForm(node.parentNode)
   }
 
-  const paymentDiv = document.querySelector('#payment_form_pagarme_creditcard')
+  const paymentDiv = document.querySelector('#payment_form_pagarme_creditcard');
   const checkoutForm = findParentForm(paymentDiv)
 
   if (!generateCardHashEvent) {
