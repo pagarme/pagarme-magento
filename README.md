@@ -48,7 +48,7 @@ Você pode acessar as demais instruções de configuração clicando [aqui](http
 
 Pedidos que forem criados na plataforma com boleto como forma de pagamento,
 deverão ser cancelados após o vencimento. O módulo possui um processo
-automatizado que, identifica os boletos pendentes e, se em **4** dias após a
+automatizado que, identifica os boletos pendentes e, se em **7** dias após a
 data de vencimento não houver o pagamento, o pedido é **cancelado**.
 
 Para que este processo funcione é preciso que as a _cron_ da plataforma seja
