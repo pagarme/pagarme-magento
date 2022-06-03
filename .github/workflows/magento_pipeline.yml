@@ -1,0 +1,141 @@
+name: Magento pipeline
+
+on:
+  pull_request:
+
+env:
+  IMGUR_CLIENT_ID: 1
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        magento_version: ["1.7.0.2", "1.8.1.0", "1.9.1.0"]
+    steps:
+      - name: Cancel previous runs
+        if: ${{ github.ref != 'refs/heads/master' || github.ref != 'refs/heads/v2' }}
+        uses: styfle/cancel-workflow-action@0.9.1
+        with:
+          access_token: ${{ github.token }}
+          workflow_id: ${{ github.event.workflow.id }}
+
+      - name: checkout code
+        uses: actions/checkout@v3
+
+      - name: Avoid forgotten keys
+        run: make check-forgotten-keys
+
+      - name: Install composer dependencies
+        run: make composer-install
+
+      - name: Start containers
+        run: |
+          echo "MAGENTO_VERSION=${{ matrix.magento_version }}" >> .env
+          echo "IMGUR_CLIENT_ID=${{ env.IMGUR_CLIENT_ID }}" >> .env
+          make up-containers
+
+      - name: unittest magento v${{ matrix.magento_version }}
+        run: make test-unit
+
+  e2e-credit_card:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        magento_version: ["1.7.0.2", "1.8.1.0", "1.9.1.0"]
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+
+      - name: Avoid forgotten keys
+        run: make check-forgotten-keys
+
+      - name: Install composer dependencies
+        run: make composer-install
+
+      - name: Start containers
+        run: |
+          echo "MAGENTO_VERSION=${{ matrix.magento_version }}" >> .env
+          echo "IMGUR_CLIENT_ID=${{ env.IMGUR_CLIENT_ID }}" >> .env
+          make up-containers
+
+      - name: e2e magento configure v${{ matrix.magento_version }}
+        run: make test-e2e-suite suite=configure
+
+      - name: e2e magento credit_card v${{ matrix.magento_version }}
+        id: e2e-test
+        run: make test-e2e-suite suite=credit_card
+
+      - name: Show magento's system and error logs
+        if: ${{ steps.e2e-test.outcome == 'failure' }}
+        run: |
+          make show-system-logs
+          make show-exception-logs
+        continue-on-error: true
+
+  e2e-boleto:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        magento_version: ["1.7.0.2", "1.8.1.0", "1.9.1.0"]
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+
+      - name: Avoid forgotten keys
+        run: make check-forgotten-keys
+
+      - name: Install composer dependencies
+        run: make composer-install
+
+      - name: Start containers
+        run: |
+          echo "MAGENTO_VERSION=${{ matrix.magento_version }}" >> .env
+          echo "IMGUR_CLIENT_ID=${{ env.IMGUR_CLIENT_ID }}" >> .env
+          make up-containers
+
+      - name: e2e magento boleto v${{ matrix.magento_version }}
+        id: e2e-test
+        run: make test-e2e-suite suite=boleto
+
+      - name: Show magento's system and error logs
+        if: ${{ steps.e2e-test.outcome == 'failure' }}
+        run: |
+          make show-system-logs
+          make show-exception-logs
+        continue-on-error: true
+
+  e2e-postback:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        magento_version: ["1.7.0.2", "1.8.1.0", "1.9.1.0"]
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v3
+
+      - name: Avoid forgotten keys
+        run: make check-forgotten-keys
+
+      - name: Install composer dependencies
+        run: make composer-install
+
+      - name: Start containers
+        run: |
+          echo "MAGENTO_VERSION=${{ matrix.magento_version }}" >> .env
+          echo "IMGUR_CLIENT_ID=${{ env.IMGUR_CLIENT_ID }}" >> .env
+          make up-containers
+
+      - name: e2e magento configure v${{ matrix.magento_version }}
+        run: make test-e2e-suite suite=configure
+
+      - name: e2e magento postback v${{ matrix.magento_version }}
+        id: e2e-test
+        run: make test-e2e-suite suite=postback
+
+      - name: Show magento's system and error logs
+        if: ${{ steps.e2e-test.outcome == 'failure' }}
+        run: |
+          make show-system-logs
+          make show-exception-logs
+        continue-on-error: true

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 magentoIsInstalled() {
-  isInstalled=$(docker-compose exec magento php -f install.php | grep "Magento is already installed" | wc -l)
+  isInstalled=$(docker-compose exec -T magento php -f install.php | grep "Magento is already installed" | wc -l)
 
-  if [ $isInstalled -eq 1 ] 
+  if [ $isInstalled -eq 1 ]
   then
     return 0
   else
@@ -12,7 +12,7 @@ magentoIsInstalled() {
 }
 
 magentoHasBeenDownloaded() {
-  docker-compose exec magento test -e install.php
+  docker-compose exec -T magento test -e install.php
 
   if [ $? -eq 0 ]
   then

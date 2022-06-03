@@ -3,7 +3,7 @@
 docker-compose up -d
 
 magentoHasBeenDownloaded() {
-  docker-compose exec magento test -e install.php
+  docker-compose exec -T magento test -e install.php
 
   if [ $? -eq 0 ]
   then
@@ -14,9 +14,9 @@ magentoHasBeenDownloaded() {
 }
 
 magentoIsInstalled() {
-  isInstalled=$(docker-compose exec magento php -f install.php | grep "Magento is already installed" | wc -l)
+  isInstalled=$(docker-compose exec -T magento php -f install.php | grep "Magento is already installed" | wc -l)
 
-  if [ $isInstalled -eq 1 ] 
+  if [ $isInstalled -eq 1 ]
   then
     return 0
   else
@@ -30,9 +30,9 @@ do
   sleep 15
 done
 
-docker-compose exec magento /opt/docker/bin/composer install
-docker-compose exec magento php index.php
-docker-compose exec magento vendor/bin/n98-magerun dev:log --on --global
+docker-compose exec -T magento /opt/docker/bin/composer install
+docker-compose exec -T magento php index.php
+docker-compose exec -T magento vendor/bin/n98-magerun dev:log --on --global
 
 for testScript in $(ls ./script/test-*.sh); do
     /bin/bash $testScript

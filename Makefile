@@ -16,13 +16,13 @@ check-forgotten-keys:
 	@./forgotten_keys.sh
 
 test-unit: wait-for-magento
-	@docker-compose exec magento vendor/bin/phpunit
+	@docker-compose exec -T magento vendor/bin/phpunit
 
 test-e2e: wait-for-magento
-	@docker-compose exec magento vendor/bin/behat --stop-on-failure
+	@docker-compose exec -T magento vendor/bin/behat --stop-on-failure
 
 test-e2e-suite: wait-for-magento
-	@docker-compose exec magento vendor/bin/behat -s $(suite) --stop-on-failure
+	@docker-compose exec -T magento vendor/bin/behat -s $(suite)
 
 composer-install:
 	@docker-compose run composer install
@@ -40,16 +40,16 @@ set-api-key:
 	@docker-compose exec magento vendor/bin/n98-magerun config:set $(api_key)
 
 show-system-logs:
-	docker-compose exec magento cat var/log/system.log
+	docker-compose exec -T magento cat var/log/system.log
 
 show-exception-logs:
-	docker-compose exec magento cat var/log/exception.log
+	docker-compose exec -T magento cat var/log/exception.log
 
 tailf-system-logs:
-	docker-compose exec magento tail -f var/log/system.log
+	docker-compose exec -T magento tail -f var/log/system.log
 
 tailf-exception-logs:
-	docker-compose exec magento tail -f var/log/exception.log
+	docker-compose exec -T magento tail -f var/log/exception.log
 
 phpcs:
 	@docker-compose exec magento vendor/bin/phpcs --standard=phpcsruleset.xml $(target)
