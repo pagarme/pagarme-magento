@@ -11,6 +11,9 @@ _run:
     name: 'Install dependencies'
     command: 'make composer-install'
 
+orbs:
+  sonarcloud: sonarsource/sonarcloud@1.1.1
+
 jobs:
   checkout-code:
     machine:
@@ -63,7 +66,11 @@ jobs:
       - run: *up-containers
       - run:
           name: 'Running unit tests against magento << parameters.magento_version >>'
-          command: 'make test-unit'
+          command: make test-unit && ls
+      - persist_to_workspace:
+            root: ~/project
+            paths:
+              - ./build
 
   end-to-end:
     description: Parameterized job to run end-to-end suites
@@ -97,6 +104,21 @@ jobs:
           command: |
             make show-system-logs
             make show-exception-logs
+
+  sonar:
+    description: Run sonar analysis
+    machine:
+      enabled: true
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Config sonar enviroment variables
+          command: |
+            ls
+            echo "sonar.login=${SONAR_GATE_KEY}" >> sonar-project.properties
+      - sonarcloud/scan
 
 workflows:
   version: 2
@@ -204,4 +226,10 @@ workflows:
           before-deps:
             - run: make test-e2e-suite suite=configure
           requires:
+            - unit-mage-1.9
+      - sonar:
+          context: sonar
+          requires:
+            - unit-mage-1.7
+            - unit-mage-1.8
             - unit-mage-1.9

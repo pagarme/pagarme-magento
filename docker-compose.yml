@@ -28,11 +28,12 @@ services:
             dockerfile: ./Dockerfile
             context: ./
         env_file: .env
-        volumes:
-            - .:/opt/docker/magento/module/
         working_dir: /var/www
         ports:
             - "80:80"
+        volumes:
+            - .:/opt/docker/magento/module/
+            - ./build/:/var/www/build/
         depends_on:
             - mysql
 
